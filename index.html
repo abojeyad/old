@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Yourdis · يوردس — Design Reference v4</title>
+<title>Yourdis · يوردس — Design Reference v5</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
@@ -34,7 +34,6 @@
   --red:          #9B2B2B;
   --red-light:    #FDECEC;
 
-  /* Product image background tints — one per brand */
   --b-purple: #EAE9FB;
   --b-teal:   #E0F4ED;
   --b-amber:  #FBF1E0;
@@ -183,28 +182,6 @@ img    { display:block; }
 
 /* ═══════════════════════════════════════════════════════════
    IMAGE SYSTEM
-   ─────────────────────────────────────────────────────────
-   DEVELOPER NOTE — Image file paths:
-   Place in the same folder as this HTML file:
-     jpeg1.jpg   → Bleu de Chanel EDP
-     jpeg2.jpg   → Dior Sauvage EDT
-     jpeg3.jpg   → Tom Ford Tobacco Oud
-     jpeg4.jpg   → YSL Y Le Parfum
-     jpeg5.jpg   → Armani Acqua di Gio
-     jpeg6.jpg   → Creed Aventus
-     profile.jpeg → User avatar
-
-   SMALL IMAGE HANDLING STRATEGY:
-   The .prod-img-wrap uses a blurred, scaled background-image
-   trick to fill dead space when a product photo is smaller
-   than its container. The technique:
-     1. Set background-image to the same src as the <img>
-     2. background-size: cover → blurred fill covers the gap
-     3. <img> uses object-fit:contain → sharp bottle on top
-     4. ::before pseudo adds a semi-opaque tint so the blur
-        doesn't overpower the sharp foreground image.
-   This is the standard approach used by Amazon, Noon, etc.
-   In React Native: use ImageBackground + Image stacked.
 ═══════════════════════════════════════════════════════════ */
 .prod-img-wrap {
   width:100%; position:relative; overflow:hidden;
@@ -238,25 +215,15 @@ img    { display:block; }
   display:flex; flex-direction:column;
   height:100%; background:var(--bg-phone);
 }
-/* Auth hero — reduced from flex:1 to fixed height for better proportion */
 .auth-hero {
-  min-height: 280px; 
-  height: auto;    
+  min-height: 280px; height: auto;
   background: var(--b-purple);
-  display: flex; 
-  flex-direction: column; 
-  align-items: center; 
-  justify-content: center;
-  padding: 40px 32px 30px; 
-  text-align: center; 
-  flex-shrink: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 40px 32px 30px; text-align: center; flex-shrink: 0;
 }
-.auth-wordmark {
-  font-family:var(--font-display); font-size:32px; color:var(--ink-1); margin-bottom:4px;
-}
+.auth-wordmark { font-family:var(--font-display); font-size:32px; color:var(--ink-1); margin-bottom:4px; }
 .auth-wordmark-ar { font-size:15px; color:var(--ink-3); letter-spacing:0.08em; margin-bottom:20px; }
 .auth-tagline { font-size:13px; color:var(--ink-2); line-height:1.7; max-width:240px; }
-
 .auth-panel {
   flex:1; background:var(--bg-phone);
   border-top-left-radius:var(--radius-xl); border-top-right-radius:var(--radius-xl);
@@ -281,7 +248,7 @@ img    { display:block; }
 .auth-divider::before,.auth-divider::after { content:''; flex:1; height:1px; background:var(--border); }
 .auth-terms { font-size:10px; color:var(--ink-3); text-align:center; line-height:1.6; margin-top:2px; }
 
-/* OTP Screen — overlays on top of auth */
+/* OTP Screen */
 .otp-overlay {
   position:absolute; inset:0; background:var(--bg-phone); z-index:10;
   display:none; flex-direction:column; padding:48px 28px 40px;
@@ -338,7 +305,7 @@ img    { display:block; }
 }
 .search-filter svg { width:13px; height:13px; color:var(--ink-2); }
 
-/* Deal cards — store name shown on card (see UX note in JS) */
+/* Deal cards */
 .deal-card {
   flex-shrink:0; width:152px;
   background:var(--bg-phone); border:1px solid var(--border);
@@ -352,7 +319,6 @@ img    { display:block; }
 .deal-body { padding:10px 10px 12px; }
 .deal-brand  { font-size:10px; color:var(--ink-3); margin-bottom:2px; }
 .deal-name   { font-size:12px; font-weight:500; color:var(--ink-1); margin-bottom:5px; line-height:1.35; }
-/* STORE NAME ON CARD — shown as "via Amazon.sa" to signal origin */
 .deal-store  { font-size:10px; color:var(--ink-3); margin-bottom:5px; }
 .deal-prices { display:flex; align-items:baseline; gap:6px; }
 .deal-price  { font-size:15px; font-weight:500; color:var(--ink-1); }
@@ -452,35 +418,6 @@ img    { display:block; }
 
 /* ═══════════════════════════════════════════════════════════
    SCREEN: PRODUCT DETAIL
-
-   SCROLL BEHAVIOUR NOTE:
-   The product hero image is placed INSIDE the .scroll-area,
-   not outside it. This means it scrolls away naturally as the
-   user scrolls through content — the image is not sticky/fixed.
-   The back-bar and status-bar remain flex-shrink:0 outside the
-   scroll-area so they stay anchored at top. This is the correct
-   pattern — a sticky hero image creates confusion about whether
-   the page has scrolled at all.
-
-   PRICE ALERT UX DECISION (inline vs modal):
-   Recommendation: keep the alert toggle INLINE at the end of the
-   product page, NOT as a pop-up/modal. Reasoning:
-   — Fragrances are considered purchases; users scroll the whole
-     page before committing to an alert.
-   — A modal triggered from a "Set Alert" CTA elsewhere on the
-     page is a second valid pattern but adds complexity. MVP: inline.
-   — If you later add target-price alerts (not just "any drop"),
-     a bottom sheet modal becomes justified since it needs a number
-     input field that benefits from a focused surface.
-
-   FAVORITES/WISHLIST DECISION:
-   Heart icon saves should go to a dedicated "Wishlist" tab in
-   the Activity screen (not buried in a profile settings page).
-   Reasoning: Wishlist is browsing/shopping behaviour — it needs
-   quick access, not a settings path. In the Activity screen,
-   add a tab row: [Activity Log | Wishlist | Recently Viewed].
-   The heart icon on Product page triggers an animated fill +
-   toast: "Added to Wishlist".
 ═══════════════════════════════════════════════════════════ */
 .back-bar {
   display:flex; align-items:center; justify-content:space-between;
@@ -492,7 +429,6 @@ img    { display:block; }
 }
 .back-btn svg { width:16px; height:16px; }
 
-/* Hero image — now INSIDE scroll area so it scrolls naturally */
 .product-hero-img {
   width:100%; height:210px; background:var(--b-purple);
   position:relative; overflow:hidden;
@@ -500,7 +436,6 @@ img    { display:block; }
 .product-hero-img .prod-img-wrap { height:100%; }
 .product-hero-img .prod-img { width:50%; height:100%; margin:0 auto; }
 
-/* Sticky "Buy at Best Price" CTA bar — rides above scroll content */
 .buy-cta-bar {
   margin:16px 20px 0;
   display:flex; align-items:center; gap:10px;
@@ -533,7 +468,7 @@ img    { display:block; }
 .note-base  { background:var(--green-light); color:var(--green); }
 .prod-desc  { font-size:12px; color:var(--ink-2); line-height:1.65; margin-bottom:16px; }
 
-/* ─── PRICE DASHBOARD — redesigned ──────────────────────── */
+/* Price Dashboard */
 .price-dash {
   background:var(--bg-surface); border:1px solid var(--border);
   border-radius:var(--radius-md); overflow:hidden; margin-bottom:12px;
@@ -614,7 +549,7 @@ img    { display:block; }
 }
 .buy-btn:hover { background:var(--accent-light); border-color:var(--accent); color:var(--accent); }
 
-/* ─── RATINGS & REVIEWS ─────────────────────────────────── */
+/* Ratings & Reviews */
 .rating-summary {
   display:flex; align-items:center; gap:14px;
   padding:14px 16px; background:var(--bg-surface);
@@ -640,61 +575,6 @@ img    { display:block; }
   display:flex; align-items:center; justify-content:center;
   padding:10px; border:1px solid var(--border-strong); border-radius:var(--radius-md);
   font-size:12px; font-weight:500; color:var(--ink-2); cursor:pointer; margin-bottom:4px;
-}
-
-/* ─── CURRENT PRICE DISPLAY (replaces price dashboard) ──── */
-.current-price-block {
-  background:var(--bg-surface); border:1px solid var(--border);
-  border-radius:var(--radius-md); padding:16px 18px;
-  display:flex; align-items:center; justify-content:space-between;
-  margin-bottom:16px;
-}
-.current-price-left { display:flex; flex-direction:column; gap:4px; }
-.current-price-label { font-size:10px; color:var(--ink-3); text-transform:uppercase; letter-spacing:0.05em; }
-.current-price-val { font-family:var(--font-display); font-size:34px; color:var(--ink-1); line-height:1; }
-
-/* ─── PRICE HISTORY TABLE ──────────────────────────────── */
-.ph-table {
-  width:100%; border-collapse:collapse; margin-bottom:16px;
-  background:var(--bg-phone); border:1px solid var(--border);
-  border-radius:var(--radius-md); overflow:hidden;
-}
-.ph-table thead tr { background:var(--bg-input); }
-.ph-table th {
-  font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.06em;
-  color:var(--ink-3); padding:9px 12px; text-align:left; border-bottom:1px solid var(--border);
-}
-.ph-table td {
-  font-size:12px; color:var(--ink-1); padding:9px 12px;
-  border-bottom:1px solid var(--border);
-}
-.ph-table tr:last-child td { border-bottom:none; }
-.ph-table td.ph-price { font-weight:500; text-align:right; }
-.ph-table td.ph-down { color:var(--green); }
-.ph-table td.ph-up   { color:var(--red); }
-.ph-table td.ph-dot-cell { width:24px; }
-.ph-dot-d { display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--green); }
-.ph-dot-u { display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--red); }
-
-/* ─── ALTERNATIVE & SIMILAR PRODUCT CARDS ───────────────── */
-.alt-prod-row {
-  display:flex; align-items:center; gap:12px;
-  padding:10px 0; border-bottom:1px solid var(--border);
-}
-.alt-prod-row:last-child { border-bottom:none; }
-.alt-prod-img {
-  width:56px; height:56px; border-radius:var(--radius-md);
-  flex-shrink:0; overflow:hidden;
-}
-.alt-prod-img .prod-img-wrap { height:100%; }
-.alt-prod-meta { flex:1; min-width:0; }
-.alt-prod-name  { font-size:13px; font-weight:500; color:var(--ink-1); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.alt-prod-store { font-size:10px; color:var(--ink-3); margin-top:2px; }
-.alt-prod-right { text-align:right; flex-shrink:0; }
-.alt-match-score {
-  display:inline-block; font-size:11px; font-weight:500;
-  padding:3px 9px; border-radius:20px;
-  background:var(--accent-light); color:var(--accent);
 }
 
 /* Price alert box */
@@ -754,28 +634,22 @@ img    { display:block; }
 }
 .avatar-img { width:100%; height:100%; object-fit:cover; }
 .avatar-fallback {
-  width:100%; height:100%; background:var(--accent-light);
+  width:100%; height:100%; background:var(--accent);
   display:flex; align-items:center; justify-content:center;
-  font-size:20px; font-weight:500; color:var(--accent);
+  font-family:var(--font-display); font-size:18px; color:#fff; letter-spacing:0.03em;
 }
-.user-name  { font-size:16px; font-weight:500; color:var(--ink-1); }
-.user-level { font-size:12px; color:var(--accent); margin-top:2px; }
-
-.level-wrap {
-  margin:0 20px 16px; background:var(--bg-surface); border:1px solid var(--border);
-  border-radius:var(--radius-md); padding:12px 14px;
-}
-.level-labels { display:flex; justify-content:space-between; font-size:10px; color:var(--ink-3); margin-bottom:7px; }
-.level-bar  { height:5px; background:var(--border); border-radius:3px; overflow:hidden; }
-.level-fill { height:100%; background:var(--accent); border-radius:3px; width:65%; }
-.level-note { font-size:10px; color:var(--ink-3); margin-top:5px; text-align:center; }
+.user-name { font-size:16px; font-weight:500; color:var(--ink-1); }
+.user-level { font-size:11px; color:var(--ink-3); margin-top:2px; }
 
 .stats-grid {
-  display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; padding:0 20px 4px;
+  display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; padding:0 20px;
 }
-.stat-card { background:var(--bg-surface); border:1px solid var(--border); border-radius:var(--radius-md); padding:12px; }
-.stat-l { font-size:10px; color:var(--ink-3); }
-.stat-v { font-size:20px; font-weight:500; color:var(--ink-1); margin-top:3px; }
+.stat-card {
+  background:var(--bg-surface); border:1px solid var(--border);
+  border-radius:var(--radius-md); padding:12px 14px;
+}
+.stat-l { font-size:10px; color:var(--ink-3); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px; }
+.stat-v { font-family:var(--font-display); font-size:20px; color:var(--ink-1); }
 
 /* Activity tabs */
 .act-tabs {
@@ -790,86 +664,329 @@ img    { display:block; }
 .act-tab:last-child { border-right:none; }
 .act-tab.active { background:var(--accent); color:#fff; }
 
-.achieve-row { display:flex; gap:8px; padding:0 20px; flex-wrap:wrap; }
+.achieve-row { display:flex; gap:8px; padding:0 20px; }
 .achieve {
-  display:flex; align-items:center; gap:7px;
-  background:var(--bg-surface); border:1px solid var(--border);
-  border-radius:var(--radius-md); padding:7px 11px;
+  flex:1; display:flex; flex-direction:column; align-items:center; gap:5px;
+  background:var(--amber-light); border:1px solid rgba(140,90,0,0.1);
+  border-radius:var(--radius-md); padding:10px 8px;
 }
-.achieve svg { width:14px; height:14px; color:var(--accent); }
-.achieve-label { font-size:11px; color:var(--ink-2); }
-.achieve.locked { opacity:0.35; }
+.achieve svg { width:18px; height:18px; color:var(--amber); }
+.achieve-label { font-size:9px; font-weight:500; color:var(--amber); text-align:center; }
+.achieve.locked { background:var(--bg-surface); border-color:var(--border); }
+.achieve.locked svg { color:var(--ink-3); }
+.achieve.locked .achieve-label { color:var(--ink-3); }
 
-.pref-chips { display:flex; gap:6px; flex-wrap:wrap; padding:0 20px; }
-.pref-chip {
-  font-size:11px; padding:6px 12px; border-radius:20px;
-  border:1px solid var(--border-strong); background:var(--bg-phone); color:var(--ink-2); cursor:pointer;
+.timeline { display:flex; flex-direction:column; padding:0 20px; }
+.tl-item { display:flex; gap:10px; padding:10px 0; border-bottom:1px solid var(--border); }
+.tl-item:last-child { border-bottom:none; }
+.tl-dot {
+  width:28px; height:28px; border-radius:50%; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
 }
-.pref-chip.on { background:var(--accent-light); color:var(--accent); border-color:var(--accent); }
-
-.timeline { padding:0 20px; }
-.tl-item { display:flex; gap:12px; padding-bottom:16px; position:relative; }
-.tl-item::before { content:''; position:absolute; left:13px; top:28px; bottom:0; width:1px; background:var(--border); }
-.tl-item:last-child::before { display:none; }
-.tl-dot { width:28px; height:28px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; border:1px solid var(--border); }
-.tl-dot svg { width:12px; height:12px; }
-.tld-drop  { background:var(--green-light); }
-.tld-drop svg  { color:var(--green); }
-.tld-fav   { background:var(--b-purple); }
-.tld-fav svg   { color:var(--accent); }
-.tld-alert { background:var(--amber-light); }
-.tld-alert svg { color:var(--amber); }
-.tl-body { flex:1; padding-top:5px; }
+.tl-dot svg { width:13px; height:13px; }
+.tld-drop  { background:var(--green-light);  color:var(--green); }
+.tld-fav   { background:var(--red-light);    color:var(--red); }
+.tld-alert { background:var(--amber-light);  color:var(--amber); }
+.tl-body { flex:1; }
 .tl-text { font-size:12px; color:var(--ink-1); line-height:1.5; }
 .tl-time { font-size:10px; color:var(--ink-3); margin-top:3px; }
 
-.recent-scroll { display:flex; gap:10px; overflow-x:auto; padding:0 20px 4px; scrollbar-width:none; }
-.recent-scroll::-webkit-scrollbar { display:none; }
-.recent-chip {
-  flex-shrink:0; display:flex; align-items:center; gap:8px;
-  background:var(--bg-surface); border:1px solid var(--border);
-  border-radius:var(--radius-md); padding:8px 12px; cursor:pointer;
-}
-.recent-thumb { width:32px; height:32px; border-radius:var(--radius-sm); overflow:hidden; }
-.recent-thumb .prod-img-wrap { height:100%; }
-.rn { font-size:11px; font-weight:500; color:var(--ink-1); }
-.rp { font-size:10px; color:var(--ink-3); margin-top:1px; }
-
-/* ═══════════════════════════════════════════════════════════
-   WISHLIST PANEL (tab within Activity)
-═══════════════════════════════════════════════════════════ */
+/* Wishlist */
 .wishlist-grid {
-  display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; padding:0 20px;
+  display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px; padding:0 20px;
 }
 .wl-card {
   background:var(--bg-surface); border:1px solid var(--border);
-  border-radius:var(--radius-md); overflow:hidden; cursor:pointer; position:relative;
+  border-radius:var(--radius-md); overflow:hidden; cursor:pointer;
 }
-.wl-img-zone { width:100%; height:80px; }
-.wl-img-zone .prod-img-wrap { height:100%; }
+.wl-img-zone { position:relative; }
 .wl-heart {
   position:absolute; top:6px; right:6px; z-index:2;
-  width:24px; height:24px; background:var(--bg-phone);
-  border-radius:50%; display:flex; align-items:center; justify-content:center;
-  border:1px solid var(--border);
+  width:24px; height:24px;
 }
-.wl-heart svg { width:12px; height:12px; color:var(--red); fill:var(--red); }
+.wl-heart svg { width:100%; height:100%; }
 .wl-body { padding:8px 10px 10px; }
-.wl-name  { font-size:11px; font-weight:500; color:var(--ink-1); line-height:1.3; margin-bottom:3px; }
-.wl-price { font-size:13px; font-weight:500; color:var(--ink-1); }
-.wl-drop  { font-size:10px; color:var(--green); }
+.wl-name  { font-size:11px; font-weight:500; color:var(--ink-1); line-height:1.35; }
+.wl-price { font-size:13px; font-weight:500; color:var(--ink-1); margin-top:3px; }
+.wl-drop  { font-size:10px; color:var(--green); margin-top:2px; }
 
+/* Recently viewed */
+.recent-scroll { display:flex; flex-direction:column; gap:8px; padding:0 20px; }
+.recent-chip {
+  display:flex; align-items:center; gap:10px;
+  background:var(--bg-surface); border:1px solid var(--border);
+  border-radius:var(--radius-md); padding:10px 12px; cursor:pointer;
+}
+.recent-thumb { width:40px; height:40px; border-radius:var(--radius-sm); overflow:hidden; flex-shrink:0; }
+.recent-info { flex:1; }
+.rn { font-size:12px; font-weight:500; color:var(--ink-1); }
+.rp { font-size:11px; color:var(--ink-3); margin-top:2px; }
+
+/* Preference chips */
+.pref-chips { display:flex; flex-wrap:wrap; gap:6px; padding:0 20px; }
+.pref-chip {
+  font-size:11px; padding:5px 12px; border-radius:20px;
+  border:1px solid var(--border-strong); background:var(--bg-phone);
+  color:var(--ink-3); cursor:pointer; transition:all 0.1s;
+}
+.pref-chip.on { background:var(--accent-light); border-color:var(--accent); color:var(--accent); }
+
+/* ═══════════════════════════════════════════════════════════
+   OVERLAY SYSTEM (Notifications, Settings, Interests Edit,
+   Hot Deals, Brands, Price Drops, Stores, Logout confirm)
+═══════════════════════════════════════════════════════════ */
+.overlay {
+  position:absolute; inset:0; z-index:50;
+  background:var(--bg-phone);
+  display:none; flex-direction:column;
+}
+.overlay.visible { display:flex; }
+
+/* Slide-up overlays */
+.overlay-sheet {
+  position:absolute; bottom:0; left:0; right:0; z-index:50;
+  background:var(--bg-phone);
+  border-top-left-radius:var(--radius-xl);
+  border-top-right-radius:var(--radius-xl);
+  box-shadow:0 -4px 24px rgba(0,0,0,0.12);
+  display:none; flex-direction:column;
+  max-height:85%;
+  transform:translateY(100%);
+  transition:transform 0.3s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+.overlay-sheet.visible { display:flex; transform:translateY(0); }
+.sheet-backdrop {
+  position:absolute; inset:0; z-index:49;
+  background:rgba(0,0,0,0.35);
+  display:none;
+}
+.sheet-backdrop.visible { display:block; }
+
+.overlay-handle {
+  width:36px; height:4px; border-radius:2px;
+  background:var(--border-strong); margin:10px auto 6px; flex-shrink:0;
+}
+.overlay-header {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:8px 20px 12px; flex-shrink:0; border-bottom:1px solid var(--border);
+}
+.overlay-title { font-size:15px; font-weight:500; color:var(--ink-1); }
+.overlay-close {
+  width:28px; height:28px; border-radius:50%; background:var(--bg-input);
+  display:flex; align-items:center; justify-content:center; cursor:pointer;
+}
+.overlay-close svg { width:14px; height:14px; color:var(--ink-2); }
+
+/* ── NOTIFICATIONS overlay ───────────────────────────── */
+.notif-item {
+  display:flex; gap:12px; padding:14px 20px;
+  border-bottom:1px solid var(--border); cursor:pointer;
+  transition:background 0.1s;
+}
+.notif-item:hover { background:var(--bg-surface); }
+.notif-item.unread { background:var(--accent-light); }
+.notif-item.unread:hover { background:color-mix(in srgb,var(--accent-light) 80%,transparent); }
+.notif-dot-wrap { padding-top:4px; flex-shrink:0; }
+.notif-dot { width:8px; height:8px; border-radius:50%; background:var(--accent); }
+.notif-dot.read { background:transparent; }
+.notif-icon {
+  width:36px; height:36px; border-radius:50%; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+}
+.notif-icon svg { width:16px; height:16px; }
+.ni-drop  { background:var(--green-light); color:var(--green); }
+.ni-alert { background:var(--amber-light); color:var(--amber); }
+.ni-promo { background:var(--b-purple); color:var(--accent); }
+.notif-body { flex:1; }
+.notif-title { font-size:13px; font-weight:500; color:var(--ink-1); line-height:1.4; }
+.notif-sub   { font-size:11px; color:var(--ink-3); margin-top:3px; }
+.notif-time  { font-size:10px; color:var(--ink-3); margin-top:4px; }
+.notif-badge-pill {
+  background:var(--amber-light); color:var(--amber);
+  font-size:11px; font-weight:500; padding:2px 8px;
+  border-radius:20px; white-space:nowrap; flex-shrink:0; height:fit-content;
+  margin-top:2px;
+}
+
+/* ── SETTINGS overlay ─────────────────────────────────── */
+.settings-section { padding:12px 20px 4px; }
+.settings-label {
+  font-size:10px; font-weight:500; letter-spacing:0.08em;
+  text-transform:uppercase; color:var(--ink-3); margin-bottom:8px;
+}
+.settings-row {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:12px 0; border-bottom:1px solid var(--border);
+}
+.settings-row:last-child { border-bottom:none; }
+.settings-row-left { display:flex; align-items:center; gap:10px; }
+.settings-row-icon {
+  width:32px; height:32px; border-radius:var(--radius-sm);
+  display:flex; align-items:center; justify-content:center;
+}
+.settings-row-icon svg { width:16px; height:16px; }
+.sri-purple { background:var(--b-purple); color:var(--accent); }
+.sri-green  { background:var(--green-light); color:var(--green); }
+.sri-amber  { background:var(--amber-light); color:var(--amber); }
+.sri-red    { background:var(--red-light); color:var(--red); }
+.sri-blue   { background:var(--b-blue); color:#2563EB; }
+.settings-row-info { display:flex; flex-direction:column; }
+.settings-row-name { font-size:13px; font-weight:500; color:var(--ink-1); }
+.settings-row-sub  { font-size:11px; color:var(--ink-3); margin-top:1px; }
+.settings-row-right { color:var(--ink-3); display:flex; align-items:center; gap:4px; }
+.settings-row-right svg { width:14px; height:14px; }
+.settings-value { font-size:12px; color:var(--ink-3); }
+
+.logout-btn {
+  margin:16px 20px; padding:13px; border-radius:var(--radius-md);
+  background:var(--red-light); color:var(--red);
+  font-size:14px; font-weight:500; width:calc(100% - 40px);
+  display:flex; align-items:center; justify-content:center; gap:8px;
+  cursor:pointer; border:1px solid rgba(155,43,43,0.15);
+  transition:opacity 0.15s;
+}
+.logout-btn:hover { opacity:0.85; }
+.logout-btn svg { width:16px; height:16px; }
+
+/* ── INTERESTS EDIT overlay ───────────────────────────── */
+.interests-chip {
+  padding:8px 16px; border-radius:20px; font-size:12px; font-weight:500;
+  border:1.5px solid var(--border-strong); cursor:pointer; transition:all 0.15s;
+  background:var(--bg-phone); color:var(--ink-2);
+  display:flex; align-items:center; gap:6px;
+}
+.interests-chip.selected {
+  background:var(--accent); color:#fff; border-color:var(--accent);
+}
+.interests-chip svg { width:12px; height:12px; }
+.interests-grid { display:flex; flex-wrap:wrap; gap:8px; padding:16px 20px; }
+.interests-save-btn {
+  margin:8px 20px 20px; padding:13px; border-radius:var(--radius-md);
+  background:var(--accent); color:#fff; font-size:14px; font-weight:500;
+  width:calc(100% - 40px); cursor:pointer; border:none; display:block;
+}
+
+/* ── LISTING PAGES (Hot Deals, Price Drops, Brands, Stores) ── */
+/* These use the full .overlay */
+.listing-header {
+  display:flex; align-items:center; gap:12px;
+  padding:4px 20px 12px; flex-shrink:0; border-bottom:1px solid var(--border);
+}
+.listing-back-btn {
+  display:flex; align-items:center; gap:6px;
+  font-size:13px; color:var(--ink-2); cursor:pointer; flex-shrink:0;
+}
+.listing-back-btn svg { width:16px; height:16px; }
+.listing-title { font-size:15px; font-weight:500; color:var(--ink-1); flex:1; }
+.listing-count { font-size:11px; color:var(--ink-3); }
+
+/* Hot Deals listing — wider cards in grid */
+.deals-grid {
+  display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px; padding:14px 16px;
+}
+.deal-grid-card {
+  background:var(--bg-phone); border:1px solid var(--border);
+  border-radius:var(--radius-lg); overflow:hidden; cursor:pointer;
+  transition:box-shadow 0.15s;
+}
+.deal-grid-card:hover { box-shadow:0 4px 16px rgba(0,0,0,0.08); }
+.deal-grid-img { width:100%; height:100px; position:relative; }
+.deal-grid-img .prod-img-wrap { height:100%; }
+.deal-grid-badge { position:absolute; top:8px; left:8px; z-index:2; }
+.deal-grid-body { padding:10px 10px 12px; }
+
+/* Price Drops listing */
+.drops-sort-bar {
+  display:flex; gap:6px; padding:10px 16px 10px; overflow-x:auto; scrollbar-width:none;
+  border-bottom:1px solid var(--border); flex-shrink:0;
+}
+.drops-sort-bar::-webkit-scrollbar { display:none; }
+.sort-chip {
+  flex-shrink:0; font-size:11px; padding:4px 12px; border-radius:20px;
+  border:1px solid var(--border-strong); background:var(--bg-phone); color:var(--ink-2); cursor:pointer;
+}
+.sort-chip.active { background:var(--accent); color:#fff; border-color:var(--accent); }
+
+/* Brand directory */
+.brands-directory { padding:8px 0; }
+.brand-dir-letter {
+  font-size:10px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase;
+  color:var(--ink-3); padding:8px 20px 4px;
+}
+.brand-dir-row {
+  display:flex; align-items:center; gap:12px;
+  padding:11px 20px; border-bottom:1px solid var(--border);
+  cursor:pointer; transition:background 0.1s;
+}
+.brand-dir-row:hover { background:var(--bg-surface); }
+.brand-dir-avatar {
+  width:44px; height:44px; border-radius:50%;
+  border:1px solid var(--border-strong);
+  display:flex; align-items:center; justify-content:center;
+  font-size:12px; font-weight:500; color:var(--ink-2); flex-shrink:0;
+}
+.brand-dir-info { flex:1; }
+.brand-dir-name { font-size:13px; font-weight:500; color:var(--ink-1); }
+.brand-dir-sub  { font-size:11px; color:var(--ink-3); margin-top:2px; }
+.brand-dir-arrow { color:var(--ink-3); }
+.brand-dir-arrow svg { width:14px; height:14px; }
+
+/* Store directory */
+.store-dir-row {
+  display:flex; align-items:center; gap:12px;
+  padding:13px 20px; border-bottom:1px solid var(--border);
+  cursor:pointer; transition:background 0.1s;
+}
+.store-dir-row:hover { background:var(--bg-surface); }
+.store-dir-logo {
+  width:48px; height:48px; border-radius:14px;
+  border:1px solid var(--border-strong); flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  font-size:13px; font-weight:500; color:var(--ink-2);
+}
+.store-dir-info { flex:1; }
+.store-dir-name { font-size:13px; font-weight:500; color:var(--ink-1); }
+.store-dir-sub  { font-size:11px; color:var(--ink-3); margin-top:2px; }
+.store-dir-badge { font-size:10px; padding:3px 8px; border-radius:20px; margin-top:4px; display:inline-block; }
+.sdb-active { background:var(--green-light); color:var(--green); }
+
+/* ─── PRICE HISTORY TABLE ──────────────────────────────── */
+.ph-table {
+  width:100%; border-collapse:collapse; margin-bottom:16px;
+  background:var(--bg-phone); border:1px solid var(--border);
+  border-radius:var(--radius-md); overflow:hidden;
+}
+.ph-table thead tr { background:var(--bg-input); }
+.ph-table th {
+  font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.06em;
+  color:var(--ink-3); padding:9px 12px; text-align:left; border-bottom:1px solid var(--border);
+}
+.ph-table td {
+  font-size:12px; color:var(--ink-1); padding:9px 12px;
+  border-bottom:1px solid var(--border);
+}
+.ph-table tr:last-child td { border-bottom:none; }
+.ph-table td.ph-price { font-weight:500; text-align:right; }
+.ph-table td.ph-down { color:var(--green); }
+.ph-table td.ph-up   { color:var(--red); }
+.ph-table td.ph-dot-cell { width:24px; }
+.ph-dot-d { display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--green); }
+.ph-dot-u { display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--red); }
+
+
+/* ─── SEARCH: product detail input cursor fix ────────── */
+.search-bar input:not([readonly]) { cursor:text; }
 </style>
+
 </head>
 <body>
-
 <div class="page-shell">
-  <div class="page-label">Yourdis · يوردس — Design Reference v4</div>
-
+  <div class="page-label">Yourdis · يوردس — Design Reference v5</div>
   <div class="screen-tabs">
-    <button class="stab active" data-screen="auth">Auth</button>
-    <button class="stab" data-screen="otp">OTP</button>
-    <button class="stab" data-screen="home">Home</button>
+    <button class="stab" data-screen="auth">Auth</button>
+    <button class="stab active" data-screen="home">Home</button>
     <button class="stab" data-screen="search">Search</button>
     <button class="stab" data-screen="product-detail">Product</button>
     <button class="stab" data-screen="alerts">Alerts</button>
@@ -881,76 +998,51 @@ img    { display:block; }
   <!-- ════════════════════════════════
        AUTH SCREEN
   ════════════════════════════════ -->
-  <div class="screen active" id="screen-auth">
+  <div class="screen" id="screen-auth">
     <div class="auth-screen">
       <div class="auth-hero">
-        <div style="width:200px;height:200px;margin:0 auto 24px;position:relative;">
-          <img src="logo.png" alt="Featured fragrance"
-            style="width:100%;height:100%;object-fit:contain;"
-            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-          <div style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-family:var(--font-display);font-size:44px;color:rgba(0,0,0,0.2);">◈</div>
-        </div>
-        <div class="auth-wordmark">Yourdis - يوردس</div>
-        <div class="auth-tagline">The smartest way to track & compare fragrance prices across stores.</div>
+        <div class="auth-wordmark">Yourdis</div>
+        <div class="auth-wordmark-ar">يوردس</div>
+        <div class="auth-tagline">Track fragrances across every Saudi store. Get alerts when prices drop.</div>
       </div>
       <div class="auth-panel">
         <div class="auth-panel-title">Sign in or create an account</div>
-        <!-- Google → goes straight to Home -->
+        <button class="auth-btn auth-btn-primary" onclick="document.getElementById('otp-overlay').classList.add('visible')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:17px;height:17px;"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8a19.79 19.79 0 01-3.07-8.66A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92v2z"/></svg>
+          Continue with Phone
+        </button>
+        <div class="auth-divider"><span>or</span></div>
         <button class="auth-btn auth-btn-google" onclick="switchScreen('home')">
-          <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+          <svg viewBox="0 0 24 24" width="17" height="17"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
           Continue with Google
         </button>
-        <div class="auth-divider"><span>or</span></div>
-        <!-- Email → goes to OTP screen -->
-        <button class="auth-btn auth-btn-primary" onclick="switchScreen('otp')">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
-          Continue with Email (OTP)
-        </button>
-        <div class="auth-divider"><span>or</span></div>
-        <!-- Guest → goes straight to Home -->
-        <button class="auth-btn auth-btn-ghost" onclick="switchScreen('home')">
-          Browse as Guest — no account needed
-        </button>
-        <div class="auth-terms">By continuing, you agree to our Terms of Service and Privacy Policy.</div>
+        <button class="auth-btn auth-btn-ghost" onclick="switchScreen('home')">Browse without account →</button>
+        <p class="auth-terms">By continuing you agree to our Terms of Service and Privacy Policy</p>
       </div>
     </div>
-  </div>
-
-  <!-- ════════════════════════════════
-       OTP SCREEN
-  ════════════════════════════════ -->
-  <div class="screen" id="screen-otp">
-    <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:10px;">●●●●</span></div>
-    <div style="flex:1;display:flex;flex-direction:column;padding:32px 28px 40px;overflow-y:auto;">
-      <div class="back-btn" onclick="switchScreen('auth')" style="margin-bottom:36px;">
+    <!-- OTP overlay -->
+    <div class="otp-overlay" id="otp-overlay">
+      <div class="otp-back" onclick="document.getElementById('otp-overlay').classList.remove('visible')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
         Back
       </div>
-      <div style="font-family:var(--font-display);font-size:26px;color:var(--ink-1);margin-bottom:8px;">Check your email</div>
-      <div style="font-size:13px;color:var(--ink-3);line-height:1.7;margin-bottom:36px;">We sent a 4-digit code to <strong style="color:var(--ink-2);">you@email.com</strong>. Enter it below to continue.</div>
-
-      <!-- 4-digit OTP boxes -->
-      <div class="otp-boxes" style="display:flex;gap:12px;justify-content:center;margin-bottom:32px;">
+      <div class="otp-title">Enter code</div>
+      <div class="otp-sub">We sent a 4-digit code to<br><strong>+966 5X XXX XXXX</strong></div>
+      <div class="otp-boxes">
         <div class="otp-box filled">3</div>
         <div class="otp-box filled">7</div>
-        <div class="otp-box active" style="border-color:var(--accent);">_</div>
-        <div class="otp-box" style="border:1.5px solid var(--border-strong);background:var(--bg-surface);width:60px;height:68px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:28px;color:var(--ink-3);"></div>
+        <div class="otp-box active"></div>
+        <div class="otp-box"></div>
       </div>
-
-      <div style="font-size:12px;color:var(--ink-3);text-align:center;margin-bottom:auto;">
-        Didn't receive it? <span style="color:var(--accent);cursor:pointer;">Resend code</span>
-      </div>
-
-      <button onclick="switchScreen('home')" style="margin-top:32px;width:100%;padding:14px;border-radius:var(--radius-md);background:var(--accent);color:#fff;font-size:14px;font-weight:500;border:none;cursor:pointer;">
-        Verify &amp; Continue
-      </button>
+      <div class="otp-resend">Didn't receive it? <span>Resend in 0:42</span></div>
+      <button class="otp-confirm" onclick="switchScreen('home');document.getElementById('otp-overlay').classList.remove('visible')">Verify &amp; Continue</button>
     </div>
   </div>
 
   <!-- ════════════════════════════════
        HOME SCREEN
   ════════════════════════════════ -->
-  <div class="screen" id="screen-home">
+  <div class="screen active" id="screen-home">
     <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:10px;">●●●●</span></div>
     <div class="home-header">
       <div style="display:flex;align-items:center;justify-content:space-between;">
@@ -958,8 +1050,9 @@ img    { display:block; }
           <div class="home-greeting">Good morning, Abdullah</div>
           <div class="home-title">Yourdis <span>·</span> يوردس</div>
         </div>
-        <div class="icon-btn">
+        <div class="icon-btn" style="position:relative;" onclick="showNotifications()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+          <span style="position:absolute;top:6px;right:7px;width:7px;height:7px;border-radius:50%;background:var(--red);border:1.5px solid #fff;"></span>
         </div>
       </div>
     </div>
@@ -973,18 +1066,16 @@ img    { display:block; }
     </div>
 
     <div class="scroll-area">
-      <!-- HOT DEALS — store name displayed on each card -->
+      <!-- HOT DEALS -->
       <div class="sec-head">
         <span class="sec-label">Hot Deals Today</span>
-        <span class="sec-link">See all</span>
+        <span class="sec-link" onclick="showHotDeals()">See all</span>
       </div>
       <div class="h-scroll" style="margin-bottom:4px;">
-
-        <div class="deal-card" onclick="switchScreen('product-detail')">
+        <div class="deal-card" onclick="openProduct('chanel')">
           <div class="deal-img-zone">
             <div class="prod-img-wrap" style="background:var(--b-purple);">
-              <img class="prod-img" src="jpeg1.jpg" alt="Bleu de Chanel"
-                onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+              <img class="prod-img" src="jpeg1.jpg" alt="Bleu de Chanel" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
               <div class="prod-initials" style="display:none;">Cd</div>
             </div>
             <div class="deal-badge-float"><span class="badge badge-fire">↓ 22% off</span></div>
@@ -996,12 +1087,10 @@ img    { display:block; }
             <div class="deal-prices"><span class="deal-price">SAR 485</span><span class="deal-orig">SAR 620</span></div>
           </div>
         </div>
-
-        <div class="deal-card" onclick="switchScreen('product-detail')">
+        <div class="deal-card" onclick="openProduct('dior')">
           <div class="deal-img-zone">
             <div class="prod-img-wrap" style="background:var(--b-teal);">
-              <img class="prod-img" src="jpeg2.jpg" alt="Dior Sauvage"
-                onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+              <img class="prod-img" src="jpeg2.jpg" alt="Dior Sauvage" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
               <div class="prod-initials" style="display:none;">Dk</div>
             </div>
             <div class="deal-badge-float"><span class="badge badge-good">↓ 16% off</span></div>
@@ -1013,12 +1102,10 @@ img    { display:block; }
             <div class="deal-prices"><span class="deal-price">SAR 310</span><span class="deal-orig">SAR 370</span></div>
           </div>
         </div>
-
-        <div class="deal-card" onclick="switchScreen('product-detail')">
+        <div class="deal-card" onclick="openProduct('tomford')">
           <div class="deal-img-zone">
             <div class="prod-img-wrap" style="background:var(--b-amber);">
-              <img class="prod-img" src="jpeg3.jpg" alt="Tom Ford Tobacco Oud"
-                onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+              <img class="prod-img" src="jpeg3.jpg" alt="Tom Ford Tobacco Oud" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
               <div class="prod-initials" style="display:none;">Tf</div>
             </div>
             <div class="deal-badge-float"><span class="badge badge-fire">↓ 9% off</span></div>
@@ -1030,12 +1117,10 @@ img    { display:block; }
             <div class="deal-prices"><span class="deal-price">SAR 590</span><span class="deal-orig">SAR 650</span></div>
           </div>
         </div>
-
-        <div class="deal-card" onclick="switchScreen('product-detail')">
+        <div class="deal-card" onclick="openProduct('ysl')">
           <div class="deal-img-zone">
             <div class="prod-img-wrap" style="background:var(--b-pink);">
-              <img class="prod-img" src="jpeg4.jpg" alt="YSL Y"
-                onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+              <img class="prod-img" src="jpeg4.jpg" alt="YSL Y" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
               <div class="prod-initials" style="display:none;">YS</div>
             </div>
             <div class="deal-badge-float"><span class="badge badge-good">↓ 17% off</span></div>
@@ -1047,12 +1132,10 @@ img    { display:block; }
             <div class="deal-prices"><span class="deal-price">SAR 290</span><span class="deal-orig">SAR 350</span></div>
           </div>
         </div>
-
-        <div class="deal-card" onclick="switchScreen('product-detail')">
+        <div class="deal-card" onclick="openProduct('armani')">
           <div class="deal-img-zone">
             <div class="prod-img-wrap" style="background:var(--b-blue);">
-              <img class="prod-img" src="jpeg5.jpg" alt="Acqua di Gio"
-                onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+              <img class="prod-img" src="jpeg5.jpg" alt="Acqua di Gio" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
               <div class="prod-initials" style="display:none;">Aq</div>
             </div>
             <div class="deal-badge-float"><span class="badge badge-fire">↓ 24% off</span></div>
@@ -1064,13 +1147,12 @@ img    { display:block; }
             <div class="deal-prices"><span class="deal-price">SAR 265</span><span class="deal-orig">SAR 350</span></div>
           </div>
         </div>
-
       </div>
 
       <div class="divider"></div>
 
       <!-- BROWSE BY BRAND -->
-      <div class="sec-head"><span class="sec-label">Browse by Brand</span><span class="sec-link">All brands</span></div>
+      <div class="sec-head"><span class="sec-label">Browse by Brand</span><span class="sec-link" onclick="showAllBrands()">All brands</span></div>
       <div class="h-scroll" style="margin-bottom:4px;">
         <div class="brand-circle-item"><div class="brand-circle" style="background:var(--b-purple);">Cn</div><div class="brand-label">Chanel</div></div>
         <div class="brand-circle-item"><div class="brand-circle" style="background:var(--b-teal);">Dr</div><div class="brand-label">Dior</div></div>
@@ -1083,36 +1165,23 @@ img    { display:block; }
 
       <div class="divider"></div>
 
-
       <!-- PERSONALIZED -->
       <div class="sec-head"><span class="sec-label">Personalized for You</span><span class="sec-link">Refresh</span></div>
       <div class="pers-grid" style="margin-bottom:4px;">
-        <div class="pers-card" onclick="switchScreen('product-detail')">
-          <div class="pers-img-zone"><div class="prod-img-wrap" style="background:var(--b-purple);">
-            <img class="prod-img" src="jpeg6.jpg" alt="Aventus" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-            <div class="prod-initials" style="display:none;font-size:14px;">Av</div>
-          </div></div>
+        <div class="pers-card" onclick="openProduct('creed')">
+          <div class="pers-img-zone"><div class="prod-img-wrap" style="background:var(--b-purple);"><img class="prod-img" src="jpeg6.jpg" alt="Aventus" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:14px;">Av</div></div></div>
           <div class="pers-body"><div class="pers-name">Aventus for Her</div><div class="pers-note">Woody · matches taste</div><div class="pers-price">SAR 420</div></div>
         </div>
-        <div class="pers-card" onclick="switchScreen('product-detail')">
-          <div class="pers-img-zone"><div class="prod-img-wrap" style="background:var(--b-amber);">
-            <img class="prod-img" src="jpeg3.jpg" alt="Oud Wood" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-            <div class="prod-initials" style="display:none;font-size:14px;">Ow</div>
-          </div></div>
+        <div class="pers-card" onclick="openProduct('tomford')">
+          <div class="pers-img-zone"><div class="prod-img-wrap" style="background:var(--b-amber);"><img class="prod-img" src="jpeg3.jpg" alt="Oud Wood" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:14px;">Ow</div></div></div>
           <div class="pers-body"><div class="pers-name">Oud Wood</div><div class="pers-note">Oud · like favorites</div><div class="pers-price">SAR 710</div></div>
         </div>
-        <div class="pers-card" onclick="switchScreen('product-detail')">
-          <div class="pers-img-zone"><div class="prod-img-wrap" style="background:var(--b-teal);">
-            <img class="prod-img" src="jpeg2.jpg" alt="Green Irish Tweed" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-            <div class="prod-initials" style="display:none;font-size:14px;">Gi</div>
-          </div></div>
+        <div class="pers-card" onclick="openProduct('dior')">
+          <div class="pers-img-zone"><div class="prod-img-wrap" style="background:var(--b-teal);"><img class="prod-img" src="jpeg2.jpg" alt="Green Irish Tweed" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:14px;">Gi</div></div></div>
           <div class="pers-body"><div class="pers-name">Green Irish Tweed</div><div class="pers-note">Aromatic · trending</div><div class="pers-price">SAR 380</div></div>
         </div>
-        <div class="pers-card" onclick="switchScreen('product-detail')">
-          <div class="pers-img-zone"><div class="prod-img-wrap" style="background:var(--b-pink);">
-            <img class="prod-img" src="jpeg4.jpg" alt="Black Orchid" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-            <div class="prod-initials" style="display:none;font-size:14px;">Bo</div>
-          </div></div>
+        <div class="pers-card" onclick="openProduct('ysl')">
+          <div class="pers-img-zone"><div class="prod-img-wrap" style="background:var(--b-pink);"><img class="prod-img" src="jpeg4.jpg" alt="Black Orchid" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:14px;">Bo</div></div></div>
           <div class="pers-body"><div class="pers-name">Black Orchid</div><div class="pers-note">Oriental · price drop</div><div class="pers-price">SAR 530</div></div>
         </div>
       </div>
@@ -1120,55 +1189,37 @@ img    { display:block; }
       <div class="divider"></div>
 
       <!-- RECENT PRICE DROPS -->
-      <div class="sec-head"><span class="sec-label">Recent Price Drops</span><span class="sec-link">View all</span></div>
-      <div class="drop-row" onclick="switchScreen('product-detail')">
+      <div class="sec-head"><span class="sec-label">Recent Price Drops</span><span class="sec-link" onclick="showPriceDrops()">View all</span></div>
+      <div class="drop-row" onclick="openProduct('chanel')">
         <div class="drop-thumb"><div class="prod-img-wrap" style="background:var(--b-purple);height:52px;"><img class="prod-img" src="jpeg1.jpg" alt="Bleu de Chanel" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:12px;">Cd</div></div></div>
-        <div class="drop-info"><div class="drop-name">Bleu de Chanel EDP 100ml</div><div class="drop-sub">Chanel · 6 stores · 2 hrs ago</div><div style="margin-top:4px;"><span class="badge badge-fire">↓ Excellent Price</span></div></div>
+        <div class="drop-info"><div class="drop-name">Bleu de Chanel EDP 100ml</div><div class="drop-sub">Chanel · 6 stores · 2 hrs ago</div><div style="margin-top:4px;"><span class="badge badge-fire">↓ 22% off</span></div></div>
         <div class="drop-right"><div class="drop-price">SAR 485</div><div class="drop-delta">−SAR 135</div></div>
       </div>
-      <div class="drop-row" onclick="switchScreen('product-detail')">
+      <div class="drop-row" onclick="openProduct('ysl')">
         <div class="drop-thumb"><div class="prod-img-wrap" style="background:var(--b-pink);height:52px;"><img class="prod-img" src="jpeg4.jpg" alt="YSL Y" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:12px;">YS</div></div></div>
         <div class="drop-info"><div class="drop-name">Y Le Parfum 60ml</div><div class="drop-sub">YSL · 4 stores · 5 hrs ago</div><div style="margin-top:4px;"><span class="badge badge-good">↗ Good Price</span></div></div>
         <div class="drop-right"><div class="drop-price">SAR 290</div><div class="drop-delta">−SAR 60</div></div>
       </div>
-      <div class="drop-row" onclick="switchScreen('product-detail')">
+      <div class="drop-row" onclick="openProduct('dior')">
         <div class="drop-thumb"><div class="prod-img-wrap" style="background:var(--b-teal);height:52px;"><img class="prod-img" src="jpeg2.jpg" alt="Sauvage" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:12px;">Dk</div></div></div>
         <div class="drop-info"><div class="drop-name">Dior Sauvage EDT 200ml</div><div class="drop-sub">Dior · 5 stores · Yesterday</div><div style="margin-top:4px;"><span class="badge badge-good">↗ Good Price</span></div></div>
         <div class="drop-right"><div class="drop-price">SAR 310</div><div class="drop-delta">−SAR 60</div></div>
       </div>
-      <div class="drop-row" onclick="switchScreen('product-detail')">
+      <div class="drop-row" onclick="openProduct('creed')">
         <div class="drop-thumb"><div class="prod-img-wrap" style="background:var(--b-sage);height:52px;"><img class="prod-img" src="jpeg6.jpg" alt="Aventus" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:12px;">Cr</div></div></div>
-        <div class="drop-info"><div class="drop-name">Creed Aventus 100ml</div><div class="drop-sub">Creed · 3 stores · 2 days ago</div><div style="margin-top:4px;"><span class="badge badge-fire">↓ Excellent Price</span></div></div>
+        <div class="drop-info"><div class="drop-name">Creed Aventus 100ml</div><div class="drop-sub">Creed · 3 stores · 2 days ago</div><div style="margin-top:4px;"><span class="badge badge-fire">↓ 20% off</span></div></div>
         <div class="drop-right"><div class="drop-price">SAR 840</div><div class="drop-delta">−SAR 210</div></div>
       </div>
 
-      <!-- BROWSE BY STORE — NEW SECTION -->
-      <div class="sec-head"><span class="sec-label">Browse by Store</span><span class="sec-link">All stores</span></div>
+      <!-- BROWSE BY STORE -->
+      <div class="sec-head"><span class="sec-label">Browse by Store</span><span class="sec-link" onclick="showAllStores()">All stores</span></div>
       <div class="h-scroll" style="margin-bottom:4px;">
-        <div class="store-logo-item">
-          <div class="store-logo-circle" style="background:var(--b-blue);">Am</div>
-          <div class="store-logo-label">Amazon.sa</div>
-        </div>
-        <div class="store-logo-item">
-          <div class="store-logo-circle" style="background:var(--b-teal);">Nm</div>
-          <div class="store-logo-label">Namshi</div>
-        </div>
-        <div class="store-logo-item">
-          <div class="store-logo-circle" style="background:var(--b-pink);">Sp</div>
-          <div class="store-logo-label">Sephora.sa</div>
-        </div>
-        <div class="store-logo-item">
-          <div class="store-logo-circle" style="background:var(--b-amber);">Nn</div>
-          <div class="store-logo-label">Noon.sa</div>
-        </div>
-        <div class="store-logo-item">
-          <div class="store-logo-circle" style="background:var(--b-sage);">Cc</div>
-          <div class="store-logo-label">Centrepoint</div>
-        </div>
-        <div class="store-logo-item">
-          <div class="store-logo-circle" style="background:var(--b-purple);">Jm</div>
-          <div class="store-logo-label">Jarir</div>
-        </div>
+        <div class="store-logo-item"><div class="store-logo-circle" style="background:var(--b-blue);">Am</div><div class="store-logo-label">Amazon.sa</div></div>
+        <div class="store-logo-item"><div class="store-logo-circle" style="background:var(--b-teal);">Nm</div><div class="store-logo-label">Namshi</div></div>
+        <div class="store-logo-item"><div class="store-logo-circle" style="background:var(--b-pink);">Sp</div><div class="store-logo-label">Sephora.sa</div></div>
+        <div class="store-logo-item"><div class="store-logo-circle" style="background:var(--b-amber);">Nn</div><div class="store-logo-label">Noon.sa</div></div>
+        <div class="store-logo-item"><div class="store-logo-circle" style="background:var(--b-sage);">Cc</div><div class="store-logo-label">Centrepoint</div></div>
+        <div class="store-logo-item"><div class="store-logo-circle" style="background:var(--b-purple);">Jm</div><div class="store-logo-label">Jarir</div></div>
       </div>
 
       <div class="divider"></div>
@@ -1190,7 +1241,328 @@ img    { display:block; }
       <div class="bn-item" onclick="switchScreen('alerts')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>Alerts</span></div>
       <div class="bn-item" onclick="switchScreen('activity')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Activity</span></div>
     </div>
-  </div>
+
+    <!-- ── NOTIFICATIONS overlay (inside home screen) ── -->
+    <div class="overlay" id="overlay-notif">
+      <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:10px;">●●●●</span></div>
+      <div class="overlay-header" style="border-bottom:1px solid var(--border);">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="overlay-close" onclick="closeNotifications()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
+          </div>
+          <span class="overlay-title">Notifications</span>
+        </div>
+        <span style="font-size:12px;color:var(--accent);cursor:pointer;font-weight:500;">Mark all read</span>
+      </div>
+      <div style="flex:1;overflow-y:auto;">
+        <div style="padding:10px 20px 4px;font-size:10px;font-weight:500;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-3);">Today</div>
+        <div class="notif-item unread">
+          <div class="notif-dot-wrap"><div class="notif-dot"></div></div>
+          <div class="notif-icon ni-drop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+          <div class="notif-body">
+            <div class="notif-title">Bleu de Chanel EDP dropped to SAR 485</div>
+            <div class="notif-sub">Down from SAR 620 on Amazon.sa</div>
+            <div class="notif-time">2 hours ago</div>
+          </div>
+          <div class="notif-badge-pill">22% off</div>
+        </div>
+        <div class="notif-item unread">
+          <div class="notif-dot-wrap"><div class="notif-dot"></div></div>
+          <div class="notif-icon ni-alert"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+          <div class="notif-body">
+            <div class="notif-title">Your alert triggered — Acqua di Gio EDP</div>
+            <div class="notif-sub">Now at SAR 265. Target was SAR 300.</div>
+            <div class="notif-time">5 hours ago</div>
+          </div>
+          <div class="notif-badge-pill">24% off</div>
+        </div>
+        <div class="notif-item">
+          <div class="notif-dot-wrap"><div class="notif-dot read"></div></div>
+          <div class="notif-icon ni-promo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+          <div class="notif-body">
+            <div class="notif-title">Weekend flash sale — up to 30% off Dior</div>
+            <div class="notif-sub">Namshi · Ends Sunday midnight</div>
+            <div class="notif-time">8 hours ago</div>
+          </div>
+        </div>
+        <div style="padding:10px 20px 4px;font-size:10px;font-weight:500;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-3);margin-top:4px;">Yesterday</div>
+        <div class="notif-item">
+          <div class="notif-dot-wrap"><div class="notif-dot read"></div></div>
+          <div class="notif-icon ni-drop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+          <div class="notif-body">
+            <div class="notif-title">Dior Sauvage EDT 200ml price drop</div>
+            <div class="notif-sub">SAR 310 on Sephora.sa · was SAR 370</div>
+            <div class="notif-time">Yesterday, 2:14 PM</div>
+          </div>
+        </div>
+        <div class="notif-item">
+          <div class="notif-dot-wrap"><div class="notif-dot read"></div></div>
+          <div class="notif-icon ni-alert"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+          <div class="notif-body">
+            <div class="notif-title">Tom Ford Tobacco Oud back in stock</div>
+            <div class="notif-sub">Available at Sephora.sa · SAR 590</div>
+            <div class="notif-time">Yesterday, 9:07 AM</div>
+          </div>
+        </div>
+        <div style="padding:10px 20px 4px;font-size:10px;font-weight:500;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-3);margin-top:4px;">This Week</div>
+        <div class="notif-item">
+          <div class="notif-dot-wrap"><div class="notif-dot read"></div></div>
+          <div class="notif-icon ni-drop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+          <div class="notif-body">
+            <div class="notif-title">Creed Aventus 100ml — excellent price</div>
+            <div class="notif-sub">SAR 840, down SAR 210 from last month</div>
+            <div class="notif-time">3 days ago</div>
+          </div>
+        </div>
+        <div style="height:20px;"></div>
+      </div>
+    </div>
+
+    <!-- ── HOT DEALS full listing overlay ── -->
+    <div class="overlay" id="overlay-hot-deals">
+      <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:10px;">●●●●</span></div>
+      <div class="listing-header">
+        <div class="listing-back-btn" onclick="closeHotDeals()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
+          Back
+        </div>
+        <span class="listing-title">Hot Deals Today</span>
+        <span class="listing-count">12 deals</span>
+      </div>
+      <div class="drops-sort-bar">
+        <span class="sort-chip active">All</span>
+        <span class="sort-chip">EDP</span>
+        <span class="sort-chip">EDT</span>
+        <span class="sort-chip">Niche</span>
+        <span class="sort-chip">≤SAR 300</span>
+        <span class="sort-chip">≤SAR 500</span>
+      </div>
+      <div style="flex:1;overflow-y:auto;">
+        <div class="deals-grid">
+          <!-- Row of deal cards -->
+          <div class="deal-grid-card" onclick="closeHotDeals();openProduct('chanel')">
+            <div class="deal-grid-img"><div class="prod-img-wrap" style="background:var(--b-purple);height:100%;"><img class="prod-img" src="jpeg1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Cd</div></div><div class="deal-grid-badge"><span class="badge badge-fire">↓ 22% off</span></div></div>
+            <div class="deal-grid-body"><div class="deal-brand">Chanel</div><div class="deal-name">Bleu de Chanel EDP 100ml</div><div class="deal-store">via Amazon.sa</div><div class="deal-prices"><span class="deal-price">SAR 485</span><span class="deal-orig">SAR 620</span></div></div>
+          </div>
+          <div class="deal-grid-card" onclick="closeHotDeals();openProduct('armani')">
+            <div class="deal-grid-img"><div class="prod-img-wrap" style="background:var(--b-blue);height:100%;"><img class="prod-img" src="jpeg5.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Aq</div></div><div class="deal-grid-badge"><span class="badge badge-fire">↓ 24% off</span></div></div>
+            <div class="deal-grid-body"><div class="deal-brand">Armani</div><div class="deal-name">Acqua di Gio EDP</div><div class="deal-store">via Amazon.sa</div><div class="deal-prices"><span class="deal-price">SAR 265</span><span class="deal-orig">SAR 350</span></div></div>
+          </div>
+          <div class="deal-grid-card" onclick="closeHotDeals();openProduct('dior')">
+            <div class="deal-grid-img"><div class="prod-img-wrap" style="background:var(--b-teal);height:100%;"><img class="prod-img" src="jpeg2.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Dk</div></div><div class="deal-grid-badge"><span class="badge badge-good">↓ 16% off</span></div></div>
+            <div class="deal-grid-body"><div class="deal-brand">Dior</div><div class="deal-name">Sauvage EDT 200ml</div><div class="deal-store">via Namshi</div><div class="deal-prices"><span class="deal-price">SAR 310</span><span class="deal-orig">SAR 370</span></div></div>
+          </div>
+          <div class="deal-grid-card" onclick="closeHotDeals();openProduct('ysl')">
+            <div class="deal-grid-img"><div class="prod-img-wrap" style="background:var(--b-pink);height:100%;"><img class="prod-img" src="jpeg4.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">YS</div></div><div class="deal-grid-badge"><span class="badge badge-good">↓ 17% off</span></div></div>
+            <div class="deal-grid-body"><div class="deal-brand">YSL</div><div class="deal-name">Y Le Parfum 60ml</div><div class="deal-store">via Noon.sa</div><div class="deal-prices"><span class="deal-price">SAR 290</span><span class="deal-orig">SAR 350</span></div></div>
+          </div>
+          <div class="deal-grid-card" onclick="closeHotDeals();openProduct('tomford')">
+            <div class="deal-grid-img"><div class="prod-img-wrap" style="background:var(--b-amber);height:100%;"><img class="prod-img" src="jpeg3.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Tf</div></div><div class="deal-grid-badge"><span class="badge badge-fire">↓ 9% off</span></div></div>
+            <div class="deal-grid-body"><div class="deal-brand">Tom Ford</div><div class="deal-name">Tobacco Oud EDP</div><div class="deal-store">via Sephora.sa</div><div class="deal-prices"><span class="deal-price">SAR 590</span><span class="deal-orig">SAR 650</span></div></div>
+          </div>
+          <div class="deal-grid-card" onclick="closeHotDeals();openProduct('creed')">
+            <div class="deal-grid-img"><div class="prod-img-wrap" style="background:var(--b-sage);height:100%;"><img class="prod-img" src="jpeg6.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Cr</div></div><div class="deal-grid-badge"><span class="badge badge-fire">↓ 20% off</span></div></div>
+            <div class="deal-grid-body"><div class="deal-brand">Creed</div><div class="deal-name">Aventus 100ml</div><div class="deal-store">via Noon.sa</div><div class="deal-prices"><span class="deal-price">SAR 840</span><span class="deal-orig">SAR 1,050</span></div></div>
+          </div>
+          <div class="deal-grid-card" onclick="closeHotDeals();openProduct('dior')">
+            <div class="deal-grid-img"><div class="prod-img-wrap" style="background:var(--b-teal);height:100%;"><img class="prod-img" src="jpeg2.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Dk</div></div><div class="deal-grid-badge"><span class="badge badge-good">↓ 12% off</span></div></div>
+            <div class="deal-grid-body"><div class="deal-brand">Dior</div><div class="deal-name">Sauvage Elixir 60ml</div><div class="deal-store">via Amazon.sa</div><div class="deal-prices"><span class="deal-price">SAR 420</span><span class="deal-orig">SAR 480</span></div></div>
+          </div>
+          <div class="deal-grid-card" onclick="closeHotDeals();openProduct('armani')">
+            <div class="deal-grid-img"><div class="prod-img-wrap" style="background:var(--b-blue);height:100%;"><img class="prod-img" src="jpeg5.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Aq</div></div><div class="deal-grid-badge"><span class="badge badge-good">↓ 11% off</span></div></div>
+            <div class="deal-grid-body"><div class="deal-brand">Armani</div><div class="deal-name">Acqua di Gio Profumo</div><div class="deal-store">via Namshi</div><div class="deal-prices"><span class="deal-price">SAR 395</span><span class="deal-orig">SAR 445</span></div></div>
+          </div>
+        </div>
+        <div style="height:16px;"></div>
+      </div>
+    </div>
+
+    <!-- ── ALL BRANDS overlay ── -->
+    <div class="overlay" id="overlay-brands">
+      <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:10px;">●●●●</span></div>
+      <div class="listing-header">
+        <div class="listing-back-btn" onclick="closeAllBrands()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
+          Back
+        </div>
+        <span class="listing-title">All Brands</span>
+        <span class="listing-count">24 brands</span>
+      </div>
+      <!-- Search bar inside overlay -->
+      <div class="search-bar" style="margin:10px 16px 0;flex-shrink:0;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input placeholder="Search brands…"/>
+      </div>
+      <div style="flex:1;overflow-y:auto;margin-top:10px;">
+        <div class="brands-directory">
+          <div class="brand-dir-letter">A</div>
+          <div class="brand-dir-row"><div class="brand-dir-avatar" style="background:var(--b-blue);">Ar</div><div class="brand-dir-info"><div class="brand-dir-name">Armani</div><div class="brand-dir-sub">18 fragrances · best deal: SAR 265</div></div><div class="brand-dir-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div></div>
+          <div class="brand-dir-row"><div class="brand-dir-avatar" style="background:var(--b-teal);">Aq</div><div class="brand-dir-info"><div class="brand-dir-name">Acqua di Parma</div><div class="brand-dir-sub">5 fragrances · best deal: SAR 340</div></div><div class="brand-dir-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div></div>
+          <div class="brand-dir-letter">B</div>
+          <div class="brand-dir-row"><div class="brand-dir-avatar" style="background:var(--b-amber);">Bv</div><div class="brand-dir-info"><div class="brand-dir-name">Bvlgari</div><div class="brand-dir-sub">12 fragrances · best deal: SAR 190</div></div><div class="brand-dir-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div></div>
+          <div class="brand-dir-letter">C</div>
+          <div class="brand-dir-row"><div class="brand-dir-avatar" style="background:var(--b-purple);">Cn</div><div class="brand-dir-info"><div class="brand-dir-name">Chanel</div><div class="brand-dir-sub">22 fragrances · best deal: SAR 410</div></div><div class="brand-dir-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div></div>
+          <div class="brand-dir-row"><div class="brand-dir-avatar" style="background:var(--b-sage);">Cr</div><div class="brand-dir-info"><div class="brand-dir-name">Creed</div><div class="brand-dir-sub">9 fragrances · best deal: SAR 840</div></div><div class="brand-dir-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div></div>
+          <div class="brand-dir-letter">D</div>
+          <div class="brand-dir-row"><div class="brand-dir-avatar" style="background:var(--b-teal);">Dr</div><div class="brand-dir-info"><div class="brand-dir-name">Dior</div><div class="brand-dir-sub">31 fragrances · best deal: SAR 295</div></div><div class="brand-dir-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div></div>
+          <div class="brand-dir-letter">G</div>
+          <div class="brand-dir-row"><div class="brand-dir-avatar" style="background:var(--b-amber);">Gu</div><div class="brand-dir-info"><div class="brand-dir-name">Guerlain</div><div class="brand-dir-sub">14 fragrances · best deal: SAR 260</div></div><div class="brand-dir-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div></div>
+          <div class="brand-dir-row"><div class="brand-dir-avatar" style="background:var(--b-pink);">Gc</div><div class="brand-dir-info"><div class="brand-dir-name">Givenchy</div><div class="brand-dir-sub">11 fragrances · best deal: SAR 220</div></div><div class="brand-dir-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div></div>
+          <div class="brand-dir-letter">H</div>
+          <div class="brand-dir-row"><div class="brand-dir-avatar" style="background:var(--b-blue);">Hr</div><div class="brand-dir-info"><div class="brand-dir-name">Hermès</div><div class="brand-dir-sub">8 fragrances · best deal: SAR 380</div></div><div class="brand-dir-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div></div>
+          <div class="brand-dir-letter">M</div>
+          <div class="brand-dir-row"><div class="brand-dir-avatar" style="background:var(--b-pink);">Mm</div><div class="brand-dir-info"><div class="brand-dir-name">Memo Paris</div><div class="brand-dir-sub">7 fragrances · best deal: SAR 510</div></div><div class="brand-dir-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div></div>
+          <div class="brand-dir-letter">N</div>
+          <div class="brand-dir-row"><div class="brand-dir-avatar" style="background:var(--b-sage);">Nk</div><div class="brand-dir-info"><div class="brand-dir-name">Narciso Rodriguez</div><div class="brand-dir-sub">6 fragrances · best deal: SAR 195</div></div><div class="brand-dir-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div></div>
+          <div class="brand-dir-letter">T</div>
+          <div class="brand-dir-row"><div class="brand-dir-avatar" style="background:var(--b-amber);">Tf</div><div class="brand-dir-info"><div class="brand-dir-name">Tom Ford</div><div class="brand-dir-sub">26 fragrances · best deal: SAR 490</div></div><div class="brand-dir-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div></div>
+          <div class="brand-dir-letter">Y</div>
+          <div class="brand-dir-row"><div class="brand-dir-avatar" style="background:var(--b-pink);">YS</div><div class="brand-dir-info"><div class="brand-dir-name">Yves Saint Laurent</div><div class="brand-dir-sub">15 fragrances · best deal: SAR 270</div></div><div class="brand-dir-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div></div>
+          <div style="height:20px;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PRICE DROPS full listing overlay ── -->
+    <div class="overlay" id="overlay-price-drops">
+      <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:10px;">●●●●</span></div>
+      <div class="listing-header">
+        <div class="listing-back-btn" onclick="closePriceDrops()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
+          Back
+        </div>
+        <span class="listing-title">Recent Price Drops</span>
+        <span class="listing-count">28 drops</span>
+      </div>
+      <div class="drops-sort-bar">
+        <span class="sort-chip active">Latest</span>
+        <span class="sort-chip">Biggest drop</span>
+        <span class="sort-chip">Excellent only</span>
+        <span class="sort-chip">Watchlist</span>
+      </div>
+      <div style="flex:1;overflow-y:auto;">
+        <div class="drop-row" onclick="closePriceDrops();openProduct('chanel')">
+          <div class="drop-thumb"><div class="prod-img-wrap" style="background:var(--b-purple);height:52px;"><img class="prod-img" src="jpeg1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:12px;">Cd</div></div></div>
+          <div class="drop-info"><div class="drop-name">Bleu de Chanel EDP 100ml</div><div class="drop-sub">Chanel · 6 stores · 2 hrs ago</div><div style="margin-top:4px;"><span class="badge badge-fire">↓ 22% off</span></div></div>
+          <div class="drop-right"><div class="drop-price">SAR 485</div><div class="drop-delta">−SAR 135</div></div>
+        </div>
+        <div class="drop-row" onclick="closePriceDrops();openProduct('armani')">
+          <div class="drop-thumb"><div class="prod-img-wrap" style="background:var(--b-blue);height:52px;"><img class="prod-img" src="jpeg5.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:12px;">Aq</div></div></div>
+          <div class="drop-info"><div class="drop-name">Acqua di Gio EDP</div><div class="drop-sub">Armani · 4 stores · 3 hrs ago</div><div style="margin-top:4px;"><span class="badge badge-fire">↓ 24% off</span></div></div>
+          <div class="drop-right"><div class="drop-price">SAR 265</div><div class="drop-delta">−SAR 85</div></div>
+        </div>
+        <div class="drop-row" onclick="closePriceDrops();openProduct('ysl')">
+          <div class="drop-thumb"><div class="prod-img-wrap" style="background:var(--b-pink);height:52px;"><img class="prod-img" src="jpeg4.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:12px;">YS</div></div></div>
+          <div class="drop-info"><div class="drop-name">Y Le Parfum 60ml</div><div class="drop-sub">YSL · 4 stores · 5 hrs ago</div><div style="margin-top:4px;"><span class="badge badge-good">↗ 17% off</span></div></div>
+          <div class="drop-right"><div class="drop-price">SAR 290</div><div class="drop-delta">−SAR 60</div></div>
+        </div>
+        <div class="drop-row" onclick="closePriceDrops();openProduct('dior')">
+          <div class="drop-thumb"><div class="prod-img-wrap" style="background:var(--b-teal);height:52px;"><img class="prod-img" src="jpeg2.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:12px;">Dk</div></div></div>
+          <div class="drop-info"><div class="drop-name">Dior Sauvage EDT 200ml</div><div class="drop-sub">Dior · 5 stores · Yesterday</div><div style="margin-top:4px;"><span class="badge badge-good">↗ 16% off</span></div></div>
+          <div class="drop-right"><div class="drop-price">SAR 310</div><div class="drop-delta">−SAR 60</div></div>
+        </div>
+        <div class="drop-row" onclick="closePriceDrops();openProduct('creed')">
+          <div class="drop-thumb"><div class="prod-img-wrap" style="background:var(--b-sage);height:52px;"><img class="prod-img" src="jpeg6.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:12px;">Cr</div></div></div>
+          <div class="drop-info"><div class="drop-name">Creed Aventus 100ml</div><div class="drop-sub">Creed · 3 stores · 2 days ago</div><div style="margin-top:4px;"><span class="badge badge-fire">↓ 20% off</span></div></div>
+          <div class="drop-right"><div class="drop-price">SAR 840</div><div class="drop-delta">−SAR 210</div></div>
+        </div>
+        <div class="drop-row" onclick="closePriceDrops();openProduct('tomford')">
+          <div class="drop-thumb"><div class="prod-img-wrap" style="background:var(--b-amber);height:52px;"><img class="prod-img" src="jpeg3.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:12px;">Tf</div></div></div>
+          <div class="drop-info"><div class="drop-name">Tobacco Oud EDP 50ml</div><div class="drop-sub">Tom Ford · 2 stores · 3 days ago</div><div style="margin-top:4px;"><span class="badge badge-good">↗ 9% off</span></div></div>
+          <div class="drop-right"><div class="drop-price">SAR 590</div><div class="drop-delta">−SAR 60</div></div>
+        </div>
+        <div style="height:16px;"></div>
+      </div>
+    </div>
+
+    <!-- ── ALL STORES overlay ── -->
+    <div class="overlay" id="overlay-stores">
+      <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:10px;">●●●●</span></div>
+      <div class="listing-header">
+        <div class="listing-back-btn" onclick="closeAllStores()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
+          Back
+        </div>
+        <span class="listing-title">All Stores</span>
+        <span class="listing-count">9 stores</span>
+      </div>
+      <div style="flex:1;overflow-y:auto;">
+        <div style="padding:10px 20px 4px;font-size:10px;font-weight:500;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-3);">Tracked &amp; Verified</div>
+        <div class="store-dir-row">
+          <div class="store-dir-logo" style="background:var(--b-blue);">Am</div>
+          <div class="store-dir-info">
+            <div class="store-dir-name">Amazon Saudi Arabia</div>
+            <div class="store-dir-sub">amazon.sa · 280+ fragrances</div>
+            <span class="store-dir-badge sdb-active">Tracked · Fast delivery</span>
+          </div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px;color:var(--ink-3);flex-shrink:0;"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+        <div class="store-dir-row">
+          <div class="store-dir-logo" style="background:var(--b-teal);">Nm</div>
+          <div class="store-dir-info">
+            <div class="store-dir-name">Namshi</div>
+            <div class="store-dir-sub">namshi.com · 190+ fragrances</div>
+            <span class="store-dir-badge sdb-active">Tracked · Free returns</span>
+          </div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px;color:var(--ink-3);flex-shrink:0;"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+        <div class="store-dir-row">
+          <div class="store-dir-logo" style="background:var(--b-pink);">Sp</div>
+          <div class="store-dir-info">
+            <div class="store-dir-name">Sephora Saudi Arabia</div>
+            <div class="store-dir-sub">sephora.com.sa · 450+ fragrances</div>
+            <span class="store-dir-badge sdb-active">Tracked · Official brand prices</span>
+          </div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px;color:var(--ink-3);flex-shrink:0;"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+        <div class="store-dir-row">
+          <div class="store-dir-logo" style="background:var(--b-amber);">Nn</div>
+          <div class="store-dir-info">
+            <div class="store-dir-name">Noon</div>
+            <div class="store-dir-sub">noon.com · 210+ fragrances</div>
+            <span class="store-dir-badge sdb-active">Tracked · Express delivery</span>
+          </div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px;color:var(--ink-3);flex-shrink:0;"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+        <div class="store-dir-row">
+          <div class="store-dir-logo" style="background:var(--b-sage);">Cc</div>
+          <div class="store-dir-info">
+            <div class="store-dir-name">Centrepoint</div>
+            <div class="store-dir-sub">centrepoint.com · 85+ fragrances</div>
+            <span class="store-dir-badge sdb-active">Tracked</span>
+          </div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px;color:var(--ink-3);flex-shrink:0;"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+        <div class="store-dir-row">
+          <div class="store-dir-logo" style="background:var(--b-purple);">Jm</div>
+          <div class="store-dir-info">
+            <div class="store-dir-name">Jarir Bookstore</div>
+            <div class="store-dir-sub">jarir.com · 40+ fragrances</div>
+            <span class="store-dir-badge sdb-active">Tracked</span>
+          </div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px;color:var(--ink-3);flex-shrink:0;"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+        <div style="padding:10px 20px 4px;font-size:10px;font-weight:500;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-3);">Coming Soon</div>
+        <div class="store-dir-row" style="opacity:0.55;">
+          <div class="store-dir-logo" style="background:var(--b-blue);">Lg</div>
+          <div class="store-dir-info">
+            <div class="store-dir-name">LuLu Hypermarket</div>
+            <div class="store-dir-sub">luluhypermarket.com · Integration pending</div>
+            <span class="store-dir-badge" style="background:var(--bg-input);color:var(--ink-3);">Coming soon</span>
+          </div>
+        </div>
+        <div class="store-dir-row" style="opacity:0.55;">
+          <div class="store-dir-logo" style="background:var(--b-teal);">Hy</div>
+          <div class="store-dir-info">
+            <div class="store-dir-name">Harvey Nichols Riyadh</div>
+            <div class="store-dir-sub">harveynichols.com · Integration pending</div>
+            <span class="store-dir-badge" style="background:var(--bg-input);color:var(--ink-3);">Coming soon</span>
+          </div>
+        </div>
+        <div style="height:20px;"></div>
+      </div>
+    </div>
+  </div><!-- /home screen -->
 
   <!-- ════════════════════════════════
        SEARCH SCREEN
@@ -1202,17 +1574,6 @@ img    { display:block; }
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;color:var(--ink-3);flex-shrink:0;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       <input value="Bleu de Chanel"/>
     </div>
-    <!--
-      RECOMMENDED FILTERS for fragrance search:
-      Category: All, EDP, EDT, Parfum, EDC, Oil
-      Family: Woody, Oud, Oriental, Fresh, Floral, Citrus, Gourmand, Aqua
-      Brand: (multi-select)
-      Price range: Under SAR 200 / 200–500 / 500–1000 / 1000+
-      Concentration: (same as Category above)
-      Availability: In stock only
-      Store: (multi-select from store list)
-      Rating: 4★ and above
-    -->
     <div class="filter-chips">
       <span class="fchip active">All</span>
       <span class="fchip">EDP</span>
@@ -1224,17 +1585,17 @@ img    { display:block; }
     </div>
     <div style="padding:0 20px 10px;font-size:11px;color:var(--ink-3);">3 products — tap to compare all stores</div>
     <div class="scroll-area">
-      <div class="result-row" onclick="switchScreen('product-detail')">
+      <div class="result-row" onclick="openProduct('chanel','search')">
         <div class="result-thumb"><div class="prod-img-wrap" style="background:var(--b-purple);height:56px;"><img class="prod-img" src="jpeg1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:13px;">Cd</div></div></div>
         <div class="result-info"><div class="result-name">Bleu de Chanel EDP</div><div class="result-brand">Chanel · 100ml</div><div class="result-stores">6 stores · compare prices →</div></div>
         <div class="result-right"><div class="result-from">from</div><div class="result-price">SAR 485</div><div style="margin-top:4px;"><span class="badge badge-fire">↓ Excellent</span></div></div>
       </div>
-      <div class="result-row" onclick="switchScreen('product-detail')">
+      <div class="result-row" onclick="openProduct('chanel','search')">
         <div class="result-thumb"><div class="prod-img-wrap" style="background:var(--b-purple);height:56px;"><img class="prod-img" src="jpeg1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:13px;">Cd</div></div></div>
         <div class="result-info"><div class="result-name">Bleu de Chanel EDT</div><div class="result-brand">Chanel · 100ml</div><div class="result-stores">4 stores · compare prices →</div></div>
         <div class="result-right"><div class="result-from">from</div><div class="result-price">SAR 410</div><div style="margin-top:4px;"><span class="badge badge-good">↗ Good</span></div></div>
       </div>
-      <div class="result-row" onclick="switchScreen('product-detail')">
+      <div class="result-row" onclick="openProduct('chanel','search')">
         <div class="result-thumb"><div class="prod-img-wrap" style="background:var(--b-purple);height:56px;"><img class="prod-img" src="jpeg1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:13px;">Cd</div></div></div>
         <div class="result-info"><div class="result-name">Bleu de Chanel Parfum</div><div class="result-brand">Chanel · 50ml</div><div class="result-stores">3 stores · compare prices →</div></div>
         <div class="result-right"><div class="result-from">from</div><div class="result-price">SAR 680</div><div style="margin-top:4px;"><span class="badge badge-high">▲ High</span></div></div>
@@ -1253,34 +1614,32 @@ img    { display:block; }
   ════════════════════════════════ -->
   <div class="screen" id="screen-product-detail">
     <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:10px;">●●●●</span></div>
-    <!-- back arrow → always HOME -->
     <div class="back-bar">
-      <div class="back-btn" onclick="switchScreen('home')">
+      <!-- Back button: dynamically labeled based on origin -->
+      <div class="back-btn" id="product-back-btn" onclick="goBackFromProduct()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
-        Home
+        <span id="product-back-label">Back</span>
       </div>
-      <!-- Heart → wishlist. In production: fill heart + toast "Added to Wishlist" -->
       <div class="icon-btn" id="heartBtn" onclick="toggleHeart()">
         <svg id="heartIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
       </div>
     </div>
 
     <div class="scroll-area">
-      <!-- Hero image INSIDE scroll area so it scrolls naturally with content -->
-      <div class="product-hero-img">
-        <div class="prod-img-wrap" style="height:100%;background:var(--b-purple);">
-          <img class="prod-img" src="jpeg1.jpg" alt="Bleu de Chanel EDP"
+      <!-- Hero image — dynamic background and image set by openProduct() -->
+      <div class="product-hero-img" id="product-hero-bg">
+        <div class="prod-img-wrap" id="product-hero-wrap" style="height:100%;">
+          <img class="prod-img" id="product-hero-img" src="jpeg1.jpg" alt=""
             style="width:50%;height:100%;object-fit:contain;object-position:center bottom;margin:0 auto;position:relative;z-index:1;"
             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-          <div class="prod-initials" style="display:none;font-size:52px;">◈</div>
+          <div class="prod-initials" id="product-hero-initials" style="display:none;font-size:52px;">◈</div>
         </div>
       </div>
 
-      <!-- Prominent BUY CTA — first thing after image -->
       <div class="buy-cta-bar">
-        <button class="buy-cta-main">
+        <button class="buy-cta-main" id="product-cta-btn">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          Buy at Best Price — SAR 485
+          Buy at Best Price — <span id="product-cta-price">SAR 485</span>
         </button>
         <div class="buy-cta-share">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
@@ -1288,18 +1647,25 @@ img    { display:block; }
       </div>
 
       <div class="prod-info">
-        <div class="prod-name" id="prodName">Bleu de Chanel</div>
-        <div class="prod-brand">Chanel · Eau de Parfum · 100ml</div>
-        <div class="notes-row">
-          <span class="note-chip note-top">Top: Lemon, Mint</span>
-          <span class="note-chip note-heart">Heart: Ginger, ISO E</span>
-          <span class="note-chip note-base">Base: Sandalwood, Cedar</span>
+        <div class="prod-name" id="product-name">Bleu de Chanel EDP</div>
+        <div class="prod-brand" id="product-brand">Chanel · 100ml · Eau de Parfum</div>
+
+        <div class="prod-desc-container" style="margin-bottom:16px; font-size:12px; color:var(--ink-2); line-height:1.65;">
+		<p id="product-desc" style="display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; margin:0; padding:0;">
+		Experience refined luxury where rare Cambodian Oud meets warm Baltic Amber. It opens with a touch of saffron and cardamom, evolving into a rich heart of resins and Bulgarian rose. The base of white musk, patchouli, and sandalwood creates a lasting, elegant trail for over 12 hours. This fragrance captures the essence of the Orient, offering depth, sophistication, and a memorable presence in any setting.
+		</p>          
+		<span id="read-more-btn" onclick="toggleReadMore()" style="font-weight:500; color:var(--accent); cursor:pointer; margin-left:4px;">Read More</span>
         </div>
-		<div class="prod-desc">
-		  <span id="descShort">A masculine fragrance of freedom and elegance — fresh, clean, deeply woody. Longevity: 8–10 hrs · Sillage: Moderate.</span>
-		  <span id="descFull" style="display:none;"> This iconic scent opens with vibrant citrus and mint, transitions into a woody heart with warming ISO E Super and ginger, and settles into a rich base of sandalwood and white cedar. Ideal for day and evening wear in all seasons.</span>
-		  <span id="descMoreBtn" onclick="var f=document.getElementById('descFull');var b=document.getElementById('descMoreBtn');if(f.style.display==='none'){f.style.display='inline';b.textContent=' Read less';}else{f.style.display='none';b.textContent=' Read more';}" style="color:var(--accent);font-size:12px;cursor:pointer;white-space:nowrap;"> Read more</span>
-		</div>
+		        <div class="notes-row" id="product-notes">
+		        <span class="note-chip note-top">Top Notes: Citrus · Bergamot</span>
+		        <span class="note-chip note-heart">Heart Notes: Vetiver · Cedarwood</span>
+		        <span class="note-chip note-base">Base Notes: Patchouli · Labdanum</span>
+		        </div>
+      </div>
+
+      <div style="padding:0 20px;">
+
+
         <!-- PRICE HISTORY — table format -->
         <div style="font-size:11px;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-3);font-weight:500;margin-bottom:8px;">Price History</div>
         <table class="ph-table">
@@ -1331,7 +1697,7 @@ img    { display:block; }
             </tr>
           </tbody>
         </table>
-
+		
         <!-- Price alert — inline toggle -->
         <div style="margin-top:16px;margin-bottom:20px;">
           <div class="alert-box">
@@ -1342,58 +1708,58 @@ img    { display:block; }
             <div class="toggle" id="pdToggle" onclick="toggleEl('pdToggle')"><div class="toggle-thumb"></div></div>
           </div>
         </div>
-		
-		
-        <!-- SIMILAR PRODUCTS -->
-        <div style="font-size:11px;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-3);font-weight:500;margin-bottom:10px;">Similar Products</div>
+				
+
+        <!-- Similar fragrances -->
+        <div style="font-size:11px;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-3);font-weight:500;margin-bottom:10px;">Similar Fragrances</div>
         <div style="margin-bottom:16px;">
-          <div class="store-row" onclick="switchScreen('product-detail')">
-            <div class="store-logo-sq" style="background:var(--b-amber);overflow:hidden;padding:0;"><div class="prod-img-wrap" style="height:34px;"><img class="prod-img" src="jpeg3.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">Tf</div></div></div>
-            <div class="store-meta"><div class="store-name">Tom Ford Tobacco Oud</div><div class="store-ship">via Noon.sa</div></div>
-            <div class="store-price-col"><div class="store-price">SAR 590</div><div class="store-diff" style="color:var(--accent);">78% match</div></div>
+          <div class="store-row" onclick="openProduct('dior')">
+            <div class="store-logo-sq" style="background:var(--b-teal);overflow:hidden;padding:0;"><div class="prod-img-wrap" style="height:34px;"><img class="prod-img" src="jpeg1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">Dk</div></div></div>
+            <div class="store-meta"><div class="store-name">Dior Sauvage EDP</div><div class="store-ship">via Amazon.sa</div></div>
+            <div class="store-price-col"><div class="store-price">SAR 460</div><div class="store-diff" style="color:var(--accent);">95% match</div></div>
             <button class="buy-btn">Buy ↗</button>
           </div>
-          <div class="store-row" onclick="switchScreen('product-detail')">
-            <div class="store-logo-sq" style="background:var(--b-pink);overflow:hidden;padding:0;"><div class="prod-img-wrap" style="height:34px;"><img class="prod-img" src="jpeg4.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">YS</div></div></div>
-            <div class="store-meta"><div class="store-name">YSL Y Le Parfum</div><div class="store-ship">via Amazon.sa</div></div>
-            <div class="store-price-col"><div class="store-price">SAR 290</div><div class="store-diff" style="color:var(--accent);">73% match</div></div>
+          <div class="store-row" onclick="openProduct('armani')">
+            <div class="store-logo-sq" style="background:var(--b-blue);overflow:hidden;padding:0;"><div class="prod-img-wrap" style="height:34px;"><img class="prod-img" src="jpeg3.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">Ag</div></div></div>
+            <div class="store-meta"><div class="store-name">Acqua di Gio Profumo</div><div class="store-ship">via Namshi</div></div>
+            <div class="store-price-col"><div class="store-price">SAR 395</div><div class="store-diff" style="color:var(--accent);">70% match</div></div>
             <button class="buy-btn">Buy ↗</button>
           </div>
-          <div class="store-row" onclick="switchScreen('product-detail')">
-            <div class="store-logo-sq" style="background:var(--b-teal);overflow:hidden;padding:0;"><div class="prod-img-wrap" style="height:34px;"><img class="prod-img" src="jpeg2.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">Gi</div></div></div>
-            <div class="store-meta"><div class="store-name">Creed Green Irish Tweed</div><div class="store-ship">via Namshi</div></div>
-            <div class="store-price-col"><div class="store-price">SAR 380</div><div class="store-diff" style="color:var(--accent);">69% match</div></div>
+          <div class="store-row" onclick="openProduct('creed')">
+            <div class="store-logo-sq" style="background:var(--b-sage);overflow:hidden;padding:0;"><div class="prod-img-wrap" style="height:34px;"><img class="prod-img" src="jpeg4.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">Cr</div></div></div>
+            <div class="store-meta"><div class="store-name">Creed Aventus</div><div class="store-ship">via Sephora.sa</div></div>
+            <div class="store-price-col"><div class="store-price">SAR 840</div><div class="store-diff" style="color:var(--accent);">60% match</div></div>
             <button class="buy-btn">Buy ↗</button>
           </div>
         </div>
-
-        <!-- ALTERNATIVE PRODUCTS -->
-        <div style="font-size:11px;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-3);font-weight:500;margin-bottom:10px;">Alternative Products</div>
+		
+        <!-- Alternative Products -->
+        <div style="font-size:11px;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-3);font-weight:500;margin-bottom:10px;">Similar Fragrances</div>
         <div style="margin-bottom:16px;">
-          <div class="store-row" onclick="switchScreen('product-detail')">
+          <div class="store-row" onclick="openProduct('dior')">
             <div class="store-logo-sq" style="background:var(--b-teal);overflow:hidden;padding:0;"><div class="prod-img-wrap" style="height:34px;"><img class="prod-img" src="jpeg2.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">Dk</div></div></div>
             <div class="store-meta"><div class="store-name">Dior Sauvage EDP</div><div class="store-ship">via Amazon.sa</div></div>
             <div class="store-price-col"><div class="store-price">SAR 460</div><div class="store-diff" style="color:var(--accent);">94% match</div></div>
             <button class="buy-btn">Buy ↗</button>
           </div>
-          <div class="store-row" onclick="switchScreen('product-detail')">
+          <div class="store-row" onclick="openProduct('armani')">
             <div class="store-logo-sq" style="background:var(--b-blue);overflow:hidden;padding:0;"><div class="prod-img-wrap" style="height:34px;"><img class="prod-img" src="jpeg5.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">Ag</div></div></div>
             <div class="store-meta"><div class="store-name">Acqua di Gio Profumo</div><div class="store-ship">via Namshi</div></div>
             <div class="store-price-col"><div class="store-price">SAR 395</div><div class="store-diff" style="color:var(--accent);">88% match</div></div>
             <button class="buy-btn">Buy ↗</button>
           </div>
-          <div class="store-row" onclick="switchScreen('product-detail')">
+          <div class="store-row" onclick="openProduct('creed')">
             <div class="store-logo-sq" style="background:var(--b-sage);overflow:hidden;padding:0;"><div class="prod-img-wrap" style="height:34px;"><img class="prod-img" src="jpeg6.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">Cr</div></div></div>
             <div class="store-meta"><div class="store-name">Creed Aventus</div><div class="store-ship">via Sephora.sa</div></div>
             <div class="store-price-col"><div class="store-price">SAR 840</div><div class="store-diff" style="color:var(--accent);">81% match</div></div>
             <button class="buy-btn">Buy ↗</button>
           </div>
-        </div>
+        </div>		
 
-        <!-- RATINGS & REVIEWS -->
+        <!-- Ratings & Reviews -->
         <div style="font-size:11px;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-3);font-weight:500;margin-bottom:10px;">Ratings &amp; Reviews</div>
         <div class="rating-summary">
-          <div class="rating-big">4.6</div>
+          <div class="rating-big" id="product-rating">4.6</div>
           <div class="rating-right">
             <div class="stars">
               <svg class="star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
@@ -1402,7 +1768,7 @@ img    { display:block; }
               <svg class="star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
               <svg class="star" viewBox="0 0 24 24" fill="currentColor" style="clip-path:inset(0 40% 0 0)"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
             </div>
-            <div class="rating-count">4.6 out of 5 · 287 reviews</div>
+            <div class="rating-count" id="product-review-count">4.6 out of 5 · 287 reviews</div>
           </div>
         </div>
         <div class="review-card">
@@ -1414,7 +1780,7 @@ img    { display:block; }
             <svg class="star" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
             <svg class="star" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
           </div>
-          <div class="review-text">Incredible longevity — easily 10+ hours. The woody freshness is perfect for the office. Found it for SAR 485 on Amazon thanks to Yourdis.</div>
+          <div class="review-text" id="product-review1">Incredible longevity — easily 10+ hours. The woody freshness is perfect for the office. Found it for SAR 485 on Amazon thanks to Yourdis.</div>
         </div>
         <div class="review-card">
           <div class="review-head"><span class="review-user">Fahad M.</span><span class="review-date">1 month ago</span></div>
@@ -1425,14 +1791,12 @@ img    { display:block; }
             <svg class="star" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
             <svg class="star star-empty" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
           </div>
-          <div class="review-text">Classic for a reason. The EDP version has noticeably better projection than the EDT. Great value at this price point.</div>
+          <div class="review-text" id="product-review2">Classic for a reason. The EDP version has noticeably better projection than the EDT. Great value at this price point.</div>
         </div>
-        <div class="reviews-show-more">Show all 287 reviews →</div>
-
-
-      </div>
-    </div>
-  </div>
+        <div class="reviews-show-more">Show all <span id="product-all-reviews">287</span> reviews →</div>
+      </div><!-- /padding -->
+    </div><!-- /scroll-area -->
+  </div><!-- /screen-product-detail -->
 
   <!-- ════════════════════════════════
        ALERTS SCREEN
@@ -1453,11 +1817,11 @@ img    { display:block; }
         </div>
         <div class="alert-price-row" style="margin-bottom:10px;">
           <div><div class="apc-label">Current price</div><div class="apc-value">SAR 485</div></div>
-          <span class="badge badge-fire">↓ Excellent Price — buy now</span>
+          <!-- FIXED: discount % replaces "buy now" text -->
+          <span class="badge badge-fire">↓ 22% OFF</span>
         </div>
-        <!-- View Product + Buy Now CTA -->
         <div class="alert-actions">
-          <button class="alert-view-btn" onclick="switchScreen('product-detail')">View product →</button>
+          <button class="alert-view-btn" onclick="openProduct('chanel')">View product →</button>
           <button class="alert-buy-btn">Buy at SAR 485 ↗</button>
         </div>
       </div>
@@ -1469,15 +1833,28 @@ img    { display:block; }
         </div>
         <div class="alert-price-row" style="margin-bottom:10px;">
           <div><div class="apc-label">Current price</div><div class="apc-value">SAR 310</div></div>
-          <span class="badge badge-good">↗ Good Deal Now</span>
+          <span class="badge badge-good">↗ 16% OFF</span>
         </div>
         <div class="alert-actions">
-          <button class="alert-view-btn" onclick="switchScreen('product-detail')">View product →</button>
+          <button class="alert-view-btn" onclick="openProduct('dior')">View product →</button>
           <button class="alert-buy-btn">Buy at SAR 310 ↗</button>
         </div>
       </div>
 
-
+      <div class="alert-card">
+        <div class="alert-card-head">
+          <div><div class="alert-prod-name">Creed Aventus 100ml</div><div class="alert-prod-sub">Creed</div></div>
+          <div class="toggle" id="alt3" onclick="toggleEl('alt3')"><div class="toggle-thumb"></div></div>
+        </div>
+        <div class="alert-price-row" style="margin-bottom:10px;">
+          <div><div class="apc-label">Current price</div><div class="apc-value">SAR 840</div></div>
+          <span class="badge badge-fire">↓ 20% OFF</span>
+        </div>
+        <div class="alert-actions">
+          <button class="alert-view-btn" onclick="openProduct('creed')">View product →</button>
+          <button class="alert-buy-btn">Buy at SAR 840 ↗</button>
+        </div>
+      </div>
     </div>
     <div class="bottom-nav">
       <div class="bn-item" onclick="switchScreen('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Home</span></div>
@@ -1495,12 +1872,12 @@ img    { display:block; }
     <div class="scroll-area">
       <div class="profile-header">
         <div class="avatar-wrap">
-          <img class="avatar-img" src="profile.jpg" alt="Profile"
-            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <img class="avatar-img" src="profile.jpg" alt="Profile" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
           <div class="avatar-fallback" style="display:none;">AH</div>
         </div>
         <div><div class="user-name">Abdullah Hassan</div><div class="user-level">Deal Hunter · Level 4</div></div>
-        <div class="icon-btn" style="margin-left:auto;">
+        <!-- Settings icon — now functional -->
+        <div class="icon-btn" style="margin-left:auto;" onclick="showSettings()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
         </div>
       </div>
@@ -1513,7 +1890,7 @@ img    { display:block; }
         <div class="stat-card"><div class="stat-l">Tracking</div><div class="stat-v">7</div></div>
       </div>
 
-      <!-- Tab switcher: Activity / Wishlist / Recents -->
+      <!-- Tab switcher -->
       <div class="act-tabs">
         <div class="act-tab active" id="tab-log" onclick="showTab('log')">Activity Log</div>
         <div class="act-tab" id="tab-wish" onclick="showTab('wish')">Wishlist</div>
@@ -1529,7 +1906,8 @@ img    { display:block; }
           <div class="achieve"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span class="achieve-label">Deal Hunter</span></div>
           <div class="achieve locked"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg><span class="achieve-label">Price Oracle</span></div>
         </div>
-        <div class="sec-head" style="margin-top:0;"><span class="sec-label">My Interests</span><span class="sec-link">Edit</span></div>
+        <!-- My Interests with Edit trigger -->
+        <div class="sec-head" style="margin-top:0;"><span class="sec-label">My Interests</span><span class="sec-link" onclick="showInterestsEdit()">Edit</span></div>
         <div class="pref-chips" style="margin-bottom:16px;">
           <span class="pref-chip on">Woody / Oud</span>
           <span class="pref-chip on">Oriental</span>
@@ -1551,21 +1929,21 @@ img    { display:block; }
       <div id="panel-wish" style="display:none;padding-bottom:16px;">
         <div class="sec-head" style="margin-top:0;"><span class="sec-label">Wishlist · 4 items</span><span class="sec-link">Clear all</span></div>
         <div class="wishlist-grid">
-          <div class="wl-card" onclick="switchScreen('product-detail')">
+          <div class="wl-card" onclick="openProduct('chanel')">
             <div class="wl-img-zone"><div class="prod-img-wrap" style="background:var(--b-purple);height:80px;"><img class="prod-img" src="jpeg1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:14px;">Cd</div></div><div class="wl-heart"><svg viewBox="0 0 24 24"><path fill="var(--red)" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div></div>
-            <div class="wl-body"><div class="wl-name">Bleu de Chanel EDP</div><div class="wl-price">SAR 485</div><div class="wl-drop">↓ Excellent Price</div></div>
+            <div class="wl-body"><div class="wl-name">Bleu de Chanel EDP</div><div class="wl-price">SAR 485</div><div class="wl-drop">↓ 22% off</div></div>
           </div>
-          <div class="wl-card" onclick="switchScreen('product-detail')">
+          <div class="wl-card" onclick="openProduct('dior')">
             <div class="wl-img-zone"><div class="prod-img-wrap" style="background:var(--b-teal);height:80px;"><img class="prod-img" src="jpeg2.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:14px;">Dk</div></div><div class="wl-heart"><svg viewBox="0 0 24 24"><path fill="var(--red)" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div></div>
-            <div class="wl-body"><div class="wl-name">Dior Sauvage EDT</div><div class="wl-price">SAR 310</div><div class="wl-drop">↗ Good Price</div></div>
+            <div class="wl-body"><div class="wl-name">Dior Sauvage EDT</div><div class="wl-price">SAR 310</div><div class="wl-drop" style="color:var(--ink-3);">↗ Good Price</div></div>
           </div>
-          <div class="wl-card" onclick="switchScreen('product-detail')">
+          <div class="wl-card" onclick="openProduct('tomford')">
             <div class="wl-img-zone"><div class="prod-img-wrap" style="background:var(--b-amber);height:80px;"><img class="prod-img" src="jpeg3.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:14px;">Tf</div></div><div class="wl-heart"><svg viewBox="0 0 24 24"><path fill="var(--red)" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div></div>
             <div class="wl-body"><div class="wl-name">Tobacco Oud EDP</div><div class="wl-price">SAR 590</div><div class="wl-drop" style="color:var(--ink-3);">No drop yet</div></div>
           </div>
-          <div class="wl-card" onclick="switchScreen('product-detail')">
+          <div class="wl-card" onclick="openProduct('creed')">
             <div class="wl-img-zone"><div class="prod-img-wrap" style="background:var(--b-sage);height:80px;"><img class="prod-img" src="jpeg6.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:14px;">Cr</div></div><div class="wl-heart"><svg viewBox="0 0 24 24"><path fill="var(--red)" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div></div>
-            <div class="wl-body"><div class="wl-name">Creed Aventus</div><div class="wl-price">SAR 840</div><div class="wl-drop">↓ Excellent Price</div></div>
+            <div class="wl-body"><div class="wl-name">Creed Aventus</div><div class="wl-price">SAR 840</div><div class="wl-drop">↓ 20% off</div></div>
           </div>
         </div>
       </div>
@@ -1574,47 +1952,405 @@ img    { display:block; }
       <div id="panel-recent" style="display:none;padding-bottom:16px;">
         <div class="sec-head" style="margin-top:0;"><span class="sec-label">Recently Viewed</span><span class="sec-link">Clear</span></div>
         <div class="recent-scroll">
-          <div class="recent-chip" onclick="switchScreen('product-detail')"><div class="recent-thumb"><div class="prod-img-wrap" style="background:var(--b-purple);height:32px;"><img class="prod-img" src="jpeg1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">Cd</div></div></div><div class="recent-info"><div class="rn">Bleu de Chanel</div><div class="rp">SAR 485</div></div></div>
-          <div class="recent-chip" onclick="switchScreen('product-detail')"><div class="recent-thumb"><div class="prod-img-wrap" style="background:var(--b-teal);height:32px;"><img class="prod-img" src="jpeg2.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">Dk</div></div></div><div class="recent-info"><div class="rn">Sauvage EDT</div><div class="rp">SAR 310</div></div></div>
-          <div class="recent-chip" onclick="switchScreen('product-detail')"><div class="recent-thumb"><div class="prod-img-wrap" style="background:var(--b-amber);height:32px;"><img class="prod-img" src="jpeg3.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">Tf</div></div></div><div class="recent-info"><div class="rn">Tobacco Oud</div><div class="rp">SAR 590</div></div></div>
-          <div class="recent-chip" onclick="switchScreen('product-detail')"><div class="recent-thumb"><div class="prod-img-wrap" style="background:var(--b-sage);height:32px;"><img class="prod-img" src="jpeg6.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">Cr</div></div></div><div class="recent-info"><div class="rn">Aventus</div><div class="rp">SAR 840</div></div></div>
+          <div class="recent-chip" onclick="openProduct('chanel')"><div class="recent-thumb"><div class="prod-img-wrap" style="background:var(--b-purple);height:40px;"><img class="prod-img" src="jpeg1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">Cd</div></div></div><div class="recent-info"><div class="rn">Bleu de Chanel EDP</div><div class="rp">SAR 485</div></div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px;color:var(--ink-3);flex-shrink:0;"><path d="M9 18l6-6-6-6"/></svg></div>
+          <div class="recent-chip" onclick="openProduct('dior')"><div class="recent-thumb"><div class="prod-img-wrap" style="background:var(--b-teal);height:40px;"><img class="prod-img" src="jpeg2.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">Dk</div></div></div><div class="recent-info"><div class="rn">Sauvage EDT</div><div class="rp">SAR 310</div></div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px;color:var(--ink-3);flex-shrink:0;"><path d="M9 18l6-6-6-6"/></svg></div>
+          <div class="recent-chip" onclick="openProduct('tomford')"><div class="recent-thumb"><div class="prod-img-wrap" style="background:var(--b-amber);height:40px;"><img class="prod-img" src="jpeg3.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">Tf</div></div></div><div class="recent-info"><div class="rn">Tobacco Oud EDP</div><div class="rp">SAR 590</div></div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px;color:var(--ink-3);flex-shrink:0;"><path d="M9 18l6-6-6-6"/></svg></div>
+          <div class="recent-chip" onclick="openProduct('creed')"><div class="recent-thumb"><div class="prod-img-wrap" style="background:var(--b-sage);height:40px;"><img class="prod-img" src="jpeg6.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">Cr</div></div></div><div class="recent-info"><div class="rn">Creed Aventus</div><div class="rp">SAR 840</div></div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px;color:var(--ink-3);flex-shrink:0;"><path d="M9 18l6-6-6-6"/></svg></div>
         </div>
       </div>
 
-    </div>
+    </div><!-- /scroll-area -->
+
     <div class="bottom-nav">
       <div class="bn-item" onclick="switchScreen('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Home</span></div>
       <div class="bn-item" onclick="switchScreen('search')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span>Search</span></div>
       <div class="bn-item" onclick="switchScreen('alerts')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>Alerts</span></div>
       <div class="bn-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Activity</span></div>
     </div>
-  </div>
+
+    <!-- ── SETTINGS overlay (inside activity screen) ── -->
+    <div class="overlay" id="overlay-settings">
+      <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:10px;">●●●●</span></div>
+      <div class="overlay-header" style="border-bottom:1px solid var(--border);">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="overlay-close" onclick="closeSettings()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
+          </div>
+          <span class="overlay-title">Settings</span>
+        </div>
+      </div>
+      <div style="flex:1;overflow-y:auto;">
+        <!-- Account -->
+        <div class="settings-section">
+          <div class="settings-label">Account</div>
+          <div class="settings-row">
+            <div class="settings-row-left">
+              <div class="settings-row-icon sri-purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+              <div class="settings-row-info"><div class="settings-row-name">Profile</div><div class="settings-row-sub">Abdullah Hassan</div></div>
+            </div>
+            <div class="settings-row-right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
+          </div>
+          <div class="settings-row">
+            <div class="settings-row-left">
+              <div class="settings-row-icon sri-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
+              <div class="settings-row-info"><div class="settings-row-name">Phone number</div><div class="settings-row-sub">+966 5X XXX XXXX</div></div>
+            </div>
+            <div class="settings-row-right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
+          </div>
+        </div>
+        <!-- Notifications -->
+        <div class="settings-section">
+          <div class="settings-label">Notifications</div>
+          <div class="settings-row">
+            <div class="settings-row-left">
+              <div class="settings-row-icon sri-green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></div>
+              <div class="settings-row-info"><div class="settings-row-name">Price drop alerts</div><div class="settings-row-sub">Notify immediately</div></div>
+            </div>
+            <div class="toggle" style="transform:scale(0.8);transform-origin:right;" onclick="this.classList.toggle('off')"><div class="toggle-thumb"></div></div>
+          </div>
+          <div class="settings-row">
+            <div class="settings-row-left">
+              <div class="settings-row-icon sri-amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+              <div class="settings-row-info"><div class="settings-row-name">Daily deal digest</div><div class="settings-row-sub">Every morning at 8:00 AM</div></div>
+            </div>
+            <div class="toggle off" style="transform:scale(0.8);transform-origin:right;" onclick="this.classList.toggle('off')"><div class="toggle-thumb"></div></div>
+          </div>
+          <div class="settings-row">
+            <div class="settings-row-left">
+              <div class="settings-row-icon sri-purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+              <div class="settings-row-info"><div class="settings-row-name">Back-in-stock alerts</div><div class="settings-row-sub">For wishlisted items</div></div>
+            </div>
+            <div class="toggle" style="transform:scale(0.8);transform-origin:right;" onclick="this.classList.toggle('off')"><div class="toggle-thumb"></div></div>
+          </div>
+        </div>
+        <!-- Preferences -->
+        <div class="settings-section">
+          <div class="settings-label">Preferences</div>
+          <div class="settings-row">
+            <div class="settings-row-left">
+              <div class="settings-row-icon sri-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></div>
+              <div class="settings-row-info"><div class="settings-row-name">Currency</div><div class="settings-row-sub">Saudi Riyal (SAR)</div></div>
+            </div>
+            <div class="settings-row-right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
+          </div>
+          <div class="settings-row">
+            <div class="settings-row-left">
+              <div class="settings-row-icon sri-amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+              <div class="settings-row-info"><div class="settings-row-name">Language</div><div class="settings-row-sub">English</div></div>
+            </div>
+            <div class="settings-row-right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
+          </div>
+        </div>
+        <!-- Support -->
+        <div class="settings-section">
+          <div class="settings-label">Support</div>
+          <div class="settings-row">
+            <div class="settings-row-left">
+              <div class="settings-row-icon sri-green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+              <div class="settings-row-info"><div class="settings-row-name">Help &amp; FAQ</div><div class="settings-row-sub">Get answers to common questions</div></div>
+            </div>
+            <div class="settings-row-right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
+          </div>
+          <div class="settings-row">
+            <div class="settings-row-left">
+              <div class="settings-row-icon sri-purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+              <div class="settings-row-info"><div class="settings-row-name">Contact support</div><div class="settings-row-sub">support@yourdis.sa</div></div>
+            </div>
+            <div class="settings-row-right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
+          </div>
+          <div class="settings-row" style="border-bottom:none;">
+            <div class="settings-row-left">
+              <div class="settings-row-icon" style="background:var(--bg-input);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+              <div class="settings-row-info"><div class="settings-row-name">Privacy Policy</div><div class="settings-row-sub">Version 2.1</div></div>
+            </div>
+            <div class="settings-row-right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
+          </div>
+        </div>
+        <!-- Logout button — strategic placement at bottom of settings -->
+        <button class="logout-btn" onclick="confirmLogout()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Sign Out
+        </button>
+        <div style="height:16px;"></div>
+      </div>
+    </div>
+
+    <!-- ── INTERESTS EDIT overlay (inside activity screen) ── -->
+    <div class="overlay" id="overlay-interests">
+      <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:10px;">●●●●</span></div>
+      <div class="overlay-header" style="border-bottom:1px solid var(--border);">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="overlay-close" onclick="closeInterestsEdit()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
+          </div>
+          <span class="overlay-title">My Interests</span>
+        </div>
+        <span style="font-size:12px;color:var(--ink-3);">Tap to select</span>
+      </div>
+      <div style="flex:1;overflow-y:auto;">
+        <div style="padding:14px 20px 0;font-size:12px;color:var(--ink-2);line-height:1.6;">
+          Select scent families and categories you love. Yourdis uses these to surface personalised deals and recommendations.
+        </div>
+
+        <div style="padding:14px 20px 4px;font-size:10px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-3);">Scent Families</div>
+        <div class="interests-grid">
+          <span class="interests-chip selected" onclick="this.classList.toggle('selected')"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none" style="width:12px;height:12px;"><path d="M5 13l4 4L19 7"/></svg>Woody / Oud</span>
+          <span class="interests-chip selected" onclick="this.classList.toggle('selected')"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none" style="width:12px;height:12px;"><path d="M5 13l4 4L19 7"/></svg>Oriental / Amber</span>
+          <span class="interests-chip" onclick="this.classList.toggle('selected')">Fresh / Aqua</span>
+          <span class="interests-chip" onclick="this.classList.toggle('selected')">Floral</span>
+          <span class="interests-chip" onclick="this.classList.toggle('selected')">Citrus</span>
+          <span class="interests-chip" onclick="this.classList.toggle('selected')">Gourmand</span>
+          <span class="interests-chip" onclick="this.classList.toggle('selected')">Fougère</span>
+          <span class="interests-chip" onclick="this.classList.toggle('selected')">Chypre</span>
+        </div>
+
+        <div style="padding:14px 20px 4px;font-size:10px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-3);">Categories</div>
+        <div class="interests-grid">
+          <span class="interests-chip selected" onclick="this.classList.toggle('selected')"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none" style="width:12px;height:12px;"><path d="M5 13l4 4L19 7"/></svg>Niche / Artisan</span>
+          <span class="interests-chip" onclick="this.classList.toggle('selected')">Designer</span>
+          <span class="interests-chip" onclick="this.classList.toggle('selected')">Budget (≤SAR 200)</span>
+          <span class="interests-chip" onclick="this.classList.toggle('selected')">Luxury (SAR 800+)</span>
+          <span class="interests-chip" onclick="this.classList.toggle('selected')">Limited Edition</span>
+          <span class="interests-chip" onclick="this.classList.toggle('selected')">Travel Size</span>
+        </div>
+
+        <div style="padding:14px 20px 4px;font-size:10px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-3);">Occasions</div>
+        <div class="interests-grid">
+          <span class="interests-chip" onclick="this.classList.toggle('selected')">Office / Daily</span>
+          <span class="interests-chip selected" onclick="this.classList.toggle('selected')"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none" style="width:12px;height:12px;"><path d="M5 13l4 4L19 7"/></svg>Evening / Event</span>
+          <span class="interests-chip" onclick="this.classList.toggle('selected')">Summer</span>
+          <span class="interests-chip" onclick="this.classList.toggle('selected')">Winter / Cold</span>
+        </div>
+      </div>
+      <button class="interests-save-btn" onclick="closeInterestsEdit()">Save preferences</button>
+    </div>
+
+    <!-- ── LOGOUT CONFIRM sheet ── -->
+    <div class="sheet-backdrop" id="sheet-backdrop-logout" onclick="closeLogout()"></div>
+    <div class="overlay-sheet" id="sheet-logout">
+      <div class="overlay-handle"></div>
+      <div style="padding:12px 24px 8px;text-align:center;">
+        <div style="font-family:var(--font-display);font-size:22px;color:var(--ink-1);margin-bottom:8px;">Sign out?</div>
+        <div style="font-size:13px;color:var(--ink-3);line-height:1.7;margin-bottom:24px;">You'll need to sign in again to access your alerts, wishlist, and activity history.</div>
+        <button onclick="closeLogout();switchScreen('auth')" style="width:100%;padding:14px;border-radius:var(--radius-md);background:var(--red);color:#fff;font-size:14px;font-weight:500;border:none;cursor:pointer;margin-bottom:10px;">Yes, sign out</button>
+        <button onclick="closeLogout()" style="width:100%;padding:14px;border-radius:var(--radius-md);background:var(--bg-surface);color:var(--ink-2);font-size:14px;font-weight:500;border:1px solid var(--border-strong);cursor:pointer;">Cancel</button>
+      </div>
+      <div style="height:16px;"></div>
+    </div>
+  </div><!-- /activity screen -->
 
   </div><!-- /phone -->
 </div><!-- /page-shell -->
 
 <script>
-/* ── Screen switching ─────────────────────────────────── */
-function switchScreen(name) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.stab').forEach(b => b.classList.remove('active'));
-  const sc = document.getElementById('screen-' + name);
-  if (sc) { sc.classList.add('active'); }
-  const tab = document.querySelector(`.stab[data-screen="${name}"]`);
-  if (tab) tab.classList.add('active');
-  /* Reset scroll position when switching screens */
-  if (sc) { const sa = sc.querySelector('.scroll-area'); if (sa) sa.scrollTop = 0; }
+/* ══════════════════════════════════════════════════════════
+   PRODUCT CATALOGUE — Dynamic content for product detail
+══════════════════════════════════════════════════════════ */
+var PRODUCTS = {
+  chanel: {
+    name: 'Bleu de Chanel EDP',
+    brand: 'Chanel · 100ml · Eau de Parfum',
+    img: 'jpeg1.jpg', initials: 'Cd', bg: 'var(--b-purple)',
+    notes: '<span class="note-chip note-top">Top Notes: Citrus · Bergamot</span><span class="note-chip note-heart">Heart Notes: Vetiver · Cedarwood</span><span class="note-chip note-base">Base Notes: Patchouli · Labdanum</span>',
+    desc: 'Experience the pinnacle of luxury with this opulent composition, where the deep, mystical resonance of rare Cambodian Oud meets the warm, golden embrace of Baltic Amber. This masterpiece opens with a fleeting spark of spice—Saffron and Cardamom—before diving into a heart of precious resins, Bulgarian Rose, and nocturnal blooms. As it settles, a sophisticated base of white musk, earthy patchouli, and creamy sandalwood creates an intoxicating trail that lingers for over 12 hours on the skin, embodying the timeless elegance of the Orient. This fragrance is not merely a scent; it is a journey through ancient spice markets and hidden desert oases. Each bottle is hand-poured and aged for six months to ensure the oils achieve their maximum potency and complexity. Perfect for the discerning connoisseur who seeks a scent that is as complex as it is commanding, this parfum extrait is designed to leave a lasting impression in any setting, from high-stakes boardrooms to intimate evening galas. The sillage is pronounced yet refined, drawing people in with a magnetic pull of mystery and sophistication. Truly, a crown jewel in any collection.',
+    price: 'SAR 485', badge: '↓ 22% off', badgeClass: 'badge-fire',
+    atl: 'SAR 440', avg: 'SAR 540', ath: 'SAR 680',
+    rating: '4.6', reviews: '287',
+    r1: 'Incredible longevity — 10+ hours. Found it for SAR 485 on Amazon thanks to Yourdis.',
+    r2: 'Classic for a reason. The EDP has better projection than the EDT. Great value.'
+  },
+  dior: {
+    name: 'Dior Sauvage EDT',
+    brand: 'Dior · 200ml · Eau de Toilette',
+    img: 'jpeg2.jpg', initials: 'Dk', bg: 'var(--b-teal)',
+    notes: '<span class="note-chip note-top">Bergamot · Pepper</span><span class="note-chip note-heart">Lavender · Geranium</span><span class="note-chip note-base">Ambroxan · Cedar</span>',
+    desc: 'Radically fresh, ruggedly clean. Sauvage EDT captures the wild beauty of desert landscapes — a burst of citrus riding on a woody, musky wave.',
+    price: 'SAR 310', badge: '↓ 16% off', badgeClass: 'badge-good',
+    atl: 'SAR 285', avg: 'SAR 355', ath: 'SAR 430',
+    rating: '4.8', reviews: '1,203',
+    r1: 'Best-selling scent for a reason. Fresh, clean and beast-mode projection.',
+    r2: 'Versatile for office and evenings alike. This Yourdis alert saved me SAR 60.'
+  },
+  tomford: {
+    name: 'Tom Ford Tobacco Oud EDP',
+    brand: 'Tom Ford · 50ml · Eau de Parfum',
+    img: 'jpeg3.jpg', initials: 'Tf', bg: 'var(--b-amber)',
+    notes: '<span class="note-chip note-top">Tobacco · Smoky</span><span class="note-chip note-heart">Oud · Sandalwood</span><span class="note-chip note-base">Spice · Leather</span>',
+    desc: 'Tobacco Oud is an intensely rich fragrance from the Private Blend collection. Layers of smoky tobacco and rare oud create a powerfully opulent composition.',
+    price: 'SAR 590', badge: '↓ 9% off', badgeClass: 'badge-good',
+    atl: 'SAR 560', avg: 'SAR 640', ath: 'SAR 750',
+    rating: '4.5', reviews: '342',
+    r1: 'The definition of luxury. Oud lovers will not be disappointed. Worth every riyal.',
+    r2: 'Massive projection, lasts all day. A true statement fragrance.'
+  },
+  ysl: {
+    name: 'YSL Y Le Parfum',
+    brand: 'Yves Saint Laurent · 60ml · Parfum',
+    img: 'jpeg4.jpg', initials: 'YS', bg: 'var(--b-pink)',
+    notes: '<span class="note-chip note-top">Apple · Ginger</span><span class="note-chip note-heart">Sage · Lavender</span><span class="note-chip note-base">Suede · Amber</span>',
+    desc: 'Y Le Parfum takes the iconic Y DNA deeper — richer suede and aromatic herbs with confident amber warmth that lasts from day into night.',
+    price: 'SAR 290', badge: '↓ 17% off', badgeClass: 'badge-good',
+    atl: 'SAR 265', avg: 'SAR 330', ath: 'SAR 390',
+    rating: '4.4', reviews: '518',
+    r1: 'Fresh and modern. The suede note really comes out on skin — distinctive.',
+    r2: 'Great office scent. Picked it up at Noon for SAR 290 — deal of the month.'
+  },
+  armani: {
+    name: 'Acqua di Gio EDP',
+    brand: 'Armani · 75ml · Eau de Parfum',
+    img: 'jpeg5.jpg', initials: 'Aq', bg: 'var(--b-blue)',
+    notes: '<span class="note-chip note-top">Marine · Bergamot</span><span class="note-chip note-heart">Rosemary · Incense</span><span class="note-chip note-base">Patchouli · Vetiver</span>',
+    desc: 'Acqua di Gio EDP elevates the legendary original — deeper incense and mineral facets transform the classic fresh aquatic into a more contemplative, refined experience.',
+    price: 'SAR 265', badge: '↓ 24% off', badgeClass: 'badge-fire',
+    atl: 'SAR 250', avg: 'SAR 315', ath: 'SAR 380',
+    rating: '4.7', reviews: '892',
+    r1: 'Better than the EDT in every way. The incense adds depth without losing freshness.',
+    r2: 'Yourdis caught this at the lowest price I\'ve seen. Grabbed two bottles!'
+  },
+  creed: {
+    name: 'Creed Aventus',
+    brand: 'Creed · 100ml · Eau de Parfum',
+    img: 'jpeg6.jpg', initials: 'Cr', bg: 'var(--b-sage)',
+    notes: '<span class="note-chip note-top">Pineapple · Bergamot</span><span class="note-chip note-heart">Birch · Rose</span><span class="note-chip note-base">Musk · Oakmoss · Vanilla</span>',
+    desc: 'Creed Aventus is the stuff of legend — a triumphant, smoky, fruity signature that has defined modern masculine luxury for over a decade.',
+    price: 'SAR 840', badge: '↓ 20% off', badgeClass: 'badge-fire',
+    atl: 'SAR 810', avg: 'SAR 990', ath: 'SAR 1,150',
+    rating: '4.9', reviews: '2,104',
+    r1: 'The king of fragrances. Every batch has slight variation which makes each bottle unique.',
+    r2: 'SAR 840 is an absolute steal for 100ml Aventus. Yourdis alert worked perfectly.'
+  }
+};
+
+/* Track where user came from to enable correct Back navigation */
+var productOrigin = 'home';
+
+/* ── Open a specific product with dynamic content ─────── */
+function openProduct(key, origin) {
+  var p = PRODUCTS[key];
+  if (!p) return;
+  productOrigin = origin || 'home';
+
+  // Update back button
+  document.getElementById('product-back-label').textContent =
+    productOrigin === 'search' ? 'Search' : 'Back';
+
+  // Update hero
+  var heroWrap = document.getElementById('product-hero-wrap');
+  heroWrap.style.background = p.bg;
+  heroWrap.style.backgroundImage = '';
+  var heroImg = document.getElementById('product-hero-img');
+  heroImg.src = p.img;
+  heroImg.style.display = '';
+  document.getElementById('product-hero-initials').textContent = p.initials;
+  document.getElementById('product-hero-initials').style.display = 'none';
+
+  // Update text
+  document.getElementById('product-name').textContent = p.name;
+  document.getElementById('product-brand').textContent = p.brand;
+  document.getElementById('product-notes').innerHTML = p.notes;
+  document.getElementById('product-desc').textContent = p.desc;
+  document.getElementById('product-cta-price').textContent = p.price;
+
+  document.getElementById('product-rating').textContent = p.rating;
+  document.getElementById('product-review-count').textContent = p.rating + ' out of 5 · ' + p.reviews + ' reviews';
+  document.getElementById('product-all-reviews').textContent = p.reviews;
+  document.getElementById('product-review1').textContent = p.r1;
+  document.getElementById('product-review2').textContent = p.r2;
+
+  // Reset heart state
+  heartSaved = false;
+  var icon = document.getElementById('heartIcon');
+  icon.setAttribute('fill','none');
+  icon.setAttribute('stroke','currentColor');
+
+  switchScreen('product-detail');
+  // Scroll to top of scroll area
+  var sa = document.querySelector('#screen-product-detail .scroll-area');
+  if (sa) sa.scrollTop = 0;
+
+  // Update blur fill
+  setTimeout(function() {
+    heroWrap.style.backgroundImage = 'url("' + p.img + '")';
+  }, 50);
 }
-document.querySelectorAll('.stab').forEach(b => {
-  b.addEventListener('click', () => switchScreen(b.dataset.screen));
+
+/* ── Back from product detail ─────────────────────────── */
+function goBackFromProduct() {
+  if (productOrigin === 'search') {
+    switchScreen('search');
+  } else {
+    switchScreen('home');
+  }
+}
+
+/* ══════════════════════════════════════════════════════════
+   SCREEN SWITCHING
+══════════════════════════════════════════════════════════ */
+function switchScreen(name) {
+  document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+  document.querySelectorAll('.stab').forEach(function(b) { b.classList.remove('active'); });
+  var sc = document.getElementById('screen-' + name);
+  if (sc) { sc.classList.add('active'); }
+  var tab = document.querySelector('.stab[data-screen="' + name + '"]');
+  if (tab) tab.classList.add('active');
+  if (sc) { var sa = sc.querySelector('.scroll-area'); if (sa) sa.scrollTop = 0; }
+}
+document.querySelectorAll('.stab').forEach(function(b) {
+  b.addEventListener('click', function() { switchScreen(b.dataset.screen); });
 });
 
-/* ── Toggle helper ──────────────────────────────────── */
-function toggleEl(id) {
-  document.getElementById(id).classList.toggle('off');
+/* ══════════════════════════════════════════════════════════
+   OVERLAY HELPERS
+══════════════════════════════════════════════════════════ */
+function showOverlay(id) { document.getElementById(id).classList.add('visible'); }
+function hideOverlay(id) { document.getElementById(id).classList.remove('visible'); }
+
+/* Notifications */
+function showNotifications() { showOverlay('overlay-notif'); }
+function closeNotifications() { hideOverlay('overlay-notif'); }
+
+/* Hot Deals listing */
+function showHotDeals() { showOverlay('overlay-hot-deals'); }
+function closeHotDeals() { hideOverlay('overlay-hot-deals'); }
+
+/* All Brands */
+function showAllBrands() { showOverlay('overlay-brands'); }
+function closeAllBrands() { hideOverlay('overlay-brands'); }
+
+/* Price Drops */
+function showPriceDrops() { showOverlay('overlay-price-drops'); }
+function closePriceDrops() { hideOverlay('overlay-price-drops'); }
+
+/* All Stores */
+function showAllStores() { showOverlay('overlay-stores'); }
+function closeAllStores() { hideOverlay('overlay-stores'); }
+
+/* Settings */
+function showSettings() { showOverlay('overlay-settings'); }
+function closeSettings() { hideOverlay('overlay-settings'); }
+
+/* Interests Edit */
+function showInterestsEdit() { showOverlay('overlay-interests'); }
+function closeInterestsEdit() { hideOverlay('overlay-interests'); }
+
+/* Logout confirm sheet */
+function confirmLogout() {
+  closeSettings();
+  setTimeout(function() {
+    document.getElementById('sheet-backdrop-logout').classList.add('visible');
+    document.getElementById('sheet-logout').classList.add('visible');
+  }, 200);
+}
+function closeLogout() {
+  document.getElementById('sheet-backdrop-logout').classList.remove('visible');
+  document.getElementById('sheet-logout').classList.remove('visible');
 }
 
-/* ── Heart / Wishlist toggle ────────────────────────── */
+/* ══════════════════════════════════════════════════════════
+   MISC HELPERS
+══════════════════════════════════════════════════════════ */
+function toggleEl(id) { document.getElementById(id).classList.toggle('off'); }
+
 var heartSaved = false;
 function toggleHeart() {
   heartSaved = !heartSaved;
@@ -1623,7 +2359,20 @@ function toggleHeart() {
   icon.setAttribute('stroke', heartSaved ? 'var(--red)' : 'currentColor');
 }
 
-/* ── Activity tab switcher ──────────────────────────── */
+function toggleReadMore() {
+  var desc = document.getElementById('product-desc');
+  var btn = document.getElementById('read-more-btn');
+  if (desc.style.webkitLineClamp === '3') {
+    desc.style.webkitLineClamp = 'unset';
+    desc.style.display = 'inline';
+    btn.textContent = 'Read Less';
+  } else {
+    desc.style.webkitLineClamp = '3';
+    desc.style.display = '-webkit-box';
+    btn.textContent = 'Read More';
+  }
+}
+
 function showTab(name) {
   ['log','wish','recent'].forEach(function(t) {
     document.getElementById('panel-' + t).style.display = (t === name) ? 'block' : 'none';
@@ -1631,21 +2380,15 @@ function showTab(name) {
   });
 }
 
-/* ── Long title detection ───────────────────────────── */
+/* ── Long title detection ─────────────────────────────── */
 document.querySelectorAll('.prod-name').forEach(function(el) {
   if (el.textContent.trim().length > 45) el.classList.add('long-title');
 });
 
-/* ── Blur background fill for small product images ────
-   Sets background-image on .prod-img-wrap to match
-   its child <img> src so the blurred-fill pseudo-element
-   works correctly. Called after DOM is ready.
-─────────────────────────────────────────────────────── */
+/* ── Blur background fill ─────────────────────────────── */
 document.querySelectorAll('.prod-img-wrap').forEach(function(wrap) {
   var img = wrap.querySelector('.prod-img');
-  if (img && img.src) {
-    wrap.style.backgroundImage = 'url("' + img.src + '")';
-  }
+  if (img && img.src) { wrap.style.backgroundImage = 'url("' + img.src + '")'; }
   img && img.addEventListener('load', function() {
     wrap.style.backgroundImage = 'url("' + img.src + '")';
   });
