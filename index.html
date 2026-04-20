@@ -642,6 +642,61 @@ img    { display:block; }
   font-size:12px; font-weight:500; color:var(--ink-2); cursor:pointer; margin-bottom:4px;
 }
 
+/* ─── CURRENT PRICE DISPLAY (replaces price dashboard) ──── */
+.current-price-block {
+  background:var(--bg-surface); border:1px solid var(--border);
+  border-radius:var(--radius-md); padding:16px 18px;
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:16px;
+}
+.current-price-left { display:flex; flex-direction:column; gap:4px; }
+.current-price-label { font-size:10px; color:var(--ink-3); text-transform:uppercase; letter-spacing:0.05em; }
+.current-price-val { font-family:var(--font-display); font-size:34px; color:var(--ink-1); line-height:1; }
+
+/* ─── PRICE HISTORY TABLE ──────────────────────────────── */
+.ph-table {
+  width:100%; border-collapse:collapse; margin-bottom:16px;
+  background:var(--bg-phone); border:1px solid var(--border);
+  border-radius:var(--radius-md); overflow:hidden;
+}
+.ph-table thead tr { background:var(--bg-input); }
+.ph-table th {
+  font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:0.06em;
+  color:var(--ink-3); padding:9px 12px; text-align:left; border-bottom:1px solid var(--border);
+}
+.ph-table td {
+  font-size:12px; color:var(--ink-1); padding:9px 12px;
+  border-bottom:1px solid var(--border);
+}
+.ph-table tr:last-child td { border-bottom:none; }
+.ph-table td.ph-price { font-weight:500; text-align:right; }
+.ph-table td.ph-down { color:var(--green); }
+.ph-table td.ph-up   { color:var(--red); }
+.ph-table td.ph-dot-cell { width:24px; }
+.ph-dot-d { display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--green); }
+.ph-dot-u { display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--red); }
+
+/* ─── ALTERNATIVE & SIMILAR PRODUCT CARDS ───────────────── */
+.alt-prod-row {
+  display:flex; align-items:center; gap:12px;
+  padding:10px 0; border-bottom:1px solid var(--border);
+}
+.alt-prod-row:last-child { border-bottom:none; }
+.alt-prod-img {
+  width:56px; height:56px; border-radius:var(--radius-md);
+  flex-shrink:0; overflow:hidden;
+}
+.alt-prod-img .prod-img-wrap { height:100%; }
+.alt-prod-meta { flex:1; min-width:0; }
+.alt-prod-name  { font-size:13px; font-weight:500; color:var(--ink-1); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.alt-prod-store { font-size:10px; color:var(--ink-3); margin-top:2px; }
+.alt-prod-right { text-align:right; flex-shrink:0; }
+.alt-match-score {
+  display:inline-block; font-size:11px; font-weight:500;
+  padding:3px 9px; border-radius:20px;
+  background:var(--accent-light); color:var(--accent);
+}
+
 /* Price alert box */
 .alert-box {
   background:var(--bg-surface); border:1px solid var(--border);
@@ -816,7 +871,7 @@ img    { display:block; }
     <button class="stab" data-screen="otp">OTP</button>
     <button class="stab" data-screen="home">Home</button>
     <button class="stab" data-screen="search">Search</button>
-    <button class="stab" data-screen="product">Product</button>
+    <button class="stab" data-screen="product-detail">Product</button>
     <button class="stab" data-screen="alerts">Alerts</button>
     <button class="stab" data-screen="activity">Activity</button>
   </div>
@@ -925,7 +980,7 @@ img    { display:block; }
       </div>
       <div class="h-scroll" style="margin-bottom:4px;">
 
-        <div class="deal-card" onclick="switchScreen('product')">
+        <div class="deal-card" onclick="switchScreen('product-detail')">
           <div class="deal-img-zone">
             <div class="prod-img-wrap" style="background:var(--b-purple);">
               <img class="prod-img" src="jpeg1.jpg" alt="Bleu de Chanel"
@@ -942,7 +997,7 @@ img    { display:block; }
           </div>
         </div>
 
-        <div class="deal-card">
+        <div class="deal-card" onclick="switchScreen('product-detail')">
           <div class="deal-img-zone">
             <div class="prod-img-wrap" style="background:var(--b-teal);">
               <img class="prod-img" src="jpeg2.jpg" alt="Dior Sauvage"
@@ -959,7 +1014,7 @@ img    { display:block; }
           </div>
         </div>
 
-        <div class="deal-card">
+        <div class="deal-card" onclick="switchScreen('product-detail')">
           <div class="deal-img-zone">
             <div class="prod-img-wrap" style="background:var(--b-amber);">
               <img class="prod-img" src="jpeg3.jpg" alt="Tom Ford Tobacco Oud"
@@ -976,7 +1031,7 @@ img    { display:block; }
           </div>
         </div>
 
-        <div class="deal-card">
+        <div class="deal-card" onclick="switchScreen('product-detail')">
           <div class="deal-img-zone">
             <div class="prod-img-wrap" style="background:var(--b-pink);">
               <img class="prod-img" src="jpeg4.jpg" alt="YSL Y"
@@ -993,7 +1048,7 @@ img    { display:block; }
           </div>
         </div>
 
-        <div class="deal-card">
+        <div class="deal-card" onclick="switchScreen('product-detail')">
           <div class="deal-img-zone">
             <div class="prod-img-wrap" style="background:var(--b-blue);">
               <img class="prod-img" src="jpeg5.jpg" alt="Acqua di Gio"
@@ -1032,28 +1087,28 @@ img    { display:block; }
       <!-- PERSONALIZED -->
       <div class="sec-head"><span class="sec-label">Personalized for You</span><span class="sec-link">Refresh</span></div>
       <div class="pers-grid" style="margin-bottom:4px;">
-        <div class="pers-card" onclick="switchScreen('product')">
+        <div class="pers-card" onclick="switchScreen('product-detail')">
           <div class="pers-img-zone"><div class="prod-img-wrap" style="background:var(--b-purple);">
             <img class="prod-img" src="jpeg6.jpg" alt="Aventus" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
             <div class="prod-initials" style="display:none;font-size:14px;">Av</div>
           </div></div>
           <div class="pers-body"><div class="pers-name">Aventus for Her</div><div class="pers-note">Woody · matches taste</div><div class="pers-price">SAR 420</div></div>
         </div>
-        <div class="pers-card">
+        <div class="pers-card" onclick="switchScreen('product-detail')">
           <div class="pers-img-zone"><div class="prod-img-wrap" style="background:var(--b-amber);">
             <img class="prod-img" src="jpeg3.jpg" alt="Oud Wood" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
             <div class="prod-initials" style="display:none;font-size:14px;">Ow</div>
           </div></div>
           <div class="pers-body"><div class="pers-name">Oud Wood</div><div class="pers-note">Oud · like favorites</div><div class="pers-price">SAR 710</div></div>
         </div>
-        <div class="pers-card">
+        <div class="pers-card" onclick="switchScreen('product-detail')">
           <div class="pers-img-zone"><div class="prod-img-wrap" style="background:var(--b-teal);">
             <img class="prod-img" src="jpeg2.jpg" alt="Green Irish Tweed" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
             <div class="prod-initials" style="display:none;font-size:14px;">Gi</div>
           </div></div>
           <div class="pers-body"><div class="pers-name">Green Irish Tweed</div><div class="pers-note">Aromatic · trending</div><div class="pers-price">SAR 380</div></div>
         </div>
-        <div class="pers-card">
+        <div class="pers-card" onclick="switchScreen('product-detail')">
           <div class="pers-img-zone"><div class="prod-img-wrap" style="background:var(--b-pink);">
             <img class="prod-img" src="jpeg4.jpg" alt="Black Orchid" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
             <div class="prod-initials" style="display:none;font-size:14px;">Bo</div>
@@ -1066,22 +1121,22 @@ img    { display:block; }
 
       <!-- RECENT PRICE DROPS -->
       <div class="sec-head"><span class="sec-label">Recent Price Drops</span><span class="sec-link">View all</span></div>
-      <div class="drop-row" onclick="switchScreen('product')">
+      <div class="drop-row" onclick="switchScreen('product-detail')">
         <div class="drop-thumb"><div class="prod-img-wrap" style="background:var(--b-purple);height:52px;"><img class="prod-img" src="jpeg1.jpg" alt="Bleu de Chanel" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:12px;">Cd</div></div></div>
         <div class="drop-info"><div class="drop-name">Bleu de Chanel EDP 100ml</div><div class="drop-sub">Chanel · 6 stores · 2 hrs ago</div><div style="margin-top:4px;"><span class="badge badge-fire">↓ Excellent Price</span></div></div>
         <div class="drop-right"><div class="drop-price">SAR 485</div><div class="drop-delta">−SAR 135</div></div>
       </div>
-      <div class="drop-row">
+      <div class="drop-row" onclick="switchScreen('product-detail')">
         <div class="drop-thumb"><div class="prod-img-wrap" style="background:var(--b-pink);height:52px;"><img class="prod-img" src="jpeg4.jpg" alt="YSL Y" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:12px;">YS</div></div></div>
         <div class="drop-info"><div class="drop-name">Y Le Parfum 60ml</div><div class="drop-sub">YSL · 4 stores · 5 hrs ago</div><div style="margin-top:4px;"><span class="badge badge-good">↗ Good Price</span></div></div>
         <div class="drop-right"><div class="drop-price">SAR 290</div><div class="drop-delta">−SAR 60</div></div>
       </div>
-      <div class="drop-row">
+      <div class="drop-row" onclick="switchScreen('product-detail')">
         <div class="drop-thumb"><div class="prod-img-wrap" style="background:var(--b-teal);height:52px;"><img class="prod-img" src="jpeg2.jpg" alt="Sauvage" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:12px;">Dk</div></div></div>
         <div class="drop-info"><div class="drop-name">Dior Sauvage EDT 200ml</div><div class="drop-sub">Dior · 5 stores · Yesterday</div><div style="margin-top:4px;"><span class="badge badge-good">↗ Good Price</span></div></div>
         <div class="drop-right"><div class="drop-price">SAR 310</div><div class="drop-delta">−SAR 60</div></div>
       </div>
-      <div class="drop-row">
+      <div class="drop-row" onclick="switchScreen('product-detail')">
         <div class="drop-thumb"><div class="prod-img-wrap" style="background:var(--b-sage);height:52px;"><img class="prod-img" src="jpeg6.jpg" alt="Aventus" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:12px;">Cr</div></div></div>
         <div class="drop-info"><div class="drop-name">Creed Aventus 100ml</div><div class="drop-sub">Creed · 3 stores · 2 days ago</div><div style="margin-top:4px;"><span class="badge badge-fire">↓ Excellent Price</span></div></div>
         <div class="drop-right"><div class="drop-price">SAR 840</div><div class="drop-delta">−SAR 210</div></div>
@@ -1169,17 +1224,17 @@ img    { display:block; }
     </div>
     <div style="padding:0 20px 10px;font-size:11px;color:var(--ink-3);">3 products — tap to compare all stores</div>
     <div class="scroll-area">
-      <div class="result-row" onclick="switchScreen('product')">
+      <div class="result-row" onclick="switchScreen('product-detail')">
         <div class="result-thumb"><div class="prod-img-wrap" style="background:var(--b-purple);height:56px;"><img class="prod-img" src="jpeg1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:13px;">Cd</div></div></div>
         <div class="result-info"><div class="result-name">Bleu de Chanel EDP</div><div class="result-brand">Chanel · 100ml</div><div class="result-stores">6 stores · compare prices →</div></div>
         <div class="result-right"><div class="result-from">from</div><div class="result-price">SAR 485</div><div style="margin-top:4px;"><span class="badge badge-fire">↓ Excellent</span></div></div>
       </div>
-      <div class="result-row">
+      <div class="result-row" onclick="switchScreen('product-detail')">
         <div class="result-thumb"><div class="prod-img-wrap" style="background:var(--b-purple);height:56px;"><img class="prod-img" src="jpeg1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:13px;">Cd</div></div></div>
         <div class="result-info"><div class="result-name">Bleu de Chanel EDT</div><div class="result-brand">Chanel · 100ml</div><div class="result-stores">4 stores · compare prices →</div></div>
         <div class="result-right"><div class="result-from">from</div><div class="result-price">SAR 410</div><div style="margin-top:4px;"><span class="badge badge-good">↗ Good</span></div></div>
       </div>
-      <div class="result-row">
+      <div class="result-row" onclick="switchScreen('product-detail')">
         <div class="result-thumb"><div class="prod-img-wrap" style="background:var(--b-purple);height:56px;"><img class="prod-img" src="jpeg1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:13px;">Cd</div></div></div>
         <div class="result-info"><div class="result-name">Bleu de Chanel Parfum</div><div class="result-brand">Chanel · 50ml</div><div class="result-stores">3 stores · compare prices →</div></div>
         <div class="result-right"><div class="result-from">from</div><div class="result-price">SAR 680</div><div style="margin-top:4px;"><span class="badge badge-high">▲ High</span></div></div>
@@ -1196,7 +1251,7 @@ img    { display:block; }
   <!-- ════════════════════════════════
        PRODUCT DETAIL SCREEN
   ════════════════════════════════ -->
-  <div class="screen" id="screen-product">
+  <div class="screen" id="screen-product-detail">
     <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:10px;">●●●●</span></div>
     <!-- back arrow → always HOME -->
     <div class="back-bar">
@@ -1240,55 +1295,42 @@ img    { display:block; }
           <span class="note-chip note-heart">Heart: Ginger, ISO E</span>
           <span class="note-chip note-base">Base: Sandalwood, Cedar</span>
         </div>
-        <div class="prod-desc">A masculine fragrance of freedom and elegance — fresh, clean, deeply woody. Longevity: 8–10 hrs · Sillage: Moderate · Concentration: EDP</div>
-
-        <!-- REDESIGNED PRICE DASHBOARD -->
-        <div style="font-size:11px;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-3);font-weight:500;margin-bottom:8px;">Price Dashboard</div>
-        <div class="price-dash" style="margin-bottom:16px;">
-          <div class="price-dash-top">
-            <div class="price-main-group">
-              <div class="price-main-label">Lowest price today</div>
-              <div class="price-main-val">SAR 485</div>
-              <div style="margin-top:8px;"><span class="badge badge-fire">↓ Excellent Price · −SAR 102 below avg</span></div>
-            </div>
-            <div style="text-align:right;">
-              <div style="font-size:10px;color:var(--ink-3);margin-bottom:4px;">Tracking</div>
-              <div style="font-size:20px;font-weight:500;color:var(--ink-1);">6</div>
-              <div style="font-size:10px;color:var(--ink-3);">stores</div>
-            </div>
-          </div>
-          <div class="price-dash-grid">
-            <div class="pdg-cell green">
-              <div class="pdg-label">30d Low</div>
-              <div class="pdg-value">SAR 475</div>
-              <div class="pdg-note">Near low</div>
-            </div>
-            <div class="pdg-cell">
-              <div class="pdg-label">30d Avg</div>
-              <div class="pdg-value">SAR 587</div>
-              <div class="pdg-note">Benchmark</div>
-            </div>
-            <div class="pdg-cell red">
-              <div class="pdg-label">30d High</div>
-              <div class="pdg-value">SAR 660</div>
-              <div class="pdg-note">Peak</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Price history -->
+		<div class="prod-desc">
+		  <span id="descShort">A masculine fragrance of freedom and elegance — fresh, clean, deeply woody. Longevity: 8–10 hrs · Sillage: Moderate.</span>
+		  <span id="descFull" style="display:none;"> This iconic scent opens with vibrant citrus and mint, transitions into a woody heart with warming ISO E Super and ginger, and settles into a rich base of sandalwood and white cedar. Ideal for day and evening wear in all seasons.</span>
+		  <span id="descMoreBtn" onclick="var f=document.getElementById('descFull');var b=document.getElementById('descMoreBtn');if(f.style.display==='none'){f.style.display='inline';b.textContent=' Read less';}else{f.style.display='none';b.textContent=' Read more';}" style="color:var(--accent);font-size:12px;cursor:pointer;white-space:nowrap;"> Read more</span>
+		</div>
+        <!-- PRICE HISTORY — table format -->
         <div style="font-size:11px;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-3);font-weight:500;margin-bottom:8px;">Price History</div>
-        <div class="price-history-table">
-          <div class="pht-cell pht-min"><div class="pht-label">All-time low</div><div class="pht-value">SAR 460</div><div class="pht-sub">Nov 2024</div></div>
-          <div class="pht-cell"><div class="pht-label">Average</div><div class="pht-value">SAR 587</div><div class="pht-sub">Past 90 days</div></div>
-          <div class="pht-cell pht-max"><div class="pht-label">All-time high</div><div class="pht-value">SAR 660</div><div class="pht-sub">Mar 2024</div></div>
-        </div>
-        <div style="font-size:11px;color:var(--ink-3);margin-bottom:8px;">Price event log</div>
-        <div class="price-events" style="margin-bottom:16px;">
-          <div class="pe-row"><div class="pe-dot pe-dot-down"></div><div class="pe-date">Today · 2 hrs ago</div><div class="pe-store">Amazon.sa</div><div class="pe-price">SAR 485</div></div>
-          <div class="pe-row"><div class="pe-dot pe-dot-up"></div><div class="pe-date">14 Feb 2025</div><div class="pe-store">Sephora.sa</div><div class="pe-price">SAR 620</div></div>
-          <div class="pe-row"><div class="pe-dot pe-dot-down"></div><div class="pe-date">02 Nov 2024</div><div class="pe-store">Namshi</div><div class="pe-price">SAR 460</div></div>
-        </div>
+        <table class="ph-table">
+          <tbody>
+            <tr>
+              <td class="ph-dot-cell"><span class="ph-dot-d"></span></td>
+              <td>Today · 2 hrs ago</td>
+              <td class="ph-price ph-down">SAR 485</td>
+            </tr>
+            <tr>
+              <td class="ph-dot-cell"><span class="ph-dot-u"></span></td>
+              <td>14 Feb 2025</td>
+              <td class="ph-price ph-up">SAR 620</td>
+            </tr>
+            <tr>
+              <td class="ph-dot-cell"><span class="ph-dot-d"></span></td>
+              <td>02 Nov 2024</td>
+              <td class="ph-price ph-down">SAR 460</td>
+            </tr>
+            <tr>
+              <td class="ph-dot-cell"><span class="ph-dot-u"></span></td>
+              <td>15 Aug 2024</td>
+              <td class="ph-price ph-up">SAR 660</td>
+            </tr>
+            <tr>
+              <td class="ph-dot-cell"><span class="ph-dot-d"></span></td>
+              <td>01 Jun 2024</td>
+              <td class="ph-price ph-down">SAR 510</td>
+            </tr>
+          </tbody>
+        </table>
 
         <!-- Price alert — inline toggle -->
         <div style="margin-top:16px;margin-bottom:20px;">
@@ -1302,36 +1344,51 @@ img    { display:block; }
         </div>
 		
 		
-        <!-- Store comparison -->
-        <div style="font-size:11px;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-3);font-weight:500;margin-bottom:10px;">Store Comparison · 6 stores</div>
+        <!-- SIMILAR PRODUCTS -->
+        <div style="font-size:11px;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-3);font-weight:500;margin-bottom:10px;">Similar Products</div>
         <div style="margin-bottom:16px;">
-          <div class="store-row">
-            <div class="store-logo-sq" style="background:var(--b-blue);">Am</div>
-            <div class="store-meta"><div class="store-name">Amazon.sa</div><div class="store-ship">Free delivery · In stock</div></div>
-            <div class="store-price-col"><div class="store-price">SAR 485</div><div class="store-diff" style="color:var(--green);">Best price</div></div>
+          <div class="store-row" onclick="switchScreen('product-detail')">
+            <div class="store-logo-sq" style="background:var(--b-amber);overflow:hidden;padding:0;"><div class="prod-img-wrap" style="height:34px;"><img class="prod-img" src="jpeg3.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">Tf</div></div></div>
+            <div class="store-meta"><div class="store-name">Tom Ford Tobacco Oud</div><div class="store-ship">via Noon.sa</div></div>
+            <div class="store-price-col"><div class="store-price">SAR 590</div><div class="store-diff" style="color:var(--accent);">78% match</div></div>
             <button class="buy-btn">Buy ↗</button>
           </div>
-          <div class="store-row">
-            <div class="store-logo-sq" style="background:var(--b-teal);">Na</div>
-            <div class="store-meta"><div class="store-name">Namshi</div><div class="store-ship">Free delivery · In stock</div></div>
-            <div class="store-price-col"><div class="store-price">SAR 530</div><div class="store-diff">+SAR 45</div></div>
+          <div class="store-row" onclick="switchScreen('product-detail')">
+            <div class="store-logo-sq" style="background:var(--b-pink);overflow:hidden;padding:0;"><div class="prod-img-wrap" style="height:34px;"><img class="prod-img" src="jpeg4.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">YS</div></div></div>
+            <div class="store-meta"><div class="store-name">YSL Y Le Parfum</div><div class="store-ship">via Amazon.sa</div></div>
+            <div class="store-price-col"><div class="store-price">SAR 290</div><div class="store-diff" style="color:var(--accent);">73% match</div></div>
             <button class="buy-btn">Buy ↗</button>
           </div>
-          <div class="store-row">
-            <div class="store-logo-sq" style="background:var(--b-amber);">Nn</div>
-            <div class="store-meta"><div class="store-name">Noon.sa</div><div class="store-ship">SAR 15 shipping</div></div>
-            <div class="store-price-col"><div class="store-price">SAR 550</div><div class="store-diff">+SAR 65</div></div>
-            <button class="buy-btn">Buy ↗</button>
-          </div>
-          <div class="store-row">
-            <div class="store-logo-sq" style="background:var(--b-pink);">Sp</div>
-            <div class="store-meta"><div class="store-name">Sephora.sa</div><div class="store-ship">SAR 25 shipping</div></div>
-            <div class="store-price-col"><div class="store-price">SAR 620</div><div class="store-diff">+SAR 135</div></div>
+          <div class="store-row" onclick="switchScreen('product-detail')">
+            <div class="store-logo-sq" style="background:var(--b-teal);overflow:hidden;padding:0;"><div class="prod-img-wrap" style="height:34px;"><img class="prod-img" src="jpeg2.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">Gi</div></div></div>
+            <div class="store-meta"><div class="store-name">Creed Green Irish Tweed</div><div class="store-ship">via Namshi</div></div>
+            <div class="store-price-col"><div class="store-price">SAR 380</div><div class="store-diff" style="color:var(--accent);">69% match</div></div>
             <button class="buy-btn">Buy ↗</button>
           </div>
         </div>
-		
-		
+
+        <!-- ALTERNATIVE PRODUCTS -->
+        <div style="font-size:11px;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-3);font-weight:500;margin-bottom:10px;">Alternative Products</div>
+        <div style="margin-bottom:16px;">
+          <div class="store-row" onclick="switchScreen('product-detail')">
+            <div class="store-logo-sq" style="background:var(--b-teal);overflow:hidden;padding:0;"><div class="prod-img-wrap" style="height:34px;"><img class="prod-img" src="jpeg2.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">Dk</div></div></div>
+            <div class="store-meta"><div class="store-name">Dior Sauvage EDP</div><div class="store-ship">via Amazon.sa</div></div>
+            <div class="store-price-col"><div class="store-price">SAR 460</div><div class="store-diff" style="color:var(--accent);">94% match</div></div>
+            <button class="buy-btn">Buy ↗</button>
+          </div>
+          <div class="store-row" onclick="switchScreen('product-detail')">
+            <div class="store-logo-sq" style="background:var(--b-blue);overflow:hidden;padding:0;"><div class="prod-img-wrap" style="height:34px;"><img class="prod-img" src="jpeg5.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">Ag</div></div></div>
+            <div class="store-meta"><div class="store-name">Acqua di Gio Profumo</div><div class="store-ship">via Namshi</div></div>
+            <div class="store-price-col"><div class="store-price">SAR 395</div><div class="store-diff" style="color:var(--accent);">88% match</div></div>
+            <button class="buy-btn">Buy ↗</button>
+          </div>
+          <div class="store-row" onclick="switchScreen('product-detail')">
+            <div class="store-logo-sq" style="background:var(--b-sage);overflow:hidden;padding:0;"><div class="prod-img-wrap" style="height:34px;"><img class="prod-img" src="jpeg6.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">Cr</div></div></div>
+            <div class="store-meta"><div class="store-name">Creed Aventus</div><div class="store-ship">via Sephora.sa</div></div>
+            <div class="store-price-col"><div class="store-price">SAR 840</div><div class="store-diff" style="color:var(--accent);">81% match</div></div>
+            <button class="buy-btn">Buy ↗</button>
+          </div>
+        </div>
 
         <!-- RATINGS & REVIEWS -->
         <div style="font-size:11px;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-3);font-weight:500;margin-bottom:10px;">Ratings &amp; Reviews</div>
@@ -1400,7 +1457,7 @@ img    { display:block; }
         </div>
         <!-- View Product + Buy Now CTA -->
         <div class="alert-actions">
-          <button class="alert-view-btn" onclick="switchScreen('product')">View product →</button>
+          <button class="alert-view-btn" onclick="switchScreen('product-detail')">View product →</button>
           <button class="alert-buy-btn">Buy at SAR 485 ↗</button>
         </div>
       </div>
@@ -1415,25 +1472,12 @@ img    { display:block; }
           <span class="badge badge-good">↗ Good Deal Now</span>
         </div>
         <div class="alert-actions">
-          <button class="alert-view-btn">View product →</button>
+          <button class="alert-view-btn" onclick="switchScreen('product-detail')">View product →</button>
           <button class="alert-buy-btn">Buy at SAR 310 ↗</button>
         </div>
       </div>
 
-      <div class="alert-card">
-        <div class="alert-card-head">
-          <div><div class="alert-prod-name">Tom Ford Tobacco Oud 50ml</div><div class="alert-prod-sub">Tom Ford</div></div>
-          <div class="toggle off" id="alt3" onclick="toggleEl('alt3')"><div class="toggle-thumb"></div></div>
-        </div>
-        <div class="alert-price-row" style="margin-bottom:10px;">
-          <div><div class="apc-label">Current price</div><div class="apc-value">SAR 590</div></div>
-          <span class="badge badge-neutral">Alert paused</span>
-        </div>
-        <div class="alert-actions">
-          <button class="alert-view-btn">View product →</button>
-          <button class="alert-buy-btn" style="background:var(--ink-3);">Buy at SAR 590 ↗</button>
-        </div>
-      </div>
+
     </div>
     <div class="bottom-nav">
       <div class="bn-item" onclick="switchScreen('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Home</span></div>
@@ -1461,11 +1505,7 @@ img    { display:block; }
         </div>
       </div>
       <div style="height:12px;"></div>
-      <div class="level-wrap">
-        <div class="level-labels"><span>Deal Hunter</span><span>Expert (next level)</span></div>
-        <div class="level-bar"><div class="level-fill"></div></div>
-        <div class="level-note">650 / 1000 XP</div>
-      </div>
+
       <div class="stats-grid" style="margin-bottom:16px;">
         <div class="stat-card"><div class="stat-l">Total saved</div><div class="stat-v">SAR 892</div></div>
         <div class="stat-card"><div class="stat-l">Deals found</div><div class="stat-v">14</div></div>
@@ -1511,19 +1551,19 @@ img    { display:block; }
       <div id="panel-wish" style="display:none;padding-bottom:16px;">
         <div class="sec-head" style="margin-top:0;"><span class="sec-label">Wishlist · 4 items</span><span class="sec-link">Clear all</span></div>
         <div class="wishlist-grid">
-          <div class="wl-card" onclick="switchScreen('product')">
+          <div class="wl-card" onclick="switchScreen('product-detail')">
             <div class="wl-img-zone"><div class="prod-img-wrap" style="background:var(--b-purple);height:80px;"><img class="prod-img" src="jpeg1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:14px;">Cd</div></div><div class="wl-heart"><svg viewBox="0 0 24 24"><path fill="var(--red)" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div></div>
             <div class="wl-body"><div class="wl-name">Bleu de Chanel EDP</div><div class="wl-price">SAR 485</div><div class="wl-drop">↓ Excellent Price</div></div>
           </div>
-          <div class="wl-card">
+          <div class="wl-card" onclick="switchScreen('product-detail')">
             <div class="wl-img-zone"><div class="prod-img-wrap" style="background:var(--b-teal);height:80px;"><img class="prod-img" src="jpeg2.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:14px;">Dk</div></div><div class="wl-heart"><svg viewBox="0 0 24 24"><path fill="var(--red)" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div></div>
             <div class="wl-body"><div class="wl-name">Dior Sauvage EDT</div><div class="wl-price">SAR 310</div><div class="wl-drop">↗ Good Price</div></div>
           </div>
-          <div class="wl-card">
+          <div class="wl-card" onclick="switchScreen('product-detail')">
             <div class="wl-img-zone"><div class="prod-img-wrap" style="background:var(--b-amber);height:80px;"><img class="prod-img" src="jpeg3.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:14px;">Tf</div></div><div class="wl-heart"><svg viewBox="0 0 24 24"><path fill="var(--red)" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div></div>
             <div class="wl-body"><div class="wl-name">Tobacco Oud EDP</div><div class="wl-price">SAR 590</div><div class="wl-drop" style="color:var(--ink-3);">No drop yet</div></div>
           </div>
-          <div class="wl-card">
+          <div class="wl-card" onclick="switchScreen('product-detail')">
             <div class="wl-img-zone"><div class="prod-img-wrap" style="background:var(--b-sage);height:80px;"><img class="prod-img" src="jpeg6.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:14px;">Cr</div></div><div class="wl-heart"><svg viewBox="0 0 24 24"><path fill="var(--red)" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div></div>
             <div class="wl-body"><div class="wl-name">Creed Aventus</div><div class="wl-price">SAR 840</div><div class="wl-drop">↓ Excellent Price</div></div>
           </div>
@@ -1534,10 +1574,10 @@ img    { display:block; }
       <div id="panel-recent" style="display:none;padding-bottom:16px;">
         <div class="sec-head" style="margin-top:0;"><span class="sec-label">Recently Viewed</span><span class="sec-link">Clear</span></div>
         <div class="recent-scroll">
-          <div class="recent-chip" onclick="switchScreen('product')"><div class="recent-thumb"><div class="prod-img-wrap" style="background:var(--b-purple);height:32px;"><img class="prod-img" src="jpeg1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">Cd</div></div></div><div class="recent-info"><div class="rn">Bleu de Chanel</div><div class="rp">SAR 485</div></div></div>
-          <div class="recent-chip"><div class="recent-thumb"><div class="prod-img-wrap" style="background:var(--b-teal);height:32px;"><img class="prod-img" src="jpeg2.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">Dk</div></div></div><div class="recent-info"><div class="rn">Sauvage EDT</div><div class="rp">SAR 310</div></div></div>
-          <div class="recent-chip"><div class="recent-thumb"><div class="prod-img-wrap" style="background:var(--b-amber);height:32px;"><img class="prod-img" src="jpeg3.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">Tf</div></div></div><div class="recent-info"><div class="rn">Tobacco Oud</div><div class="rp">SAR 590</div></div></div>
-          <div class="recent-chip"><div class="recent-thumb"><div class="prod-img-wrap" style="background:var(--b-sage);height:32px;"><img class="prod-img" src="jpeg6.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">Cr</div></div></div><div class="recent-info"><div class="rn">Aventus</div><div class="rp">SAR 840</div></div></div>
+          <div class="recent-chip" onclick="switchScreen('product-detail')"><div class="recent-thumb"><div class="prod-img-wrap" style="background:var(--b-purple);height:32px;"><img class="prod-img" src="jpeg1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">Cd</div></div></div><div class="recent-info"><div class="rn">Bleu de Chanel</div><div class="rp">SAR 485</div></div></div>
+          <div class="recent-chip" onclick="switchScreen('product-detail')"><div class="recent-thumb"><div class="prod-img-wrap" style="background:var(--b-teal);height:32px;"><img class="prod-img" src="jpeg2.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">Dk</div></div></div><div class="recent-info"><div class="rn">Sauvage EDT</div><div class="rp">SAR 310</div></div></div>
+          <div class="recent-chip" onclick="switchScreen('product-detail')"><div class="recent-thumb"><div class="prod-img-wrap" style="background:var(--b-amber);height:32px;"><img class="prod-img" src="jpeg3.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">Tf</div></div></div><div class="recent-info"><div class="rn">Tobacco Oud</div><div class="rp">SAR 590</div></div></div>
+          <div class="recent-chip" onclick="switchScreen('product-detail')"><div class="recent-thumb"><div class="prod-img-wrap" style="background:var(--b-sage);height:32px;"><img class="prod-img" src="jpeg6.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">Cr</div></div></div><div class="recent-info"><div class="rn">Aventus</div><div class="rp">SAR 840</div></div></div>
         </div>
       </div>
 
