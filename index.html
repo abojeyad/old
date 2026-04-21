@@ -1133,36 +1133,41 @@ img    { display:block; }
        AUTH SCREEN
   ════════════════════════════════ -->
   <div class="screen" id="screen-auth">
-    <button style="position:absolute; top:12px; left:16px; z-index:101; padding:6px 12px; background:rgba(255,255,255,0.9); border:1px solid var(--border); border-radius:20px; font-size:12px; font-weight:500; color:var(--ink-2); cursor:default; pointer-events:none;">العربية</button>
+    <button id="lang-switcher" style="position:absolute; top:24px; left:16px; z-index:101; padding:6px 12px; background:rgba(255,255,255,0.9); border:1px solid var(--border); border-radius:20px; font-size:12px; font-weight:500; color:var(--ink-2); cursor:default; pointer-events:none;">العربية</button>
     <div class="auth-screen">
       <div class="auth-hero">
-        <div class="auth-wordmark">Yourdis</div>
-        <div class="auth-wordmark-ar">يوردس</div>
-        <div class="auth-tagline">Track fragrances across every Saudi store. Get alerts when prices drop.</div>
+        <img src="logo.png" alt="Yourdis Logo" style="width:160px; height:160px; margin-bottom:2px; object-fit:contain;">
+        <div class="auth-wordmark" style="text-transform: uppercase;">YOURDIS</div>
+        <div class="auth-tagline">Compare and track prices for all products across every store</div>
       </div>
       <div class="auth-panel">
         <div class="auth-panel-title">Sign in or create an account</div>
-        <button class="auth-btn auth-btn-primary" onclick="document.getElementById('otp-overlay').classList.add('visible')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:17px;height:17px;"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8a19.79 19.79 0 01-3.07-8.66A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92v2z"/></svg>
-          Continue with Phone
-        </button>
-        <div class="auth-divider"><span>or</span></div>
+        
         <button class="auth-btn auth-btn-google" onclick="switchScreen('home')">
           <svg viewBox="0 0 24 24" width="17" height="17"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
           Continue with Google
         </button>
-        <button class="auth-btn auth-btn-ghost" onclick="switchScreen('home')">Browse without account →</button>
+
+        <div class="auth-divider"><span>or</span></div>
+
+        <button class="auth-btn auth-btn-primary" onclick="document.getElementById('otp-overlay').classList.add('visible');document.getElementById('lang-switcher').style.display='none'">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:17px;height:17px;"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8a19.79 19.79 0 01-3.07-8.66A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92v2z"/></svg>
+          Continue with Email/Phone
+        </button>
+
+        <button class="auth-btn auth-btn-ghost" style="border: 1px solid var(--border-strong);" onclick="switchScreen('home')">Continue as Guest</button>
+        
         <p class="auth-terms">By continuing you agree to our Terms of Service and Privacy Policy</p>
       </div>
     </div>
     <!-- OTP overlay -->
     <div class="otp-overlay" id="otp-overlay">
-      <div class="otp-back" onclick="document.getElementById('otp-overlay').classList.remove('visible')">
+      <div class="otp-back" onclick="document.getElementById('otp-overlay').classList.remove('visible');document.getElementById('lang-switcher').style.display='block'">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
         Back
       </div>
       <div class="otp-title">Enter code</div>
-      <div class="otp-sub">We sent a 4-digit code to<br><strong>+966 5X XXX XXXX</strong></div>
+      <div class="otp-sub">We sent a 4-digit code to<br><strong>you@gmail.com</strong></div>
       <div class="otp-boxes">
         <div class="otp-box filled">3</div>
         <div class="otp-box filled">7</div>
@@ -1877,6 +1882,8 @@ img    { display:block; }
 		        <span class="note-chip note-base">Base Notes: Patchouli · Labdanum</span>
 		        </div>	
 				<span class="note-chip note-country">Brand Country: France</span>
+				<span class="note-chip note-country">Gender: Unisex</span>
+				<span class="note-chip note-family" style="background: #f0f0f0; color: #0288d1; font-size:10px; padding:3px 8px; border-radius:20px;">Fragrance Family: Woody</span>
 				<div class="divider"></div>
 			
       </div>
@@ -1923,7 +1930,7 @@ img    { display:block; }
               <div class="alert-title">Price drop alert</div>
               <div class="alert-sub">Notify me when this price drops</div>
             </div>
-            <div class="toggle" id="pdToggle" onclick="toggleEl('pdToggle')"><div class="toggle-thumb"></div></div>
+            <div class="toggle off" id="pdToggle" onclick="toggleEl('pdToggle')"><div class="toggle-thumb"></div></div>
           </div>
         </div>
 				
@@ -2285,6 +2292,13 @@ img    { display:block; }
             </div>
             <div class="settings-row-right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
           </div>
+		  <div class="settings-row">
+            <div class="settings-row-left">
+              <div class="settings-row-icon sri-purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+              <div class="settings-row-info"><div class="settings-row-name">Email</div><div class="settings-row-sub">you@gmail.com</div></div>
+            </div>
+            <div class="settings-row-right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
+          </div>
           <div class="settings-row">
             <div class="settings-row-left">
               <div class="settings-row-icon sri-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
@@ -2458,7 +2472,7 @@ var PRODUCTS = {
     name: 'Dior Sauvage EDT',
     brand: 'Dior · 200ml · Eau de Toilette',
     img: 'jpeg2.jpg', initials: 'Dk', bg: 'var(--b-teal)',
-    notes: '<span class="note-chip note-top">Bergamot · Pepper</span><span class="note-chip note-heart">Lavender · Geranium</span><span class="note-chip note-base">Ambroxan · Cedar</span>',
+    notes: '<span class="note-chip note-top">Top Notes: Citrus · Bergamot</span><span class="note-chip note-heart">Heart Notes: Vetiver · Cedarwood</span><span class="note-chip note-base">Base Notes: Patchouli · Labdanum</span>',
     desc: 'Radically fresh, ruggedly clean. Sauvage EDT captures the wild beauty of desert landscapes — a burst of citrus riding on a woody, musky wave.',
     price: 'SAR 310', badge: '↓ 16% off', badgeClass: 'badge-good',
     atl: 'SAR 285', avg: 'SAR 355', ath: 'SAR 430',
@@ -2470,7 +2484,7 @@ var PRODUCTS = {
     name: 'Tom Ford Tobacco Oud EDP',
     brand: 'Tom Ford · 50ml · Eau de Parfum',
     img: 'jpeg3.jpg', initials: 'Tf', bg: 'var(--b-amber)',
-    notes: '<span class="note-chip note-top">Tobacco · Smoky</span><span class="note-chip note-heart">Oud · Sandalwood</span><span class="note-chip note-base">Spice · Leather</span>',
+    notes: '<span class="note-chip note-top">Top Notes: Citrus · Bergamot</span><span class="note-chip note-heart">Heart Notes: Vetiver · Cedarwood</span><span class="note-chip note-base">Base Notes: Patchouli · Labdanum</span>',
     desc: 'Tobacco Oud is an intensely rich fragrance from the Private Blend collection. Layers of smoky tobacco and rare oud create a powerfully opulent composition.',
     price: 'SAR 590', badge: '↓ 9% off', badgeClass: 'badge-good',
     atl: 'SAR 560', avg: 'SAR 640', ath: 'SAR 750',
@@ -2482,7 +2496,7 @@ var PRODUCTS = {
     name: 'YSL Y Le Parfum',
     brand: 'Yves Saint Laurent · 60ml · Parfum',
     img: 'jpeg4.jpg', initials: 'YS', bg: 'var(--b-pink)',
-    notes: '<span class="note-chip note-top">Apple · Ginger</span><span class="note-chip note-heart">Sage · Lavender</span><span class="note-chip note-base">Suede · Amber</span>',
+    notes: '<span class="note-chip note-top">Top Notes: Citrus · Bergamot</span><span class="note-chip note-heart">Heart Notes: Vetiver · Cedarwood</span><span class="note-chip note-base">Base Notes: Patchouli · Labdanum</span>',
     desc: 'Y Le Parfum takes the iconic Y DNA deeper — richer suede and aromatic herbs with confident amber warmth that lasts from day into night.',
     price: 'SAR 290', badge: '↓ 17% off', badgeClass: 'badge-good',
     atl: 'SAR 265', avg: 'SAR 330', ath: 'SAR 390',
@@ -2494,7 +2508,7 @@ var PRODUCTS = {
     name: 'Acqua di Gio EDP',
     brand: 'Armani · 75ml · Eau de Parfum',
     img: 'jpeg5.jpg', initials: 'Aq', bg: 'var(--b-blue)',
-    notes: '<span class="note-chip note-top">Marine · Bergamot</span><span class="note-chip note-heart">Rosemary · Incense</span><span class="note-chip note-base">Patchouli · Vetiver</span>',
+    notes: '<span class="note-chip note-top">Top Notes: Citrus · Bergamot</span><span class="note-chip note-heart">Heart Notes: Vetiver · Cedarwood</span><span class="note-chip note-base">Base Notes: Patchouli · Labdanum</span>',
     desc: 'Acqua di Gio EDP elevates the legendary original — deeper incense and mineral facets transform the classic fresh aquatic into a more contemplative, refined experience.',
     price: 'SAR 265', badge: '↓ 24% off', badgeClass: 'badge-fire',
     atl: 'SAR 250', avg: 'SAR 315', ath: 'SAR 380',
@@ -2506,7 +2520,7 @@ var PRODUCTS = {
     name: 'Creed Aventus',
     brand: 'Creed · 100ml · Eau de Parfum',
     img: 'jpeg6.jpg', initials: 'Cr', bg: 'var(--b-sage)',
-    notes: '<span class="note-chip note-top">Pineapple · Bergamot</span><span class="note-chip note-heart">Birch · Rose</span><span class="note-chip note-base">Musk · Oakmoss · Vanilla</span>',
+    notes: '<span class="note-chip note-top">Top Notes: Citrus · Bergamot</span><span class="note-chip note-heart">Heart Notes: Vetiver · Cedarwood</span><span class="note-chip note-base">Base Notes: Patchouli · Labdanum</span>',
     desc: 'Creed Aventus is the stuff of legend — a triumphant, smoky, fruity signature that has defined modern masculine luxury for over a decade.',
     price: 'SAR 840', badge: '↓ 20% off', badgeClass: 'badge-fire',
     atl: 'SAR 810', avg: 'SAR 990', ath: 'SAR 1,150',
