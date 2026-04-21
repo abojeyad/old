@@ -1342,22 +1342,22 @@ img    { display:block; }
       <div class="sec-head"><span class="sec-label">Recent Price Drops</span><span class="sec-link" onclick="showPriceDrops()">View all</span></div>
       <div class="drop-row" onclick="openProduct('chanel')">
         <div class="drop-thumb"><div class="prod-img-wrap" style="background:var(--b-purple);height:52px;"><img class="prod-img" src="jpeg1.jpg" alt="Bleu de Chanel" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:12px;">Cd</div></div></div>
-        <div class="drop-info"><div class="drop-name">Bleu de Chanel EDP 100ml</div><div class="drop-sub">Chanel · 6 stores · 2 hrs ago</div><div style="margin-top:4px;"><span class="badge badge-fire">↓ 22% off</span></div></div>
+        <div class="drop-info"><div class="drop-name">Bleu de Chanel EDP 100ml</div><div class="drop-sub">Chanel · Kaneen · 2 hrs ago</div><div style="margin-top:4px;"><span class="badge badge-fire">↓ 22% off</span></div></div>
         <div class="drop-right"><div class="drop-price">SAR 485</div><div class="drop-delta">−SAR 135</div></div>
       </div>
       <div class="drop-row" onclick="openProduct('ysl')">
         <div class="drop-thumb"><div class="prod-img-wrap" style="background:var(--b-pink);height:52px;"><img class="prod-img" src="jpeg4.jpg" alt="YSL Y" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:12px;">YS</div></div></div>
-        <div class="drop-info"><div class="drop-name">Y Le Parfum 60ml</div><div class="drop-sub">YSL · 4 stores · 5 hrs ago</div><div style="margin-top:4px;"><span class="badge badge-good">↗ Good Price</span></div></div>
+        <div class="drop-info"><div class="drop-name">Y Le Parfum 60ml</div><div class="drop-sub">YSL · Amazon · 5 hrs ago</div><div style="margin-top:4px;"><span class="badge badge-good">↗ Good Price</span></div></div>
         <div class="drop-right"><div class="drop-price">SAR 290</div><div class="drop-delta">−SAR 60</div></div>
       </div>
       <div class="drop-row" onclick="openProduct('dior')">
         <div class="drop-thumb"><div class="prod-img-wrap" style="background:var(--b-teal);height:52px;"><img class="prod-img" src="jpeg2.jpg" alt="Sauvage" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:12px;">Dk</div></div></div>
-        <div class="drop-info"><div class="drop-name">Dior Sauvage EDT 200ml</div><div class="drop-sub">Dior · 5 stores · Yesterday</div><div style="margin-top:4px;"><span class="badge badge-good">↗ Good Price</span></div></div>
+        <div class="drop-info"><div class="drop-name">Dior Sauvage EDT 200ml</div><div class="drop-sub">Dior · Rose · Yesterday</div><div style="margin-top:4px;"><span class="badge badge-good">↗ Good Price</span></div></div>
         <div class="drop-right"><div class="drop-price">SAR 310</div><div class="drop-delta">−SAR 60</div></div>
       </div>
       <div class="drop-row" onclick="openProduct('creed')">
         <div class="drop-thumb"><div class="prod-img-wrap" style="background:var(--b-sage);height:52px;"><img class="prod-img" src="jpeg6.jpg" alt="Aventus" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:12px;">Cr</div></div></div>
-        <div class="drop-info"><div class="drop-name">Creed Aventus 100ml</div><div class="drop-sub">Creed · 3 stores · 2 days ago</div><div style="margin-top:4px;"><span class="badge badge-fire">↓ 20% off</span></div></div>
+        <div class="drop-info"><div class="drop-name">Creed Aventus 100ml</div><div class="drop-sub">Creed · Sephora · 2 days ago</div><div style="margin-top:4px;"><span class="badge badge-fire">↓ 20% off</span></div></div>
         <div class="drop-right"><div class="drop-price">SAR 840</div><div class="drop-delta">−SAR 210</div></div>
       </div>
 
@@ -1479,6 +1479,17 @@ img    { display:block; }
         <span class="listing-title">Hot Deals Today</span>
         <span class="listing-count">12 deals</span>
       </div>
+
+      <!-- Hot Deals Search Bar -->
+      <div style="margin-top:8px; padding:0 20px 8px;">
+        <div style="position:relative; display:flex; align-items:center;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="position:absolute; left:12px; width:16px; height:16px; color:var(--ink-3);"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="hot-deals-search" placeholder="Search deals..." onkeyup="filterHotDeals(this.value)" 
+            style="width:100%; padding:10px 12px 10px 36px; background:#F9F5F6; border:1px solid var(--border); border-radius:var(--radius-md); font-size:13px; font-family:var(--font-body); color:var(--ink-1); outline:none; transition:border-color 0.2s;"
+            onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+        </div>
+      </div>
+
       <div class="drops-sort-bar">
         <span class="sort-chip active">All</span>
         <span class="sort-chip">EDP</span>
@@ -1598,32 +1609,32 @@ img    { display:block; }
       <div style="flex:1;overflow-y:auto;">
         <div class="drop-row" onclick="closePriceDrops();openProduct('chanel')">
           <div class="drop-thumb"><div class="prod-img-wrap" style="background:var(--b-purple);height:52px;"><img class="prod-img" src="jpeg1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:12px;">Cd</div></div></div>
-          <div class="drop-info"><div class="drop-name">Bleu de Chanel EDP 100ml</div><div class="drop-sub">Chanel · 6 stores · 2 hrs ago</div><div style="margin-top:4px;"><span class="badge badge-fire">↓ 22% off</span></div></div>
+          <div class="drop-info"><div class="drop-name">Bleu de Chanel EDP 100ml</div><div class="drop-sub">Chanel · Kaneen · 2 hrs ago</div><div style="margin-top:4px;"><span class="badge badge-fire">↓ 22% off</span></div></div>
           <div class="drop-right"><div class="drop-price">SAR 485</div><div class="drop-delta">−SAR 135</div></div>
         </div>
         <div class="drop-row" onclick="closePriceDrops();openProduct('armani')">
           <div class="drop-thumb"><div class="prod-img-wrap" style="background:var(--b-blue);height:52px;"><img class="prod-img" src="jpeg5.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:12px;">Aq</div></div></div>
-          <div class="drop-info"><div class="drop-name">Acqua di Gio EDP</div><div class="drop-sub">Armani · 4 stores · 3 hrs ago</div><div style="margin-top:4px;"><span class="badge badge-fire">↓ 24% off</span></div></div>
+          <div class="drop-info"><div class="drop-name">Acqua di Gio EDP</div><div class="drop-sub">Armani · Sephora · 3 hrs ago</div><div style="margin-top:4px;"><span class="badge badge-fire">↓ 24% off</span></div></div>
           <div class="drop-right"><div class="drop-price">SAR 265</div><div class="drop-delta">−SAR 85</div></div>
         </div>
         <div class="drop-row" onclick="closePriceDrops();openProduct('ysl')">
           <div class="drop-thumb"><div class="prod-img-wrap" style="background:var(--b-pink);height:52px;"><img class="prod-img" src="jpeg4.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:12px;">YS</div></div></div>
-          <div class="drop-info"><div class="drop-name">Y Le Parfum 60ml</div><div class="drop-sub">YSL · 4 stores · 5 hrs ago</div><div style="margin-top:4px;"><span class="badge badge-good">↗ 17% off</span></div></div>
+          <div class="drop-info"><div class="drop-name">Y Le Parfum 60ml</div><div class="drop-sub">YSL · Amazon · 5 hrs ago</div><div style="margin-top:4px;"><span class="badge badge-good">↗ 17% off</span></div></div>
           <div class="drop-right"><div class="drop-price">SAR 290</div><div class="drop-delta">−SAR 60</div></div>
         </div>
         <div class="drop-row" onclick="closePriceDrops();openProduct('dior')">
           <div class="drop-thumb"><div class="prod-img-wrap" style="background:var(--b-teal);height:52px;"><img class="prod-img" src="jpeg2.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:12px;">Dk</div></div></div>
-          <div class="drop-info"><div class="drop-name">Dior Sauvage EDT 200ml</div><div class="drop-sub">Dior · 5 stores · Yesterday</div><div style="margin-top:4px;"><span class="badge badge-good">↗ 16% off</span></div></div>
+          <div class="drop-info"><div class="drop-name">Dior Sauvage EDT 200ml</div><div class="drop-sub">Dior · Rose · Yesterday</div><div style="margin-top:4px;"><span class="badge badge-good">↗ 16% off</span></div></div>
           <div class="drop-right"><div class="drop-price">SAR 310</div><div class="drop-delta">−SAR 60</div></div>
         </div>
         <div class="drop-row" onclick="closePriceDrops();openProduct('creed')">
           <div class="drop-thumb"><div class="prod-img-wrap" style="background:var(--b-sage);height:52px;"><img class="prod-img" src="jpeg6.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:12px;">Cr</div></div></div>
-          <div class="drop-info"><div class="drop-name">Creed Aventus 100ml</div><div class="drop-sub">Creed · 3 stores · 2 days ago</div><div style="margin-top:4px;"><span class="badge badge-fire">↓ 20% off</span></div></div>
+          <div class="drop-info"><div class="drop-name">Creed Aventus 100ml</div><div class="drop-sub">Creed · Sephora · 2 days ago</div><div style="margin-top:4px;"><span class="badge badge-fire">↓ 20% off</span></div></div>
           <div class="drop-right"><div class="drop-price">SAR 840</div><div class="drop-delta">−SAR 210</div></div>
         </div>
         <div class="drop-row" onclick="closePriceDrops();openProduct('tomford')">
           <div class="drop-thumb"><div class="prod-img-wrap" style="background:var(--b-amber);height:52px;"><img class="prod-img" src="jpeg3.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:12px;">Tf</div></div></div>
-          <div class="drop-info"><div class="drop-name">Tobacco Oud EDP 50ml</div><div class="drop-sub">Tom Ford · 2 stores · 3 days ago</div><div style="margin-top:4px;"><span class="badge badge-good">↗ 9% off</span></div></div>
+          <div class="drop-info"><div class="drop-name">Tobacco Oud EDP 50ml</div><div class="drop-sub">Tom Ford · Kaneen · 3 days ago</div><div style="margin-top:4px;"><span class="badge badge-good">↗ 9% off</span></div></div>
           <div class="drop-right"><div class="drop-price">SAR 590</div><div class="drop-delta">−SAR 60</div></div>
         </div>
         <div style="height:16px;"></div>
@@ -1958,7 +1969,7 @@ img    { display:block; }
 				
 
         <!-- Similar fragrances -->
-        <div style="font-size:11px;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-3);font-weight:500;margin-bottom:10px;">Similar Fragrances</div>
+        <div style="font-size:11px;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-3);font-weight:500;margin-bottom:10px;">Alternative Products</div>
         <div style="margin-bottom:16px;">
           <div class="store-row" onclick="openProduct('dior')">
             <div class="store-logo-sq" style="background:var(--b-teal);overflow:hidden;padding:0;"><div class="prod-img-wrap" style="height:34px;"><img class="prod-img" src="jpeg1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">Dk</div></div></div>
@@ -2904,6 +2915,18 @@ function filterBrandProducts(query) {
   cards.forEach(function(card) {
     var text = card.textContent.toLowerCase();
     card.style.display = (!q || text.includes(q)) ? '' : 'none';
+  });
+}
+
+/* ── HOT DEALS SEARCH FILTER ───────────────────────────── */
+function filterHotDeals(query) {
+  var q = query.toLowerCase();
+  var cards = document.querySelectorAll('#overlay-hot-deals .deal-card');
+  cards.forEach(function(card) {
+    var name = card.querySelector('.deal-name') ? card.querySelector('.deal-name').textContent.toLowerCase() : '';
+    var brand = card.querySelector('.deal-brand') ? card.querySelector('.deal-brand').textContent.toLowerCase() : '';
+    var store = card.querySelector('.deal-store') ? card.querySelector('.deal-store').textContent.toLowerCase() : '';
+    card.style.display = (!q || name.includes(q) || brand.includes(q) || store.includes(q)) ? '' : 'none';
   });
 }
 
