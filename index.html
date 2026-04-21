@@ -24,8 +24,10 @@
   --ink-2: #4A4A4A;
   --ink-3: #8A8A8A;
 
-  --accent:       #3A3580;
-  --accent-light: #EDEEFF;
+  --accent:           #79002F;
+  --accent-light:     #F9E6EC;
+  --accent-secondary: #EAA005;
+  --accent-sec-light: #FDF3DC;
 
   --green:        #1D7D50;
   --green-light:  #E6F5EE;
@@ -217,13 +219,13 @@ img    { display:block; }
 }
 .auth-hero {
   min-height: 280px; height: auto;
-  background: var(--b-purple);
+  background: linear-gradient(160deg, #4a0020 0%, #79002F 55%, #8c1a3a 100%);
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   padding: 40px 32px 30px; text-align: center; flex-shrink: 0;
 }
-.auth-wordmark { font-family:var(--font-display); font-size:32px; color:var(--ink-1); margin-bottom:4px; }
-.auth-wordmark-ar { font-size:15px; color:var(--ink-3); letter-spacing:0.08em; margin-bottom:20px; }
-.auth-tagline { font-size:13px; color:var(--ink-2); line-height:1.7; max-width:240px; }
+.auth-wordmark { font-family:var(--font-display); font-size:32px; color:#FFFFFF; margin-bottom:4px; }
+.auth-wordmark-ar { font-size:15px; color:rgba(255,255,255,0.65); letter-spacing:0.08em; margin-bottom:20px; }
+.auth-tagline { font-size:13px; color:rgba(255,255,255,0.8); line-height:1.7; max-width:240px; }
 .auth-panel {
   flex:1; background:var(--bg-phone);
   border-top-left-radius:var(--radius-xl); border-top-right-radius:var(--radius-xl);
@@ -238,9 +240,9 @@ img    { display:block; }
   cursor:pointer; transition:opacity 0.15s;
 }
 .auth-btn:hover { opacity:0.88; }
-.auth-btn-primary { background:var(--accent); color:#fff; border:none; }
+.auth-btn-primary { background:var(--accent-secondary); color:#fff; border:none; }
 .auth-btn-google  { background:var(--bg-phone); color:var(--ink-1); border:1px solid var(--border-strong); }
-.auth-btn-ghost   { background:var(--bg-surface); color:var(--ink-2); border:none; font-size:13px; font-weight:400; }
+.auth-btn-ghost   { background:var(--bg-surface); color:var(--accent); border:1px solid var(--accent); font-size:13px; font-weight:500; }
 .auth-divider {
   display:flex; align-items:center; gap:10px; margin:2px 0;
 }
@@ -275,7 +277,7 @@ img    { display:block; }
 .otp-resend span { color:var(--accent); cursor:pointer; }
 .otp-confirm {
   margin-top:auto; width:100%; padding:14px; border-radius:var(--radius-md);
-  background:var(--accent); color:#fff; font-size:14px; font-weight:500;
+  background:var(--accent-secondary); color:#fff; font-size:14px; font-weight:500;
   border:none; cursor:pointer;
 }
 
@@ -626,7 +628,7 @@ img    { display:block; }
    SCREEN: ACTIVITY
 ═══════════════════════════════════════════════════════════ */
 .profile-header {
-  background:var(--b-purple); padding:20px 20px 22px;
+  background: linear-gradient(135deg, #5a0024 0%, var(--accent) 100%); padding:20px 20px 22px;
   display:flex; align-items:center; gap:14px;
 }
 .avatar-wrap {
@@ -639,8 +641,8 @@ img    { display:block; }
   display:flex; align-items:center; justify-content:center;
   font-family:var(--font-display); font-size:18px; color:#fff; letter-spacing:0.03em;
 }
-.user-name { font-size:16px; font-weight:500; color:var(--ink-1); }
-.user-level { font-size:11px; color:var(--ink-3); margin-top:2px; }
+.user-name { font-size:16px; font-weight:500; color:#FFFFFF; }
+.user-level { font-size:11px; color:rgba(255,255,255,0.65); margin-top:2px; }
 
 .stats-grid {
   display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; padding:0 20px;
@@ -651,6 +653,14 @@ img    { display:block; }
 }
 .stat-l { font-size:10px; color:var(--ink-3); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px; }
 .stat-v { font-family:var(--font-display); font-size:20px; color:var(--ink-1); }
+.stat-icon { width:26px; height:26px; border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:center; margin-bottom:8px; }
+.stat-icon svg { width:13px; height:13px; }
+.stat-card.s-primary { background: linear-gradient(135deg, #5a0024 0%, var(--accent) 100%); border-color:transparent; }
+.stat-card.s-primary .stat-l { color:rgba(255,255,255,0.65); }
+.stat-card.s-primary .stat-v { color:#fff; }
+.stat-card.s-gold { background: linear-gradient(135deg, #b97800 0%, var(--accent-secondary) 100%); border-color:transparent; }
+.stat-card.s-gold .stat-l { color:rgba(255,255,255,0.65); }
+.stat-card.s-gold .stat-v { color:#fff; }
 
 /* Activity tabs */
 .act-tabs {
@@ -1135,10 +1145,10 @@ img    { display:block; }
   <div class="screen" id="screen-auth">
     <button id="lang-switcher" style="position:absolute; top:24px; left:16px; z-index:101; padding:6px 12px; background:rgba(255,255,255,0.9); border:1px solid var(--border); border-radius:20px; font-size:12px; font-weight:500; color:var(--ink-2); cursor:default; pointer-events:none;">العربية</button>
     <div class="auth-screen">
-      <div class="auth-hero">
+      <div class="auth-hero" style="background: #F9F5F6; min-height: 280px;">
         <img src="logo.png" alt="Yourdis Logo" style="width:160px; height:160px; margin-bottom:2px; object-fit:contain;">
-        <div class="auth-wordmark" style="text-transform: uppercase;">YOURDIS</div>
-        <div class="auth-tagline">Compare and track prices for all products across every store</div>
+        <div class="auth-wordmark" style="text-transform: uppercase; color: var(--ink-1);">YOURDIS</div>
+        <div class="auth-tagline" style="color: var(--ink-2);">Compare and track prices for all products across every store</div>
       </div>
       <div class="auth-panel">
         <div class="auth-panel-title">Sign in or create an account</div>
@@ -2084,7 +2094,7 @@ img    { display:block; }
           </div>
           <div class="alert-v2-badge-block">
             <span class="badge badge-fire">Great! Dropped &#x2193; 22%</span>
-            <div class="alert-v2-target">Target: SAR 500</div>
+            <div class="alert-v2-target">Store: Asheq Al Etour</div>
           </div>
         </div>
         <div class="alert-v2-actions">
@@ -2116,7 +2126,7 @@ img    { display:block; }
           </div>
           <div class="alert-v2-badge-block">
             <span class="badge badge-good">Price Up &#x2197; 16%</span>
-            <div class="alert-v2-target">Target: SAR 300</div>
+            <div class="alert-v2-target">Store: Laromeos</div>
           </div>
         </div>
         <div class="alert-v2-actions">
@@ -2148,7 +2158,7 @@ img    { display:block; }
           </div>
           <div class="alert-v2-badge-block">
             <span class="badge badge-fire">Great! Dropped &#x2193; 27%</span>
-            <div class="alert-v2-target">Target: SAR 900</div>
+            <div class="alert-v2-target">Store: Kaneen</div>
           </div>
         </div>
         <div class="alert-v2-actions">
@@ -2172,93 +2182,90 @@ img    { display:block; }
   <div class="screen" id="screen-activity">
     <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:10px;">●●●●</span></div>
     <div class="scroll-area">
-      <div class="profile-header">
+
+      <!-- Profile Header — simplified: name + avatar only -->
+      <div class="profile-header" style="background: #F9F5F6;">
         <div class="avatar-wrap">
           <img class="avatar-img" src="profile.jpg" alt="Profile" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
           <div class="avatar-fallback" style="display:none;">AH</div>
         </div>
-        <div><div class="user-name">Abdullah Hassan</div><div class="user-level">Deal Hunter · Level 4</div></div>
-        <!-- Settings icon — now functional -->
-        <div class="icon-btn" style="margin-left:auto;" onclick="showSettings()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
+        <div>
+          <div class="user-name" style="color: var(--ink-1);">Abdullah Hassan</div>
+          <div style="font-size: 10px; color: var(--ink-3); margin-top: 2px;">Joined: Oct 2023, 10:30 AM</div>
         </div>
-      </div>
-      <div style="height:12px;"></div>
-
-      <div class="stats-grid" style="margin-bottom:16px;">
-        <div class="stat-card"><div class="stat-l">Total saved</div><div class="stat-v">SAR 892</div></div>
-        <div class="stat-card"><div class="stat-l">Deals found</div><div class="stat-v">14</div></div>
-        <div class="stat-card"><div class="stat-l">Alerts active</div><div class="stat-v">3</div></div>
-        <div class="stat-card"><div class="stat-l">Tracking</div><div class="stat-v">7</div></div>
-      </div>
-
-      <!-- Tab switcher -->
-      <div class="act-tabs">
-        <div class="act-tab active" id="tab-log" onclick="showTab('log')">Activity Log</div>
-        <div class="act-tab" id="tab-wish" onclick="showTab('wish')">Wishlist</div>
-        <div class="act-tab" id="tab-recent" onclick="showTab('recent')">Recently Viewed</div>
-      </div>
-
-      <!-- Activity Log panel -->
-      <div id="panel-log">
-        <div class="sec-head" style="margin-top:0;"><span class="sec-label">Achievements</span></div>
-        <div class="achieve-row" style="margin-bottom:16px;">
-          <div class="achieve"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg><span class="achieve-label">First Follow</span></div>
-          <div class="achieve"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span class="achieve-label">First Alert</span></div>
-          <div class="achieve"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span class="achieve-label">Deal Hunter</span></div>
-          <div class="achieve locked"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg><span class="achieve-label">Price Oracle</span></div>
-        </div>
-        <!-- My Interests with Edit trigger -->
-        <div class="sec-head" style="margin-top:0;"><span class="sec-label">My Interests</span><span class="sec-link" onclick="showInterestsEdit()">Edit</span></div>
-        <div class="pref-chips" style="margin-bottom:16px;">
-          <span class="pref-chip on">Woody / Oud</span>
-          <span class="pref-chip on">Oriental</span>
-          <span class="pref-chip">Niche</span>
-          <span class="pref-chip">Fresh / Aqua</span>
-          <span class="pref-chip">Floral</span>
-        </div>
-        <div class="divider" style="margin:4px 0 14px;"></div>
-        <div class="sec-head" style="margin-top:0;"><span class="sec-label">Activity Log</span></div>
-        <div class="timeline" style="margin-bottom:16px;">
-          <div class="tl-item"><div class="tl-dot tld-drop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div><div class="tl-body"><div class="tl-text">Price drop on Bleu de Chanel — now SAR 485 (was SAR 620)</div><div class="tl-time">2 hours ago</div></div></div>
-          <div class="tl-item"><div class="tl-dot tld-fav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div><div class="tl-body"><div class="tl-text">Added Dior Sauvage EDT to Wishlist</div><div class="tl-time">Yesterday</div></div></div>
-          <div class="tl-item"><div class="tl-dot tld-alert"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="tl-body"><div class="tl-text">Alert triggered — Tom Ford Tobacco Oud hit SAR 590</div><div class="tl-time">3 days ago</div></div></div>
-          <div class="tl-item"><div class="tl-dot tld-drop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div><div class="tl-body"><div class="tl-text">Saved SAR 135 via YSL Y Le Parfum deal</div><div class="tl-time">1 week ago</div></div></div>
+        <!-- Settings icon -->
+        <div class="icon-btn" style="margin-left:auto;background:rgba(0,0,0,0.05);border-color:rgba(0,0,0,0.1);" onclick="showSettings()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--ink-2)" stroke-width="1.5"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
         </div>
       </div>
 
-      <!-- Wishlist panel -->
-      <div id="panel-wish" style="display:none;padding-bottom:16px;">
-        <div class="sec-head" style="margin-top:0;"><span class="sec-label">Wishlist · 4 items</span><span class="sec-link">Clear all</span></div>
-        <div class="wishlist-grid">
-          <div class="wl-card" onclick="openProduct('chanel')">
-            <div class="wl-img-zone"><div class="prod-img-wrap" style="background:var(--b-purple);height:80px;"><img class="prod-img" src="jpeg1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:14px;">Cd</div></div><div class="wl-heart"><svg viewBox="0 0 24 24"><path fill="var(--red)" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div></div>
-            <div class="wl-body"><div class="wl-name">Bleu de Chanel EDP</div><div class="wl-price">SAR 485</div><div class="wl-drop">↓ 22% off</div></div>
-          </div>
-          <div class="wl-card" onclick="openProduct('dior')">
-            <div class="wl-img-zone"><div class="prod-img-wrap" style="background:var(--b-teal);height:80px;"><img class="prod-img" src="jpeg2.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:14px;">Dk</div></div><div class="wl-heart"><svg viewBox="0 0 24 24"><path fill="var(--red)" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div></div>
-            <div class="wl-body"><div class="wl-name">Dior Sauvage EDT</div><div class="wl-price">SAR 310</div><div class="wl-drop" style="color:var(--ink-3);">↗ Good Price</div></div>
-          </div>
-          <div class="wl-card" onclick="openProduct('tomford')">
-            <div class="wl-img-zone"><div class="prod-img-wrap" style="background:var(--b-amber);height:80px;"><img class="prod-img" src="jpeg3.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:14px;">Tf</div></div><div class="wl-heart"><svg viewBox="0 0 24 24"><path fill="var(--red)" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div></div>
-            <div class="wl-body"><div class="wl-name">Tobacco Oud EDP</div><div class="wl-price">SAR 590</div><div class="wl-drop" style="color:var(--ink-3);">No drop yet</div></div>
-          </div>
-          <div class="wl-card" onclick="openProduct('creed')">
-            <div class="wl-img-zone"><div class="prod-img-wrap" style="background:var(--b-sage);height:80px;"><img class="prod-img" src="jpeg6.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:14px;">Cr</div></div><div class="wl-heart"><svg viewBox="0 0 24 24"><path fill="var(--red)" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div></div>
-            <div class="wl-body"><div class="wl-name">Creed Aventus</div><div class="wl-price">SAR 840</div><div class="wl-drop">↓ 20% off</div></div>
-          </div>
+      <!-- MVP Stats Cards -->
+      <div style="height:16px;"></div>
+      <div class="stats-grid" style="margin-bottom:20px;">
+        <!-- Card 1: Total Purchases — primary brand color -->
+        <div class="stat-card" style="background: var(--bg-surface); border-color: var(--border);">
+          <div class="stat-l" style="color: var(--ink-3);">Total Purchases</div>
+          <div class="stat-v" style="color: var(--ink-1);">SAR 2,450</div>
+        </div>
+        <!-- Card 2: Cashback Earned (2% of purchases) — gold accent -->
+        <div class="stat-card" style="background: var(--bg-surface); border-color: var(--border);">
+          <div class="stat-l" style="color: var(--ink-3);">Cashback Earned (2%)</div>
+          <div class="stat-v" style="color: var(--ink-1);">SAR 49</div>
+        </div>
+        <!-- Card 3: Orders Placed -->
+        <div class="stat-card" style="background: var(--bg-surface); border-color: var(--border);">
+          <div class="stat-l" style="color: var(--ink-3);">Orders Placed</div>
+          <div class="stat-v" style="color: var(--ink-1);">12 Products</div>
+        </div>
+        <!-- Card 4: Potential Savings -->
+        <div class="stat-card" style="background: var(--bg-surface); border-color: var(--border);">
+          <div class="stat-l" style="color: var(--ink-3);">Potential Savings</div>
+          <div class="stat-v" style="color: var(--ink-1);">SAR 320</div>
         </div>
       </div>
 
-      <!-- Recently Viewed panel -->
-      <div id="panel-recent" style="display:none;padding-bottom:16px;">
-        <div class="sec-head" style="margin-top:0;"><span class="sec-label">Recently Viewed</span><span class="sec-link">Clear</span></div>
-        <div class="recent-scroll">
-          <div class="recent-chip" onclick="openProduct('chanel')"><div class="recent-thumb"><div class="prod-img-wrap" style="background:var(--b-purple);height:40px;"><img class="prod-img" src="jpeg1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">Cd</div></div></div><div class="recent-info"><div class="rn">Bleu de Chanel EDP</div><div class="rp">SAR 485</div></div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px;color:var(--ink-3);flex-shrink:0;"><path d="M9 18l6-6-6-6"/></svg></div>
-          <div class="recent-chip" onclick="openProduct('dior')"><div class="recent-thumb"><div class="prod-img-wrap" style="background:var(--b-teal);height:40px;"><img class="prod-img" src="jpeg2.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">Dk</div></div></div><div class="recent-info"><div class="rn">Sauvage EDT</div><div class="rp">SAR 310</div></div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px;color:var(--ink-3);flex-shrink:0;"><path d="M9 18l6-6-6-6"/></svg></div>
-          <div class="recent-chip" onclick="openProduct('tomford')"><div class="recent-thumb"><div class="prod-img-wrap" style="background:var(--b-amber);height:40px;"><img class="prod-img" src="jpeg3.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">Tf</div></div></div><div class="recent-info"><div class="rn">Tobacco Oud EDP</div><div class="rp">SAR 590</div></div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px;color:var(--ink-3);flex-shrink:0;"><path d="M9 18l6-6-6-6"/></svg></div>
-          <div class="recent-chip" onclick="openProduct('creed')"><div class="recent-thumb"><div class="prod-img-wrap" style="background:var(--b-sage);height:40px;"><img class="prod-img" src="jpeg6.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">Cr</div></div></div><div class="recent-info"><div class="rn">Creed Aventus</div><div class="rp">SAR 840</div></div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px;color:var(--ink-3);flex-shrink:0;"><path d="M9 18l6-6-6-6"/></svg></div>
+      <!-- ── SECTION 1: MY INTERESTS ── -->
+      <div class="sec-head"><span class="sec-label">My Interests</span><span class="sec-link" onclick="showInterestsEdit()">Edit</span></div>
+      <div class="pref-chips" style="margin-bottom:20px;">
+        <span class="pref-chip">Woody / Oud</span>
+        <span class="pref-chip">Oriental</span>
+        <span class="pref-chip">Niche</span>
+        <span class="pref-chip">Fresh / Aqua</span>
+        <span class="pref-chip">Floral</span>
+      </div>
+
+      <div class="divider" style="margin:0 0 20px;"></div>
+
+      <!-- ── SECTION 2: WISHLIST ── -->
+      <div class="sec-head"><span class="sec-label">Wishlist · 10 items</span><span class="sec-link">See all</span></div>
+      <div class="wishlist-grid" style="margin-bottom:20px;">
+        <div class="wl-card" onclick="openProduct('chanel')">
+          <div class="wl-img-zone"><div class="prod-img-wrap" style="background:var(--b-purple);height:80px;"><img class="prod-img" src="jpeg1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:14px;">Cd</div></div><div class="wl-heart"><svg viewBox="0 0 24 24"><path fill="var(--red)" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div></div>
+          <div class="wl-body"><div class="wl-name">Bleu de Chanel EDP</div><div class="wl-price">SAR 485</div><div class="wl-drop">↓ 22% off</div></div>
         </div>
+        <div class="wl-card" onclick="openProduct('dior')">
+          <div class="wl-img-zone"><div class="prod-img-wrap" style="background:var(--b-teal);height:80px;"><img class="prod-img" src="jpeg2.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:14px;">Dk</div></div><div class="wl-heart"><svg viewBox="0 0 24 24"><path fill="var(--red)" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div></div>
+          <div class="wl-body"><div class="wl-name">Dior Sauvage EDT</div><div class="wl-price">SAR 310</div><div class="wl-drop" style="color:var(--ink-3);">↗ Good Price</div></div>
+        </div>
+        <div class="wl-card" onclick="openProduct('tomford')">
+          <div class="wl-img-zone"><div class="prod-img-wrap" style="background:var(--b-amber);height:80px;"><img class="prod-img" src="jpeg3.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:14px;">Tf</div></div><div class="wl-heart"><svg viewBox="0 0 24 24"><path fill="var(--red)" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div></div>
+          <div class="wl-body"><div class="wl-name">Tobacco Oud EDP</div><div class="wl-price">SAR 590</div><div class="wl-drop" style="color:var(--ink-3);">No drop yet</div></div>
+        </div>
+        <div class="wl-card" onclick="openProduct('creed')">
+          <div class="wl-img-zone"><div class="prod-img-wrap" style="background:var(--b-sage);height:80px;"><img class="prod-img" src="jpeg6.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:14px;">Cr</div></div><div class="wl-heart"><svg viewBox="0 0 24 24"><path fill="var(--red)" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div></div>
+          <div class="wl-body"><div class="wl-name">Creed Aventus</div><div class="wl-price">SAR 840</div><div class="wl-drop">↓ 20% off</div></div>
+        </div>
+      </div>
+
+      <div class="divider" style="margin:0 0 20px;"></div>
+
+      <!-- ── SECTION 3: RECENTLY VIEWED ── -->
+      <div class="sec-head"><span class="sec-label">Recently Viewed</span><span class="sec-link">See all</span></div>
+      <div class="recent-scroll" style="padding-bottom:24px;">
+        <div class="recent-chip" onclick="openProduct('chanel')"><div class="recent-thumb"><div class="prod-img-wrap" style="background:var(--b-purple);height:40px;"><img class="prod-img" src="jpeg1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">Cd</div></div></div><div class="recent-info"><div class="rn">Bleu de Chanel EDP</div><div class="rp">SAR 485</div></div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px;color:var(--ink-3);flex-shrink:0;"><path d="M9 18l6-6-6-6"/></svg></div>
+        <div class="recent-chip" onclick="openProduct('dior')"><div class="recent-thumb"><div class="prod-img-wrap" style="background:var(--b-teal);height:40px;"><img class="prod-img" src="jpeg2.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">Dk</div></div></div><div class="recent-info"><div class="rn">Sauvage EDT</div><div class="rp">SAR 310</div></div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px;color:var(--ink-3);flex-shrink:0;"><path d="M9 18l6-6-6-6"/></svg></div>
+        <div class="recent-chip" onclick="openProduct('tomford')"><div class="recent-thumb"><div class="prod-img-wrap" style="background:var(--b-amber);height:40px;"><img class="prod-img" src="jpeg3.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">Tf</div></div></div><div class="recent-info"><div class="rn">Tobacco Oud EDP</div><div class="rp">SAR 590</div></div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px;color:var(--ink-3);flex-shrink:0;"><path d="M9 18l6-6-6-6"/></svg></div>
+        <div class="recent-chip" onclick="openProduct('creed')"><div class="recent-thumb"><div class="prod-img-wrap" style="background:var(--b-sage);height:40px;"><img class="prod-img" src="jpeg6.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">Cr</div></div></div><div class="recent-info"><div class="rn">Creed Aventus</div><div class="rp">SAR 840</div></div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px;color:var(--ink-3);flex-shrink:0;"><path d="M9 18l6-6-6-6"/></svg></div>
       </div>
 
     </div><!-- /scroll-area -->
