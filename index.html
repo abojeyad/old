@@ -137,7 +137,7 @@ img    { display:block; }
   font-size:11px; font-weight:500; letter-spacing:0.07em;
   text-transform:uppercase; color:var(--ink-3);
 }
-.sec-link { font-size:12px; font-weight:500; color:var(--accent); cursor:pointer; }
+.sec-link { font-size:12px; font-weight:500; color:#007AFF; cursor:pointer; }
 
 .divider { height:1px; background:var(--border); margin:18px 0; }
 
@@ -189,19 +189,9 @@ img    { display:block; }
   width:100%; position:relative; overflow:hidden;
   display:flex; align-items:center; justify-content:center;
 }
-.prod-img-wrap::before {
-  content:'';
-  position:absolute; inset:0;
-  background:inherit;
-  background-size:cover;
-  background-position:center;
-  filter:blur(12px) saturate(0.7);
-  opacity:0.35;
-  transform:scale(1.1);
-}
 .prod-img {
   position:relative; z-index:1;
-  width:72%; height:100%; object-fit:contain; object-position:center bottom;
+  width:100%; height:100%; object-fit:cover; object-position:center;
 }
 .prod-initials {
   position:relative; z-index:1;
@@ -1236,9 +1226,6 @@ img    { display:block; }
     <div class="search-bar">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       <input placeholder="Name, brand, or note (oud, fresh…)" onclick="switchScreen('search')" readonly/>
-      <div class="search-filter">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
-      </div>
     </div>
 
     <div class="scroll-area">
@@ -1342,7 +1329,7 @@ img    { display:block; }
       <div class="divider"></div>
 
       <!-- PERSONALIZED -->
-      <div class="sec-head"><span class="sec-label">Personalized for You</span><span class="sec-link">Refresh</span></div>
+      <div class="sec-head"><span class="sec-label">Personalized for You</span><span class="sec-link">View all</span></div>
       <div class="pers-grid" style="margin-bottom:4px;">
         <div class="pers-card" onclick="openProduct('creed')">
           <div class="pers-img-zone"><div class="prod-img-wrap" style="background:var(--b-purple);"><img class="prod-img" src="jpeg6.jpg" alt="Aventus" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:14px;">Av</div></div></div>
@@ -1689,7 +1676,7 @@ img    { display:block; }
         <div class="store-dir-row" onclick="closeAllStores();openStorePage('amazon')">
           <div class="store-dir-logo" style="background:var(--b-blue);">Am</div>
           <div class="store-dir-info">
-            <div class="store-dir-name">Amazon Saudi Arabia</div>
+            <div class="store-dir-name">Amazon</div>
             <div class="store-dir-sub">amazon.sa &middot; 280+ fragrances</div>
             <span class="store-dir-badge sdb-active">Tracked &middot; Fast delivery</span>
           </div>
@@ -1801,13 +1788,13 @@ img    { display:block; }
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
         Back
       </div>
-      <span class="listing-title" id="store-page-title">Amazon Saudi Arabia</span>
+      <span class="listing-title" id="store-page-title">Amazon</span>
       <span class="listing-count" id="store-page-count">280+ items</span>
     </div>
     <div class="store-page-hero">
       <div class="store-page-logo" id="store-page-logo" style="background:var(--b-blue);">Am</div>
       <div class="store-page-meta">
-        <div class="store-page-name" id="store-page-name">Amazon Saudi Arabia</div>
+        <div class="store-page-name" id="store-page-name">Amazon</div>
         <div class="store-page-url"  id="store-page-url">amazon.sa</div>
         <div class="store-page-badge">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:10px;height:10px;"><polyline points="20 6 9 17 4 12"/></svg>
@@ -1924,31 +1911,23 @@ img    { display:block; }
       <div class="product-hero-img" id="product-hero-bg">
         <div class="prod-img-wrap" id="product-hero-wrap" style="height:100%;">
           <img class="prod-img" id="product-hero-img" src="jpeg1.jpg" alt=""
-            style="width:50%;height:100%;object-fit:contain;object-position:center bottom;margin:0 auto;position:relative;z-index:1;"
+            style="width:100%;height:100%;object-fit:cover;object-position:center;position:relative;z-index:1;"
             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
           <div class="prod-initials" id="product-hero-initials" style="display:none;font-size:52px;">◈</div>
         </div>
       </div>
 
       <div class="buy-cta-bar">
-        <!-- Row 1: Store + Price -->
-        <div class="buy-cta-meta-row">
-          <div class="buy-cta-store-group">
-            <div class="buy-cta-store-dot"></div>
-            <div class="buy-cta-store-info">
-              <span class="buy-cta-store-label">Best price at</span>
-              <span class="buy-cta-store-name" id="product-cta-store">Kaneen</span>
-            </div>
+        <!-- Row 2: Go to Store CTA — shows price and discount -->
+        <button class="buy-cta-go-btn" id="product-cta-go-btn" onclick="openStoreFromProduct()" style="display:flex; justify-content:space-between; align-items:center; padding:0 20px; height:46px;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span id="product-cta-btn-price" style="font-size:13px;opacity:0.92;font-family:var(--font-body);"></span>
+            <span id="product-cta-btn-badge" style="font-size:11px;background:rgba(255,255,255,0.22);border-radius:20px;padding:2px 8px;"></span>
           </div>
-          <div class="buy-cta-price-group">
-            <div class="buy-cta-price-orig" id="product-cta-orig"></div>
-            <div class="buy-cta-price-now" id="product-cta-price">999 SAR</div>
+          <div style="display:flex; align-items:center; gap:6px;">
+            <span>Go to Store</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
           </div>
-        </div>
-        <!-- Row 2: Go to Store CTA -->
-        <button class="buy-cta-go-btn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          Go to Store
         </button>
       </div>
 
@@ -1970,12 +1949,19 @@ img    { display:block; }
 				<span class="note-chip note-country">Brand Country: France</span>
 				<span class="note-chip note-country">Gender: Unisex</span>
 				<span class="note-chip note-family" style="background: #f0f0f0; color: #0288d1; font-size:10px; padding:3px 8px; border-radius:20px;">Fragrance Family: Woody</span>
-				<div class="divider"></div>
 			
       </div>
 
       <div style="padding:0 20px;">
 
+        <!-- STORE SECTION — before Price History -->
+        <div id="product-store-section" style="display:flex;align-items:center;gap:10px;margin-top:16px;margin-bottom:16px;cursor:pointer;" onclick="openStoreFromProduct()">
+          <div id="product-store-icon" style="width:30px;height:30px;border-radius:50%;background:var(--bg-phone);border:1px solid var(--border-strong);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:var(--ink-2);flex-shrink:0;">Am</div>
+          <div style="display:flex; flex-direction:column;">
+            <div id="product-store-name-link" style="font-size:13px;font-weight:400;color:var(--accent);">Golden Scent</div>
+            <div style="font-size:10px; color:var(--ink-3); margin-top:1px;">(280+ items)</div>
+          </div>
+        </div>
 
         <!-- PRICE HISTORY — table format -->
         <div style="font-size:11px;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-3);font-weight:500;margin-bottom:8px;">Price History</div>
@@ -2313,7 +2299,7 @@ img    { display:block; }
       <div class="divider" style="margin:0 0 20px;"></div>
 
       <!-- ── SECTION 2: WISHLIST ── -->
-      <div class="sec-head"><span class="sec-label">Wishlist · 10 items</span><span class="sec-link">See all</span></div>
+      <div class="sec-head"><span class="sec-label">Wishlist · 10 items</span><span class="sec-link" onclick="showWishlistAll()">See all</span></div>
       <div class="wishlist-grid" style="margin-bottom:20px;">
         <div class="wl-card" onclick="openProduct('chanel')">
           <div class="wl-img-zone"><div class="prod-img-wrap" style="background:var(--b-purple);height:80px;"><img class="prod-img" src="jpeg1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:14px;">Cd</div></div><div class="wl-heart"><svg viewBox="0 0 24 24"><path fill="var(--red)" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div></div>
@@ -2336,7 +2322,7 @@ img    { display:block; }
       <div class="divider" style="margin:0 0 20px;"></div>
 
       <!-- ── SECTION 3: RECENTLY VIEWED ── -->
-      <div class="sec-head"><span class="sec-label">Recently Viewed</span><span class="sec-link">See all</span></div>
+      <div class="sec-head"><span class="sec-label">Recently Viewed</span><span class="sec-link" onclick="showRecentAll()">See all</span></div>
       <div class="recent-scroll" style="padding-bottom:24px;">
         <div class="recent-chip" onclick="openProduct('chanel')"><div class="recent-thumb"><div class="prod-img-wrap" style="background:var(--b-purple);height:40px;"><img class="prod-img" src="jpeg1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">Cd</div></div></div><div class="recent-info"><div class="rn">Bleu de Chanel EDP</div><div class="rp">485 SAR</div></div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px;color:var(--ink-3);flex-shrink:0;"><path d="M9 18l6-6-6-6"/></svg></div>
         <div class="recent-chip" onclick="openProduct('dior')"><div class="recent-thumb"><div class="prod-img-wrap" style="background:var(--b-teal);height:40px;"><img class="prod-img" src="jpeg2.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">Dk</div></div></div><div class="recent-info"><div class="rn">Sauvage EDT</div><div class="rp">310 SAR</div></div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px;color:var(--ink-3);flex-shrink:0;"><path d="M9 18l6-6-6-6"/></svg></div>
@@ -2531,6 +2517,119 @@ img    { display:block; }
     </div>
   </div><!-- /activity screen -->
 
+  <!-- ════════════════════════════════
+       WISHLIST — SEE ALL OVERLAY
+       (child of .phone, z-index:50)
+  ════════════════════════════════ -->
+  <div class="overlay" id="overlay-wishlist-all">
+    <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:10px;">●●●●</span></div>
+    <div class="listing-header">
+      <div class="listing-back-btn" onclick="closeWishlistAll()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
+        Back
+      </div>
+      <span class="listing-title">My Wishlist</span>
+      <span class="listing-count">10 items</span>
+    </div>
+    <div style="flex:1;overflow-y:auto;padding:14px 16px;">
+      <!-- Row 1 -->
+      <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;">
+        <div class="wl-card" onclick="closeWishlistAll();openProduct('chanel')">
+          <div class="wl-img-zone"><div class="prod-img-wrap" style="background:var(--b-purple);height:100px;"><img class="prod-img" src="jpeg1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:16px;">Cd</div></div><div class="wl-heart"><svg viewBox="0 0 24 24"><path fill="var(--red)" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div></div>
+          <div class="wl-body"><div class="wl-name">Bleu de Chanel EDP</div><div class="wl-price">485 SAR</div><div class="wl-drop">↓ 22% off</div></div>
+        </div>
+        <div class="wl-card" onclick="closeWishlistAll();openProduct('dior')">
+          <div class="wl-img-zone"><div class="prod-img-wrap" style="background:var(--b-teal);height:100px;"><img class="prod-img" src="jpeg2.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:16px;">Dk</div></div><div class="wl-heart"><svg viewBox="0 0 24 24"><path fill="var(--red)" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div></div>
+          <div class="wl-body"><div class="wl-name">Dior Sauvage EDT</div><div class="wl-price">310 SAR</div><div class="wl-drop" style="color:var(--ink-3);">↗ Good Price</div></div>
+        </div>
+        <div class="wl-card" onclick="closeWishlistAll();openProduct('tomford')">
+          <div class="wl-img-zone"><div class="prod-img-wrap" style="background:var(--b-amber);height:100px;"><img class="prod-img" src="jpeg3.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:16px;">Tf</div></div><div class="wl-heart"><svg viewBox="0 0 24 24"><path fill="var(--red)" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div></div>
+          <div class="wl-body"><div class="wl-name">Tobacco Oud EDP</div><div class="wl-price">590 SAR</div><div class="wl-drop" style="color:var(--ink-3);">No drop yet</div></div>
+        </div>
+        <div class="wl-card" onclick="closeWishlistAll();openProduct('creed')">
+          <div class="wl-img-zone"><div class="prod-img-wrap" style="background:var(--b-sage);height:100px;"><img class="prod-img" src="jpeg6.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:16px;">Cr</div></div><div class="wl-heart"><svg viewBox="0 0 24 24"><path fill="var(--red)" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div></div>
+          <div class="wl-body"><div class="wl-name">Creed Aventus</div><div class="wl-price">840 SAR</div><div class="wl-drop">↓ 20% off</div></div>
+        </div>
+        <div class="wl-card" onclick="closeWishlistAll();openProduct('ysl')">
+          <div class="wl-img-zone"><div class="prod-img-wrap" style="background:var(--b-pink);height:100px;"><img class="prod-img" src="jpeg4.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:16px;">YS</div></div><div class="wl-heart"><svg viewBox="0 0 24 24"><path fill="var(--red)" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div></div>
+          <div class="wl-body"><div class="wl-name">YSL Y Le Parfum</div><div class="wl-price">290 SAR</div><div class="wl-drop">↓ 17% off</div></div>
+        </div>
+        <div class="wl-card" onclick="closeWishlistAll();openProduct('armani')">
+          <div class="wl-img-zone"><div class="prod-img-wrap" style="background:var(--b-blue);height:100px;"><img class="prod-img" src="jpeg5.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:16px;">Aq</div></div><div class="wl-heart"><svg viewBox="0 0 24 24"><path fill="var(--red)" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div></div>
+          <div class="wl-body"><div class="wl-name">Acqua di Gio EDP</div><div class="wl-price">265 SAR</div><div class="wl-drop">↓ 24% off</div></div>
+        </div>
+        <div class="wl-card" onclick="closeWishlistAll();openProduct('chanel')">
+          <div class="wl-img-zone"><div class="prod-img-wrap" style="background:var(--b-purple);height:100px;"><img class="prod-img" src="jpeg1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:16px;">Cd</div></div><div class="wl-heart"><svg viewBox="0 0 24 24"><path fill="var(--red)" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div></div>
+          <div class="wl-body"><div class="wl-name">Bleu de Chanel EDT</div><div class="wl-price">410 SAR</div><div class="wl-drop" style="color:var(--ink-3);">↗ Good Price</div></div>
+        </div>
+        <div class="wl-card" onclick="closeWishlistAll();openProduct('dior')">
+          <div class="wl-img-zone"><div class="prod-img-wrap" style="background:var(--b-teal);height:100px;"><img class="prod-img" src="jpeg2.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:16px;">Dk</div></div><div class="wl-heart"><svg viewBox="0 0 24 24"><path fill="var(--red)" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div></div>
+          <div class="wl-body"><div class="wl-name">Sauvage Elixir 60ml</div><div class="wl-price">420 SAR</div><div class="wl-drop">↓ 12% off</div></div>
+        </div>
+        <div class="wl-card" onclick="closeWishlistAll();openProduct('tomford')">
+          <div class="wl-img-zone"><div class="prod-img-wrap" style="background:var(--b-amber);height:100px;"><img class="prod-img" src="jpeg3.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:16px;">Tf</div></div><div class="wl-heart"><svg viewBox="0 0 24 24"><path fill="var(--red)" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div></div>
+          <div class="wl-body"><div class="wl-name">Oud Wood EDP</div><div class="wl-price">710 SAR</div><div class="wl-drop" style="color:var(--ink-3);">No drop yet</div></div>
+        </div>
+        <div class="wl-card" onclick="closeWishlistAll();openProduct('armani')">
+          <div class="wl-img-zone"><div class="prod-img-wrap" style="background:var(--b-blue);height:100px;"><img class="prod-img" src="jpeg5.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:16px;">Aq</div></div><div class="wl-heart"><svg viewBox="0 0 24 24"><path fill="var(--red)" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div></div>
+          <div class="wl-body"><div class="wl-name">Acqua di Gio Profumo</div><div class="wl-price">395 SAR</div><div class="wl-drop">↓ 11% off</div></div>
+        </div>
+      </div>
+      <div style="height:20px;"></div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════
+       RECENTLY VIEWED — SEE ALL OVERLAY
+       (child of .phone, z-index:50)
+  ════════════════════════════════ -->
+  <div class="overlay" id="overlay-recent-all">
+    <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:10px;">●●●●</span></div>
+    <div class="listing-header">
+      <div class="listing-back-btn" onclick="closeRecentAll()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
+        Back
+      </div>
+      <span class="listing-title">Recently Viewed</span>
+      <span class="listing-count">6 items</span>
+    </div>
+    <div style="flex:1;overflow-y:auto;">
+      <div style="display:flex;flex-direction:column;gap:0;">
+        <div class="recent-chip" style="border-radius:0;border-left:none;border-right:none;border-top:none;border-bottom:1px solid var(--border);" onclick="closeRecentAll();openProduct('chanel')">
+          <div class="recent-thumb"><div class="prod-img-wrap" style="background:var(--b-purple);height:40px;"><img class="prod-img" src="jpeg1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">Cd</div></div></div>
+          <div class="recent-info"><div class="rn">Bleu de Chanel EDP</div><div class="rp" style="display:flex;gap:8px;align-items:center;">485 SAR <span class="badge badge-fire" style="font-size:9px;padding:2px 6px;">↓ 22%</span></div></div>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px;flex-shrink:0;"><div style="font-size:9px;color:var(--ink-3);">2 hrs ago</div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px;color:var(--ink-3);"><path d="M9 18l6-6-6-6"/></svg></div>
+        </div>
+        <div class="recent-chip" style="border-radius:0;border-left:none;border-right:none;border-top:none;border-bottom:1px solid var(--border);" onclick="closeRecentAll();openProduct('dior')">
+          <div class="recent-thumb"><div class="prod-img-wrap" style="background:var(--b-teal);height:40px;"><img class="prod-img" src="jpeg2.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">Dk</div></div></div>
+          <div class="recent-info"><div class="rn">Sauvage EDT</div><div class="rp" style="display:flex;gap:8px;align-items:center;">310 SAR <span class="badge badge-good" style="font-size:9px;padding:2px 6px;">↓ 16%</span></div></div>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px;flex-shrink:0;"><div style="font-size:9px;color:var(--ink-3);">5 hrs ago</div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px;color:var(--ink-3);"><path d="M9 18l6-6-6-6"/></svg></div>
+        </div>
+        <div class="recent-chip" style="border-radius:0;border-left:none;border-right:none;border-top:none;border-bottom:1px solid var(--border);" onclick="closeRecentAll();openProduct('tomford')">
+          <div class="recent-thumb"><div class="prod-img-wrap" style="background:var(--b-amber);height:40px;"><img class="prod-img" src="jpeg3.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">Tf</div></div></div>
+          <div class="recent-info"><div class="rn">Tobacco Oud EDP</div><div class="rp">590 SAR</div></div>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px;flex-shrink:0;"><div style="font-size:9px;color:var(--ink-3);">Yesterday</div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px;color:var(--ink-3);"><path d="M9 18l6-6-6-6"/></svg></div>
+        </div>
+        <div class="recent-chip" style="border-radius:0;border-left:none;border-right:none;border-top:none;border-bottom:1px solid var(--border);" onclick="closeRecentAll();openProduct('creed')">
+          <div class="recent-thumb"><div class="prod-img-wrap" style="background:var(--b-sage);height:40px;"><img class="prod-img" src="jpeg6.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">Cr</div></div></div>
+          <div class="recent-info"><div class="rn">Creed Aventus</div><div class="rp" style="display:flex;gap:8px;align-items:center;">840 SAR <span class="badge badge-fire" style="font-size:9px;padding:2px 6px;">↓ 20%</span></div></div>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px;flex-shrink:0;"><div style="font-size:9px;color:var(--ink-3);">2 days ago</div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px;color:var(--ink-3);"><path d="M9 18l6-6-6-6"/></svg></div>
+        </div>
+        <div class="recent-chip" style="border-radius:0;border-left:none;border-right:none;border-top:none;border-bottom:1px solid var(--border);" onclick="closeRecentAll();openProduct('ysl')">
+          <div class="recent-thumb"><div class="prod-img-wrap" style="background:var(--b-pink);height:40px;"><img class="prod-img" src="jpeg4.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">YS</div></div></div>
+          <div class="recent-info"><div class="rn">YSL Y Le Parfum</div><div class="rp" style="display:flex;gap:8px;align-items:center;">290 SAR <span class="badge badge-good" style="font-size:9px;padding:2px 6px;">↓ 17%</span></div></div>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px;flex-shrink:0;"><div style="font-size:9px;color:var(--ink-3);">3 days ago</div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px;color:var(--ink-3);"><path d="M9 18l6-6-6-6"/></svg></div>
+        </div>
+        <div class="recent-chip" style="border-radius:0;border-left:none;border-right:none;border-top:none;" onclick="closeRecentAll();openProduct('armani')">
+          <div class="recent-thumb"><div class="prod-img-wrap" style="background:var(--b-blue);height:40px;"><img class="prod-img" src="jpeg5.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:10px;">Aq</div></div></div>
+          <div class="recent-info"><div class="rn">Acqua di Gio EDP</div><div class="rp" style="display:flex;gap:8px;align-items:center;">265 SAR <span class="badge badge-fire" style="font-size:9px;padding:2px 6px;">↓ 24%</span></div></div>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px;flex-shrink:0;"><div style="font-size:9px;color:var(--ink-3);">4 days ago</div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px;color:var(--ink-3);"><path d="M9 18l6-6-6-6"/></svg></div>
+        </div>
+      </div>
+      <div style="height:20px;"></div>
+    </div>
+  </div>
+
   </div><!-- /phone -->
 </div><!-- /page-shell -->
 
@@ -2545,7 +2644,7 @@ var PRODUCTS = {
     img: 'jpeg1.jpg', initials: 'Cd', bg: 'var(--b-purple)',
     notes: '<span class="note-chip note-top">Top Notes: Citrus · Bergamot</span><span class="note-chip note-heart">Heart Notes: Vetiver · Cedarwood</span><span class="note-chip note-base">Base Notes: Patchouli · Labdanum</span>',
     desc: 'A modern masculine icon, Bleu de Chanel EDP opens with a crisp burst of citrus and bergamot before settling into a deep, woody heart of Vetiver and Cedarwood. The base of warm patchouli and labdanum leaves an elegant, long-lasting trail. This is a fragrance for the man who moves decisively — refined without effort, memorable without trying. Projection is confident and longevity exceeds 10 hours on skin.',
-    price: '485 SAR', orig: '620 SAR', store: 'Golden Scent',
+    price: '485 SAR', orig: '620 SAR', store: 'Golden Scent', storeKey: 'amazon',
     badge: '↓ 22% off', badgeClass: 'badge-fire',
     atl: '440 SAR', avg: '540 SAR', ath: '680 SAR',
     rating: '4.6', reviews: '287',
@@ -2558,7 +2657,7 @@ var PRODUCTS = {
     img: 'jpeg2.jpg', initials: 'Dk', bg: 'var(--b-teal)',
     notes: '<span class="note-chip note-top">Top Notes: Calabrian Bergamot</span><span class="note-chip note-heart">Heart Notes: Sichuan Pepper · Geranium</span><span class="note-chip note-base">Base Notes: Ambroxan · Cedar</span>',
     desc: 'Radically fresh and ruggedly clean, Sauvage EDT is a modern desert landscape in a bottle. Calabrian bergamot bursts open on a wave of Sichuan pepper, while a base of mineral Ambroxan and cedar root this scent in something untamed. Effortlessly versatile — it works as well in the boardroom as under open skies. One of the best-selling fragrances in the world for a reason. Projection is excellent and longevity sits at 8–10 hours.',
-    price: '310 SAR', orig: '370 SAR', store: 'Najd Al-Otheyah',
+    price: '310 SAR', orig: '370 SAR', store: 'Najd Al-Otheyah', storeKey: 'noon',
     badge: '↓ 16% off', badgeClass: 'badge-good',
     atl: '285 SAR', avg: '355 SAR', ath: '430 SAR',
     rating: '4.8', reviews: '1,203',
@@ -2571,7 +2670,7 @@ var PRODUCTS = {
     img: 'jpeg3.jpg', initials: 'Tf', bg: 'var(--b-amber)',
     notes: '<span class="note-chip note-top">Top Notes: Clove · Coriander</span><span class="note-chip note-heart">Heart Notes: Tobacco · Oud Wood</span><span class="note-chip note-base">Base Notes: Sandalwood · Tonka Bean</span>',
     desc: 'From the Private Blend collection, Tobacco Oud is an unapologetically opulent statement. The opening of spiced clove and coriander gives way to a rich, smoky heart of tobacco and rare oud wood. Sandalwood and tonka bean in the base create a creamy, enduring warmth that lingers for hours. This is a fragrance that commands presence — best reserved for evenings and special occasions. Longevity is exceptional, lasting 12+ hours with notable sillage.',
-    price: '590 SAR', orig: '650 SAR', store: 'Laudour',
+    price: '590 SAR', orig: '650 SAR', store: 'Laudour', storeKey: 'sephora',
     badge: '↓ 9% off', badgeClass: 'badge-good',
     atl: '560 SAR', avg: '640 SAR', ath: '750 SAR',
     rating: '4.5', reviews: '342',
@@ -2584,7 +2683,7 @@ var PRODUCTS = {
     img: 'jpeg4.jpg', initials: 'YS', bg: 'var(--b-pink)',
     notes: '<span class="note-chip note-top">Top Notes: Bergamot · Ginger</span><span class="note-chip note-heart">Heart Notes: Sage · Suede</span><span class="note-chip note-base">Base Notes: Fir Balsam · Ambergris</span>',
     desc: 'Y Le Parfum takes the iconic Y DNA and deepens it considerably. Bergamot and ginger open with bright energy before surrendering to a distinguished heart of sage and suede — dry, sophisticated, unmistakably masculine. Fir balsam and ambergris in the base add a resinous warmth that carries the scent from day into night seamlessly. A perfect signature for the modern man. Expect 8–10 hours of consistent wear with moderate sillage.',
-    price: '290 SAR', orig: '350 SAR', store: 'V Perfume',
+    price: '290 SAR', orig: '350 SAR', store: 'V Perfume', storeKey: 'jarir',
     badge: '↓ 17% off', badgeClass: 'badge-good',
     atl: '265 SAR', avg: '330 SAR', ath: '390 SAR',
     rating: '4.4', reviews: '518',
@@ -2597,7 +2696,7 @@ var PRODUCTS = {
     img: 'jpeg5.jpg', initials: 'Aq', bg: 'var(--b-blue)',
     notes: '<span class="note-chip note-top">Top Notes: Marine Accord · Bergamot</span><span class="note-chip note-heart">Heart Notes: Incense · Rosemary</span><span class="note-chip note-base">Base Notes: Patchouli · Mineral Amber</span>',
     desc: 'Acqua di Gio EDP elevates the legendary original with a deeper, more contemplative character. A marine accord and bergamot open fresh and clean, but the fragrance transforms meaningfully — incense and rosemary in the heart add a meditative depth rarely found in aquatics. Patchouli and mineral amber anchor the drydown beautifully. This is a refined upgrade for those who love the original but crave more substance. Longevity reaches 9–11 hours with a clean, close-wearing sillage.',
-    price: '265 SAR', orig: '350 SAR', store: 'Al-Sultan Perfumes',
+    price: '265 SAR', orig: '350 SAR', store: 'Al-Sultan Perfumes', storeKey: 'namshi',
     badge: '↓ 24% off', badgeClass: 'badge-fire',
     atl: '250 SAR', avg: '315 SAR', ath: '380 SAR',
     rating: '4.7', reviews: '892',
@@ -2610,7 +2709,7 @@ var PRODUCTS = {
     img: 'jpeg6.jpg', initials: 'Cr', bg: 'var(--b-sage)',
     notes: '<span class="note-chip note-top">Top Notes: Blackcurrant · Bergamot · Apple</span><span class="note-chip note-heart">Heart Notes: Birch · Jasmine · Rose</span><span class="note-chip note-base">Base Notes: Musk · Oakmoss · Ambergris</span>',
     desc: 'Creed Aventus is the fragrance that defined a generation of perfumery. Blackcurrant, bergamot and apple create a triumphant, fruity opening that gives way to a smoky birch heart — bold, charismatic, unmistakably powerful. Musk, oakmoss and ambergris in the base ensure remarkable longevity and a commanding trail. Every batch carries subtle variation, making each bottle a unique expression of this icon. A crown jewel in any collection. Expect 10–14 hours of exceptional longevity.',
-    price: '840 SAR', orig: '1,050 SAR', store: 'Asheq Al-Otor',
+    price: '840 SAR', orig: '1,050 SAR', store: 'Asheq Al-Otor', storeKey: 'sephora',
     badge: '↓ 20% off', badgeClass: 'badge-fire',
     atl: '810 SAR', avg: '990 SAR', ath: '1,150 SAR',
     rating: '4.9', reviews: '2,104',
@@ -2621,12 +2720,14 @@ var PRODUCTS = {
 
 /* Track where user came from to enable correct Back navigation */
 var productOrigin = 'home';
+var currentProductStoreKey = '';
 
 /* ── Open a specific product with dynamic content ─────── */
 function openProduct(key, origin) {
   var p = PRODUCTS[key];
   if (!p) return;
   productOrigin = origin || 'home';
+  currentProductStoreKey = p.storeKey || '';
 
   // Update back button
   document.getElementById('product-back-label').textContent =
@@ -2635,7 +2736,6 @@ function openProduct(key, origin) {
   // Update hero
   var heroWrap = document.getElementById('product-hero-wrap');
   heroWrap.style.background = p.bg;
-  heroWrap.style.backgroundImage = '';
   var heroImg = document.getElementById('product-hero-img');
   heroImg.src = p.img;
   heroImg.style.display = '';
@@ -2647,11 +2747,30 @@ function openProduct(key, origin) {
   document.getElementById('product-brand').textContent = p.brand;
   document.getElementById('product-notes').innerHTML = p.notes;
 
-  // Update CTA purchase section
-  document.getElementById('product-cta-store').textContent = p.store || 'Best Store';
-  document.getElementById('product-cta-price').textContent = p.price;
-  var origEl = document.getElementById('product-cta-orig');
-  origEl.textContent = p.orig || '';
+  // Update Go to Store button — show price and discount badge
+  document.getElementById('product-cta-btn-price').textContent = p.price || '';
+  var btnBadge = document.getElementById('product-cta-btn-badge');
+  if (p.badge && p.orig) {
+    btnBadge.textContent = p.badge;
+    btnBadge.style.display = '';
+  } else {
+    btnBadge.textContent = '';
+    btnBadge.style.display = 'none';
+  }
+
+  // Update store section (before Price History)
+  var storeData = p.storeKey && STORES[p.storeKey] ? STORES[p.storeKey] : null;
+  var storeIcon = document.getElementById('product-store-icon');
+  var storeNameLink = document.getElementById('product-store-name-link');
+  if (storeData) {
+    storeIcon.textContent = storeData.initials;
+    storeIcon.style.background = storeData.bg;
+    storeNameLink.textContent = p.store || storeData.name;
+  } else {
+    storeIcon.textContent = p.store ? p.store.substring(0,2) : '--';
+    storeIcon.style.background = 'var(--bg-surface)';
+    storeNameLink.textContent = p.store || 'View Store';
+  }
 
   // ALWAYS reset description to collapsed state
   var desc = document.getElementById('product-desc');
@@ -2680,11 +2799,13 @@ function openProduct(key, origin) {
   // Scroll to top of scroll area
   var sa = document.querySelector('#screen-product-detail .scroll-area');
   if (sa) sa.scrollTop = 0;
+}
 
-  // Update blur fill
-  setTimeout(function() {
-    heroWrap.style.backgroundImage = 'url("' + p.img + '")';
-  }, 50);
+/* ── Navigate to store page from product detail ────────── */
+function openStoreFromProduct() {
+  if (currentProductStoreKey) {
+    openStorePage(currentProductStoreKey);
+  }
 }
 
 /* ── Back from product detail ─────────────────────────── */
@@ -2737,6 +2858,14 @@ function closePriceDrops() { hideOverlay('overlay-price-drops'); }
 /* All Stores */
 function showAllStores() { showOverlay('overlay-stores'); }
 function closeAllStores() { hideOverlay('overlay-stores'); }
+
+/* Wishlist All */
+function showWishlistAll() { showOverlay('overlay-wishlist-all'); var sa = document.querySelector('#overlay-wishlist-all [style*="overflow-y:auto"]'); if (sa) sa.scrollTop = 0; }
+function closeWishlistAll() { hideOverlay('overlay-wishlist-all'); }
+
+/* Recently Viewed All */
+function showRecentAll() { showOverlay('overlay-recent-all'); var sa = document.querySelector('#overlay-recent-all [style*="overflow-y:auto"]'); if (sa) sa.scrollTop = 0; }
+function closeRecentAll() { hideOverlay('overlay-recent-all'); }
 
 /* Settings */
 function showSettings() { showOverlay('overlay-settings'); }
@@ -2803,15 +2932,6 @@ function showTab(name) {
 /* ── Long title detection ─────────────────────────────── */
 document.querySelectorAll('.prod-name').forEach(function(el) {
   if (el.textContent.trim().length > 45) el.classList.add('long-title');
-});
-
-/* ── Blur background fill ─────────────────────────────── */
-document.querySelectorAll('.prod-img-wrap').forEach(function(wrap) {
-  var img = wrap.querySelector('.prod-img');
-  if (img && img.src) { wrap.style.backgroundImage = 'url("' + img.src + '")'; }
-  img && img.addEventListener('load', function() {
-    wrap.style.backgroundImage = 'url("' + img.src + '")';
-  });
 });
 
 /* ══════════════════════════════════════════════════════════
@@ -2889,7 +3009,7 @@ function closeBrandPage() { hideOverlay('overlay-brand-page'); }
    SINGLE STORE PAGE
 ══════════════════════════════════════════════════════════ */
 var STORES = {
-  amazon:      { name:'Amazon Saudi Arabia', initials:'Am', bg:'var(--b-blue)', url:'amazon.sa', frags:'280+', drops:'18', low:'95 SAR',
+  amazon:      { name:'Amazon', initials:'Am', bg:'var(--b-blue)', url:'amazon.sa', frags:'280+', drops:'18', low:'95 SAR',
     deals:[{key:'chanel',name:'Bleu de Chanel EDP 100ml',brand:'Chanel',price:'485 SAR',orig:'620 SAR',badge:'↓ 22%',badgeClass:'badge-fire',img:'jpeg1.jpg',imgBg:'var(--b-purple)',ini:'Cd'},
            {key:'armani',name:'Acqua di Gio EDP 75ml',brand:'Armani',price:'265 SAR',orig:'350 SAR',badge:'↓ 24%',badgeClass:'badge-fire',img:'jpeg5.jpg',imgBg:'var(--b-blue)',ini:'Aq'},
            {key:'dior',name:'Sauvage Elixir 60ml',brand:'Dior',price:'420 SAR',orig:'480 SAR',badge:'↓ 12%',badgeClass:'badge-good',img:'jpeg2.jpg',imgBg:'var(--b-teal)',ini:'Dk'}] },
