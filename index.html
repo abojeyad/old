@@ -275,9 +275,6 @@ img    { display:block; }
    SCREEN: HOME
 ═══════════════════════════════════════════════════════════ */
 .home-header { padding:4px 20px 14px; flex-shrink:0; background:var(--bg-phone); }
-.home-greeting { font-size:11px; color:var(--ink-3); margin-bottom:1px; }
-.home-title { font-family:var(--font-display); font-size:22px; color:var(--ink-1); letter-spacing:-0.01em; }
-.home-title span { color:var(--accent); }
 
 .search-bar {
   display:flex; align-items:center; gap:10px;
@@ -1087,8 +1084,138 @@ img    { display:block; }
 }
 
 /* ═══════════════════════════════════════════════════════════
-   ENHANCED ALERT CARD
+   AI CHAT OVERLAY
 ═══════════════════════════════════════════════════════════ */
+.ai-chat-overlay {
+  position:absolute; inset:0; z-index:60;
+  display:none; flex-direction:column;
+  background:var(--bg-phone);
+}
+.ai-chat-overlay.visible { display:flex; }
+.ai-chat-header {
+  display:flex; align-items:center; gap:12px;
+  padding:14px 16px 12px; flex-shrink:0;
+  border-bottom:1px solid var(--border);
+  background:var(--bg-phone);
+}
+.ai-chat-avatar {
+  width:38px; height:38px; border-radius:50%;
+  background:linear-gradient(135deg,#4a0020 0%,var(--accent) 100%);
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+.ai-chat-avatar svg { width:17px; height:17px; }
+.ai-chat-title { flex:1; }
+.ai-chat-name { font-size:14px; font-weight:500; color:var(--ink-1); }
+.ai-chat-status { font-size:11px; color:var(--green); display:flex; align-items:center; gap:4px; }
+.ai-chat-status::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--green); display:inline-block; }
+.ai-chat-close {
+  width:30px; height:30px; border-radius:50%; background:var(--bg-input);
+  display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0;
+}
+.ai-chat-close svg { width:14px; height:14px; color:var(--ink-2); }
+.ai-chat-messages {
+  flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:12px;
+  scrollbar-width:none;
+}
+.ai-chat-messages::-webkit-scrollbar { display:none; }
+.ai-msg { display:flex; gap:8px; }
+.ai-msg.user { flex-direction:row-reverse; }
+.ai-msg-avatar {
+  width:28px; height:28px; border-radius:50%; flex-shrink:0;
+  background:linear-gradient(135deg,#4a0020 0%,var(--accent) 100%);
+  display:flex; align-items:center; justify-content:center;
+}
+.ai-msg-avatar svg { width:13px; height:13px; }
+.ai-msg-bubble {
+  max-width:78%; padding:10px 13px; border-radius:16px;
+  font-size:13px; line-height:1.55; color:var(--ink-1);
+  background:var(--bg-surface); border:1px solid var(--border);
+}
+.ai-msg.user .ai-msg-bubble {
+  background:linear-gradient(135deg,#4a0020 0%,var(--accent) 100%);
+  color:#fff; border:none;
+}
+.ai-msg-time { font-size:10px; color:var(--ink-3); margin-top:4px; text-align:right; }
+.ai-msg.user .ai-msg-time { text-align:left; }
+.ai-product-suggestion {
+  background:var(--bg-phone); border:1px solid var(--border);
+  border-radius:var(--radius-md); padding:10px 12px; margin-top:8px;
+  display:flex; align-items:center; gap:10px; cursor:pointer;
+  transition:box-shadow 0.15s;
+}
+.ai-product-suggestion:hover { box-shadow:0 2px 12px rgba(0,0,0,0.08); }
+.ai-sug-img { width:44px; height:44px; border-radius:var(--radius-sm); overflow:hidden; flex-shrink:0; }
+.ai-sug-img .prod-img-wrap { height:100%; }
+.ai-sug-info { flex:1; min-width:0; }
+.ai-sug-name { font-size:12px; font-weight:500; color:var(--ink-1); }
+.ai-sug-sub { font-size:10px; color:var(--ink-3); margin-top:1px; }
+.ai-sug-price { font-size:13px; font-weight:500; color:var(--accent); white-space:nowrap; }
+.ai-chat-suggestions {
+  display:flex; gap:6px; flex-wrap:wrap; padding:0 0 8px;
+}
+.ai-quick-chip {
+  font-size:11px; padding:6px 12px; border-radius:20px;
+  border:1px solid var(--border-strong); background:var(--bg-phone);
+  color:var(--ink-2); cursor:pointer; transition:all 0.1s; white-space:nowrap;
+}
+.ai-quick-chip:hover { background:var(--accent-light); border-color:var(--accent); color:var(--accent); }
+.ai-chat-input-bar {
+  display:flex; gap:10px; align-items:center;
+  padding:10px 16px 14px; flex-shrink:0;
+  border-top:1px solid var(--border); background:var(--bg-phone);
+}
+.ai-chat-input {
+  flex:1; background:var(--bg-input); border:1px solid var(--border);
+  border-radius:var(--radius-md); padding:10px 13px;
+  font-size:13px; color:var(--ink-1); outline:none;
+  font-family:var(--font-body); resize:none; height:40px; line-height:20px;
+}
+.ai-chat-input::placeholder { color:var(--ink-3); }
+.ai-send-btn {
+  width:38px; height:38px; border-radius:50%; flex-shrink:0;
+  background:linear-gradient(135deg,#4a0020 0%,var(--accent) 100%);
+  display:flex; align-items:center; justify-content:center; cursor:pointer; border:none;
+}
+.ai-send-btn svg { width:16px; height:16px; }
+.ai-mic-btn {
+  width:38px; height:38px; border-radius:50%; flex-shrink:0;
+  background:var(--bg-input); border:1px solid var(--border-strong);
+  display:flex; align-items:center; justify-content:center; cursor:pointer;
+  color:var(--ink-3); transition:all 0.15s;
+}
+.ai-mic-btn:hover { background:var(--b-blue); border-color:#0ea5e9; color:#0ea5e9; }
+.ai-mic-btn.recording {
+  background:linear-gradient(135deg,#1a6fd4 0%,#0ea5e9 100%);
+  border-color:transparent; color:#fff;
+  box-shadow:0 0 0 3px rgba(14,165,233,0.2);
+  animation:mic-pulse 1.2s infinite ease-in-out;
+}
+@keyframes mic-pulse {
+  0%,100% { box-shadow:0 0 0 3px rgba(14,165,233,0.2); }
+  50%      { box-shadow:0 0 0 6px rgba(14,165,233,0.08); }
+}
+.ai-typing {
+  display:flex; gap:4px; align-items:center; padding:8px 2px;
+}
+.ai-typing span {
+  width:6px; height:6px; border-radius:50%; background:var(--ink-3);
+  animation:typing-dot 1.2s infinite ease-in-out;
+}
+.ai-typing span:nth-child(2) { animation-delay:0.2s; }
+.ai-typing span:nth-child(3) { animation-delay:0.4s; }
+@keyframes typing-dot {
+  0%,80%,100% { transform:scale(0.7); opacity:0.5; }
+  40% { transform:scale(1); opacity:1; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PERSONALIZED FOR YOU — FULL PAGE OVERLAY
+═══════════════════════════════════════════════════════════ */
+.pers-all-grid {
+  display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px; padding:14px 16px;
+}
+
 .alert-card-v2 {
   margin:0 20px 12px;
   background:var(--bg-phone); border:1px solid var(--border);
@@ -1207,12 +1334,19 @@ img    { display:block; }
   ════════════════════════════════ -->
   <div class="screen" id="screen-home">
     <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:10px;">●●●●</span></div>
-    <div class="home-header">
+    <div class="home-header" style="padding:6px 20px 14px;">
       <div style="display:flex;align-items:center;justify-content:space-between;">
-        <div>
-          <div class="home-greeting">Good morning, Abdullah</div>
-          <div class="home-title">Yourdis <span>·</span> يوردس</div>
+        <!-- AI as primary header element -->
+        <div onclick="openAIChat()" style="display:flex;align-items:center;gap:9px;cursor:pointer;">
+          <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#1a6fd4 0%,#0ea5e9 60%,#38bdf8 100%);display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(14,165,233,0.35);flex-shrink:0;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" style="width:16px;height:16px;"><path d="M12 2a9 9 0 019 9c0 3.6-2.1 6.7-5.2 8.2L15 21H9l-.8-1.8A9 9 0 013 11a9 9 0 019-9z"/><circle cx="9" cy="11" r="1" fill="#fff" stroke="none"/><circle cx="12" cy="11" r="1" fill="#fff" stroke="none"/><circle cx="15" cy="11" r="1" fill="#fff" stroke="none"/></svg>
+          </div>
+          <div>
+            <div style="font-size:15px;font-weight:600;color:var(--ink-1);letter-spacing:-0.01em;line-height:1.1;">YOURDIS AI</div>
+            <div style="font-size:10px;color:var(--ink-3);margin-top:1px;font-weight:400;">Good morning, Abdullah</div>
+          </div>
         </div>
+        <!-- Notification bell -->
         <div class="icon-btn" style="position:relative;" onclick="showNotifications()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
           <span style="position:absolute;top:6px;right:7px;width:7px;height:7px;border-radius:50%;background:var(--red);border:1.5px solid #fff;"></span>
@@ -1326,7 +1460,7 @@ img    { display:block; }
       <div class="divider"></div>
 
       <!-- PERSONALIZED -->
-      <div class="sec-head"><span class="sec-label">Personalized for You</span><span class="sec-link">View all</span></div>
+      <div class="sec-head"><span class="sec-label">Personalized for You</span><span class="sec-link" onclick="showPersonalizedAll()">View all</span></div>
       <div class="pers-grid" style="margin-bottom:4px;">
         <div class="pers-card" onclick="openProduct('creed')">
           <div class="pers-img-zone"><div class="prod-img-wrap" style="background:var(--b-purple);"><img class="prod-img" src="jpeg6.jpg" alt="Aventus" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:14px;">Av</div></div></div>
@@ -1747,6 +1881,143 @@ img    { display:block; }
   </div><!-- /home screen -->
 
   <!-- ════════════════════════════════
+       AI ASSISTANT OVERLAY
+  ════════════════════════════════ -->
+  <div class="ai-chat-overlay" id="overlay-ai-chat">
+    <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:10px;">●●●●</span></div>
+    <div class="ai-chat-header">
+      <div class="ai-chat-avatar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><path d="M12 2a9 9 0 019 9c0 3.6-2.1 6.7-5.2 8.2L15 21H9l-.8-1.8A9 9 0 013 11a9 9 0 019-9z"/><circle cx="9" cy="11" r="1" fill="#fff" stroke="none"/><circle cx="12" cy="11" r="1" fill="#fff" stroke="none"/><circle cx="15" cy="11" r="1" fill="#fff" stroke="none"/></svg>
+      </div>
+      <div class="ai-chat-title">
+        <div class="ai-chat-name">YOURDIS AI</div>
+        <div class="ai-chat-status">Online · Ready to help</div>
+      </div>
+      <div class="ai-chat-close" onclick="closeAIChat()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
+      </div>
+    </div>
+
+    <div class="ai-chat-messages" id="ai-chat-messages">
+      <!-- Initial AI greeting -->
+      <div class="ai-msg">
+        <div class="ai-msg-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><path d="M12 2a9 9 0 019 9c0 3.6-2.1 6.7-5.2 8.2L15 21H9l-.8-1.8A9 9 0 013 11a9 9 0 019-9z"/><circle cx="9" cy="11" r="1" fill="#fff" stroke="none"/><circle cx="12" cy="11" r="1" fill="#fff" stroke="none"/><circle cx="15" cy="11" r="1" fill="#fff" stroke="none"/></svg></div>
+        <div>
+          <div class="ai-msg-bubble">Hello Abdullah! 👋 I'm your personal fragrance assistant. Based on your taste for Woody and Oriental scents, I've found some great picks for you today. What are you looking for?</div>
+          <!-- Suggested products -->
+          <div class="ai-product-suggestion" onclick="closeAIChat();openProduct('creed')">
+            <div class="ai-sug-img"><div class="prod-img-wrap" style="background:var(--b-sage);height:44px;"><img class="prod-img" src="jpeg6.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:11px;">Cr</div></div></div>
+            <div class="ai-sug-info"><div class="ai-sug-name">Creed Aventus 100ml</div><div class="ai-sug-sub">Woody · Matches your taste · ↓ 20% off</div></div>
+            <div class="ai-sug-price">840 SAR</div>
+          </div>
+          <div class="ai-product-suggestion" onclick="closeAIChat();openProduct('tomford')">
+            <div class="ai-sug-img"><div class="prod-img-wrap" style="background:var(--b-amber);height:44px;"><img class="prod-img" src="jpeg3.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:11px;">Tf</div></div></div>
+            <div class="ai-sug-info"><div class="ai-sug-name">Tom Ford Tobacco Oud 50ml</div><div class="ai-sug-sub">Oriental Oud · Top pick this week</div></div>
+            <div class="ai-sug-price">590 SAR</div>
+          </div>
+          <div class="ai-msg-time">Just now</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick reply chips -->
+    <div style="padding:0 16px 2px;flex-shrink:0;">
+      <div class="ai-chat-suggestions" id="ai-quick-chips">
+        <span class="ai-quick-chip" onclick="aiSendQuick('Fresh & light suggestions')">Fresh &amp; light</span>
+        <span class="ai-quick-chip" onclick="aiSendQuick('Best deals under 400 SAR')">Under 400 SAR</span>
+        <span class="ai-quick-chip" onclick="aiSendQuick('Oud fragrances for evening')">Oud picks</span>
+        <span class="ai-quick-chip" onclick="aiSendQuick('Compare Chanel and Dior')">Compare brands</span>
+      </div>
+    </div>
+
+    <div class="ai-chat-input-bar">
+      <button class="ai-mic-btn" id="ai-mic-btn" onclick="toggleAIMic()" title="Voice message">
+        <svg id="ai-mic-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" style="width:17px;height:17px;"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>
+      </button>
+      <input class="ai-chat-input" id="ai-chat-input" placeholder="Ask me about fragrances…" onkeydown="if(event.key==='Enter')aiSendMessage()"/>
+      <button class="ai-send-btn" onclick="aiSendMessage()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════
+       PERSONALIZED FOR YOU — ALL
+  ════════════════════════════════ -->
+  <div class="overlay" id="overlay-personalized-all">
+    <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:10px;">●●●●</span></div>
+    <div class="listing-header">
+      <div class="listing-back-btn" onclick="closePersonalizedAll()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
+        Back
+      </div>
+      <span class="listing-title">Personalized for You</span>
+      <span class="listing-count">12 picks</span>
+    </div>
+    <div style="padding:8px 16px 4px;font-size:11px;color:var(--ink-3);flex-shrink:0;">Curated based on your taste for Woody &amp; Oriental scents</div>
+    <div class="search-bar" style="margin:4px 16px 8px;flex-shrink:0;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input id="pers-all-search" placeholder="Search personalized picks…" oninput="filterPersAll(this.value)"/>
+    </div>
+    <div style="flex:1;overflow-y:auto;">
+      <div class="pers-all-grid">
+        <!-- Row 1 -->
+        <div class="brand-prod-card" onclick="closePersonalizedAll();openProduct('creed')">
+          <div class="brand-prod-img"><div class="prod-img-wrap" style="background:var(--b-sage);height:100%;"><img class="prod-img" src="jpeg6.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Cr</div></div><div class="brand-prod-badge"><span class="badge badge-fire">↓ 20%</span></div></div>
+          <div class="brand-prod-body"><div class="deal-brand">Creed</div><div class="deal-name">Aventus for Her</div><div class="deal-store">Woody · matches taste</div><div class="deal-prices"><span class="deal-price">420 SAR</span></div></div>
+        </div>
+        <div class="brand-prod-card" onclick="closePersonalizedAll();openProduct('tomford')">
+          <div class="brand-prod-img"><div class="prod-img-wrap" style="background:var(--b-amber);height:100%;"><img class="prod-img" src="jpeg3.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Tf</div></div><div class="brand-prod-badge"><span class="badge badge-good">↓ 9%</span></div></div>
+          <div class="brand-prod-body"><div class="deal-brand">Tom Ford</div><div class="deal-name">Oud Wood</div><div class="deal-store">Oud · like favorites</div><div class="deal-prices"><span class="deal-price">710 SAR</span></div></div>
+        </div>
+        <div class="brand-prod-card" onclick="closePersonalizedAll();openProduct('dior')">
+          <div class="brand-prod-img"><div class="prod-img-wrap" style="background:var(--b-teal);height:100%;"><img class="prod-img" src="jpeg2.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Gi</div></div><div class="brand-prod-badge"><span class="badge badge-good">↗ Good</span></div></div>
+          <div class="brand-prod-body"><div class="deal-brand">Dior</div><div class="deal-name">Green Irish Tweed</div><div class="deal-store">Aromatic · trending</div><div class="deal-prices"><span class="deal-price">380 SAR</span></div></div>
+        </div>
+        <div class="brand-prod-card" onclick="closePersonalizedAll();openProduct('ysl')">
+          <div class="brand-prod-img"><div class="prod-img-wrap" style="background:var(--b-pink);height:100%;"><img class="prod-img" src="jpeg4.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Bo</div></div><div class="brand-prod-badge"><span class="badge badge-fire">↓ 17%</span></div></div>
+          <div class="brand-prod-body"><div class="deal-brand">YSL</div><div class="deal-name">Black Orchid</div><div class="deal-store">Oriental · price drop</div><div class="deal-prices"><span class="deal-price">530 SAR</span></div></div>
+        </div>
+        <!-- Row 2 -->
+        <div class="brand-prod-card" onclick="closePersonalizedAll();openProduct('chanel')">
+          <div class="brand-prod-img"><div class="prod-img-wrap" style="background:var(--b-purple);height:100%;"><img class="prod-img" src="jpeg1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Cd</div></div><div class="brand-prod-badge"><span class="badge badge-fire">↓ 22%</span></div></div>
+          <div class="brand-prod-body"><div class="deal-brand">Chanel</div><div class="deal-name">Bleu de Chanel EDP</div><div class="deal-store">Aromatic Woody</div><div class="deal-prices"><span class="deal-price">485 SAR</span></div></div>
+        </div>
+        <div class="brand-prod-card" onclick="closePersonalizedAll();openProduct('armani')">
+          <div class="brand-prod-img"><div class="prod-img-wrap" style="background:var(--b-blue);height:100%;"><img class="prod-img" src="jpeg5.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Aq</div></div><div class="brand-prod-badge"><span class="badge badge-fire">↓ 24%</span></div></div>
+          <div class="brand-prod-body"><div class="deal-brand">Armani</div><div class="deal-name">Acqua di Gio EDP</div><div class="deal-store">Fresh Aquatic</div><div class="deal-prices"><span class="deal-price">265 SAR</span></div></div>
+        </div>
+        <div class="brand-prod-card" onclick="closePersonalizedAll();openProduct('creed')">
+          <div class="brand-prod-img"><div class="prod-img-wrap" style="background:var(--b-sage);height:100%;"><img class="prod-img" src="jpeg6.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Cr</div></div><div class="brand-prod-badge"><span class="badge badge-fire">↓ 20%</span></div></div>
+          <div class="brand-prod-body"><div class="deal-brand">Creed</div><div class="deal-name">Creed Aventus 100ml</div><div class="deal-store">Woody · Mossy</div><div class="deal-prices"><span class="deal-price">840 SAR</span></div></div>
+        </div>
+        <div class="brand-prod-card" onclick="closePersonalizedAll();openProduct('dior')">
+          <div class="brand-prod-img"><div class="prod-img-wrap" style="background:var(--b-teal);height:100%;"><img class="prod-img" src="jpeg2.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Dk</div></div><div class="brand-prod-badge"><span class="badge badge-good">↓ 16%</span></div></div>
+          <div class="brand-prod-body"><div class="deal-brand">Dior</div><div class="deal-name">Sauvage Elixir 60ml</div><div class="deal-store">Spicy Woody</div><div class="deal-prices"><span class="deal-price">420 SAR</span></div></div>
+        </div>
+        <!-- Row 3 -->
+        <div class="brand-prod-card" onclick="closePersonalizedAll();openProduct('tomford')">
+          <div class="brand-prod-img"><div class="prod-img-wrap" style="background:var(--b-amber);height:100%;"><img class="prod-img" src="jpeg3.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Tf</div></div><div class="brand-prod-badge"><span class="badge badge-neutral">In Stock</span></div></div>
+          <div class="brand-prod-body"><div class="deal-brand">Tom Ford</div><div class="deal-name">Tobacco Oud EDP</div><div class="deal-store">Oriental Oud</div><div class="deal-prices"><span class="deal-price">590 SAR</span></div></div>
+        </div>
+        <div class="brand-prod-card" onclick="closePersonalizedAll();openProduct('ysl')">
+          <div class="brand-prod-img"><div class="prod-img-wrap" style="background:var(--b-pink);height:100%;"><img class="prod-img" src="jpeg4.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">YS</div></div><div class="brand-prod-badge"><span class="badge badge-good">↓ 17%</span></div></div>
+          <div class="brand-prod-body"><div class="deal-brand">YSL</div><div class="deal-name">Y Le Parfum 60ml</div><div class="deal-store">Fougère · Aromatic</div><div class="deal-prices"><span class="deal-price">290 SAR</span></div></div>
+        </div>
+        <div class="brand-prod-card" onclick="closePersonalizedAll();openProduct('chanel')">
+          <div class="brand-prod-img"><div class="prod-img-wrap" style="background:var(--b-purple);height:100%;"><img class="prod-img" src="jpeg1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Cd</div></div><div class="brand-prod-badge"><span class="badge badge-good">↗ Good</span></div></div>
+          <div class="brand-prod-body"><div class="deal-brand">Chanel</div><div class="deal-name">Bleu de Chanel EDT</div><div class="deal-store">Aromatic Woody</div><div class="deal-prices"><span class="deal-price">410 SAR</span></div></div>
+        </div>
+        <div class="brand-prod-card" onclick="closePersonalizedAll();openProduct('armani')">
+          <div class="brand-prod-img"><div class="prod-img-wrap" style="background:var(--b-blue);height:100%;"><img class="prod-img" src="jpeg5.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Aq</div></div><div class="brand-prod-badge"><span class="badge badge-good">↓ 11%</span></div></div>
+          <div class="brand-prod-body"><div class="deal-brand">Armani</div><div class="deal-name">Acqua di Gio Profumo</div><div class="deal-store">Fresh Aromatic</div><div class="deal-prices"><span class="deal-price">395 SAR</span></div></div>
+        </div>
+      </div>
+      <div style="height:16px;"></div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════
        SINGLE BRAND PAGE (overlay)
   ════════════════════════════════ -->
   <div class="overlay" id="overlay-brand-page">
@@ -1868,9 +2139,36 @@ img    { display:block; }
         <div class="result-thumb"><div class="prod-img-wrap" style="background:var(--b-purple);height:56px;"><img class="prod-img" src="jpeg1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:13px;">Cd</div></div></div>
         <div class="result-info"><div class="result-name">Bleu de Chanel Parfum</div><div class="result-brand">Chanel · 50ml</div><div class="result-stores">Store: Poone</div></div>
         <div class="result-right">
-          <div class="deal-orig" style="margin-bottom:2px;">370 SAR</div>
           <div class="result-price">395 SAR</div>
-          <div style="margin-top:4px;"><span class="badge badge-high">▲ High</span></div>
+        </div>
+      </div>
+
+      <!-- ── Search divider + similar suggestions ── -->
+      <div style="margin:14px 20px 0;display:flex;align-items:center;gap:10px;">
+        <div style="flex:1;height:1px;background:var(--border-strong);"></div>
+        <span style="font-size:10px;font-weight:500;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-3);white-space:nowrap;">More Results</span>
+        <div style="flex:1;height:1px;background:var(--border-strong);"></div>
+      </div>
+      <div style="padding:10px 20px 6px;font-size:13px;font-weight:500;color:var(--ink-1);">Similar products you may like</div>
+      <div class="result-row" onclick="openProduct('dior','search')">
+        <div class="result-thumb"><div class="prod-img-wrap" style="background:var(--b-teal);height:56px;"><img class="prod-img" src="jpeg2.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:13px;">Dk</div></div></div>
+        <div class="result-info"><div class="result-name">Dior Sauvage EDT</div><div class="result-brand">Dior · 100ml</div><div class="result-stores">Store: Namshi</div></div>
+        <div class="result-right">
+          <div class="result-price">310 SAR</div>
+        </div>
+      </div>
+      <div class="result-row" onclick="openProduct('armani','search')">
+        <div class="result-thumb"><div class="prod-img-wrap" style="background:var(--b-blue);height:56px;"><img class="prod-img" src="jpeg5.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:13px;">Aq</div></div></div>
+        <div class="result-info"><div class="result-name">Acqua di Gio EDP</div><div class="result-brand">Armani · 75ml</div><div class="result-stores">Store: Golden Scent</div></div>
+        <div class="result-right">
+          <div class="result-price">265 SAR</div>
+        </div>
+      </div>
+      <div class="result-row" onclick="openProduct('ysl','search')">
+        <div class="result-thumb"><div class="prod-img-wrap" style="background:var(--b-pink);height:56px;"><img class="prod-img" src="jpeg4.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:13px;">YS</div></div></div>
+        <div class="result-info"><div class="result-name">YSL Y Le Parfum</div><div class="result-brand">YSL · 60ml</div><div class="result-stores">Store: V Perfume</div></div>
+        <div class="result-right">
+          <div class="result-price">290 SAR</div>
         </div>
       </div>
     </div>
@@ -3122,7 +3420,110 @@ function filterHotDeals(query) {
   });
 }
 
-/* ── REVIEW STAR SELECTOR ──────────────────────────────── */
+/* ══════════════════════════════════════════════════════════
+   AI CHAT
+══════════════════════════════════════════════════════════ */
+var AI_RESPONSES = [
+  { text: "Based on your Woody preferences, I recommend Creed Aventus — it has a stunning fruity-woody opening that settles into a smoky, oakmoss base. Currently at its best price of the season.", products: [{key:'creed',name:'Creed Aventus 100ml',sub:'Woody · Mossy · ↓ 20% off',price:'840 SAR',img:'jpeg6.jpg',bg:'var(--b-sage)',ini:'Cr'}] },
+  { text: "For under 400 SAR with great quality, here are my top picks right now:", products: [{key:'dior',name:'Dior Sauvage EDT 200ml',sub:'Fresh Spicy · ↓ 16% off',price:'310 SAR',img:'jpeg2.jpg',bg:'var(--b-teal)',ini:'Dk'},{key:'ysl',name:'YSL Y Le Parfum 60ml',sub:'Aromatic Fougère · ↓ 17% off',price:'290 SAR',img:'jpeg4.jpg',bg:'var(--b-pink)',ini:'YS'}] },
+  { text: "Chanel and Dior both excel in masculine fragrances. Chanel Bleu focuses on Aromatic Woody elegance, while Dior Sauvage leans into raw, spicy freshness. Your preferences suggest Chanel might suit you better.", products: [{key:'chanel',name:'Bleu de Chanel EDP',sub:'Aromatic Woody · ↓ 22%',price:'485 SAR',img:'jpeg1.jpg',bg:'var(--b-purple)',ini:'Cd'}] },
+  { text: "For Oud evening fragrances, Tom Ford Tobacco Oud is unmatched — deep, smoky and incredibly long-lasting. Perfect for formal occasions.", products: [{key:'tomford',name:'Tom Ford Tobacco Oud 50ml',sub:'Oriental Oud · Top pick',price:'590 SAR',img:'jpeg3.jpg',bg:'var(--b-amber)',ini:'Tf'}] },
+  { text: "Great choice! I've tracked that fragrance for you. Would you like me to set a price drop alert so you're notified when the price falls further?", products: [] }
+];
+var _aiRespIdx = 0;
+
+function openAIChat() {
+  document.getElementById('overlay-ai-chat').classList.add('visible');
+}
+function closeAIChat() {
+  document.getElementById('overlay-ai-chat').classList.remove('visible');
+}
+function aiSendQuick(text) {
+  var inp = document.getElementById('ai-chat-input');
+  inp.value = text;
+  aiSendMessage();
+}
+function aiSendMessage() {
+  var inp = document.getElementById('ai-chat-input');
+  var text = inp.value.trim();
+  if (!text) return;
+  inp.value = '';
+  var msgs = document.getElementById('ai-chat-messages');
+
+  // User bubble
+  var userDiv = document.createElement('div');
+  userDiv.className = 'ai-msg user';
+  userDiv.innerHTML = '<div><div class="ai-msg-bubble">' + text + '</div><div class="ai-msg-time">Just now</div></div>';
+  msgs.appendChild(userDiv);
+
+  // Typing indicator
+  var typingDiv = document.createElement('div');
+  typingDiv.className = 'ai-msg';
+  typingDiv.id = 'ai-typing-indicator';
+  typingDiv.innerHTML = '<div class="ai-msg-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><path d="M12 2a9 9 0 019 9c0 3.6-2.1 6.7-5.2 8.2L15 21H9l-.8-1.8A9 9 0 013 11a9 9 0 019-9z"/><circle cx="9" cy="11" r="1" fill="#fff" stroke="none"/><circle cx="12" cy="11" r="1" fill="#fff" stroke="none"/><circle cx="15" cy="11" r="1" fill="#fff" stroke="none"/></svg></div><div class="ai-msg-bubble"><div class="ai-typing"><span></span><span></span><span></span></div></div>';
+  msgs.appendChild(typingDiv);
+  msgs.scrollTop = msgs.scrollHeight;
+
+  setTimeout(function() {
+    var ti = document.getElementById('ai-typing-indicator');
+    if (ti) ti.remove();
+    var resp = AI_RESPONSES[_aiRespIdx % AI_RESPONSES.length];
+    _aiRespIdx++;
+    var aiDiv = document.createElement('div');
+    aiDiv.className = 'ai-msg';
+    var prodsHtml = resp.products.map(function(p) {
+      return '<div class="ai-product-suggestion" onclick="closeAIChat();openProduct(\'' + p.key + '\')">' +
+        '<div class="ai-sug-img"><div class="prod-img-wrap" style="background:' + p.bg + ';height:44px;"><img class="prod-img" src="' + p.img + '" alt="" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'"><div class="prod-initials" style="display:none;font-size:11px;">' + p.ini + '</div></div></div>' +
+        '<div class="ai-sug-info"><div class="ai-sug-name">' + p.name + '</div><div class="ai-sug-sub">' + p.sub + '</div></div>' +
+        '<div class="ai-sug-price">' + p.price + '</div></div>';
+    }).join('');
+    aiDiv.innerHTML = '<div class="ai-msg-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><path d="M12 2a9 9 0 019 9c0 3.6-2.1 6.7-5.2 8.2L15 21H9l-.8-1.8A9 9 0 013 11a9 9 0 019-9z"/><circle cx="9" cy="11" r="1" fill="#fff" stroke="none"/><circle cx="12" cy="11" r="1" fill="#fff" stroke="none"/><circle cx="15" cy="11" r="1" fill="#fff" stroke="none"/></svg></div><div><div class="ai-msg-bubble">' + resp.text + '</div>' + prodsHtml + '<div class="ai-msg-time">Just now</div></div>';
+    msgs.appendChild(aiDiv);
+    msgs.scrollTop = msgs.scrollHeight;
+  }, 1100);
+}
+
+/* ══════════════════════════════════════════════════════════
+   PERSONALIZED FOR YOU — ALL
+══════════════════════════════════════════════════════════ */
+function showPersonalizedAll() {
+  showOverlay('overlay-personalized-all');
+  var sa = document.querySelector('#overlay-personalized-all [style*="overflow-y"]');
+  if (sa) sa.scrollTop = 0;
+}
+function closePersonalizedAll() { hideOverlay('overlay-personalized-all'); }
+
+/* ── PERSONALIZED ALL — SEARCH FILTER ──────────────────── */
+function filterPersAll(query) {
+  var q = query.toLowerCase();
+  document.querySelectorAll('#overlay-personalized-all .brand-prod-card').forEach(function(card) {
+    card.style.display = (!q || card.textContent.toLowerCase().includes(q)) ? '' : 'none';
+  });
+}
+
+/* ── AI MIC TOGGLE ─────────────────────────────────────── */
+var _micRecording = false;
+function toggleAIMic() {
+  var btn = document.getElementById('ai-mic-btn');
+  var inp = document.getElementById('ai-chat-input');
+  _micRecording = !_micRecording;
+  if (_micRecording) {
+    btn.classList.add('recording');
+    inp.placeholder = 'Listening…';
+    setTimeout(function() {
+      if (!_micRecording) return;
+      _micRecording = false;
+      btn.classList.remove('recording');
+      inp.placeholder = 'Ask me about fragrances…';
+      inp.value = 'Suggest a woody fragrance under 500 SAR';
+    }, 2200);
+  } else {
+    btn.classList.remove('recording');
+    inp.placeholder = 'Ask me about fragrances…';
+  }
+}
+
+
 var _reviewStarVal = 0;
 var _starLabels = ['','Poor','Fair','Good','Very Good','Excellent'];
 function selectReviewStar(val) {
