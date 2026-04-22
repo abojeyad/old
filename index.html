@@ -1100,10 +1100,10 @@ img    { display:block; }
 }
 .ai-chat-avatar {
   width:38px; height:38px; border-radius:50%;
-  background:linear-gradient(135deg,#4a0020 0%,var(--accent) 100%);
+  background: radial-gradient(circle at 38% 38%, #9b1040 0%, #79002F 60%, #4a0020 100%);
   display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  overflow:hidden;
 }
-.ai-chat-avatar svg { width:17px; height:17px; }
 .ai-chat-title { flex:1; }
 .ai-chat-name { font-size:14px; font-weight:500; color:var(--ink-1); }
 .ai-chat-status { font-size:11px; color:var(--green); display:flex; align-items:center; gap:4px; }
@@ -1122,10 +1122,10 @@ img    { display:block; }
 .ai-msg.user { flex-direction:row-reverse; }
 .ai-msg-avatar {
   width:28px; height:28px; border-radius:50%; flex-shrink:0;
-  background:linear-gradient(135deg,#4a0020 0%,var(--accent) 100%);
+  background: radial-gradient(circle at 38% 38%, #9b1040 0%, #79002F 60%, #4a0020 100%);
   display:flex; align-items:center; justify-content:center;
+  overflow:hidden;
 }
-.ai-msg-avatar svg { width:13px; height:13px; }
 .ai-msg-bubble {
   max-width:78%; padding:10px 13px; border-radius:16px;
   font-size:13px; line-height:1.55; color:var(--ink-1);
@@ -1193,6 +1193,40 @@ img    { display:block; }
 @keyframes mic-pulse {
   0%,100% { box-shadow:0 0 0 3px rgba(14,165,233,0.2); }
   50%      { box-shadow:0 0 0 6px rgba(14,165,233,0.08); }
+}
+
+/* ── NEURAL NETWORK ICON ANIMATIONS ──────────────────────── */
+@keyframes nn-flow-1 {
+  0%   { stroke-dashoffset: 28; opacity: 0.25; }
+  40%  { opacity: 1; }
+  100% { stroke-dashoffset: 0;  opacity: 0.25; }
+}
+@keyframes nn-flow-2 {
+  0%   { stroke-dashoffset: 22; opacity: 0.2; }
+  40%  { opacity: 1; }
+  100% { stroke-dashoffset: 0;  opacity: 0.2; }
+}
+@keyframes nn-flow-3 {
+  0%   { stroke-dashoffset: 18; opacity: 0.2; }
+  40%  { opacity: 1; }
+  100% { stroke-dashoffset: 0;  opacity: 0.2; }
+}
+@keyframes nn-node-pulse {
+  0%,100% { r: 1.6; opacity: 0.55; }
+  50%      { r: 2.2; opacity: 1;    }
+}
+@keyframes nn-node-pulse-fast {
+  0%,100% { r: 1.4; opacity: 0.5; }
+  50%      { r: 2.1; opacity: 1;   }
+}
+@keyframes nn-ring-breathe {
+  0%,100% { opacity: 0.18; }
+  50%      { opacity: 0.42; }
+}
+/* avatar background glow for header icon */
+@keyframes nn-glow-hdr {
+  0%,100% { box-shadow: 0 3px 10px rgba(121,0,47,0.28), 0 0 0 0 rgba(234,160,5,0.15); }
+  50%      { box-shadow: 0 4px 14px rgba(121,0,47,0.38), 0 0 0 5px rgba(234,160,5,0.10); }
 }
 .ai-typing {
   display:flex; gap:4px; align-items:center; padding:8px 2px;
@@ -1338,12 +1372,85 @@ img    { display:block; }
       <div style="display:flex;align-items:center;justify-content:space-between;">
         <!-- AI as primary header element -->
         <div onclick="openAIChat()" style="display:flex;align-items:center;gap:9px;cursor:pointer;">
-          <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#1a6fd4 0%,#0ea5e9 60%,#38bdf8 100%);display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(14,165,233,0.35);flex-shrink:0;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" style="width:16px;height:16px;"><path d="M12 2a9 9 0 019 9c0 3.6-2.1 6.7-5.2 8.2L15 21H9l-.8-1.8A9 9 0 013 11a9 9 0 019-9z"/><circle cx="9" cy="11" r="1" fill="#fff" stroke="none"/><circle cx="12" cy="11" r="1" fill="#fff" stroke="none"/><circle cx="15" cy="11" r="1" fill="#fff" stroke="none"/></svg>
-          </div>
+          <!-- Neural Network Icon — Header (36×36) -->
+          <svg width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;filter:drop-shadow(0 2px 6px rgba(121,0,47,0.32));">
+            <defs>
+              <!-- Base circle gradient -->
+              <radialGradient id="nn-bg-hdr" cx="38%" cy="35%" r="65%">
+                <stop offset="0%" stop-color="#9b1040"/>
+                <stop offset="55%" stop-color="#79002F"/>
+                <stop offset="100%" stop-color="#4a0020"/>
+              </radialGradient>
+              <!-- Orange flow gradient for lines -->
+              <linearGradient id="nn-flow-grad-hdr" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#EAA005" stop-opacity="0"/>
+                <stop offset="45%" stop-color="#EAA005" stop-opacity="1"/>
+                <stop offset="100%" stop-color="#ffcf4d" stop-opacity="0"/>
+                <animateTransform attributeName="gradientTransform" type="translate" from="-1 -1" to="1 1" dur="1.8s" repeatCount="indefinite"/>
+              </linearGradient>
+            </defs>
+            <!-- Background circle -->
+            <circle cx="18" cy="18" r="18" fill="url(#nn-bg-hdr)"/>
+            <!-- Outer ring breathe -->
+            <circle cx="18" cy="18" r="15.5" fill="none" stroke="#EAA005" stroke-width="0.5" stroke-opacity="0.22" style="animation:nn-ring-breathe 2.4s ease-in-out infinite;"/>
+
+            <!-- ── CONNECTOR LINES (burgundy base) ── -->
+            <!-- Left col → Centre col -->
+            <line x1="9" y1="12" x2="15" y2="10" stroke="#b5476a" stroke-width="0.9" stroke-linecap="round"/>
+            <line x1="9" y1="18" x2="15" y2="14" stroke="#b5476a" stroke-width="0.9" stroke-linecap="round"/>
+            <line x1="9" y1="18" x2="15" y2="22" stroke="#b5476a" stroke-width="0.9" stroke-linecap="round"/>
+            <line x1="9" y1="24" x2="15" y2="22" stroke="#b5476a" stroke-width="0.9" stroke-linecap="round"/>
+            <!-- Centre col → Right col -->
+            <line x1="15" y1="10" x2="21" y2="13" stroke="#b5476a" stroke-width="0.9" stroke-linecap="round"/>
+            <line x1="15" y1="14" x2="21" y2="13" stroke="#b5476a" stroke-width="0.9" stroke-linecap="round"/>
+            <line x1="15" y1="14" x2="21" y2="19" stroke="#b5476a" stroke-width="0.9" stroke-linecap="round"/>
+            <line x1="15" y1="22" x2="21" y2="19" stroke="#b5476a" stroke-width="0.9" stroke-linecap="round"/>
+            <line x1="15" y1="22" x2="21" y2="25" stroke="#b5476a" stroke-width="0.9" stroke-linecap="round"/>
+            <!-- Right col → Output -->
+            <line x1="21" y1="13" x2="27" y2="18" stroke="#b5476a" stroke-width="0.9" stroke-linecap="round"/>
+            <line x1="21" y1="19" x2="27" y2="18" stroke="#b5476a" stroke-width="0.9" stroke-linecap="round"/>
+            <line x1="21" y1="25" x2="27" y2="18" stroke="#b5476a" stroke-width="0.9" stroke-linecap="round"/>
+
+            <!-- ── FLOWING ORANGE OVERLAY LINES ── -->
+            <line x1="9" y1="18" x2="15" y2="14" stroke="#EAA005" stroke-width="1.4" stroke-linecap="round"
+              stroke-dasharray="8 28" stroke-dashoffset="28"
+              style="animation:nn-flow-1 1.6s ease-in-out infinite;"/>
+            <line x1="15" y1="14" x2="21" y2="19" stroke="#EAA005" stroke-width="1.4" stroke-linecap="round"
+              stroke-dasharray="9 22" stroke-dashoffset="22"
+              style="animation:nn-flow-2 1.6s ease-in-out infinite 0.3s;"/>
+            <line x1="21" y1="19" x2="27" y2="18" stroke="#EAA005" stroke-width="1.4" stroke-linecap="round"
+              stroke-dasharray="7 18" stroke-dashoffset="18"
+              style="animation:nn-flow-3 1.6s ease-in-out infinite 0.6s;"/>
+            <!-- secondary path -->
+            <line x1="9" y1="24" x2="15" y2="22" stroke="#EAA005" stroke-width="1.1" stroke-linecap="round"
+              stroke-dasharray="7 22" stroke-dashoffset="22"
+              style="animation:nn-flow-2 2.1s ease-in-out infinite 0.9s;"/>
+            <line x1="15" y1="22" x2="21" y2="25" stroke="#EAA005" stroke-width="1.1" stroke-linecap="round"
+              stroke-dasharray="7 18" stroke-dashoffset="18"
+              style="animation:nn-flow-3 2.1s ease-in-out infinite 1.15s;"/>
+            <line x1="21" y1="25" x2="27" y2="18" stroke="#EAA005" stroke-width="1.1" stroke-linecap="round"
+              stroke-dasharray="8 18" stroke-dashoffset="18"
+              style="animation:nn-flow-1 2.1s ease-in-out infinite 1.4s;"/>
+
+            <!-- ── NODES — LEFT COL ── -->
+            <circle cx="9" cy="12" r="2" fill="#79002F" stroke="#EAA005" stroke-width="0.8" stroke-opacity="0.6"/>
+            <circle cx="9" cy="18" r="2.2" fill="#EAA005" stroke="#ffcf4d" stroke-width="0.7" style="animation:nn-node-pulse 1.6s ease-in-out infinite;"/>
+            <circle cx="9" cy="24" r="2" fill="#79002F" stroke="#EAA005" stroke-width="0.8" stroke-opacity="0.5"/>
+            <!-- ── NODES — CENTRE COL ── -->
+            <circle cx="15" cy="10" r="1.8" fill="#79002F" stroke="#EAA005" stroke-width="0.7" stroke-opacity="0.55"/>
+            <circle cx="15" cy="14" r="2.2" fill="#EAA005" stroke="#ffcf4d" stroke-width="0.7" style="animation:nn-node-pulse-fast 1.6s ease-in-out infinite 0.3s;"/>
+            <circle cx="15" cy="22" r="2" fill="#79002F" stroke="#EAA005" stroke-width="0.7" stroke-opacity="0.5"/>
+            <!-- ── NODES — RIGHT COL ── -->
+            <circle cx="21" cy="13" r="1.8" fill="#79002F" stroke="#EAA005" stroke-width="0.7" stroke-opacity="0.5"/>
+            <circle cx="21" cy="19" r="2.2" fill="#EAA005" stroke="#ffcf4d" stroke-width="0.7" style="animation:nn-node-pulse 1.6s ease-in-out infinite 0.6s;"/>
+            <circle cx="21" cy="25" r="1.8" fill="#79002F" stroke="#EAA005" stroke-width="0.7" stroke-opacity="0.45"/>
+            <!-- ── OUTPUT NODE ── -->
+            <circle cx="27" cy="18" r="2.6" fill="#EAA005" stroke="#ffcf4d" stroke-width="0.9" style="animation:nn-node-pulse 1.4s ease-in-out infinite 0.8s;"/>
+            <circle cx="27" cy="18" r="4.2" fill="none" stroke="#EAA005" stroke-width="0.5" stroke-opacity="0.22" style="animation:nn-ring-breathe 1.4s ease-in-out infinite 0.8s;"/>
+          </svg>
           <div>
             <div style="font-size:15px;font-weight:600;color:var(--ink-1);letter-spacing:-0.01em;line-height:1.1;">YOURDIS AI</div>
-            <div style="font-size:10px;color:var(--ink-3);margin-top:1px;font-weight:400;">Good morning, Abdullah</div>
+            <div style="font-size:10px;color:var(--ink-3);margin-top:1px;font-weight:400;">here to help you</div>
           </div>
         </div>
         <!-- Notification bell -->
@@ -1887,7 +1994,47 @@ img    { display:block; }
     <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:10px;">●●●●</span></div>
     <div class="ai-chat-header">
       <div class="ai-chat-avatar">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><path d="M12 2a9 9 0 019 9c0 3.6-2.1 6.7-5.2 8.2L15 21H9l-.8-1.8A9 9 0 013 11a9 9 0 019-9z"/><circle cx="9" cy="11" r="1" fill="#fff" stroke="none"/><circle cx="12" cy="11" r="1" fill="#fff" stroke="none"/><circle cx="15" cy="11" r="1" fill="#fff" stroke="none"/></svg>
+        <!-- Neural Network Icon — Chat Header (38×38) -->
+        <svg width="38" height="38" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="nn-bg-chat" cx="38%" cy="35%" r="65%">
+              <stop offset="0%" stop-color="#9b1040"/>
+              <stop offset="55%" stop-color="#79002F"/>
+              <stop offset="100%" stop-color="#4a0020"/>
+            </radialGradient>
+          </defs>
+          <circle cx="18" cy="18" r="18" fill="url(#nn-bg-chat)"/>
+          <circle cx="18" cy="18" r="15.5" fill="none" stroke="#EAA005" stroke-width="0.5" stroke-opacity="0.22" style="animation:nn-ring-breathe 2.4s ease-in-out infinite;"/>
+          <line x1="9" y1="12" x2="15" y2="10" stroke="#b5476a" stroke-width="0.9" stroke-linecap="round"/>
+          <line x1="9" y1="18" x2="15" y2="14" stroke="#b5476a" stroke-width="0.9" stroke-linecap="round"/>
+          <line x1="9" y1="18" x2="15" y2="22" stroke="#b5476a" stroke-width="0.9" stroke-linecap="round"/>
+          <line x1="9" y1="24" x2="15" y2="22" stroke="#b5476a" stroke-width="0.9" stroke-linecap="round"/>
+          <line x1="15" y1="10" x2="21" y2="13" stroke="#b5476a" stroke-width="0.9" stroke-linecap="round"/>
+          <line x1="15" y1="14" x2="21" y2="13" stroke="#b5476a" stroke-width="0.9" stroke-linecap="round"/>
+          <line x1="15" y1="14" x2="21" y2="19" stroke="#b5476a" stroke-width="0.9" stroke-linecap="round"/>
+          <line x1="15" y1="22" x2="21" y2="19" stroke="#b5476a" stroke-width="0.9" stroke-linecap="round"/>
+          <line x1="15" y1="22" x2="21" y2="25" stroke="#b5476a" stroke-width="0.9" stroke-linecap="round"/>
+          <line x1="21" y1="13" x2="27" y2="18" stroke="#b5476a" stroke-width="0.9" stroke-linecap="round"/>
+          <line x1="21" y1="19" x2="27" y2="18" stroke="#b5476a" stroke-width="0.9" stroke-linecap="round"/>
+          <line x1="21" y1="25" x2="27" y2="18" stroke="#b5476a" stroke-width="0.9" stroke-linecap="round"/>
+          <line x1="9" y1="18" x2="15" y2="14" stroke="#EAA005" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="8 28" stroke-dashoffset="28" style="animation:nn-flow-1 1.6s ease-in-out infinite;"/>
+          <line x1="15" y1="14" x2="21" y2="19" stroke="#EAA005" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="9 22" stroke-dashoffset="22" style="animation:nn-flow-2 1.6s ease-in-out infinite 0.3s;"/>
+          <line x1="21" y1="19" x2="27" y2="18" stroke="#EAA005" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="7 18" stroke-dashoffset="18" style="animation:nn-flow-3 1.6s ease-in-out infinite 0.6s;"/>
+          <line x1="9" y1="24" x2="15" y2="22" stroke="#EAA005" stroke-width="1.1" stroke-linecap="round" stroke-dasharray="7 22" stroke-dashoffset="22" style="animation:nn-flow-2 2.1s ease-in-out infinite 0.9s;"/>
+          <line x1="15" y1="22" x2="21" y2="25" stroke="#EAA005" stroke-width="1.1" stroke-linecap="round" stroke-dasharray="7 18" stroke-dashoffset="18" style="animation:nn-flow-3 2.1s ease-in-out infinite 1.15s;"/>
+          <line x1="21" y1="25" x2="27" y2="18" stroke="#EAA005" stroke-width="1.1" stroke-linecap="round" stroke-dasharray="8 18" stroke-dashoffset="18" style="animation:nn-flow-1 2.1s ease-in-out infinite 1.4s;"/>
+          <circle cx="9" cy="12" r="2" fill="#79002F" stroke="#EAA005" stroke-width="0.8" stroke-opacity="0.6"/>
+          <circle cx="9" cy="18" r="2.2" fill="#EAA005" stroke="#ffcf4d" stroke-width="0.7" style="animation:nn-node-pulse 1.6s ease-in-out infinite;"/>
+          <circle cx="9" cy="24" r="2" fill="#79002F" stroke="#EAA005" stroke-width="0.8" stroke-opacity="0.5"/>
+          <circle cx="15" cy="10" r="1.8" fill="#79002F" stroke="#EAA005" stroke-width="0.7" stroke-opacity="0.55"/>
+          <circle cx="15" cy="14" r="2.2" fill="#EAA005" stroke="#ffcf4d" stroke-width="0.7" style="animation:nn-node-pulse-fast 1.6s ease-in-out infinite 0.3s;"/>
+          <circle cx="15" cy="22" r="2" fill="#79002F" stroke="#EAA005" stroke-width="0.7" stroke-opacity="0.5"/>
+          <circle cx="21" cy="13" r="1.8" fill="#79002F" stroke="#EAA005" stroke-width="0.7" stroke-opacity="0.5"/>
+          <circle cx="21" cy="19" r="2.2" fill="#EAA005" stroke="#ffcf4d" stroke-width="0.7" style="animation:nn-node-pulse 1.6s ease-in-out infinite 0.6s;"/>
+          <circle cx="21" cy="25" r="1.8" fill="#79002F" stroke="#EAA005" stroke-width="0.7" stroke-opacity="0.45"/>
+          <circle cx="27" cy="18" r="2.6" fill="#EAA005" stroke="#ffcf4d" stroke-width="0.9" style="animation:nn-node-pulse 1.4s ease-in-out infinite 0.8s;"/>
+          <circle cx="27" cy="18" r="4.2" fill="none" stroke="#EAA005" stroke-width="0.5" stroke-opacity="0.22" style="animation:nn-ring-breathe 1.4s ease-in-out infinite 0.8s;"/>
+        </svg>
       </div>
       <div class="ai-chat-title">
         <div class="ai-chat-name">YOURDIS AI</div>
@@ -1901,7 +2048,15 @@ img    { display:block; }
     <div class="ai-chat-messages" id="ai-chat-messages">
       <!-- Initial AI greeting -->
       <div class="ai-msg">
-        <div class="ai-msg-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><path d="M12 2a9 9 0 019 9c0 3.6-2.1 6.7-5.2 8.2L15 21H9l-.8-1.8A9 9 0 013 11a9 9 0 019-9z"/><circle cx="9" cy="11" r="1" fill="#fff" stroke="none"/><circle cx="12" cy="11" r="1" fill="#fff" stroke="none"/><circle cx="15" cy="11" r="1" fill="#fff" stroke="none"/></svg></div>
+        <div class="ai-msg-avatar">
+          <svg width="28" height="28" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+            <defs><radialGradient id="nn-bg-msg1" cx="38%" cy="35%" r="65%"><stop offset="0%" stop-color="#9b1040"/><stop offset="55%" stop-color="#79002F"/><stop offset="100%" stop-color="#4a0020"/></radialGradient></defs>
+            <circle cx="18" cy="18" r="18" fill="url(#nn-bg-msg1)"/>
+            <line x1="9" y1="18" x2="15" y2="14" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="15" y1="14" x2="21" y2="19" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="21" y1="19" x2="27" y2="18" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="9" y1="18" x2="15" y2="22" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="15" y1="22" x2="21" y2="19" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="9" y1="12" x2="15" y2="14" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="21" y1="13" x2="27" y2="18" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="15" y1="10" x2="21" y2="13" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="9" y1="24" x2="15" y2="22" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="15" y1="22" x2="21" y2="25" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="21" y1="25" x2="27" y2="18" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/>
+            <line x1="9" y1="18" x2="15" y2="14" stroke="#EAA005" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="8 28" stroke-dashoffset="28" style="animation:nn-flow-1 1.6s ease-in-out infinite;"/><line x1="15" y1="14" x2="21" y2="19" stroke="#EAA005" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="9 22" stroke-dashoffset="22" style="animation:nn-flow-2 1.6s ease-in-out infinite 0.3s;"/><line x1="21" y1="19" x2="27" y2="18" stroke="#EAA005" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="7 18" stroke-dashoffset="18" style="animation:nn-flow-3 1.6s ease-in-out infinite 0.6s;"/>
+            <circle cx="9" cy="18" r="2.2" fill="#EAA005" stroke="#ffcf4d" stroke-width="0.7" style="animation:nn-node-pulse 1.6s ease-in-out infinite;"/><circle cx="9" cy="12" r="1.8" fill="#79002F" stroke="#EAA005" stroke-width="0.7" stroke-opacity="0.6"/><circle cx="9" cy="24" r="1.8" fill="#79002F" stroke="#EAA005" stroke-width="0.7" stroke-opacity="0.5"/><circle cx="15" cy="14" r="2.2" fill="#EAA005" stroke="#ffcf4d" stroke-width="0.7" style="animation:nn-node-pulse-fast 1.6s ease-in-out infinite 0.3s;"/><circle cx="15" cy="10" r="1.6" fill="#79002F" stroke="#EAA005" stroke-width="0.7" stroke-opacity="0.5"/><circle cx="15" cy="22" r="1.8" fill="#79002F" stroke="#EAA005" stroke-width="0.7" stroke-opacity="0.5"/><circle cx="21" cy="19" r="2.2" fill="#EAA005" stroke="#ffcf4d" stroke-width="0.7" style="animation:nn-node-pulse 1.6s ease-in-out infinite 0.6s;"/><circle cx="21" cy="13" r="1.6" fill="#79002F" stroke="#EAA005" stroke-width="0.7" stroke-opacity="0.5"/><circle cx="21" cy="25" r="1.6" fill="#79002F" stroke="#EAA005" stroke-width="0.7" stroke-opacity="0.45"/><circle cx="27" cy="18" r="2.5" fill="#EAA005" stroke="#ffcf4d" stroke-width="0.8" style="animation:nn-node-pulse 1.4s ease-in-out infinite 0.8s;"/>
+          </svg>
+        </div>
         <div>
           <div class="ai-msg-bubble">Hello Abdullah! 👋 I'm your personal fragrance assistant. Based on your taste for Woody and Oriental scents, I've found some great picks for you today. What are you looking for?</div>
           <!-- Suggested products -->
@@ -3460,7 +3615,7 @@ function aiSendMessage() {
   var typingDiv = document.createElement('div');
   typingDiv.className = 'ai-msg';
   typingDiv.id = 'ai-typing-indicator';
-  typingDiv.innerHTML = '<div class="ai-msg-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><path d="M12 2a9 9 0 019 9c0 3.6-2.1 6.7-5.2 8.2L15 21H9l-.8-1.8A9 9 0 013 11a9 9 0 019-9z"/><circle cx="9" cy="11" r="1" fill="#fff" stroke="none"/><circle cx="12" cy="11" r="1" fill="#fff" stroke="none"/><circle cx="15" cy="11" r="1" fill="#fff" stroke="none"/></svg></div><div class="ai-msg-bubble"><div class="ai-typing"><span></span><span></span><span></span></div></div>';
+  typingDiv.innerHTML = '<div class="ai-msg-avatar"><svg width="28" height="28" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="nn-bg-typ" cx="38%" cy="35%" r="65%"><stop offset="0%" stop-color="#9b1040"/><stop offset="55%" stop-color="#79002F"/><stop offset="100%" stop-color="#4a0020"/></radialGradient></defs><circle cx="18" cy="18" r="18" fill="url(#nn-bg-typ)"/><line x1="9" y1="18" x2="15" y2="14" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="15" y1="14" x2="21" y2="19" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="21" y1="19" x2="27" y2="18" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="9" y1="18" x2="15" y2="22" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="15" y1="22" x2="21" y2="19" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="9" y1="12" x2="15" y2="14" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="21" y1="13" x2="27" y2="18" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="9" y1="18" x2="15" y2="14" stroke="#EAA005" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="8 28" stroke-dashoffset="28" style="animation:nn-flow-1 1.6s ease-in-out infinite;"/><line x1="15" y1="14" x2="21" y2="19" stroke="#EAA005" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="9 22" stroke-dashoffset="22" style="animation:nn-flow-2 1.6s ease-in-out infinite 0.3s;"/><line x1="21" y1="19" x2="27" y2="18" stroke="#EAA005" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="7 18" stroke-dashoffset="18" style="animation:nn-flow-3 1.6s ease-in-out infinite 0.6s;"/><circle cx="9" cy="18" r="2.2" fill="#EAA005" stroke="#ffcf4d" stroke-width="0.7" style="animation:nn-node-pulse 1.6s ease-in-out infinite;"/><circle cx="9" cy="12" r="1.8" fill="#79002F" stroke="#EAA005" stroke-width="0.7" stroke-opacity="0.6"/><circle cx="15" cy="14" r="2.2" fill="#EAA005" stroke="#ffcf4d" stroke-width="0.7" style="animation:nn-node-pulse-fast 1.6s ease-in-out infinite 0.3s;"/><circle cx="15" cy="22" r="1.8" fill="#79002F" stroke="#EAA005" stroke-width="0.7" stroke-opacity="0.5"/><circle cx="21" cy="19" r="2.2" fill="#EAA005" stroke="#ffcf4d" stroke-width="0.7" style="animation:nn-node-pulse 1.6s ease-in-out infinite 0.6s;"/><circle cx="27" cy="18" r="2.5" fill="#EAA005" stroke="#ffcf4d" stroke-width="0.8" style="animation:nn-node-pulse 1.4s ease-in-out infinite 0.8s;"/></svg></div><div class="ai-msg-bubble"><div class="ai-typing"><span></span><span></span><span></span></div></div>';
   msgs.appendChild(typingDiv);
   msgs.scrollTop = msgs.scrollHeight;
 
@@ -3477,7 +3632,7 @@ function aiSendMessage() {
         '<div class="ai-sug-info"><div class="ai-sug-name">' + p.name + '</div><div class="ai-sug-sub">' + p.sub + '</div></div>' +
         '<div class="ai-sug-price">' + p.price + '</div></div>';
     }).join('');
-    aiDiv.innerHTML = '<div class="ai-msg-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><path d="M12 2a9 9 0 019 9c0 3.6-2.1 6.7-5.2 8.2L15 21H9l-.8-1.8A9 9 0 013 11a9 9 0 019-9z"/><circle cx="9" cy="11" r="1" fill="#fff" stroke="none"/><circle cx="12" cy="11" r="1" fill="#fff" stroke="none"/><circle cx="15" cy="11" r="1" fill="#fff" stroke="none"/></svg></div><div><div class="ai-msg-bubble">' + resp.text + '</div>' + prodsHtml + '<div class="ai-msg-time">Just now</div></div>';
+    aiDiv.innerHTML = '<div class="ai-msg-avatar"><svg width="28" height="28" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="nn-bg-resp" cx="38%" cy="35%" r="65%"><stop offset="0%" stop-color="#9b1040"/><stop offset="55%" stop-color="#79002F"/><stop offset="100%" stop-color="#4a0020"/></radialGradient></defs><circle cx="18" cy="18" r="18" fill="url(#nn-bg-resp)"/><line x1="9" y1="18" x2="15" y2="14" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="15" y1="14" x2="21" y2="19" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="21" y1="19" x2="27" y2="18" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="9" y1="18" x2="15" y2="22" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="15" y1="22" x2="21" y2="19" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="9" y1="12" x2="15" y2="14" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="21" y1="13" x2="27" y2="18" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="9" y1="18" x2="15" y2="14" stroke="#EAA005" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="8 28" stroke-dashoffset="28" style="animation:nn-flow-1 1.6s ease-in-out infinite;"/><line x1="15" y1="14" x2="21" y2="19" stroke="#EAA005" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="9 22" stroke-dashoffset="22" style="animation:nn-flow-2 1.6s ease-in-out infinite 0.3s;"/><line x1="21" y1="19" x2="27" y2="18" stroke="#EAA005" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="7 18" stroke-dashoffset="18" style="animation:nn-flow-3 1.6s ease-in-out infinite 0.6s;"/><circle cx="9" cy="18" r="2.2" fill="#EAA005" stroke="#ffcf4d" stroke-width="0.7" style="animation:nn-node-pulse 1.6s ease-in-out infinite;"/><circle cx="9" cy="12" r="1.8" fill="#79002F" stroke="#EAA005" stroke-width="0.7" stroke-opacity="0.6"/><circle cx="15" cy="14" r="2.2" fill="#EAA005" stroke="#ffcf4d" stroke-width="0.7" style="animation:nn-node-pulse-fast 1.6s ease-in-out infinite 0.3s;"/><circle cx="15" cy="22" r="1.8" fill="#79002F" stroke="#EAA005" stroke-width="0.7" stroke-opacity="0.5"/><circle cx="21" cy="19" r="2.2" fill="#EAA005" stroke="#ffcf4d" stroke-width="0.7" style="animation:nn-node-pulse 1.6s ease-in-out infinite 0.6s;"/><circle cx="27" cy="18" r="2.5" fill="#EAA005" stroke="#ffcf4d" stroke-width="0.8" style="animation:nn-node-pulse 1.4s ease-in-out infinite 0.8s;"/></svg></div><div><div class="ai-msg-bubble">' + resp.text + '</div>' + prodsHtml + '<div class="ai-msg-time">Just now</div></div>';
     msgs.appendChild(aiDiv);
     msgs.scrollTop = msgs.scrollHeight;
   }, 1100);
