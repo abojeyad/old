@@ -69,21 +69,6 @@ img    { display:block; }
   display:flex; flex-direction:column; align-items:center;
   padding:28px 16px 48px; gap:16px;
 }
-.page-label {
-  font-size:11px; letter-spacing:0.1em; text-transform:uppercase;
-  color:#8A96A8; font-weight:500;
-}
-.screen-tabs {
-  display:flex; gap:4px; flex-wrap:wrap; justify-content:center; max-width:440px;
-}
-.stab {
-  font-size:11px; font-weight:500; padding:6px 13px; border-radius:20px;
-  border:1px solid rgba(0,0,0,0.15); background:rgba(255,255,255,0.5);
-  color:#4A5568; cursor:pointer; transition:all 0.15s;
-}
-.stab:hover { background:rgba(255,255,255,0.85); }
-.stab.active { background:var(--accent); color:#fff; border-color:var(--accent); }
-
 /* ═══════════════════════════════════════════════════════════
    PHONE FRAME
 ═══════════════════════════════════════════════════════════ */
@@ -152,9 +137,7 @@ img    { display:block; }
 }
 .badge-fire    { background:var(--amber-light); color:var(--amber); }
 .badge-good    { background:var(--green-light);  color:var(--green); }
-.badge-high    { background:var(--red-light);    color:var(--red); }
 .badge-neutral { background:var(--bg-surface); color:var(--ink-3); border:1px solid var(--border); }
-.badge-accent  { background:var(--accent-light); color:var(--accent); }
 
 /* Bottom nav */
 .bottom-nav {
@@ -214,7 +197,6 @@ img    { display:block; }
   padding: 40px 32px 30px; text-align: center; flex-shrink: 0;
 }
 .auth-wordmark { font-family:var(--font-display); font-size:32px; color:#FFFFFF; margin-bottom:4px; }
-.auth-wordmark-ar { font-size:15px; color:rgba(255,255,255,0.65); letter-spacing:0.08em; margin-bottom:20px; }
 .auth-tagline { font-size:13px; color:rgba(255,255,255,0.8); line-height:1.7; max-width:240px; }
 .auth-panel {
   flex:1; background:var(--bg-phone);
@@ -233,11 +215,6 @@ img    { display:block; }
 .auth-btn-primary { background:var(--accent-secondary); color:#fff; border:none; }
 .auth-btn-google  { background:var(--bg-phone); color:var(--ink-1); border:1px solid var(--border-strong); }
 .auth-btn-ghost   { background:var(--bg-surface); color:var(--accent); border:1px solid var(--accent); font-size:13px; font-weight:500; }
-.auth-divider {
-  display:flex; align-items:center; gap:10px; margin:2px 0;
-}
-.auth-divider span { font-size:11px; color:var(--ink-3); }
-.auth-divider::before,.auth-divider::after { content:''; flex:1; height:1px; background:var(--border); }
 .auth-terms { font-size:10px; color:var(--ink-3); text-align:center; line-height:1.6; margin-top:2px; }
 
 /* OTP Screen */
@@ -287,13 +264,6 @@ img    { display:block; }
   color:var(--ink-1); outline:none; line-height:1; padding:0;
 }
 .search-bar input::placeholder { color:var(--ink-3); }
-.search-filter {
-  width:28px; height:28px; flex-shrink:0; border-radius:var(--radius-sm);
-  background:var(--bg-phone); border:1px solid var(--border-strong);
-  display:flex; align-items:center; justify-content:center; cursor:pointer;
-}
-.search-filter svg { width:13px; height:13px; color:var(--ink-2); }
-
 /* Deal cards */
 .deal-card {
   flex-shrink:0; width:152px;
@@ -362,14 +332,6 @@ img    { display:block; }
 .drop-price { font-size:14px; font-weight:500; color:var(--ink-1); }
 .drop-delta { font-size:10px; color:var(--green); margin-top:2px; }
 
-.view-all-btn {
-  display:flex; align-items:center; justify-content:center;
-  margin:10px 20px 0; padding:12px; border:1px solid var(--border-strong);
-  border-radius:var(--radius-md); font-size:12px; font-weight:500; color:var(--ink-2);
-  cursor:pointer; background:transparent; transition:background 0.1s;
-}
-.view-all-btn:hover { background:var(--bg-surface); }
-
 .trend-chip {
   flex-shrink:0; display:flex; align-items:center; gap:8px;
   background:var(--bg-surface); border:1px solid var(--border);
@@ -395,7 +357,6 @@ img    { display:block; }
 .result-stores { font-size:10px; color:var(--ink-3); margin-top:4px; }
 .result-right  { text-align:right; flex-shrink:0; }
 .result-price  { font-size:14px; font-weight:500; color:var(--ink-1); }
-.result-from   { font-size:10px; color:var(--ink-3); margin-bottom:4px; }
 
 .filter-chips { display:flex; gap:6px; overflow-x:auto; padding:0 20px 14px; scrollbar-width:none; }
 .filter-chips::-webkit-scrollbar { display:none; }
@@ -429,35 +390,6 @@ img    { display:block; }
 .buy-cta-bar { margin:16px 20px 0; }
 
 /* Row 1: store info + price, no hard box */
-.buy-cta-meta-row {
-  display:flex; align-items:center; justify-content:space-between;
-  padding:10px 14px;
-  background:var(--bg-surface); border:1px solid var(--border);
-  border-radius:var(--radius-md);
-}
-.buy-cta-store-group {
-  display:flex; align-items:center; gap:8px;
-}
-.buy-cta-store-dot {
-  width:8px; height:8px; border-radius:50%;
-  background:var(--green); flex-shrink:0;
-}
-.buy-cta-store-info { display:flex; flex-direction:column; gap:1px; }
-.buy-cta-store-label { font-size:9px; text-transform:uppercase;
-  letter-spacing:0.07em; color:var(--ink-3); }
-.buy-cta-store-name  { font-size:13px; font-weight:500; color:var(--ink-1); }
-
-.buy-cta-price-group { text-align:right; }
-.buy-cta-price-orig  {
-  font-size:11px; color:var(--ink-3);
-  text-decoration:line-through; line-height:1.2;
-  min-height:14px; /* preserve space even when empty */
-}
-.buy-cta-price-now {
-  font-family:var(--font-display); font-size:22px;
-  color:var(--ink-1); line-height:1.1;
-}
-
 /* Row 2: full-width CTA button */
 .buy-cta-go-btn {
   display:flex; align-items:center; justify-content:center; gap:8px;
@@ -485,60 +417,6 @@ img    { display:block; }
 .prod-desc  { font-size:12px; color:var(--ink-2); line-height:1.65; margin-bottom:16px; }
 
 /* Price Dashboard */
-.price-dash {
-  background:var(--bg-surface); border:1px solid var(--border);
-  border-radius:var(--radius-md); overflow:hidden; margin-bottom:12px;
-}
-.price-dash-top {
-  padding:14px 16px 12px;
-  border-bottom:1px solid var(--border);
-  display:flex; align-items:flex-end; justify-content:space-between;
-}
-.price-main-group { display:flex; flex-direction:column; gap:4px; }
-.price-main-label { font-size:10px; color:var(--ink-3); letter-spacing:0.05em; text-transform:uppercase; }
-.price-main-val   { font-size:32px; font-weight:500; color:var(--ink-1); line-height:1; font-family:var(--font-display); }
-.price-dash-grid {
-  display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
-}
-.pdg-cell {
-  padding:10px 14px;
-  border-right:1px solid var(--border);
-  display:flex; flex-direction:column; gap:3px;
-}
-.pdg-cell:last-child { border-right:none; }
-.pdg-label { font-size:9px; color:var(--ink-3); text-transform:uppercase; letter-spacing:0.05em; }
-.pdg-value { font-size:13px; font-weight:500; color:var(--ink-1); }
-.pdg-note  { font-size:9px; color:var(--ink-3); }
-.pdg-cell.green .pdg-value { color:var(--green); }
-.pdg-cell.red   .pdg-value { color:var(--red); }
-
-/* Price history */
-.price-history-table {
-  display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; margin-bottom:12px;
-}
-.pht-cell {
-  background:var(--bg-surface); border:1px solid var(--border);
-  border-radius:var(--radius-md); padding:10px 12px;
-}
-.pht-label { font-size:10px; color:var(--ink-3); margin-bottom:4px; }
-.pht-value { font-size:14px; font-weight:500; color:var(--ink-1); }
-.pht-sub   { font-size:10px; color:var(--ink-3); margin-top:2px; }
-.pht-min .pht-value { color:var(--green); }
-.pht-max .pht-value { color:var(--red); }
-
-.price-events { display:flex; flex-direction:column; }
-.pe-row {
-  display:flex; align-items:center; gap:10px;
-  padding:8px 0; border-bottom:1px solid var(--border);
-}
-.pe-row:last-child { border-bottom:none; }
-.pe-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
-.pe-dot-down { background:var(--green); }
-.pe-dot-up   { background:var(--red); }
-.pe-date  { font-size:11px; color:var(--ink-3); flex:1; }
-.pe-store { font-size:11px; color:var(--ink-2); }
-.pe-price { font-size:12px; font-weight:500; color:var(--ink-1); }
-
 /* Store comparison */
 .store-row {
   display:flex; align-items:center; gap:10px;
@@ -610,33 +488,6 @@ img    { display:block; }
   background:var(--bg-surface); border:1px solid var(--border);
   border-radius:var(--radius-md); padding:14px;
 }
-.alert-card-head {
-  display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
-  margin-bottom:10px;
-}
-.alert-prod-name { font-size:13px; font-weight:500; color:var(--ink-1); }
-.alert-prod-sub  { font-size:11px; color:var(--ink-3); margin-top:2px; }
-.alert-price-row {
-  display:flex; align-items:center; justify-content:space-between;
-  background:var(--bg-phone); border:1px solid var(--border);
-  border-radius:var(--radius-sm); padding:8px 12px; margin-bottom:10px;
-}
-.apc-label { font-size:10px; color:var(--ink-3); }
-.apc-value { font-size:13px; font-weight:500; color:var(--ink-1); }
-.alert-actions { display:flex; gap:8px; }
-.alert-view-btn {
-  flex:1; padding:8px; border-radius:var(--radius-sm);
-  border:1px solid var(--border-strong); background:var(--bg-phone);
-  font-size:11px; font-weight:500; color:var(--ink-2); cursor:pointer; text-align:center;
-  transition:background 0.1s;
-}
-.alert-view-btn:hover { background:var(--bg-surface); }
-.alert-buy-btn {
-  flex:1; padding:8px; border-radius:var(--radius-sm);
-  background:var(--accent); font-size:11px; font-weight:500;
-  color:#fff; cursor:pointer; text-align:center; border:none;
-}
-
 /* ═══════════════════════════════════════════════════════════
    SCREEN: ACTIVITY
 ═══════════════════════════════════════════════════════════ */
@@ -655,8 +506,6 @@ img    { display:block; }
   font-family:var(--font-display); font-size:18px; color:#fff; letter-spacing:0.03em;
 }
 .user-name { font-size:16px; font-weight:500; color:#FFFFFF; }
-.user-level { font-size:11px; color:rgba(255,255,255,0.65); margin-top:2px; }
-
 .stats-grid {
   display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; padding:0 20px;
 }
@@ -666,55 +515,6 @@ img    { display:block; }
 }
 .stat-l { font-size:10px; color:var(--ink-3); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px; }
 .stat-v { font-family:var(--font-display); font-size:20px; color:var(--ink-1); }
-.stat-icon { width:26px; height:26px; border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:center; margin-bottom:8px; }
-.stat-icon svg { width:13px; height:13px; }
-.stat-card.s-primary { background: linear-gradient(135deg, #5a0024 0%, var(--accent) 100%); border-color:transparent; }
-.stat-card.s-primary .stat-l { color:rgba(255,255,255,0.65); }
-.stat-card.s-primary .stat-v { color:#fff; }
-.stat-card.s-gold { background: linear-gradient(135deg, #b97800 0%, var(--accent-secondary) 100%); border-color:transparent; }
-.stat-card.s-gold .stat-l { color:rgba(255,255,255,0.65); }
-.stat-card.s-gold .stat-v { color:#fff; }
-
-/* Activity tabs */
-.act-tabs {
-  display:flex; gap:0; margin:0 20px 14px;
-  border:1px solid var(--border-strong); border-radius:var(--radius-md); overflow:hidden;
-}
-.act-tab {
-  flex:1; padding:8px 4px; font-size:11px; font-weight:500; color:var(--ink-3);
-  background:transparent; cursor:pointer; text-align:center;
-  border-right:1px solid var(--border-strong); transition:all 0.1s;
-}
-.act-tab:last-child { border-right:none; }
-.act-tab.active { background:var(--accent); color:#fff; }
-
-.achieve-row { display:flex; gap:8px; padding:0 20px; }
-.achieve {
-  flex:1; display:flex; flex-direction:column; align-items:center; gap:5px;
-  background:var(--amber-light); border:1px solid rgba(140,90,0,0.1);
-  border-radius:var(--radius-md); padding:10px 8px;
-}
-.achieve svg { width:18px; height:18px; color:var(--amber); }
-.achieve-label { font-size:9px; font-weight:500; color:var(--amber); text-align:center; }
-.achieve.locked { background:var(--bg-surface); border-color:var(--border); }
-.achieve.locked svg { color:var(--ink-3); }
-.achieve.locked .achieve-label { color:var(--ink-3); }
-
-.timeline { display:flex; flex-direction:column; padding:0 20px; }
-.tl-item { display:flex; gap:10px; padding:10px 0; border-bottom:1px solid var(--border); }
-.tl-item:last-child { border-bottom:none; }
-.tl-dot {
-  width:28px; height:28px; border-radius:50%; flex-shrink:0;
-  display:flex; align-items:center; justify-content:center;
-}
-.tl-dot svg { width:13px; height:13px; }
-.tld-drop  { background:var(--green-light);  color:var(--green); }
-.tld-fav   { background:var(--red-light);    color:var(--red); }
-.tld-alert { background:var(--amber-light);  color:var(--amber); }
-.tl-body { flex:1; }
-.tl-text { font-size:12px; color:var(--ink-1); line-height:1.5; }
-.tl-time { font-size:10px; color:var(--ink-3); margin-top:3px; }
-
 /* Wishlist */
 .wishlist-grid {
   display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
@@ -853,15 +653,12 @@ img    { display:block; }
 .sri-purple { background:var(--b-purple); color:var(--accent); }
 .sri-green  { background:var(--green-light); color:var(--green); }
 .sri-amber  { background:var(--amber-light); color:var(--amber); }
-.sri-red    { background:var(--red-light); color:var(--red); }
 .sri-blue   { background:var(--b-blue); color:#2563EB; }
 .settings-row-info { display:flex; flex-direction:column; }
 .settings-row-name { font-size:13px; font-weight:500; color:var(--ink-1); }
 .settings-row-sub  { font-size:11px; color:var(--ink-3); margin-top:1px; }
 .settings-row-right { color:var(--ink-3); display:flex; align-items:center; gap:4px; }
 .settings-row-right svg { width:14px; height:14px; }
-.settings-value { font-size:12px; color:var(--ink-3); }
-
 .logout-btn {
   margin:16px 20px; padding:13px; border-radius:var(--radius-md);
   background:var(--red-light); color:var(--red);
@@ -1003,31 +800,6 @@ img    { display:block; }
 /* ─── SEARCH: product detail input cursor fix ────────── */
 .search-bar input:not([readonly]) { cursor:text; }
 
-/* ═══════════════════════════════════════════════════════════
-   SINGLE BRAND PAGE
-═══════════════════════════════════════════════════════════ */
-.brand-page-hero {
-  padding:20px 20px 18px;
-  display:flex; align-items:center; gap:16px;
-  flex-shrink:0; border-bottom:1px solid var(--border);
-}
-.brand-page-avatar {
-  width:64px; height:64px; border-radius:50%;
-  border:1px solid var(--border-strong);
-  display:flex; align-items:center; justify-content:center;
-  font-size:18px; font-weight:500; color:var(--ink-2); flex-shrink:0;
-}
-.brand-page-meta { flex:1; }
-.brand-page-name { font-family:var(--font-display); font-size:20px; color:var(--ink-1); line-height:1.1; }
-.brand-page-sub  { font-size:11px; color:var(--ink-3); margin-top:3px; }
-.brand-page-stats {
-  display:flex; gap:6px; margin-top:8px;
-}
-.brand-page-stat {
-  font-size:10px; padding:3px 8px; border-radius:20px;
-  background:var(--bg-surface); border:1px solid var(--border);
-  color:var(--ink-3);
-}
 .brand-prod-grid {
   display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
   gap:10px; padding:14px 16px;
@@ -1065,18 +837,6 @@ img    { display:block; }
   margin-top:6px; font-size:10px; padding:3px 8px;
   border-radius:20px; background:var(--green-light); color:var(--green);
 }
-.store-page-kpi {
-  display:flex; gap:0; margin:12px 16px 0; flex-shrink:0;
-  background:var(--bg-surface); border:1px solid var(--border);
-  border-radius:var(--radius-md); overflow:hidden;
-}
-.store-kpi-item {
-  flex:1; padding:10px 8px; text-align:center;
-  border-right:1px solid var(--border);
-}
-.store-kpi-item:last-child { border-right:none; }
-.store-kpi-val { font-family:var(--font-display); font-size:17px; color:var(--ink-1); }
-.store-kpi-lbl { font-size:9px; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-3); margin-top:2px; }
 .store-deals-section { padding:14px 16px 4px; flex-shrink:0; }
 .store-deals-label {
   font-size:11px; font-weight:500; letter-spacing:0.07em;
@@ -1100,7 +860,9 @@ img    { display:block; }
 }
 .ai-chat-avatar {
   width:38px; height:38px; border-radius:50%;
-  background: radial-gradient(circle at 38% 38%, #9b1040 0%, #79002F 60%, #4a0020 100%);
+  background: #EEEEEE;
+  border: 1px solid rgba(0,0,0,0.10);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.07);
   display:flex; align-items:center; justify-content:center; flex-shrink:0;
   overflow:hidden;
 }
@@ -1122,7 +884,8 @@ img    { display:block; }
 .ai-msg.user { flex-direction:row-reverse; }
 .ai-msg-avatar {
   width:28px; height:28px; border-radius:50%; flex-shrink:0;
-  background: radial-gradient(circle at 38% 38%, #9b1040 0%, #79002F 60%, #4a0020 100%);
+  background: #EEEEEE;
+  border: 1px solid rgba(0,0,0,0.09);
   display:flex; align-items:center; justify-content:center;
   overflow:hidden;
 }
@@ -1197,38 +960,112 @@ img    { display:block; }
 
 /* ── NEURAL NETWORK ICON ANIMATIONS ──────────────────────── */
 @keyframes nn-flow-1 {
-  0%   { stroke-dashoffset: 28; opacity: 0.25; }
-  40%  { opacity: 1; }
-  100% { stroke-dashoffset: 0;  opacity: 0.25; }
+  0%        { stroke-dashoffset: 28; opacity: 0;    }
+  15%       { opacity: 0.15; }
+  45%       { opacity: 1;    }
+  70%       { opacity: 0.9;  }
+  100%      { stroke-dashoffset: 0;  opacity: 0;    }
 }
 @keyframes nn-flow-2 {
-  0%   { stroke-dashoffset: 22; opacity: 0.2; }
-  40%  { opacity: 1; }
-  100% { stroke-dashoffset: 0;  opacity: 0.2; }
+  0%        { stroke-dashoffset: 22; opacity: 0;    }
+  15%       { opacity: 0.1;  }
+  45%       { opacity: 1;    }
+  70%       { opacity: 0.85; }
+  100%      { stroke-dashoffset: 0;  opacity: 0;    }
 }
 @keyframes nn-flow-3 {
-  0%   { stroke-dashoffset: 18; opacity: 0.2; }
-  40%  { opacity: 1; }
-  100% { stroke-dashoffset: 0;  opacity: 0.2; }
+  0%        { stroke-dashoffset: 18; opacity: 0;    }
+  15%       { opacity: 0.1;  }
+  45%       { opacity: 1;    }
+  70%       { opacity: 0.8;  }
+  100%      { stroke-dashoffset: 0;  opacity: 0;    }
 }
 @keyframes nn-node-pulse {
-  0%,100% { r: 1.6; opacity: 0.55; }
-  50%      { r: 2.2; opacity: 1;    }
+  0%,100%   { r: 1.5; opacity: 0.4;  }
+  30%        { r: 2.4; opacity: 1;    }
+  55%        { r: 2.0; opacity: 0.85; }
+  80%        { r: 1.7; opacity: 0.55; }
 }
 @keyframes nn-node-pulse-fast {
-  0%,100% { r: 1.4; opacity: 0.5; }
-  50%      { r: 2.1; opacity: 1;   }
+  0%,100%   { r: 1.3; opacity: 0.35; }
+  25%        { r: 2.3; opacity: 1;    }
+  50%        { r: 1.9; opacity: 0.8;  }
+  75%        { r: 1.5; opacity: 0.5;  }
 }
 @keyframes nn-ring-breathe {
-  0%,100% { opacity: 0.18; }
-  50%      { opacity: 0.42; }
+  0%,100%   { opacity: 0.12; transform: scale(0.95); }
+  50%        { opacity: 0.5;  transform: scale(1.06); }
 }
-/* avatar background glow for header icon */
-@keyframes nn-glow-hdr {
-  0%,100% { box-shadow: 0 3px 10px rgba(121,0,47,0.28), 0 0 0 0 rgba(234,160,5,0.15); }
-  50%      { box-shadow: 0 4px 14px rgba(121,0,47,0.38), 0 0 0 5px rgba(234,160,5,0.10); }
+@keyframes nn-node-spark {
+  0%,100%   { r: 2.3; opacity: 0.5;  }
+  20%        { r: 3.1; opacity: 1;    }
+  45%        { r: 2.6; opacity: 0.9;  }
+  70%        { r: 2.0; opacity: 0.6;  }
 }
-.ai-typing {
+@keyframes nn-ring-spark {
+  0%,100%   { r: 4.0; opacity: 0.1; }
+  20%        { r: 5.2; opacity: 0.45; }
+  50%        { r: 4.6; opacity: 0.28; }
+  80%        { r: 4.2; opacity: 0.15; }
+}
+/* ── GUEST AUTH MODAL ─────────────────────────────────── */
+.guest-modal-backdrop {
+  position:absolute; inset:0; z-index:80;
+  background:rgba(14,14,14,0.45);
+  display:none; align-items:flex-end;
+  backdrop-filter:blur(2px);
+  -webkit-backdrop-filter:blur(2px);
+}
+.guest-modal-backdrop.visible { display:flex; }
+.guest-modal {
+  width:100%;
+  background:var(--bg-phone);
+  border-top-left-radius:var(--radius-xl);
+  border-top-right-radius:var(--radius-xl);
+  padding:0 0 28px;
+  box-shadow:0 -8px 32px rgba(0,0,0,0.16);
+  animation:gm-slide-up 0.28s cubic-bezier(0.25,0.46,0.45,0.94) both;
+}
+@keyframes gm-slide-up {
+  from { transform:translateY(100%); opacity:0; }
+  to   { transform:translateY(0);    opacity:1; }
+}
+.guest-modal-handle {
+  width:36px; height:4px; border-radius:2px;
+  background:var(--border-strong); margin:10px auto 0;
+}
+.guest-modal-icon {
+  width:48px; height:48px; border-radius:50%;
+  background:#F0F0F0; border:1px solid rgba(0,0,0,0.09);
+  display:flex; align-items:center; justify-content:center;
+  margin:18px auto 12px;
+}
+.guest-modal-title {
+  font-size:16px; font-weight:500; color:var(--ink-1);
+  text-align:center; margin-bottom:4px;
+}
+.guest-modal-sub {
+  font-size:12px; color:var(--ink-3);
+  text-align:center; line-height:1.6;
+  margin-bottom:20px; padding:0 32px;
+}
+.guest-modal-actions { padding:0 20px; display:flex; flex-direction:column; gap:9px; }
+.gm-btn {
+  width:100%; height:46px; border-radius:var(--radius-md);
+  font-size:13px; font-weight:500; cursor:pointer;
+  display:flex; align-items:center; justify-content:center; gap:9px;
+  transition:opacity 0.15s; border:none; font-family:var(--font-body);
+}
+.gm-btn:hover { opacity:0.88; }
+.gm-btn-google { background:var(--bg-phone); color:var(--ink-1); border:1px solid var(--border-strong); }
+.gm-btn-apple  { background:#000; color:#fff; }
+.gm-btn-email  { background:var(--accent-secondary); color:#fff; }
+.gm-btn-cancel {
+  background:none; border:none; font-size:12px;
+  color:var(--ink-3); cursor:pointer; padding:4px;
+  font-family:var(--font-body); margin-top:2px;
+}
+
   display:flex; gap:4px; align-items:center; padding:8px 2px;
 }
 .ai-typing span {
@@ -1251,41 +1088,41 @@ img    { display:block; }
 }
 
 .alert-card-v2 {
-  margin:0 20px 12px;
+  margin:0 20px 8px;
   background:var(--bg-phone); border:1px solid var(--border);
-  border-radius:var(--radius-lg); overflow:hidden;
-  box-shadow:0 2px 8px rgba(0,0,0,0.04);
+  border-radius:var(--radius-md); overflow:hidden;
+  box-shadow:0 1px 4px rgba(0,0,0,0.04);
   transition:box-shadow 0.15s;
 }
-.alert-card-v2:hover { box-shadow:0 4px 16px rgba(0,0,0,0.09); }
+.alert-card-v2:hover { box-shadow:0 3px 10px rgba(0,0,0,0.08); }
 /* Top strip: image + name/brand + toggle */
 .alert-v2-top {
-  display:flex; align-items:center; gap:12px; padding:12px 14px 10px;
+  display:flex; align-items:center; gap:10px; padding:9px 12px 8px;
   border-bottom:1px solid var(--border);
 }
 .alert-v2-thumb {
-  width:52px; height:52px; border-radius:var(--radius-md);
+  width:40px; height:40px; border-radius:var(--radius-sm);
   flex-shrink:0; overflow:hidden;
 }
 .alert-v2-thumb .prod-img-wrap { height:100%; }
 .alert-v2-names { flex:1; min-width:0; }
-.alert-v2-prod-name { font-size:13px; font-weight:500; color:var(--ink-1); line-height:1.35; }
-.alert-v2-prod-sub  { font-size:11px; color:var(--ink-3); margin-top:2px; }
+.alert-v2-prod-name { font-size:12px; font-weight:500; color:var(--ink-1); line-height:1.3; }
+.alert-v2-prod-sub  { font-size:10px; color:var(--ink-3); margin-top:1px; }
 /* Middle: current price + badge + target */
 .alert-v2-mid {
   display:flex; align-items:center; gap:0;
-  padding:10px 14px; border-bottom:1px solid var(--border);
+  padding:7px 12px; border-bottom:1px solid var(--border);
 }
 .alert-v2-price-block { flex:1; }
-.alert-v2-price-label { font-size:10px; color:var(--ink-3); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:2px; }
-.alert-v2-price-val   { font-family:var(--font-display); font-size:22px; color:var(--ink-1); line-height:1; }
-.alert-v2-price-orig  { font-size:10px; color:var(--ink-3); text-decoration:line-through; margin-top:3px; }
-.alert-v2-badge-block { display:flex; flex-direction:column; align-items:flex-end; gap:5px; flex-shrink:0; }
+.alert-v2-price-label { font-size:9px; color:var(--ink-3); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:1px; }
+.alert-v2-price-val   { font-family:var(--font-display); font-size:18px; color:var(--ink-1); line-height:1; }
+.alert-v2-price-orig  { font-size:10px; color:var(--ink-3); text-decoration:line-through; margin-top:2px; }
+.alert-v2-badge-block { display:flex; flex-direction:column; align-items:flex-end; gap:4px; flex-shrink:0; }
 .alert-v2-target { font-size:10px; color:var(--ink-3); text-align:right; }
 /* Bottom: actions */
 .alert-v2-actions { display:flex; gap:0; }
 .alert-v2-view-btn {
-  flex:1; padding:10px; border-radius:0;
+  flex:1; padding:7px; border-radius:0;
   border:none; border-right:1px solid var(--border);
   background:var(--bg-surface);
   font-size:11px; font-weight:500; color:var(--ink-2); cursor:pointer;
@@ -1293,7 +1130,7 @@ img    { display:block; }
 }
 .alert-v2-view-btn:hover { background:var(--bg-input); }
 .alert-v2-buy-btn {
-  flex:1; padding:10px; border-radius:0;
+  flex:1; padding:7px; border-radius:0;
   background:var(--accent); border:none;
   font-size:11px; font-weight:500;
   color:#fff; cursor:pointer; text-align:center;
@@ -1321,13 +1158,13 @@ img    { display:block; }
         <div class="auth-panel-title">Sign in or create an account</div>
         
         <!-- 1. Google -->
-        <button class="auth-btn auth-btn-google" style="height:48px; padding:0;" onclick="switchScreen('home')">
+        <button class="auth-btn auth-btn-google" style="height:48px; padding:0;" onclick="window._isGuest=false;switchScreen('home')">
           <svg viewBox="0 0 24 24" width="17" height="17"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
           Sign in with Google
         </button>
 
         <!-- 2. Apple -->
-        <button class="auth-btn" style="background:#000; color:#fff; border:none; height:48px; padding:0;" onclick="switchScreen('home')">
+        <button class="auth-btn" style="background:#000; color:#fff; border:none; height:48px; padding:0;" onclick="window._isGuest=false;switchScreen('home')">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M17.05 20.28c-.96.95-2.04 1.72-3.32 1.72-1.24 0-1.63-.78-3.17-.78-1.57 0-2.02.76-3.18.78-1.24.02-2.31-.83-3.27-1.74-2.51-2.4-4.22-7.14-1.64-10.37 1.28-1.6 2.92-2.53 4.54-2.53 1.25 0 2.3.75 3.12.75.79 0 2.15-.89 3.65-.89 1.5 0 2.84.58 3.86 1.83-3.14 1.84-2.62 5.9.41 7.33-.74 1.84-1.72 3.59-3.02 4.9zm-3.61-16.71c.7-.85 1.17-2.04.9-3.23-1.04.04-2.31.7-3.05 1.55-.66.75-1.24 1.95-.97 3.11 1.15.08 2.27-.45 3.12-1.43z"/></svg>
           Sign in with Apple
         </button>
@@ -1339,7 +1176,7 @@ img    { display:block; }
         </button>
 
         <!-- 4. Guest -->
-        <button class="auth-btn auth-btn-ghost" style="height:48px; padding:0; border: 1px solid var(--border-strong);" onclick="switchScreen('home')">Continue as Guest</button>
+        <button class="auth-btn auth-btn-ghost" style="height:48px; padding:0; border: 1px solid var(--border-strong);" onclick="window._isGuest=true;switchScreen('home')">Continue as Guest</button>
         
         <p class="auth-terms">By continuing you agree to our Terms of Service and Privacy Policy</p>
       </div>
@@ -1359,7 +1196,7 @@ img    { display:block; }
         <div class="otp-box"></div>
       </div>
       <div class="otp-resend">Didn't receive it? <span>Resend in 0:42</span></div>
-      <button class="otp-confirm" onclick="switchScreen('home');document.getElementById('otp-overlay').classList.remove('visible')">Verify &amp; Continue</button>
+      <button class="otp-confirm" onclick="window._isGuest=false;switchScreen('home');document.getElementById('otp-overlay').classList.remove('visible')">Verify &amp; Continue</button>
     </div>
   </div>
 
@@ -1373,13 +1210,13 @@ img    { display:block; }
         <!-- AI as primary header element -->
         <div onclick="openAIChat()" style="display:flex;align-items:center;gap:9px;cursor:pointer;">
           <!-- Neural Network Icon — Header (36×36) -->
-          <svg width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;filter:drop-shadow(0 2px 6px rgba(121,0,47,0.32));">
+          <svg width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;filter:drop-shadow(0 1px 2px rgba(0,0,0,0.08));border-radius:50%;outline:1px solid rgba(0,0,0,0.09);">
             <defs>
               <!-- Base circle gradient -->
               <radialGradient id="nn-bg-hdr" cx="38%" cy="35%" r="65%">
-                <stop offset="0%" stop-color="#9b1040"/>
-                <stop offset="55%" stop-color="#79002F"/>
-                <stop offset="100%" stop-color="#4a0020"/>
+                <stop offset="0%" stop-color="#F4F4F4"/>
+                <stop offset="55%" stop-color="#EDEDED"/>
+                <stop offset="100%" stop-color="#E6E6E6"/>
               </radialGradient>
               <!-- Orange flow gradient for lines -->
               <linearGradient id="nn-flow-grad-hdr" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -1392,7 +1229,7 @@ img    { display:block; }
             <!-- Background circle -->
             <circle cx="18" cy="18" r="18" fill="url(#nn-bg-hdr)"/>
             <!-- Outer ring breathe -->
-            <circle cx="18" cy="18" r="15.5" fill="none" stroke="#EAA005" stroke-width="0.5" stroke-opacity="0.22" style="animation:nn-ring-breathe 2.4s ease-in-out infinite;"/>
+            <circle cx="18" cy="18" r="15.5" fill="none" stroke="#EAA005" stroke-width="0.5" stroke-opacity="0.22" style="animation:nn-ring-breathe 1.8s ease-in-out infinite;"/>
 
             <!-- ── CONNECTOR LINES (burgundy base) ── -->
             <!-- Left col → Centre col -->
@@ -1414,23 +1251,23 @@ img    { display:block; }
             <!-- ── FLOWING ORANGE OVERLAY LINES ── -->
             <line x1="9" y1="18" x2="15" y2="14" stroke="#EAA005" stroke-width="1.4" stroke-linecap="round"
               stroke-dasharray="8 28" stroke-dashoffset="28"
-              style="animation:nn-flow-1 1.6s ease-in-out infinite;"/>
+              style="animation:nn-flow-1 1.1s ease-in-out infinite;"/>
             <line x1="15" y1="14" x2="21" y2="19" stroke="#EAA005" stroke-width="1.4" stroke-linecap="round"
               stroke-dasharray="9 22" stroke-dashoffset="22"
-              style="animation:nn-flow-2 1.6s ease-in-out infinite 0.3s;"/>
+              style="animation:nn-flow-2 1.1s ease-in-out infinite 0.22s;"/>
             <line x1="21" y1="19" x2="27" y2="18" stroke="#EAA005" stroke-width="1.4" stroke-linecap="round"
               stroke-dasharray="7 18" stroke-dashoffset="18"
-              style="animation:nn-flow-3 1.6s ease-in-out infinite 0.6s;"/>
+              style="animation:nn-flow-3 1.1s ease-in-out infinite 0.44s;"/>
             <!-- secondary path -->
             <line x1="9" y1="24" x2="15" y2="22" stroke="#EAA005" stroke-width="1.1" stroke-linecap="round"
               stroke-dasharray="7 22" stroke-dashoffset="22"
-              style="animation:nn-flow-2 2.1s ease-in-out infinite 0.9s;"/>
+              style="animation:nn-flow-2 1.5s ease-in-out infinite 0.65s;"/>
             <line x1="15" y1="22" x2="21" y2="25" stroke="#EAA005" stroke-width="1.1" stroke-linecap="round"
               stroke-dasharray="7 18" stroke-dashoffset="18"
-              style="animation:nn-flow-3 2.1s ease-in-out infinite 1.15s;"/>
+              style="animation:nn-flow-3 1.5s ease-in-out infinite 0.85s;"/>
             <line x1="21" y1="25" x2="27" y2="18" stroke="#EAA005" stroke-width="1.1" stroke-linecap="round"
               stroke-dasharray="8 18" stroke-dashoffset="18"
-              style="animation:nn-flow-1 2.1s ease-in-out infinite 1.4s;"/>
+              style="animation:nn-flow-1 1.5s ease-in-out infinite 1.05s;"/>
 
             <!-- ── NODES — LEFT COL ── -->
             <circle cx="9" cy="12" r="2" fill="#79002F" stroke="#EAA005" stroke-width="0.8" stroke-opacity="0.6"/>
@@ -1445,8 +1282,8 @@ img    { display:block; }
             <circle cx="21" cy="19" r="2.2" fill="#EAA005" stroke="#ffcf4d" stroke-width="0.7" style="animation:nn-node-pulse 1.6s ease-in-out infinite 0.6s;"/>
             <circle cx="21" cy="25" r="1.8" fill="#79002F" stroke="#EAA005" stroke-width="0.7" stroke-opacity="0.45"/>
             <!-- ── OUTPUT NODE ── -->
-            <circle cx="27" cy="18" r="2.6" fill="#EAA005" stroke="#ffcf4d" stroke-width="0.9" style="animation:nn-node-pulse 1.4s ease-in-out infinite 0.8s;"/>
-            <circle cx="27" cy="18" r="4.2" fill="none" stroke="#EAA005" stroke-width="0.5" stroke-opacity="0.22" style="animation:nn-ring-breathe 1.4s ease-in-out infinite 0.8s;"/>
+            <circle cx="27" cy="18" r="2.6" fill="#EAA005" stroke="#ffcf4d" stroke-width="0.9" style="animation:nn-node-spark 1.4s ease-in-out infinite 0.8s;"/>
+            <circle cx="27" cy="18" r="4.2" fill="none" stroke="#EAA005" stroke-width="0.5" stroke-opacity="0.22" style="animation:nn-ring-spark 1.4s ease-in-out infinite 0.8s;"/>
           </svg>
           <div>
             <div style="font-size:15px;font-weight:600;color:var(--ink-1);letter-spacing:-0.01em;line-height:1.1;">YOURDIS AI</div>
@@ -1998,9 +1835,9 @@ img    { display:block; }
         <svg width="38" height="38" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <radialGradient id="nn-bg-chat" cx="38%" cy="35%" r="65%">
-              <stop offset="0%" stop-color="#9b1040"/>
-              <stop offset="55%" stop-color="#79002F"/>
-              <stop offset="100%" stop-color="#4a0020"/>
+              <stop offset="0%" stop-color="#F4F4F4"/>
+              <stop offset="55%" stop-color="#EDEDED"/>
+              <stop offset="100%" stop-color="#E6E6E6"/>
             </radialGradient>
           </defs>
           <circle cx="18" cy="18" r="18" fill="url(#nn-bg-chat)"/>
@@ -2050,7 +1887,7 @@ img    { display:block; }
       <div class="ai-msg">
         <div class="ai-msg-avatar">
           <svg width="28" height="28" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
-            <defs><radialGradient id="nn-bg-msg1" cx="38%" cy="35%" r="65%"><stop offset="0%" stop-color="#9b1040"/><stop offset="55%" stop-color="#79002F"/><stop offset="100%" stop-color="#4a0020"/></radialGradient></defs>
+            <defs><radialGradient id="nn-bg-msg1" cx="38%" cy="35%" r="65%"><stop offset="0%" stop-color="#F4F4F4"/><stop offset="55%" stop-color="#EDEDED"/><stop offset="100%" stop-color="#E6E6E6"/></radialGradient></defs>
             <circle cx="18" cy="18" r="18" fill="url(#nn-bg-msg1)"/>
             <line x1="9" y1="18" x2="15" y2="14" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="15" y1="14" x2="21" y2="19" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="21" y1="19" x2="27" y2="18" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="9" y1="18" x2="15" y2="22" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="15" y1="22" x2="21" y2="19" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="9" y1="12" x2="15" y2="14" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="21" y1="13" x2="27" y2="18" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="15" y1="10" x2="21" y2="13" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="9" y1="24" x2="15" y2="22" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="15" y1="22" x2="21" y2="25" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="21" y1="25" x2="27" y2="18" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/>
             <line x1="9" y1="18" x2="15" y2="14" stroke="#EAA005" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="8 28" stroke-dashoffset="28" style="animation:nn-flow-1 1.6s ease-in-out infinite;"/><line x1="15" y1="14" x2="21" y2="19" stroke="#EAA005" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="9 22" stroke-dashoffset="22" style="animation:nn-flow-2 1.6s ease-in-out infinite 0.3s;"/><line x1="21" y1="19" x2="27" y2="18" stroke="#EAA005" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="7 18" stroke-dashoffset="18" style="animation:nn-flow-3 1.6s ease-in-out infinite 0.6s;"/>
@@ -2587,9 +2424,9 @@ img    { display:block; }
       <div class="alert-card-v2">
         <div class="alert-v2-top">
           <div class="alert-v2-thumb">
-            <div class="prod-img-wrap" style="background:var(--b-purple);height:52px;">
+            <div class="prod-img-wrap" style="background:var(--b-purple);height:40px;">
               <img class="prod-img" src="jpeg1.jpg" alt="Bleu de Chanel" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-              <div class="prod-initials" style="display:none;font-size:12px;">Cd</div>
+              <div class="prod-initials" style="display:none;font-size:11px;">Cd</div>
             </div>
           </div>
           <div class="alert-v2-names">
@@ -2619,9 +2456,9 @@ img    { display:block; }
       <div class="alert-card-v2">
         <div class="alert-v2-top">
           <div class="alert-v2-thumb">
-            <div class="prod-img-wrap" style="background:var(--b-teal);height:52px;">
+            <div class="prod-img-wrap" style="background:var(--b-teal);height:40px;">
               <img class="prod-img" src="jpeg2.jpg" alt="Dior Sauvage" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-              <div class="prod-initials" style="display:none;font-size:12px;">Dk</div>
+              <div class="prod-initials" style="display:none;font-size:11px;">Dk</div>
             </div>
           </div>
           <div class="alert-v2-names">
@@ -2651,9 +2488,9 @@ img    { display:block; }
       <div class="alert-card-v2">
         <div class="alert-v2-top">
           <div class="alert-v2-thumb">
-            <div class="prod-img-wrap" style="background:var(--b-sage);height:52px;">
+            <div class="prod-img-wrap" style="background:var(--b-sage);height:40px;">
               <img class="prod-img" src="jpeg6.jpg" alt="Creed Aventus" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-              <div class="prod-initials" style="display:none;font-size:12px;">Cr</div>
+              <div class="prod-initials" style="display:none;font-size:11px;">Cr</div>
             </div>
           </div>
           <div class="alert-v2-names">
@@ -3080,6 +2917,32 @@ img    { display:block; }
     </div>
   </div>
 
+  <!-- ════════════════════════════════
+       GUEST AUTH MODAL
+  ════════════════════════════════ -->
+  <div class="guest-modal-backdrop" id="guest-modal-backdrop" onclick="closeGuestModal(event)">
+    <div class="guest-modal" onclick="event.stopPropagation()">
+      <div class="guest-modal-handle"></div>
+      <div class="guest-modal-title">Sign in to continue</div>
+      <div class="guest-modal-sub">This feature is available to registered users. Create a free account to unlock it.</div>
+      <div class="guest-modal-actions">
+        <button class="gm-btn gm-btn-google" onclick="closeGuestModal();window._isGuest=false;switchScreen('home')">
+          <svg viewBox="0 0 24 24" width="16" height="16"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+          Sign in with Google
+        </button>
+        <button class="gm-btn gm-btn-apple" onclick="closeGuestModal();window._isGuest=false;switchScreen('home')">
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor"><path d="M17.05 20.28c-.96.95-2.04 1.72-3.32 1.72-1.24 0-1.63-.78-3.17-.78-1.57 0-2.02.76-3.18.78-1.24.02-2.31-.83-3.27-1.74-2.51-2.4-4.22-7.14-1.64-10.37 1.28-1.6 2.92-2.53 4.54-2.53 1.25 0 2.3.75 3.12.75.79 0 2.15-.89 3.65-.89 1.5 0 2.84.58 3.86 1.83-3.14 1.84-2.62 5.9.41 7.33-.74 1.84-1.72 3.59-3.02 4.9zm-3.61-16.71c.7-.85 1.17-2.04.9-3.23-1.04.04-2.31.7-3.05 1.55-.66.75-1.24 1.95-.97 3.11 1.15.08 2.27-.45 3.12-1.43z"/></svg>
+          Sign in with Apple
+        </button>
+        <button class="gm-btn gm-btn-email" onclick="closeGuestModal();switchScreen('auth');setTimeout(function(){document.getElementById('otp-overlay').classList.add('visible');document.getElementById('lang-switcher').style.display='none'},100)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Continue with Email
+        </button>
+        <button class="gm-btn-cancel" onclick="closeGuestModal()">Maybe later</button>
+      </div>
+    </div>
+  </div>
+
   </div><!-- /phone -->
 </div><!-- /page-shell -->
 
@@ -3268,6 +3131,22 @@ function goBackFromProduct() {
 }
 
 /* ══════════════════════════════════════════════════════════
+   GUEST AUTH GUARD
+══════════════════════════════════════════════════════════ */
+function requireAuth(action) {
+  if (window._isGuest) {
+    document.getElementById('guest-modal-backdrop').classList.add('visible');
+    return false;
+  }
+  if (action) action();
+  return true;
+}
+function closeGuestModal(e) {
+  if (e && e.target !== document.getElementById('guest-modal-backdrop')) return;
+  document.getElementById('guest-modal-backdrop').classList.remove('visible');
+}
+
+/* ══════════════════════════════════════════════════════════
    SCREEN SWITCHING
 ══════════════════════════════════════════════════════════ */
 function switchScreen(name) {
@@ -3339,6 +3218,7 @@ function toggleEl(id) { document.getElementById(id).classList.toggle('off'); }
 
 var heartSaved = false;
 function toggleHeart() {
+  if (!requireAuth()) return;
   heartSaved = !heartSaved;
   var icon = document.getElementById('heartIcon');
   icon.setAttribute('fill', heartSaved ? 'var(--red)' : 'none');
@@ -3588,6 +3468,7 @@ var AI_RESPONSES = [
 var _aiRespIdx = 0;
 
 function openAIChat() {
+  if (!requireAuth()) return;
   document.getElementById('overlay-ai-chat').classList.add('visible');
 }
 function closeAIChat() {
@@ -3615,7 +3496,7 @@ function aiSendMessage() {
   var typingDiv = document.createElement('div');
   typingDiv.className = 'ai-msg';
   typingDiv.id = 'ai-typing-indicator';
-  typingDiv.innerHTML = '<div class="ai-msg-avatar"><svg width="28" height="28" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="nn-bg-typ" cx="38%" cy="35%" r="65%"><stop offset="0%" stop-color="#9b1040"/><stop offset="55%" stop-color="#79002F"/><stop offset="100%" stop-color="#4a0020"/></radialGradient></defs><circle cx="18" cy="18" r="18" fill="url(#nn-bg-typ)"/><line x1="9" y1="18" x2="15" y2="14" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="15" y1="14" x2="21" y2="19" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="21" y1="19" x2="27" y2="18" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="9" y1="18" x2="15" y2="22" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="15" y1="22" x2="21" y2="19" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="9" y1="12" x2="15" y2="14" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="21" y1="13" x2="27" y2="18" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="9" y1="18" x2="15" y2="14" stroke="#EAA005" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="8 28" stroke-dashoffset="28" style="animation:nn-flow-1 1.6s ease-in-out infinite;"/><line x1="15" y1="14" x2="21" y2="19" stroke="#EAA005" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="9 22" stroke-dashoffset="22" style="animation:nn-flow-2 1.6s ease-in-out infinite 0.3s;"/><line x1="21" y1="19" x2="27" y2="18" stroke="#EAA005" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="7 18" stroke-dashoffset="18" style="animation:nn-flow-3 1.6s ease-in-out infinite 0.6s;"/><circle cx="9" cy="18" r="2.2" fill="#EAA005" stroke="#ffcf4d" stroke-width="0.7" style="animation:nn-node-pulse 1.6s ease-in-out infinite;"/><circle cx="9" cy="12" r="1.8" fill="#79002F" stroke="#EAA005" stroke-width="0.7" stroke-opacity="0.6"/><circle cx="15" cy="14" r="2.2" fill="#EAA005" stroke="#ffcf4d" stroke-width="0.7" style="animation:nn-node-pulse-fast 1.6s ease-in-out infinite 0.3s;"/><circle cx="15" cy="22" r="1.8" fill="#79002F" stroke="#EAA005" stroke-width="0.7" stroke-opacity="0.5"/><circle cx="21" cy="19" r="2.2" fill="#EAA005" stroke="#ffcf4d" stroke-width="0.7" style="animation:nn-node-pulse 1.6s ease-in-out infinite 0.6s;"/><circle cx="27" cy="18" r="2.5" fill="#EAA005" stroke="#ffcf4d" stroke-width="0.8" style="animation:nn-node-pulse 1.4s ease-in-out infinite 0.8s;"/></svg></div><div class="ai-msg-bubble"><div class="ai-typing"><span></span><span></span><span></span></div></div>';
+  typingDiv.innerHTML = '<div class="ai-msg-avatar"><svg width="28" height="28" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="nn-bg-typ" cx="38%" cy="35%" r="65%"><stop offset="0%" stop-color="#F4F4F4"/><stop offset="55%" stop-color="#EDEDED"/><stop offset="100%" stop-color="#E6E6E6"/></radialGradient></defs><circle cx="18" cy="18" r="18" fill="url(#nn-bg-typ)"/><line x1="9" y1="18" x2="15" y2="14" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="15" y1="14" x2="21" y2="19" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="21" y1="19" x2="27" y2="18" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="9" y1="18" x2="15" y2="22" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="15" y1="22" x2="21" y2="19" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="9" y1="12" x2="15" y2="14" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="21" y1="13" x2="27" y2="18" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="9" y1="18" x2="15" y2="14" stroke="#EAA005" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="8 28" stroke-dashoffset="28" style="animation:nn-flow-1 1.6s ease-in-out infinite;"/><line x1="15" y1="14" x2="21" y2="19" stroke="#EAA005" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="9 22" stroke-dashoffset="22" style="animation:nn-flow-2 1.6s ease-in-out infinite 0.3s;"/><line x1="21" y1="19" x2="27" y2="18" stroke="#EAA005" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="7 18" stroke-dashoffset="18" style="animation:nn-flow-3 1.6s ease-in-out infinite 0.6s;"/><circle cx="9" cy="18" r="2.2" fill="#EAA005" stroke="#ffcf4d" stroke-width="0.7" style="animation:nn-node-pulse 1.6s ease-in-out infinite;"/><circle cx="9" cy="12" r="1.8" fill="#79002F" stroke="#EAA005" stroke-width="0.7" stroke-opacity="0.6"/><circle cx="15" cy="14" r="2.2" fill="#EAA005" stroke="#ffcf4d" stroke-width="0.7" style="animation:nn-node-pulse-fast 1.6s ease-in-out infinite 0.3s;"/><circle cx="15" cy="22" r="1.8" fill="#79002F" stroke="#EAA005" stroke-width="0.7" stroke-opacity="0.5"/><circle cx="21" cy="19" r="2.2" fill="#EAA005" stroke="#ffcf4d" stroke-width="0.7" style="animation:nn-node-pulse 1.6s ease-in-out infinite 0.6s;"/><circle cx="27" cy="18" r="2.5" fill="#EAA005" stroke="#ffcf4d" stroke-width="0.8" style="animation:nn-node-pulse 1.4s ease-in-out infinite 0.8s;"/></svg></div><div class="ai-msg-bubble"><div class="ai-typing"><span></span><span></span><span></span></div></div>';
   msgs.appendChild(typingDiv);
   msgs.scrollTop = msgs.scrollHeight;
 
@@ -3632,7 +3513,7 @@ function aiSendMessage() {
         '<div class="ai-sug-info"><div class="ai-sug-name">' + p.name + '</div><div class="ai-sug-sub">' + p.sub + '</div></div>' +
         '<div class="ai-sug-price">' + p.price + '</div></div>';
     }).join('');
-    aiDiv.innerHTML = '<div class="ai-msg-avatar"><svg width="28" height="28" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="nn-bg-resp" cx="38%" cy="35%" r="65%"><stop offset="0%" stop-color="#9b1040"/><stop offset="55%" stop-color="#79002F"/><stop offset="100%" stop-color="#4a0020"/></radialGradient></defs><circle cx="18" cy="18" r="18" fill="url(#nn-bg-resp)"/><line x1="9" y1="18" x2="15" y2="14" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="15" y1="14" x2="21" y2="19" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="21" y1="19" x2="27" y2="18" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="9" y1="18" x2="15" y2="22" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="15" y1="22" x2="21" y2="19" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="9" y1="12" x2="15" y2="14" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="21" y1="13" x2="27" y2="18" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="9" y1="18" x2="15" y2="14" stroke="#EAA005" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="8 28" stroke-dashoffset="28" style="animation:nn-flow-1 1.6s ease-in-out infinite;"/><line x1="15" y1="14" x2="21" y2="19" stroke="#EAA005" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="9 22" stroke-dashoffset="22" style="animation:nn-flow-2 1.6s ease-in-out infinite 0.3s;"/><line x1="21" y1="19" x2="27" y2="18" stroke="#EAA005" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="7 18" stroke-dashoffset="18" style="animation:nn-flow-3 1.6s ease-in-out infinite 0.6s;"/><circle cx="9" cy="18" r="2.2" fill="#EAA005" stroke="#ffcf4d" stroke-width="0.7" style="animation:nn-node-pulse 1.6s ease-in-out infinite;"/><circle cx="9" cy="12" r="1.8" fill="#79002F" stroke="#EAA005" stroke-width="0.7" stroke-opacity="0.6"/><circle cx="15" cy="14" r="2.2" fill="#EAA005" stroke="#ffcf4d" stroke-width="0.7" style="animation:nn-node-pulse-fast 1.6s ease-in-out infinite 0.3s;"/><circle cx="15" cy="22" r="1.8" fill="#79002F" stroke="#EAA005" stroke-width="0.7" stroke-opacity="0.5"/><circle cx="21" cy="19" r="2.2" fill="#EAA005" stroke="#ffcf4d" stroke-width="0.7" style="animation:nn-node-pulse 1.6s ease-in-out infinite 0.6s;"/><circle cx="27" cy="18" r="2.5" fill="#EAA005" stroke="#ffcf4d" stroke-width="0.8" style="animation:nn-node-pulse 1.4s ease-in-out infinite 0.8s;"/></svg></div><div><div class="ai-msg-bubble">' + resp.text + '</div>' + prodsHtml + '<div class="ai-msg-time">Just now</div></div>';
+    aiDiv.innerHTML = '<div class="ai-msg-avatar"><svg width="28" height="28" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="nn-bg-resp" cx="38%" cy="35%" r="65%"><stop offset="0%" stop-color="#F4F4F4"/><stop offset="55%" stop-color="#EDEDED"/><stop offset="100%" stop-color="#E6E6E6"/></radialGradient></defs><circle cx="18" cy="18" r="18" fill="url(#nn-bg-resp)"/><line x1="9" y1="18" x2="15" y2="14" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="15" y1="14" x2="21" y2="19" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="21" y1="19" x2="27" y2="18" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="9" y1="18" x2="15" y2="22" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="15" y1="22" x2="21" y2="19" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="9" y1="12" x2="15" y2="14" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="21" y1="13" x2="27" y2="18" stroke="#b5476a" stroke-width="1" stroke-linecap="round"/><line x1="9" y1="18" x2="15" y2="14" stroke="#EAA005" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="8 28" stroke-dashoffset="28" style="animation:nn-flow-1 1.6s ease-in-out infinite;"/><line x1="15" y1="14" x2="21" y2="19" stroke="#EAA005" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="9 22" stroke-dashoffset="22" style="animation:nn-flow-2 1.6s ease-in-out infinite 0.3s;"/><line x1="21" y1="19" x2="27" y2="18" stroke="#EAA005" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="7 18" stroke-dashoffset="18" style="animation:nn-flow-3 1.6s ease-in-out infinite 0.6s;"/><circle cx="9" cy="18" r="2.2" fill="#EAA005" stroke="#ffcf4d" stroke-width="0.7" style="animation:nn-node-pulse 1.6s ease-in-out infinite;"/><circle cx="9" cy="12" r="1.8" fill="#79002F" stroke="#EAA005" stroke-width="0.7" stroke-opacity="0.6"/><circle cx="15" cy="14" r="2.2" fill="#EAA005" stroke="#ffcf4d" stroke-width="0.7" style="animation:nn-node-pulse-fast 1.6s ease-in-out infinite 0.3s;"/><circle cx="15" cy="22" r="1.8" fill="#79002F" stroke="#EAA005" stroke-width="0.7" stroke-opacity="0.5"/><circle cx="21" cy="19" r="2.2" fill="#EAA005" stroke="#ffcf4d" stroke-width="0.7" style="animation:nn-node-pulse 1.6s ease-in-out infinite 0.6s;"/><circle cx="27" cy="18" r="2.5" fill="#EAA005" stroke="#ffcf4d" stroke-width="0.8" style="animation:nn-node-pulse 1.4s ease-in-out infinite 0.8s;"/></svg></div><div><div class="ai-msg-bubble">' + resp.text + '</div>' + prodsHtml + '<div class="ai-msg-time">Just now</div></div>';
     msgs.appendChild(aiDiv);
     msgs.scrollTop = msgs.scrollHeight;
   }, 1100);
