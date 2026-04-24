@@ -409,16 +409,6 @@ html {
 }
 .brand-label { font-size:13px; color:var(--ink-3); text-align:center; max-width:64px; }
 
-/* Store logos row */
-.store-logo-item { flex-shrink:0; display:flex; flex-direction:column; align-items:center; gap:8px; cursor:pointer; }
-.store-logo-circle {
-  width:60px; height:60px; border-radius:15px;
-  border:1px solid var(--border-strong); background:var(--bg-surface);
-  display:flex; align-items:center; justify-content:center;
-  font-size:13px; font-weight:600; color:var(--ink-2);
-}
-.store-logo-label { font-size:13px; color:var(--ink-3); text-align:center; max-width:64px; }
-
 /* Personalized grid */
 .pers-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; padding:0 20px; }
 .pers-card {
@@ -1819,19 +1809,6 @@ html {
         <div class="drop-right"><div class="drop-price">840 SAR</div><div class="drop-delta">−210 SAR</div></div>
       </div>
 
-      <!-- BROWSE BY STORE -->
-      <div class="sec-head"><span class="sec-label">Browse by Store</span><span class="sec-link" onclick="showAllStores()">All stores</span></div>
-      <div class="h-scroll" style="margin-bottom:4px;">
-        <div class="store-logo-item" onclick="openStorePage('amazon')"><div class="store-logo-circle" style="background:var(--b-blue);">Gs</div><div class="store-logo-label">Golden Scent</div></div>
-        <div class="store-logo-item" onclick="openStorePage('namshi')"><div class="store-logo-circle" style="background:var(--b-teal);">No</div><div class="store-logo-label">Nice One</div></div>
-        <div class="store-logo-item" onclick="openStorePage('sephora')"><div class="store-logo-circle" style="background:var(--b-pink);">Ao</div><div class="store-logo-label">Asheq Al-Otor</div></div>
-        <div class="store-logo-item" onclick="openStorePage('noon')"><div class="store-logo-circle" style="background:var(--b-amber);">No</div><div class="store-logo-label">Najd Al-Otheyah</div></div>
-        <div class="store-logo-item" onclick="openStorePage('centrepoint')"><div class="store-logo-circle" style="background:var(--b-sage);">Dr</div><div class="store-logo-label">Deraah</div></div>
-        <div class="store-logo-item" onclick="openStorePage('jarir')"><div class="store-logo-circle" style="background:var(--b-purple);">Vp</div><div class="store-logo-label">V Perfume</div></div>
-      </div>
-
-      <div class="divider"></div>
-
       <!-- TRENDING -->
       <div class="sec-head"><span class="sec-label">Trending Now</span></div>
       <div class="h-scroll" style="padding-bottom:16px;">
@@ -2417,7 +2394,7 @@ html {
         <div class="store-page-url"  id="store-page-url">amazon.sa</div>
         <div class="store-page-badge">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:10px;height:10px;"><polyline points="20 6 9 17 4 12"/></svg>
-          Tracked &amp; Verified
+          Verified
         </div>
       </div>
       <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0;">
