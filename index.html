@@ -50,144 +50,57 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
 
 <!-- ═══════════════════════════════════════════════════════
-     CRITICAL: Pre-seed safe-area vars before first paint.
-     iOS PWA resolves env() asynchronously — this ensures
-     the layout doesn't flash at 0px before the real values
-     arrive. JS below overwrites these with real px values.
+     CRITICAL: Viewport & Safe Area Management
+     We use CSS-only logic to avoid the "jumpy" behavior 
+     caused by JS height patching.
 ════════════════════════════════════════════════════════ -->
-<style id="safe-area-seed">
+<style id="safe-area-management">
   :root {
-    --sat: 44px;   /* safe-area-inset-top default (iPhone notch) */
-    --sab: 34px;   /* safe-area-inset-bottom default (home indicator) */
+    /* Safe Area Defaults (Fallback for non-PWA/Old devices) */
+    --sat: env(safe-area-inset-top, 0px);
+    --sab: env(safe-area-inset-bottom, 0px);
+    --real-vh: 100dvh;
   }
-  /* Read the real env() values as soon as CSS is parsed */
-  @supports (padding: env(safe-area-inset-top)) {
-    :root {
-      --sat: env(safe-area-inset-top, 44px);
-      --sab: env(safe-area-inset-bottom, 34px);
-    }
+
+  /* Force standard height for the app shell */
+  html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Prevent body-level scrolling */
+    position: fixed; /* Essential for mobile PWA stability */
+    background: var(--bg-page);
   }
 </style>
+
 <script>
 /* ═══════════════════════════════════════════════════════════
-   LAYOUT FIX — runs before DOMContentLoaded.
-   iOS PWA: env() values and dvh/svh can be 0 on first paint.
-   We force the correct height via JS using window.innerHeight
-   (which is always correct) and schedule re-application after
-   fonts/images settle, eliminating the double-tap bug.
+   MINIMAL LAYOUT HELPER
+   Only handles standalone detection and essential logic.
+   No pixel-patching of heights to avoid the "snap" bug.
 ═══════════════════════════════════════════════════════════ */
 (function() {
-  var IS_IOS_PWA = window.navigator.standalone === true;
-
-  function applyRealViewportHeight() {
-    if (!IS_IOS_PWA) return;
-    var h = window.innerHeight;
-    /* Set a CSS custom property with the real pixel height */
-    document.documentElement.style.setProperty('--real-vh', h + 'px');
-    /* Directly patch phone + screen elements if they exist */
-    var phone   = document.querySelector('.phone');
-    var screens = document.querySelectorAll('.screen');
-    if (phone) {
-      phone.style.height = h + 'px';
-      phone.style.minHeight = h + 'px';
-    }
-    screens.forEach(function(s) {
-      s.style.height = h + 'px';
-    });
-    /* Also patch page-shell */
-    var shell = document.querySelector('.page-shell');
-    if (shell) {
-      shell.style.height = h + 'px';
-      shell.style.minHeight = h + 'px';
+  function updateStandaloneState() {
+    var isStandalone = window.navigator.standalone === true || 
+                       window.matchMedia('(display-mode: standalone)').matches;
+    
+    if (isStandalone) {
+      document.documentElement.classList.add('pwa-standalone');
+      document.body.classList.add('pwa-standalone');
     }
   }
 
-  function applyRealSafeAreas() {
-    if (!IS_IOS_PWA) return;
-    /* Create a probe element to read the computed env() values */
-    var probe = document.createElement('div');
-    probe.style.cssText = [
-      'position:fixed', 'top:0', 'left:0', 'width:0', 'height:0',
-      'padding-top:env(safe-area-inset-top,0px)',
-      'padding-bottom:env(safe-area-inset-bottom,0px)',
-      'visibility:hidden', 'pointer-events:none'
-    ].join(';');
-    document.body.appendChild(probe);
-    var cs = getComputedStyle(probe);
-    var sat = parseFloat(cs.paddingTop)    || 44;
-    var sab = parseFloat(cs.paddingBottom) || 34;
-    document.body.removeChild(probe);
-
-    /* Write real pixel values into CSS custom properties */
-    document.documentElement.style.setProperty('--sat', sat + 'px');
-    document.documentElement.style.setProperty('--sab', sab + 'px');
-
-    /* Patch all top-inset elements directly */
-    var TOP_SELECTORS = [
-      '.home-header', '.top-nav', '.back-bar',
-      '.listing-header', '.ssp-header', '.ai-chat-header', '.rv-header'
-    ];
-    var BUFFER = 8;
-    TOP_SELECTORS.forEach(function(sel) {
-      document.querySelectorAll(sel).forEach(function(el) {
-        el.style.paddingTop = (sat + BUFFER) + 'px';
-      });
-    });
-    /* Auth hero gets a larger buffer */
-    document.querySelectorAll('.auth-hero').forEach(function(el) {
-      el.style.paddingTop = (sat + 32) + 'px';
-    });
-    /* Back-bar gets a slightly smaller buffer */
-    document.querySelectorAll('.back-bar').forEach(function(el) {
-      el.style.paddingTop = (sat + 6) + 'px';
-    });
-
-    /* Patch bottom-nav */
-    document.querySelectorAll('.bottom-nav').forEach(function(el) {
-      el.style.paddingBottom = sab + 'px';
-    });
-  }
-
-  /* Run as early as possible */
-  if (document.body) {
-    applyRealViewportHeight();
-    applyRealSafeAreas();
-  }
-
-  /* Re-run after DOM is ready */
-  document.addEventListener('DOMContentLoaded', function() {
-    applyRealViewportHeight();
-    applyRealSafeAreas();
-  });
-
-  /* Re-run after fonts/images complete (full layout) */
-  window.addEventListener('load', function() {
-    applyRealViewportHeight();
-    applyRealSafeAreas();
-    /* One final deferred pass — iOS sometimes updates env() after load */
-    requestAnimationFrame(function() {
-      applyRealViewportHeight();
-      applyRealSafeAreas();
-      requestAnimationFrame(function() {
-        applyRealViewportHeight();
-        applyRealSafeAreas();
-      });
-    });
-  });
-
-  /* Re-apply on orientation change */
-  window.addEventListener('orientationchange', function() {
-    setTimeout(function() {
-      applyRealViewportHeight();
-      applyRealSafeAreas();
-    }, 120);
-  });
-
-  /* Expose for manual call from SW update path */
-  window._fixLayout = function() {
-    applyRealViewportHeight();
-    applyRealSafeAreas();
-  };
+  /* Run immediately */
+  updateStandaloneState();
+  
+  /* Re-check on load */
+  window.addEventListener('load', updateStandaloneState);
+  
+  /* Prevent default browser behaviors that cause layout shifts */
+  document.addEventListener('touchstart', function(e) {
+    if (e.touches.length > 1) e.preventDefault();
+  }, { passive: false });
 })();
 </script>
 
@@ -257,34 +170,42 @@ img    { display:block; }
    PAGE SHELL & NAVIGATION TABS
 ═══════════════════════════════════════════════════════════ */
 .page-shell {
-  min-height:100vh;
-  display:flex; flex-direction:column; align-items:center;
-  padding:28px 16px 48px; gap:16px;
+  min-height: 100dvh;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 28px 16px 48px; gap: 16px;
+  touch-action: none; /* Disable double-tap-zoom and other default gestures */
 }
 /* ═══════════════════════════════════════════════════════════
    PHONE FRAME
 ═══════════════════════════════════════════════════════════ */
 .phone {
-  width:375px;
-  height:812px;
-  background:var(--bg-phone);
-  border-radius:var(--radius-xl);
+  width: 375px;
+  height: 812px;
+  background: var(--bg-phone);
+  border-radius: var(--radius-xl);
   box-shadow:
     0 0 0 1px rgba(0,0,0,0.12),
     0 8px 24px rgba(0,0,0,0.14),
     0 32px 64px rgba(0,0,0,0.10);
-  overflow:hidden;
-  position:relative;
-  font-family:var(--font-body);
+  overflow: hidden;
+  position: relative;
+  font-family: var(--font-body);
+  touch-action: none; /* Inherit gesture disabling */
 }
 
 /* ═══════════════════════════════════════════════════════════
    SCREEN SYSTEM
 ═══════════════════════════════════════════════════════════ */
-.screen { display:none; flex-direction:column; height:812px; }
-.screen.active { display:flex; }
-.scroll-area { flex:1; overflow-y:auto; overscroll-behavior:contain; }
-.scroll-area::-webkit-scrollbar { display:none; }
+.screen { display: none; flex-direction: column; height: 100%; }
+.screen.active { display: flex; }
+.scroll-area { 
+  flex: 1; 
+  overflow-y: auto; 
+  overscroll-behavior: contain; 
+  -webkit-overflow-scrolling: touch; /* Momentum scrolling */
+  touch-action: pan-y; /* Re-enable only vertical scrolling gestures here */
+}
+.scroll-area::-webkit-scrollbar { display: none; }
 
 /* ═══════════════════════════════════════════════════════════
    SHARED COMPONENTS
@@ -1514,41 +1435,48 @@ img    { display:block; }
 .pwa-update-btn:hover { background:rgba(255,255,255,0.32); }
 /* ══════════════════════════════════════════════════════════
    PWA STANDALONE MODE — full-screen native layout
-   Status-bar hidden; real UI elements get safe-area insets.
 ══════════════════════════════════════════════════════════ */
-@media (display-mode: standalone) {
-  html, body { background: var(--bg-phone); }
+@media (display-mode: standalone), (display-mode: fullscreen) {
+  html, body { 
+    background: var(--bg-phone); 
+  }
   .page-shell {
-    padding: 0; background: var(--bg-phone);
+    padding: 0; 
+    background: var(--bg-phone);
     align-items: stretch;
-    height: 100dvh; min-height: 100dvh;
+    height: 100dvh; 
+    min-height: 100dvh;
+    overflow: hidden;
   }
   .phone {
-    width: 100%; max-width: 100%;
-    border-radius: 0; box-shadow: none;
-    height: 100dvh; min-height: 100dvh;
+    width: 100%; 
+    max-width: 100%;
+    height: 100dvh; 
+    min-height: 100dvh;
+    border-radius: 0; 
+    box-shadow: none;
   }
-  .screen { height: 100dvh; min-height: 100dvh; }
+  .screen { 
+    height: 100dvh; 
+  }
 
   /* Hide the fake status-bar — device draws the real one */
   .status-bar { display: none !important; }
 
-  /* Push content below notch/island + 8px buffer so text
-     doesn't visually collide with system clock / icons */
-  .home-header    { padding-top: calc(var(--sat) + 8px) !important; }
-  .top-nav        { padding-top: calc(var(--sat) + 8px) !important; }
-  .back-bar       { padding-top: calc(var(--sat) + 6px) !important; }
-  .auth-hero      { padding-top: calc(var(--sat) + 32px) !important; }
-  .listing-header { padding-top: calc(var(--sat) + 8px) !important; }
-  .ssp-header     { padding-top: calc(var(--sat) + 8px) !important; }
-  .ai-chat-header { padding-top: calc(var(--sat) + 8px) !important; }
-  .rv-header      { padding-top: calc(var(--sat) + 8px) !important; }
+  /* Push content below notch/island + 8px buffer */
+  .home-header, .top-nav, .listing-header, 
+  .ssp-header, .ai-chat-header, .rv-header { 
+    padding-top: calc(var(--sat) + 8px) !important; 
+  }
+  .back-bar { 
+    padding-top: calc(var(--sat) + 6px) !important; 
+  }
+  .auth-hero { 
+    padding-top: calc(var(--sat) + 32px) !important; 
+  }
 
-  /* Bottom nav: grow the nav's height to absorb the home-indicator
-     inset, and push the items up inside it — avoids the clip
-     that occurs when padding-bottom is used on overflow:hidden */
+  /* Bottom nav: handle home-indicator inset */
   .bottom-nav {
-    padding-bottom: 0;
     padding-bottom: var(--sab);
     box-sizing: content-box;
   }
@@ -1565,53 +1493,44 @@ img    { display:block; }
   .pwa-install-banner { display: none !important; }
 }
 
-/* JS class fallback (mirrors above exactly) */
-body.pwa-standalone { background: var(--bg-phone); }
-body.pwa-standalone .page-shell {
+/* JS class fallback for legacy standalone detection */
+.pwa-standalone html, 
+.pwa-standalone body { background: var(--bg-phone); }
+.pwa-standalone .page-shell {
   padding: 0; background: var(--bg-phone);
   align-items: stretch; height: 100dvh; min-height: 100dvh;
 }
-body.pwa-standalone .phone {
+.pwa-standalone .phone {
   width: 100%; max-width: 100%;
   border-radius: 0; box-shadow: none;
   height: 100dvh; min-height: 100dvh;
 }
-body.pwa-standalone .screen { height: 100dvh; min-height: 100dvh; }
-body.pwa-standalone .status-bar { display: none !important; }
-body.pwa-standalone .home-header    { padding-top: calc(var(--sat) + 8px) !important; }
-body.pwa-standalone .top-nav        { padding-top: calc(var(--sat) + 8px) !important; }
-body.pwa-standalone .back-bar       { padding-top: calc(var(--sat) + 6px) !important; }
-body.pwa-standalone .auth-hero      { padding-top: calc(var(--sat) + 32px) !important; }
-body.pwa-standalone .listing-header { padding-top: calc(var(--sat) + 8px) !important; }
-body.pwa-standalone .ssp-header     { padding-top: calc(var(--sat) + 8px) !important; }
-body.pwa-standalone .ai-chat-header { padding-top: calc(var(--sat) + 8px) !important; }
-body.pwa-standalone .rv-header      { padding-top: calc(var(--sat) + 8px) !important; }
-body.pwa-standalone .bottom-nav {
-  padding-bottom: 0;
+.pwa-standalone .screen { height: 100dvh; }
+.pwa-standalone .status-bar { display: none !important; }
+.pwa-standalone .home-header, 
+.pwa-standalone .top-nav, 
+.pwa-standalone .listing-header,
+.pwa-standalone .ssp-header, 
+.pwa-standalone .ai-chat-header, 
+.pwa-standalone .rv-header { 
+  padding-top: calc(var(--sat) + 8px) !important; 
+}
+.pwa-standalone .back-bar { padding-top: calc(var(--sat) + 6px) !important; }
+.pwa-standalone .auth-hero { padding-top: calc(var(--sat) + 32px) !important; }
+.pwa-standalone .bottom-nav {
   padding-bottom: var(--sab);
   box-sizing: content-box;
 }
-body.pwa-standalone .pwa-install-banner { display: none !important; }
+.pwa-standalone .pwa-install-banner { display: none !important; }
 
-/* dvh/svh fallback for older browsers */
+/* svh/dvh fallback for slightly older browsers */
 @supports not (height: 100dvh) {
+  :root { --real-vh: 100vh; }
   @media (display-mode: standalone) {
-    .page-shell, .phone { height: 100dvh; min-height: 100dvh; }
-    .screen { height: 100dvh; }
+    .page-shell, .phone, .screen { height: 100vh; }
   }
-  body.pwa-standalone .page-shell,
-  body.pwa-standalone .phone { height: 100dvh; min-height: 100dvh; }
-  body.pwa-standalone .screen { height: 100dvh; }
 }
-@supports not (height: 100svh) {
-  @media (display-mode: standalone) {
-    .page-shell, .phone { min-height: -webkit-fill-available; min-height: 100vh; }
-    .screen { height: -webkit-fill-available; height: 100vh; }
-  }
-  body.pwa-standalone .page-shell,
-  body.pwa-standalone .phone { min-height: -webkit-fill-available; min-height: 100vh; }
-  body.pwa-standalone .screen { height: -webkit-fill-available; height: 100vh; }
-}
+
 
 
 
