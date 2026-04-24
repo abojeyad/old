@@ -167,54 +167,97 @@ input  { font-family:inherit; }
 img    { display:block; }
 
 /* ═══════════════════════════════════════════════════════════
-   PAGE SHELL & NAVIGATION TABS
+   APP ARCHITECTURE
+   A single-container root that fills the viewport on mobile
+   and mimics a phone on desktop.
 ═══════════════════════════════════════════════════════════ */
-.page-shell {
-  min-height: 100dvh;
-  display: flex; flex-direction: column; align-items: center;
-  padding: 28px 16px 48px; gap: 16px;
-  touch-action: none; /* Disable double-tap-zoom and other default gestures */
-}
-/* ═══════════════════════════════════════════════════════════
-   PHONE FRAME
-═══════════════════════════════════════════════════════════ */
-.phone {
-  width: 375px;
-  height: 812px;
-  background: var(--bg-phone);
-  border-radius: var(--radius-xl);
-  box-shadow:
-    0 0 0 1px rgba(0,0,0,0.12),
-    0 8px 24px rgba(0,0,0,0.14),
-    0 32px 64px rgba(0,0,0,0.10);
-  overflow: hidden;
+#app-root {
   position: relative;
-  font-family: var(--font-body);
-  touch-action: none; /* Inherit gesture disabling */
+  width: 100%;
+  height: 100dvh;
+  margin: 0 auto;
+  background: var(--bg-phone);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+/* Desktop mimicry - only applies when screen is large enough */
+@media (min-width: 600px) and (min-height: 600px) {
+  body {
+    background: var(--bg-page);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  #app-root {
+    width: 414px;
+    height: 896px; /* standard iPhone 11 Pro Max size */
+    border-radius: var(--radius-xl);
+    box-shadow: 
+      0 0 0 12px #1a1a1a, /* "Bezel" */
+      0 20px 50px rgba(0,0,0,0.2);
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════
    SCREEN SYSTEM
 ═══════════════════════════════════════════════════════════ */
-.screen { display: none; flex-direction: column; height: 100%; }
-.screen.active { display: flex; }
-.scroll-area { 
-  flex: 1; 
-  overflow-y: auto; 
-  overscroll-behavior: contain; 
-  -webkit-overflow-scrolling: touch; /* Momentum scrolling */
-  touch-action: pan-y; /* Re-enable only vertical scrolling gestures here */
+.screen {
+  display: none;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+.screen.active {
+  display: flex;
+}
+
+.scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 20px; /* Base padding */
 }
 .scroll-area::-webkit-scrollbar { display: none; }
 
 /* ═══════════════════════════════════════════════════════════
-   SHARED COMPONENTS
+   IMMERSIVE COMPONENTS (Safe Area Aware)
 ═══════════════════════════════════════════════════════════ */
-.status-bar {
-  height:44px; display:flex; align-items:center; justify-content:space-between;
-  padding:0 20px; font-size:13px; font-weight:500; color:var(--ink-2);
-  flex-shrink:0; background:var(--bg-phone);
+.home-header, .top-nav, .listing-header, 
+.ssp-header, .ai-chat-header, .rv-header {
+  padding-top: calc(var(--sat) + 8px);
+  flex-shrink: 0;
+  background: var(--bg-phone);
 }
+.back-bar {
+  padding-top: calc(var(--sat) + 6px);
+  flex-shrink: 0;
+}
+.auth-hero {
+  padding-top: calc(var(--sat) + 40px);
+  flex-shrink: 0;
+}
+
+/* Bottom Nav - pinned to the real bottom of the viewport */
+.bottom-nav {
+  display: flex;
+  background: var(--bg-phone);
+  border-top: 1px solid var(--border);
+  padding-bottom: var(--sab); /* Anchors to home indicator */
+  flex-shrink: 0;
+  z-index: 100;
+}
+
+/* Remove the fake status bar styling as we are removing the element */
+.status-bar { display: none !important; }
+
 .top-nav {
   display:flex; align-items:center; justify-content:space-between;
   padding:4px 20px 12px; flex-shrink:0; background:var(--bg-phone);
@@ -1628,8 +1671,7 @@ img    { display:block; }
 
 </head>
 <body>
-<div class="page-shell">
-  <div class="phone">
+<div id="app-root">
 
   <!-- ════════════════════════════════
        AUTH SCREEN
@@ -1692,7 +1734,7 @@ img    { display:block; }
        HOME SCREEN
   ════════════════════════════════ -->
   <div class="screen" id="screen-home">
-    <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:14px;">●●●●</span></div>
+    
     <div class="home-header" style="padding:6px 20px 14px;">
       <div style="display:flex;align-items:center;justify-content:space-between;">
         <!-- AI as primary header element -->
@@ -1975,7 +2017,7 @@ img    { display:block; }
 
     <!-- ── NOTIFICATIONS overlay (inside home screen) ── -->
     <div class="overlay" id="overlay-notif">
-      <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:14px;">●●●●</span></div>
+      
       <div class="overlay-header" style="border-bottom:1px solid var(--border);">
         <div style="display:flex;align-items:center;gap:10px;">
           <div class="overlay-close" onclick="closeNotifications()">
@@ -2051,7 +2093,7 @@ img    { display:block; }
 
     <!-- ── HOT DEALS full listing overlay ── -->
     <div class="overlay" id="overlay-hot-deals">
-      <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:14px;">●●●●</span></div>
+      
       <div class="listing-header">
         <div class="listing-back-btn" onclick="closeHotDeals()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
@@ -2121,7 +2163,7 @@ img    { display:block; }
 
     <!-- ── ALL BRANDS overlay ── -->
     <div class="overlay" id="overlay-brands">
-      <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:14px;">●●●●</span></div>
+      
       <div class="listing-header">
         <div class="listing-back-btn" onclick="closeAllBrands()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
@@ -2167,7 +2209,7 @@ img    { display:block; }
 
     <!-- ── PRICE DROPS full listing overlay ── -->
     <div class="overlay" id="overlay-price-drops">
-      <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:14px;">●●●●</span></div>
+      
       <div class="listing-header">
         <div class="listing-back-btn" onclick="closePriceDrops()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
@@ -2224,7 +2266,7 @@ img    { display:block; }
 
     <!-- ── ALL STORES overlay ── -->
     <div class="overlay" id="overlay-stores">
-      <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:14px;">●●●●</span></div>
+      
       <div class="listing-header">
         <div class="listing-back-btn" onclick="closeAllStores()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
@@ -2320,7 +2362,7 @@ img    { display:block; }
        AI ASSISTANT OVERLAY
   ════════════════════════════════ -->
   <div class="ai-chat-overlay" id="overlay-ai-chat">
-    <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:14px;">●●●●</span></div>
+    
     <div class="ai-chat-header">
       <div class="ai-chat-avatar">
         <!-- Neural Network Icon — Chat Header (38×38) -->
@@ -2429,7 +2471,7 @@ img    { display:block; }
        PERSONALIZED FOR YOU — ALL
   ════════════════════════════════ -->
   <div class="overlay" id="overlay-personalized-all">
-    <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:14px;">●●●●</span></div>
+    
     <div class="listing-header">
       <div class="listing-back-btn" onclick="closePersonalizedAll()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
@@ -2575,7 +2617,7 @@ img    { display:block; }
        SEARCH SCREEN
   ════════════════════════════════ -->
   <div class="screen" id="screen-search">
-    <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:14px;">●●●●</span></div>
+    
     <div class="top-nav"><div class="top-nav-title">Search</div></div>
     <div class="search-bar" style="margin:0 20px 14px;">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;color:var(--ink-3);flex-shrink:0;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -2623,7 +2665,7 @@ img    { display:block; }
        PRODUCT DETAIL SCREEN
   ════════════════════════════════ -->
   <div class="screen" id="screen-product-detail">
-    <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:14px;">●●●●</span></div>
+    
     <div class="back-bar">
       <!-- Back button: dynamically labeled based on origin -->
       <div class="back-btn" id="product-back-btn" onclick="goBackFromProduct()">
@@ -2858,7 +2900,7 @@ img    { display:block; }
        ALERTS SCREEN
   ════════════════════════════════ -->
   <div class="screen" id="screen-alerts">
-    <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:14px;">●●●●</span></div>
+    
     <div class="top-nav">
       <div class="top-nav-title">Price Alerts</div>
       <div style="font-size:13px;color:var(--ink-3);">Set from any product page</div>
@@ -2977,7 +3019,7 @@ img    { display:block; }
        ACTIVITY SCREEN
   ════════════════════════════════ -->
   <div class="screen" id="screen-activity">
-    <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:14px;">●●●●</span></div>
+    
     <div class="scroll-area">
 
       <!-- Profile Header — simplified: name + avatar only -->
@@ -3078,7 +3120,7 @@ img    { display:block; }
 
     <!-- ── SETTINGS overlay (inside activity screen) ── -->
     <div class="overlay" id="overlay-settings">
-      <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:14px;">●●●●</span></div>
+      
       <div class="overlay-header" style="border-bottom:1px solid var(--border);">
         <div style="display:flex;align-items:center;gap:10px;">
           <div class="overlay-close" onclick="closeSettings()">
@@ -3199,7 +3241,7 @@ img    { display:block; }
 
     <!-- ── INTERESTS EDIT overlay (inside activity screen) ── -->
     <div class="overlay" id="overlay-interests">
-      <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:14px;">●●●●</span></div>
+      
       <div class="overlay-header" style="border-bottom:1px solid var(--border);">
         <div style="display:flex;align-items:center;gap:10px;">
           <div class="overlay-close" onclick="closeInterestsEdit()">
@@ -3266,7 +3308,7 @@ img    { display:block; }
        (child of .phone, z-index:50)
   ════════════════════════════════ -->
   <div class="overlay" id="overlay-wishlist-all">
-    <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:14px;">●●●●</span></div>
+    
     <div class="listing-header">
       <div class="listing-back-btn" onclick="closeWishlistAll()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
@@ -3337,7 +3379,7 @@ img    { display:block; }
        (child of .phone, z-index:50)
   ════════════════════════════════ -->
   <div class="overlay" id="overlay-recent-all">
-    <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:14px;">●●●●</span></div>
+    
     <div class="listing-header">
       <div class="listing-back-btn" onclick="closeRecentAll()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
@@ -3438,7 +3480,7 @@ img    { display:block; }
 
   <!-- Profile -->
   <div class="ssp-overlay" id="ssp-profile">
-    <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:14px;">●●●●</span></div>
+    
     <div class="ssp-header">
       <div class="ssp-back" onclick="closeSettingsSub('profile')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
@@ -3455,7 +3497,7 @@ img    { display:block; }
 
   <!-- Email -->
   <div class="ssp-overlay" id="ssp-email">
-    <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:14px;">●●●●</span></div>
+    
     <div class="ssp-header">
       <div class="ssp-back" onclick="closeSettingsSub('email')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
@@ -3486,7 +3528,7 @@ img    { display:block; }
 
   <!-- Phone -->
   <div class="ssp-overlay" id="ssp-phone">
-    <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:14px;">●●●●</span></div>
+    
     <div class="ssp-header">
       <div class="ssp-back" onclick="closeSettingsSub('phone')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
@@ -3506,7 +3548,7 @@ img    { display:block; }
 
   <!-- Currency -->
   <div class="ssp-overlay" id="ssp-currency">
-    <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:14px;">●●●●</span></div>
+    
     <div class="ssp-header">
       <div class="ssp-back" onclick="closeSettingsSub('currency')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
@@ -3527,7 +3569,7 @@ img    { display:block; }
 
   <!-- Language -->
   <div class="ssp-overlay" id="ssp-language">
-    <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:14px;">●●●●</span></div>
+    
     <div class="ssp-header">
       <div class="ssp-back" onclick="closeSettingsSub('language')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
@@ -3551,7 +3593,7 @@ img    { display:block; }
 
   <!-- Help & FAQ -->
   <div class="ssp-overlay" id="ssp-help">
-    <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:14px;">●●●●</span></div>
+    
     <div class="ssp-header">
       <div class="ssp-back" onclick="closeSettingsSub('help')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
@@ -3588,7 +3630,7 @@ img    { display:block; }
 
   <!-- Contact Support -->
   <div class="ssp-overlay" id="ssp-contact">
-    <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:14px;">●●●●</span></div>
+    
     <div class="ssp-header">
       <div class="ssp-back" onclick="closeSettingsSub('contact')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
@@ -3615,7 +3657,7 @@ img    { display:block; }
 
   <!-- Privacy Policy -->
   <div class="ssp-overlay" id="ssp-privacy">
-    <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:14px;">●●●●</span></div>
+    
     <div class="ssp-header">
       <div class="ssp-back" onclick="closeSettingsSub('privacy')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
@@ -3649,7 +3691,7 @@ img    { display:block; }
        ADVANCED FILTER OVERLAY
   ════════════════════════════════ -->
   <div class="filter-overlay" id="overlay-filters">
-    <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:14px;">●●●●</span></div>
+    
     <div class="filter-overlay-header">
       <div style="display:flex;align-items:center;gap:10px;">
         <div class="ssp-back" onclick="closeFilterOverlay()">
@@ -3740,7 +3782,7 @@ img    { display:block; }
        REVIEWS FULL PAGE OVERLAY
   ════════════════════════════════ -->
   <div class="reviews-overlay" id="overlay-reviews">
-    <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:14px;">●●●●</span></div>
+    
     <div class="rv-header">
       <div class="ssp-back" onclick="closeReviewsPage()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
@@ -3842,8 +3884,8 @@ img    { display:block; }
       <div style="height:20px;"></div>
     </div>
   </div>
-  </div><!-- /phone -->
-</div><!-- /page-shell -->
+
+</div><!-- /app-root -->
 
 <script src="yourdis-data.js"></script>
 
