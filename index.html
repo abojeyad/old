@@ -2,8 +2,49 @@
 <html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Yourdis · يوردس — Design Reference v5</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<title>Yourdis · يوردس</title>
+
+<!-- ═══════════════════════════════════════════════════════
+     PWA — Manifest & Theme
+════════════════════════════════════════════════════════ -->
+<link rel="manifest" href="manifest.json"/>
+<meta name="theme-color" content="#79002F"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="application-name" content="Yourdis"/>
+
+<!-- iOS Safari PWA -->
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="Yourdis"/>
+<link rel="apple-touch-icon" href="icons/icon-192.png"/>
+<link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152.png"/>
+<link rel="apple-touch-icon" sizes="167x167" href="icons/icon-192.png"/>
+<link rel="apple-touch-icon" sizes="180x180" href="icons/icon-192.png"/>
+
+<!-- iOS Splash screens (portrait) -->
+<link rel="apple-touch-startup-image" media="(device-width:390px) and (-webkit-device-pixel-ratio:3)" href="icons/icon-512.png"/>
+<link rel="apple-touch-startup-image" media="(device-width:375px) and (-webkit-device-pixel-ratio:3)" href="icons/icon-512.png"/>
+<link rel="apple-touch-startup-image" media="(device-width:375px) and (-webkit-device-pixel-ratio:2)" href="icons/icon-384.png"/>
+
+<!-- Windows / Edge tiles -->
+<meta name="msapplication-TileImage" content="icons/icon-144.png"/>
+<meta name="msapplication-TileColor" content="#79002F"/>
+<meta name="msapplication-config" content="none"/>
+
+<!-- Standard favicon chain -->
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png"/>
+<link rel="icon" type="image/png" sizes="96x96"   href="icons/icon-96.png"/>
+<link rel="icon" type="image/png" sizes="32x32"   href="icons/icon-96.png"/>
+<link rel="shortcut icon" href="icons/icon-96.png"/>
+
+<!-- Open Graph / share preview -->
+<meta property="og:title"       content="Yourdis · يوردس"/>
+<meta property="og:description" content="Track fragrance prices across Saudi stores. Get notified the moment your favourite scent drops."/>
+<meta property="og:image"       content="icons/icon-512.png"/>
+<meta property="og:type"        content="website"/>
+<meta name="description" content="Track fragrance prices across Saudi stores. Get notified the moment your favourite scent drops in price."/>
+
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
@@ -1268,6 +1309,57 @@ img    { display:block; }
 }
 .ssp-info-block h4 { font-size:13px; font-weight:500; color:var(--ink-1); margin-bottom:6px; }
 .ssp-info-block p  { font-size:12px; color:var(--ink-3); line-height:1.65; }
+/* ── PWA INSTALL BANNER ──────────────────────────────────── */
+.pwa-install-banner {
+  position:fixed; bottom:0; left:0; right:0; z-index:9999;
+  background:var(--bg-phone);
+  border-top:1px solid var(--border-strong);
+  box-shadow:0 -4px 24px rgba(0,0,0,0.12);
+  display:flex; align-items:center; gap:12px;
+  padding:14px 16px;
+  transform:translateY(100%);
+  transition:transform 0.32s cubic-bezier(0.25,0.46,0.45,0.94);
+  max-width:540px; margin:0 auto;
+}
+.pwa-install-banner.visible { transform:translateY(0); }
+.pwa-install-icon {
+  width:44px; height:44px; border-radius:var(--radius-md);
+  flex-shrink:0; overflow:hidden;
+}
+.pwa-install-icon img { width:100%; height:100%; object-fit:cover; }
+.pwa-install-text { flex:1; min-width:0; }
+.pwa-install-title { font-size:13px; font-weight:500; color:var(--ink-1); }
+.pwa-install-sub   { font-size:11px; color:var(--ink-3); margin-top:2px; }
+.pwa-install-btn {
+  flex-shrink:0; padding:8px 16px; border-radius:var(--radius-md);
+  background:var(--accent); color:#fff; font-size:12px; font-weight:500;
+  border:none; cursor:pointer; font-family:var(--font-body); white-space:nowrap;
+}
+.pwa-install-dismiss {
+  flex-shrink:0; width:24px; height:24px; border-radius:50%;
+  background:var(--bg-input); border:none; cursor:pointer;
+  display:flex; align-items:center; justify-content:center; color:var(--ink-3);
+}
+.pwa-install-dismiss svg { width:12px; height:12px; pointer-events:none; }
+
+/* ── PWA UPDATE BAR ──────────────────────────────────────── */
+.pwa-update-bar {
+  position:fixed; top:0; left:0; right:0; z-index:9998;
+  background:var(--accent);
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+  padding:10px 16px;
+  transform:translateY(-100%);
+  transition:transform 0.28s cubic-bezier(0.25,0.46,0.45,0.94);
+  max-width:540px; margin:0 auto;
+}
+.pwa-update-bar.visible { transform:translateY(0); }
+.pwa-update-msg  { font-size:12px; font-weight:500; color:#fff; }
+.pwa-update-btn  {
+  flex-shrink:0; padding:6px 13px; border-radius:var(--radius-sm);
+  background:rgba(255,255,255,0.22); color:#fff; font-size:11px; font-weight:500;
+  border:1px solid rgba(255,255,255,0.4); cursor:pointer; font-family:var(--font-body); white-space:nowrap;
+}
+.pwa-update-btn:hover { background:rgba(255,255,255,0.32); }
 </style>
 
 </head>
@@ -4210,6 +4302,202 @@ function getAIAvatarSVG(size) {
     '</svg>';
 }
 
+</script>
+
+<!-- ═══════════════════════════════════════════════════════
+     PWA — Install Banner
+════════════════════════════════════════════════════════ -->
+<div class="pwa-install-banner" id="pwa-install-banner" role="banner" aria-label="Install Yourdis app">
+  <div class="pwa-install-icon">
+    <img src="icons/icon-192.png" alt="Yourdis" loading="lazy"/>
+  </div>
+  <div class="pwa-install-text">
+    <div class="pwa-install-title">Install Yourdis</div>
+    <div class="pwa-install-sub">Add to home screen for the best experience</div>
+  </div>
+  <button class="pwa-install-btn" id="pwa-install-btn" onclick="pwaInstall()">Install</button>
+  <button class="pwa-install-dismiss" id="pwa-install-dismiss" onclick="pwaDismissBanner()" aria-label="Dismiss">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     PWA — Update Notification Bar
+════════════════════════════════════════════════════════ -->
+<div class="pwa-update-bar" id="pwa-update-bar" role="alert" aria-live="polite">
+  <span class="pwa-update-msg">✦ New version available</span>
+  <button class="pwa-update-btn" onclick="pwaApplyUpdate()">Update now</button>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   PWA — SERVICE WORKER REGISTRATION & LIFECYCLE
+═══════════════════════════════════════════════════════════ */
+(function() {
+  'use strict';
+
+  if (!('serviceWorker' in navigator)) return;
+
+  var _swReg       = null;
+  var _newWorker   = null;
+  var _installEvt  = null;
+  var DISMISS_KEY  = 'yd_pwa_dismissed';
+
+  /* ── Register ──────────────────────────────────────────── */
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('./sw.js', { scope: './' })
+      .then(function(reg) {
+        _swReg = reg;
+
+        /* Check for an already-waiting worker on first load */
+        if (reg.waiting) {
+          _newWorker = reg.waiting;
+          showUpdateBar();
+        }
+
+        /* A new SW has been found and is installing */
+        reg.addEventListener('updatefound', function() {
+          var installingWorker = reg.installing;
+          if (!installingWorker) return;
+
+          installingWorker.addEventListener('statechange', function() {
+            if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+              /* New content is available; save ref and show update bar */
+              _newWorker = installingWorker;
+              showUpdateBar();
+            }
+          });
+        });
+
+        /* Check for updates every 60 minutes while the tab is open */
+        setInterval(function() { reg.update(); }, 60 * 60 * 1000);
+      })
+      .catch(function(err) {
+        /* Non-fatal: app still works without SW */
+        console.warn('[PWA] SW registration failed:', err);
+      });
+
+    /* Listen for messages from the service worker */
+    navigator.serviceWorker.addEventListener('message', function(event) {
+      if (!event.data) return;
+      if (event.data.type === 'SW_UPDATED') {
+        showUpdateBar();
+      }
+    });
+
+    /* After the SW sends skipWaiting, reload all clients */
+    var refreshing = false;
+    navigator.serviceWorker.addEventListener('controllerchange', function() {
+      if (refreshing) return;
+      refreshing = true;
+      window.location.reload();
+    });
+  });
+
+  /* ── Install prompt ────────────────────────────────────── */
+  window.addEventListener('beforeinstallprompt', function(e) {
+    e.preventDefault();
+    _installEvt = e;
+    /* Only show if user hasn't permanently dismissed */
+    try {
+      if (!sessionStorage.getItem(DISMISS_KEY)) {
+        /* Small delay so it doesn't fight with initial render */
+        setTimeout(showInstallBanner, 3500);
+      }
+    } catch(ex) { setTimeout(showInstallBanner, 3500); }
+  });
+
+  /* Show success toast after install */
+  window.addEventListener('appinstalled', function() {
+    hideInstallBanner();
+    if (typeof _showToast === 'function') {
+      _showToast('Yourdis installed — find it on your home screen ✓');
+    }
+  });
+
+  /* ── Public API called by HTML buttons ─────────────────── */
+  window.pwaInstall = function() {
+    if (!_installEvt) return;
+    _installEvt.prompt();
+    _installEvt.userChoice.then(function(choice) {
+      _installEvt = null;
+      if (choice.outcome === 'accepted') {
+        hideInstallBanner();
+      }
+    });
+  };
+
+  window.pwaDismissBanner = function() {
+    hideInstallBanner();
+    /* Suppress for this session */
+    try { sessionStorage.setItem(DISMISS_KEY, '1'); } catch(ex) {}
+  };
+
+  window.pwaApplyUpdate = function() {
+    hideUpdateBar();
+    if (_newWorker) {
+      _newWorker.postMessage({ type: 'SKIP_WAITING' });
+    } else if (_swReg && _swReg.waiting) {
+      _swReg.waiting.postMessage({ type: 'SKIP_WAITING' });
+    }
+    /* controllerchange listener above will reload once SW activates */
+  };
+
+  /* ── UI helpers ─────────────────────────────────────────── */
+  function showInstallBanner() {
+    var banner = document.getElementById('pwa-install-banner');
+    if (banner) banner.classList.add('visible');
+  }
+  function hideInstallBanner() {
+    var banner = document.getElementById('pwa-install-banner');
+    if (banner) banner.classList.remove('visible');
+  }
+  function showUpdateBar() {
+    var bar = document.getElementById('pwa-update-bar');
+    if (bar) bar.classList.add('visible');
+  }
+  function hideUpdateBar() {
+    var bar = document.getElementById('pwa-update-bar');
+    if (bar) bar.classList.remove('visible');
+  }
+
+  /* ── iOS / Safari manual install hint ──────────────────── */
+  /* On iOS, beforeinstallprompt never fires.
+     Detect standalone-eligible iOS and show a custom hint instead. */
+  function isIOS() {
+    return /iphone|ipad|ipod/i.test(navigator.userAgent);
+  }
+  function isInStandaloneMode() {
+    return window.navigator.standalone === true ||
+           window.matchMedia('(display-mode: standalone)').matches;
+  }
+
+  window.addEventListener('load', function() {
+    if (isIOS() && !isInStandaloneMode()) {
+      try {
+        if (!sessionStorage.getItem(DISMISS_KEY)) {
+          setTimeout(function() {
+            var banner = document.getElementById('pwa-install-banner');
+            var btn    = document.getElementById('pwa-install-btn');
+            var sub    = document.querySelector('.pwa-install-sub');
+            if (banner && btn && sub) {
+              btn.textContent  = 'How to install';
+              sub.textContent  = 'Tap Share ↑ then "Add to Home Screen"';
+              btn.onclick = function() {
+                if (typeof _showToast === 'function') {
+                  _showToast('Tap the Share button ↑ then "Add to Home Screen"');
+                }
+                hideInstallBanner();
+              };
+              banner.classList.add('visible');
+            }
+          }, 4000);
+        }
+      } catch(ex) {}
+    }
+  });
+
+})();
 </script>
 </body>
 </html>
