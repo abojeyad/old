@@ -1372,11 +1372,7 @@ img    { display:block; }
 .pwa-update-btn:hover { background:rgba(255,255,255,0.32); }
 /* ══════════════════════════════════════════════════════════
    PWA STANDALONE MODE — full-screen native layout
-   The device renders its own system status bar on top.
-   The app's .status-bar element is hidden in standalone —
-   we use only the safe-area-inset-top as padding on the
-   first visible element (home-header, top-nav, back-bar).
-   Bottom: only the real home-indicator inset is applied.
+   Status-bar hidden; real UI elements get safe-area insets.
 ══════════════════════════════════════════════════════════ */
 @media (display-mode: standalone) {
   html, body { background: var(--bg-phone); }
@@ -1395,22 +1391,27 @@ img    { display:block; }
   /* Hide the fake status-bar — device draws the real one */
   .status-bar { display: none !important; }
 
-  /* Push the first real UI element below the notch/island */
-  .home-header    { padding-top: max(env(safe-area-inset-top), 14px) !important; }
-  .top-nav        { padding-top: max(env(safe-area-inset-top), 14px) !important; }
-  .back-bar       { padding-top: max(env(safe-area-inset-top), 10px) !important; }
-  .auth-hero      { padding-top: max(calc(env(safe-area-inset-top) + 32px), 48px) !important; }
-  .listing-header { padding-top: max(env(safe-area-inset-top), 14px) !important; }
-  .ssp-header     { padding-top: max(env(safe-area-inset-top), 14px) !important; }
-  .ai-chat-header { padding-top: max(env(safe-area-inset-top), 14px) !important; }
-  .rv-header      { padding-top: max(env(safe-area-inset-top), 14px) !important; }
+  /* Push content below notch/island + 8px buffer so text
+     doesn't visually collide with system clock / icons */
+  .home-header    { padding-top: calc(env(safe-area-inset-top, 44px) + 8px) !important; }
+  .top-nav        { padding-top: calc(env(safe-area-inset-top, 44px) + 8px) !important; }
+  .back-bar       { padding-top: calc(env(safe-area-inset-top, 44px) + 6px) !important; }
+  .auth-hero      { padding-top: calc(env(safe-area-inset-top, 44px) + 32px) !important; }
+  .listing-header { padding-top: calc(env(safe-area-inset-top, 44px) + 8px) !important; }
+  .ssp-header     { padding-top: calc(env(safe-area-inset-top, 44px) + 8px) !important; }
+  .ai-chat-header { padding-top: calc(env(safe-area-inset-top, 44px) + 8px) !important; }
+  .rv-header      { padding-top: calc(env(safe-area-inset-top, 44px) + 8px) !important; }
 
-  /* Bottom nav — only the real home-indicator safe area */
+  /* Bottom nav: grow the nav's height to absorb the home-indicator
+     inset, and push the items up inside it — avoids the clip
+     that occurs when padding-bottom is used on overflow:hidden */
   .bottom-nav {
+    padding-bottom: 0;
     padding-bottom: env(safe-area-inset-bottom, 0px);
+    box-sizing: content-box;
   }
 
-  /* Overlays that cover full screen also need top inset */
+  /* Overlays — hide their fake status bars too */
   .overlay .status-bar,
   .ai-chat-overlay .status-bar,
   .ssp-overlay .status-bar,
@@ -1435,15 +1436,19 @@ body.pwa-standalone .phone {
 }
 body.pwa-standalone .screen { height: 100svh; min-height: 100svh; }
 body.pwa-standalone .status-bar { display: none !important; }
-body.pwa-standalone .home-header    { padding-top: max(env(safe-area-inset-top), 14px) !important; }
-body.pwa-standalone .top-nav        { padding-top: max(env(safe-area-inset-top), 14px) !important; }
-body.pwa-standalone .back-bar       { padding-top: max(env(safe-area-inset-top), 10px) !important; }
-body.pwa-standalone .auth-hero      { padding-top: max(calc(env(safe-area-inset-top) + 32px), 48px) !important; }
-body.pwa-standalone .listing-header { padding-top: max(env(safe-area-inset-top), 14px) !important; }
-body.pwa-standalone .ssp-header     { padding-top: max(env(safe-area-inset-top), 14px) !important; }
-body.pwa-standalone .ai-chat-header { padding-top: max(env(safe-area-inset-top), 14px) !important; }
-body.pwa-standalone .rv-header      { padding-top: max(env(safe-area-inset-top), 14px) !important; }
-body.pwa-standalone .bottom-nav     { padding-bottom: env(safe-area-inset-bottom, 0px); }
+body.pwa-standalone .home-header    { padding-top: calc(env(safe-area-inset-top, 44px) + 8px) !important; }
+body.pwa-standalone .top-nav        { padding-top: calc(env(safe-area-inset-top, 44px) + 8px) !important; }
+body.pwa-standalone .back-bar       { padding-top: calc(env(safe-area-inset-top, 44px) + 6px) !important; }
+body.pwa-standalone .auth-hero      { padding-top: calc(env(safe-area-inset-top, 44px) + 32px) !important; }
+body.pwa-standalone .listing-header { padding-top: calc(env(safe-area-inset-top, 44px) + 8px) !important; }
+body.pwa-standalone .ssp-header     { padding-top: calc(env(safe-area-inset-top, 44px) + 8px) !important; }
+body.pwa-standalone .ai-chat-header { padding-top: calc(env(safe-area-inset-top, 44px) + 8px) !important; }
+body.pwa-standalone .rv-header      { padding-top: calc(env(safe-area-inset-top, 44px) + 8px) !important; }
+body.pwa-standalone .bottom-nav {
+  padding-bottom: 0;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  box-sizing: content-box;
+}
 body.pwa-standalone .pwa-install-banner { display: none !important; }
 
 /* svh fallback for older browsers */
