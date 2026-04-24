@@ -49,6 +49,148 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
 
+<!-- ═══════════════════════════════════════════════════════
+     CRITICAL: Pre-seed safe-area vars before first paint.
+     iOS PWA resolves env() asynchronously — this ensures
+     the layout doesn't flash at 0px before the real values
+     arrive. JS below overwrites these with real px values.
+════════════════════════════════════════════════════════ -->
+<style id="safe-area-seed">
+  :root {
+    --sat: 44px;   /* safe-area-inset-top default (iPhone notch) */
+    --sab: 34px;   /* safe-area-inset-bottom default (home indicator) */
+  }
+  /* Read the real env() values as soon as CSS is parsed */
+  @supports (padding: env(safe-area-inset-top)) {
+    :root {
+      --sat: env(safe-area-inset-top, 44px);
+      --sab: env(safe-area-inset-bottom, 34px);
+    }
+  }
+</style>
+<script>
+/* ═══════════════════════════════════════════════════════════
+   LAYOUT FIX — runs before DOMContentLoaded.
+   iOS PWA: env() values and dvh/svh can be 0 on first paint.
+   We force the correct height via JS using window.innerHeight
+   (which is always correct) and schedule re-application after
+   fonts/images settle, eliminating the double-tap bug.
+═══════════════════════════════════════════════════════════ */
+(function() {
+  var IS_IOS_PWA = window.navigator.standalone === true;
+
+  function applyRealViewportHeight() {
+    if (!IS_IOS_PWA) return;
+    var h = window.innerHeight;
+    /* Set a CSS custom property with the real pixel height */
+    document.documentElement.style.setProperty('--real-vh', h + 'px');
+    /* Directly patch phone + screen elements if they exist */
+    var phone   = document.querySelector('.phone');
+    var screens = document.querySelectorAll('.screen');
+    if (phone) {
+      phone.style.height = h + 'px';
+      phone.style.minHeight = h + 'px';
+    }
+    screens.forEach(function(s) {
+      s.style.height = h + 'px';
+    });
+    /* Also patch page-shell */
+    var shell = document.querySelector('.page-shell');
+    if (shell) {
+      shell.style.height = h + 'px';
+      shell.style.minHeight = h + 'px';
+    }
+  }
+
+  function applyRealSafeAreas() {
+    if (!IS_IOS_PWA) return;
+    /* Create a probe element to read the computed env() values */
+    var probe = document.createElement('div');
+    probe.style.cssText = [
+      'position:fixed', 'top:0', 'left:0', 'width:0', 'height:0',
+      'padding-top:env(safe-area-inset-top,0px)',
+      'padding-bottom:env(safe-area-inset-bottom,0px)',
+      'visibility:hidden', 'pointer-events:none'
+    ].join(';');
+    document.body.appendChild(probe);
+    var cs = getComputedStyle(probe);
+    var sat = parseFloat(cs.paddingTop)    || 44;
+    var sab = parseFloat(cs.paddingBottom) || 34;
+    document.body.removeChild(probe);
+
+    /* Write real pixel values into CSS custom properties */
+    document.documentElement.style.setProperty('--sat', sat + 'px');
+    document.documentElement.style.setProperty('--sab', sab + 'px');
+
+    /* Patch all top-inset elements directly */
+    var TOP_SELECTORS = [
+      '.home-header', '.top-nav', '.back-bar',
+      '.listing-header', '.ssp-header', '.ai-chat-header', '.rv-header'
+    ];
+    var BUFFER = 8;
+    TOP_SELECTORS.forEach(function(sel) {
+      document.querySelectorAll(sel).forEach(function(el) {
+        el.style.paddingTop = (sat + BUFFER) + 'px';
+      });
+    });
+    /* Auth hero gets a larger buffer */
+    document.querySelectorAll('.auth-hero').forEach(function(el) {
+      el.style.paddingTop = (sat + 32) + 'px';
+    });
+    /* Back-bar gets a slightly smaller buffer */
+    document.querySelectorAll('.back-bar').forEach(function(el) {
+      el.style.paddingTop = (sat + 6) + 'px';
+    });
+
+    /* Patch bottom-nav */
+    document.querySelectorAll('.bottom-nav').forEach(function(el) {
+      el.style.paddingBottom = sab + 'px';
+    });
+  }
+
+  /* Run as early as possible */
+  if (document.body) {
+    applyRealViewportHeight();
+    applyRealSafeAreas();
+  }
+
+  /* Re-run after DOM is ready */
+  document.addEventListener('DOMContentLoaded', function() {
+    applyRealViewportHeight();
+    applyRealSafeAreas();
+  });
+
+  /* Re-run after fonts/images complete (full layout) */
+  window.addEventListener('load', function() {
+    applyRealViewportHeight();
+    applyRealSafeAreas();
+    /* One final deferred pass — iOS sometimes updates env() after load */
+    requestAnimationFrame(function() {
+      applyRealViewportHeight();
+      applyRealSafeAreas();
+      requestAnimationFrame(function() {
+        applyRealViewportHeight();
+        applyRealSafeAreas();
+      });
+    });
+  });
+
+  /* Re-apply on orientation change */
+  window.addEventListener('orientationchange', function() {
+    setTimeout(function() {
+      applyRealViewportHeight();
+      applyRealSafeAreas();
+    }, 120);
+  });
+
+  /* Expose for manual call from SW update path */
+  window._fixLayout = function() {
+    applyRealViewportHeight();
+    applyRealSafeAreas();
+  };
+})();
+</script>
+
 <style>
 /* ═══════════════════════════════════════════════════════════
    DESIGN TOKENS
@@ -1379,35 +1521,35 @@ img    { display:block; }
   .page-shell {
     padding: 0; background: var(--bg-phone);
     align-items: stretch;
-    height: 100svh; min-height: 100svh;
+    height: 100dvh; min-height: 100dvh;
   }
   .phone {
     width: 100%; max-width: 100%;
     border-radius: 0; box-shadow: none;
-    height: 100svh; min-height: 100svh;
+    height: 100dvh; min-height: 100dvh;
   }
-  .screen { height: 100svh; min-height: 100svh; }
+  .screen { height: 100dvh; min-height: 100dvh; }
 
   /* Hide the fake status-bar — device draws the real one */
   .status-bar { display: none !important; }
 
   /* Push content below notch/island + 8px buffer so text
      doesn't visually collide with system clock / icons */
-  .home-header    { padding-top: calc(env(safe-area-inset-top, 44px) + 8px) !important; }
-  .top-nav        { padding-top: calc(env(safe-area-inset-top, 44px) + 8px) !important; }
-  .back-bar       { padding-top: calc(env(safe-area-inset-top, 44px) + 6px) !important; }
-  .auth-hero      { padding-top: calc(env(safe-area-inset-top, 44px) + 32px) !important; }
-  .listing-header { padding-top: calc(env(safe-area-inset-top, 44px) + 8px) !important; }
-  .ssp-header     { padding-top: calc(env(safe-area-inset-top, 44px) + 8px) !important; }
-  .ai-chat-header { padding-top: calc(env(safe-area-inset-top, 44px) + 8px) !important; }
-  .rv-header      { padding-top: calc(env(safe-area-inset-top, 44px) + 8px) !important; }
+  .home-header    { padding-top: calc(var(--sat) + 8px) !important; }
+  .top-nav        { padding-top: calc(var(--sat) + 8px) !important; }
+  .back-bar       { padding-top: calc(var(--sat) + 6px) !important; }
+  .auth-hero      { padding-top: calc(var(--sat) + 32px) !important; }
+  .listing-header { padding-top: calc(var(--sat) + 8px) !important; }
+  .ssp-header     { padding-top: calc(var(--sat) + 8px) !important; }
+  .ai-chat-header { padding-top: calc(var(--sat) + 8px) !important; }
+  .rv-header      { padding-top: calc(var(--sat) + 8px) !important; }
 
   /* Bottom nav: grow the nav's height to absorb the home-indicator
      inset, and push the items up inside it — avoids the clip
      that occurs when padding-bottom is used on overflow:hidden */
   .bottom-nav {
     padding-bottom: 0;
-    padding-bottom: env(safe-area-inset-bottom, 0px);
+    padding-bottom: var(--sab);
     box-sizing: content-box;
   }
 
@@ -1427,38 +1569,48 @@ img    { display:block; }
 body.pwa-standalone { background: var(--bg-phone); }
 body.pwa-standalone .page-shell {
   padding: 0; background: var(--bg-phone);
-  align-items: stretch; height: 100svh; min-height: 100svh;
+  align-items: stretch; height: 100dvh; min-height: 100dvh;
 }
 body.pwa-standalone .phone {
   width: 100%; max-width: 100%;
   border-radius: 0; box-shadow: none;
-  height: 100svh; min-height: 100svh;
+  height: 100dvh; min-height: 100dvh;
 }
-body.pwa-standalone .screen { height: 100svh; min-height: 100svh; }
+body.pwa-standalone .screen { height: 100dvh; min-height: 100dvh; }
 body.pwa-standalone .status-bar { display: none !important; }
-body.pwa-standalone .home-header    { padding-top: calc(env(safe-area-inset-top, 44px) + 8px) !important; }
-body.pwa-standalone .top-nav        { padding-top: calc(env(safe-area-inset-top, 44px) + 8px) !important; }
-body.pwa-standalone .back-bar       { padding-top: calc(env(safe-area-inset-top, 44px) + 6px) !important; }
-body.pwa-standalone .auth-hero      { padding-top: calc(env(safe-area-inset-top, 44px) + 32px) !important; }
-body.pwa-standalone .listing-header { padding-top: calc(env(safe-area-inset-top, 44px) + 8px) !important; }
-body.pwa-standalone .ssp-header     { padding-top: calc(env(safe-area-inset-top, 44px) + 8px) !important; }
-body.pwa-standalone .ai-chat-header { padding-top: calc(env(safe-area-inset-top, 44px) + 8px) !important; }
-body.pwa-standalone .rv-header      { padding-top: calc(env(safe-area-inset-top, 44px) + 8px) !important; }
+body.pwa-standalone .home-header    { padding-top: calc(var(--sat) + 8px) !important; }
+body.pwa-standalone .top-nav        { padding-top: calc(var(--sat) + 8px) !important; }
+body.pwa-standalone .back-bar       { padding-top: calc(var(--sat) + 6px) !important; }
+body.pwa-standalone .auth-hero      { padding-top: calc(var(--sat) + 32px) !important; }
+body.pwa-standalone .listing-header { padding-top: calc(var(--sat) + 8px) !important; }
+body.pwa-standalone .ssp-header     { padding-top: calc(var(--sat) + 8px) !important; }
+body.pwa-standalone .ai-chat-header { padding-top: calc(var(--sat) + 8px) !important; }
+body.pwa-standalone .rv-header      { padding-top: calc(var(--sat) + 8px) !important; }
 body.pwa-standalone .bottom-nav {
   padding-bottom: 0;
-  padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-bottom: var(--sab);
   box-sizing: content-box;
 }
 body.pwa-standalone .pwa-install-banner { display: none !important; }
 
-/* svh fallback for older browsers */
-@supports not (height: 100svh) {
+/* dvh/svh fallback for older browsers */
+@supports not (height: 100dvh) {
   @media (display-mode: standalone) {
-    .page-shell, .phone, .screen { height: 100vh; min-height: 100vh; }
+    .page-shell, .phone { height: 100dvh; min-height: 100dvh; }
+    .screen { height: 100dvh; }
   }
   body.pwa-standalone .page-shell,
-  body.pwa-standalone .phone,
-  body.pwa-standalone .screen { height: 100vh; min-height: 100vh; }
+  body.pwa-standalone .phone { height: 100dvh; min-height: 100dvh; }
+  body.pwa-standalone .screen { height: 100dvh; }
+}
+@supports not (height: 100svh) {
+  @media (display-mode: standalone) {
+    .page-shell, .phone { min-height: -webkit-fill-available; min-height: 100vh; }
+    .screen { height: -webkit-fill-available; height: 100vh; }
+  }
+  body.pwa-standalone .page-shell,
+  body.pwa-standalone .phone { min-height: -webkit-fill-available; min-height: 100vh; }
+  body.pwa-standalone .screen { height: -webkit-fill-available; height: 100vh; }
 }
 
 
