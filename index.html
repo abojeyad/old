@@ -5,32 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"/>
 <title>Yourdis · يوردس</title>
 
-<!-- ═══════════════════════════════════════════════════════
-     PWA — Manifest & Theme
-════════════════════════════════════════════════════════ -->
-<link rel="manifest" href="manifest.json"/>
-<meta name="theme-color" content="#79002F"/>
-<meta name="mobile-web-app-capable" content="yes"/>
-<meta name="application-name" content="Yourdis"/>
 
-<!-- iOS Safari PWA -->
-<meta name="apple-mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-<meta name="apple-mobile-web-app-title" content="Yourdis"/>
-<link rel="apple-touch-icon" href="icons/icon-192.png"/>
-<link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152.png"/>
-<link rel="apple-touch-icon" sizes="167x167" href="icons/icon-192.png"/>
-<link rel="apple-touch-icon" sizes="180x180" href="icons/icon-192.png"/>
-
-<!-- iOS Splash screens (portrait) -->
-<link rel="apple-touch-startup-image" media="(device-width:390px) and (-webkit-device-pixel-ratio:3)" href="icons/icon-512.png"/>
-<link rel="apple-touch-startup-image" media="(device-width:375px) and (-webkit-device-pixel-ratio:3)" href="icons/icon-512.png"/>
-<link rel="apple-touch-startup-image" media="(device-width:375px) and (-webkit-device-pixel-ratio:2)" href="icons/icon-384.png"/>
-
-<!-- Windows / Edge tiles -->
-<meta name="msapplication-TileImage" content="icons/icon-144.png"/>
-<meta name="msapplication-TileColor" content="#79002F"/>
-<meta name="msapplication-config" content="none"/>
 
 <!-- Standard favicon chain -->
 <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png"/>
@@ -74,35 +49,7 @@
   }
 </style>
 
-<script>
-/* ═══════════════════════════════════════════════════════════
-   MINIMAL LAYOUT HELPER
-   Only handles standalone detection and essential logic.
-   No pixel-patching of heights to avoid the "snap" bug.
-═══════════════════════════════════════════════════════════ */
-(function() {
-  function updateStandaloneState() {
-    var isStandalone = window.navigator.standalone === true || 
-                       window.matchMedia('(display-mode: standalone)').matches;
-    
-    if (isStandalone) {
-      document.documentElement.classList.add('pwa-standalone');
-      document.body.classList.add('pwa-standalone');
-    }
-  }
 
-  /* Run immediately */
-  updateStandaloneState();
-  
-  /* Re-check on load */
-  window.addEventListener('load', updateStandaloneState);
-  
-  /* Prevent default browser behaviors that cause layout shifts */
-  document.addEventListener('touchstart', function(e) {
-    if (e.touches.length > 1) e.preventDefault();
-  }, { passive: false });
-})();
-</script>
 
 <style>
 /* ═══════════════════════════════════════════════════════════
@@ -738,6 +685,8 @@ html {
   display:none; flex-direction:column;
 }
 .overlay.visible { display:flex; }
+/* Store page must cover the bottom-nav (z-index:100) so it is not visible or clickable */
+#overlay-store-page { z-index:101; }
 
 /* Slide-up overlays */
 .overlay-sheet {
@@ -1438,154 +1387,8 @@ html {
 }
 .ssp-info-block h4 { font-size:15px; font-weight:600; color:var(--ink-1); margin-bottom:8px; }
 .ssp-info-block p  { font-size:14px; color:var(--ink-3); line-height:1.7; }
-/* ── PWA INSTALL BANNER ──────────────────────────────────── */
-.pwa-install-banner {
-  position:fixed; bottom:0; left:0; right:0; z-index:9999;
-  background:var(--bg-phone);
-  border-top:1px solid var(--border-strong);
-  box-shadow:0 -4px 24px rgba(0,0,0,0.12);
-  display:flex; align-items:center; gap:14px;
-  padding:16px 18px;
-  transform:translateY(100%);
-  transition:transform 0.32s cubic-bezier(0.25,0.46,0.45,0.94);
-  max-width:540px; margin:0 auto;
-}
-.pwa-install-banner.visible { transform:translateY(0); }
-.pwa-install-icon {
-  width:48px; height:48px; border-radius:var(--radius-md);
-  flex-shrink:0; overflow:hidden;
-}
-.pwa-install-icon img { width:100%; height:100%; object-fit:cover; }
-.pwa-install-text { flex:1; min-width:0; }
-.pwa-install-title { font-size:15px; font-weight:600; color:var(--ink-1); }
-.pwa-install-sub   { font-size:13px; color:var(--ink-3); margin-top:3px; }
-.pwa-install-btn {
-  flex-shrink:0; padding:10px 18px; border-radius:var(--radius-md);
-  background:var(--accent); color:#fff; font-size:14px; font-weight:600;
-  border:none; cursor:pointer; font-family:var(--font-body); white-space:nowrap;
-}
-.pwa-install-dismiss {
-  flex-shrink:0; width:28px; height:28px; border-radius:50%;
-  background:var(--bg-input); border:none; cursor:pointer;
-  display:flex; align-items:center; justify-content:center; color:var(--ink-3);
-}
-.pwa-install-dismiss svg { width:14px; height:14px; pointer-events:none; }
 
-/* ── PWA UPDATE BAR ──────────────────────────────────────── */
-.pwa-update-bar {
-  position:fixed; top:0; left:0; right:0; z-index:9998;
-  background:var(--accent);
-  display:flex; align-items:center; justify-content:space-between; gap:12px;
-  padding:12px 18px;
-  transform:translateY(-100%);
-  transition:transform 0.28s cubic-bezier(0.25,0.46,0.45,0.94);
-  max-width:540px; margin:0 auto;
-}
-.pwa-update-bar.visible { transform:translateY(0); }
-.pwa-update-msg  { font-size:14px; font-weight:600; color:#fff; }
-.pwa-update-btn  {
-  flex-shrink:0; padding:8px 15px; border-radius:var(--radius-sm);
-  background:rgba(255,255,255,0.22); color:#fff; font-size:13px; font-weight:600;
-  border:1px solid rgba(255,255,255,0.4); cursor:pointer; font-family:var(--font-body); white-space:nowrap;
-}
-.pwa-update-btn:hover { background:rgba(255,255,255,0.32); }
-/* ══════════════════════════════════════════════════════════
-   PWA STANDALONE MODE — full-screen native layout
-══════════════════════════════════════════════════════════ */
-@media (display-mode: standalone), (display-mode: fullscreen) {
-  html, body { 
-    background: var(--bg-phone); 
-  }
-  .page-shell {
-    padding: 0; 
-    background: var(--bg-phone);
-    align-items: stretch;
-    height: 100dvh; 
-    min-height: 100dvh;
-    overflow: hidden;
-  }
-  .phone {
-    width: 100%; 
-    max-width: 100%;
-    height: 100dvh; 
-    min-height: 100dvh;
-    border-radius: 0; 
-    box-shadow: none;
-  }
-  .screen { 
-    height: 100dvh; 
-  }
 
-  /* Hide the fake status-bar — device draws the real one */
-  .status-bar { display: none !important; }
-
-  /* Push content below notch/island + 8px buffer */
-  .home-header, .top-nav, .listing-header, 
-  .ssp-header, .ai-chat-header, .rv-header { 
-    padding-top: calc(var(--sat) + 8px) !important; 
-  }
-  .back-bar { 
-    padding-top: calc(var(--sat) + 6px) !important; 
-  }
-  .auth-hero { 
-    padding-top: calc(var(--sat) + 32px) !important; 
-  }
-
-  /* Bottom nav: handle home-indicator inset */
-  .bottom-nav {
-    padding-bottom: var(--sab);
-    box-sizing: content-box;
-  }
-
-  /* Overlays — hide their fake status bars too */
-  .overlay .status-bar,
-  .ai-chat-overlay .status-bar,
-  .ssp-overlay .status-bar,
-  .filter-overlay .status-bar,
-  .reviews-overlay .status-bar,
-  .ob-card .status-bar,
-  .guest-modal-backdrop .status-bar { display: none !important; }
-
-  .pwa-install-banner { display: none !important; }
-}
-
-/* JS class fallback for legacy standalone detection */
-.pwa-standalone html, 
-.pwa-standalone body { background: var(--bg-phone); }
-.pwa-standalone .page-shell {
-  padding: 0; background: var(--bg-phone);
-  align-items: stretch; height: 100dvh; min-height: 100dvh;
-}
-.pwa-standalone .phone {
-  width: 100%; max-width: 100%;
-  border-radius: 0; box-shadow: none;
-  height: 100dvh; min-height: 100dvh;
-}
-.pwa-standalone .screen { height: 100dvh; }
-.pwa-standalone .status-bar { display: none !important; }
-.pwa-standalone .home-header, 
-.pwa-standalone .top-nav, 
-.pwa-standalone .listing-header,
-.pwa-standalone .ssp-header, 
-.pwa-standalone .ai-chat-header, 
-.pwa-standalone .rv-header { 
-  padding-top: calc(var(--sat) + 8px) !important; 
-}
-.pwa-standalone .back-bar { padding-top: calc(var(--sat) + 6px) !important; }
-.pwa-standalone .auth-hero { padding-top: calc(var(--sat) + 32px) !important; }
-.pwa-standalone .bottom-nav {
-  padding-bottom: var(--sab);
-  box-sizing: content-box;
-}
-.pwa-standalone .pwa-install-banner { display: none !important; }
-
-/* svh/dvh fallback for slightly older browsers */
-@supports not (height: 100dvh) {
-  :root { --real-vh: 100vh; }
-  @media (display-mode: standalone) {
-    .page-shell, .phone, .screen { height: 100vh; }
-  }
-}
 
 
 
@@ -2042,8 +1845,8 @@ html {
     </div>
 
     <div class="bottom-nav">
-      <div class="bn-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Home</span></div>
-      <div class="bn-item" onclick="switchScreen('search')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span>Search</span></div>
+      <div class="bn-item active" onclick="closeAllStores()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Home</span></div>
+      <div class="bn-item" onclick="showAllStores()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7"/><path d="M9 22V12h6v10"/><path d="M3 9v13h18V9"/><path d="M3 9h18"/></svg><span>Stores</span></div>
       <div class="bn-item" onclick="switchScreen('alerts')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>Alerts</span></div>
       <div class="bn-item" onclick="switchScreen('activity')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Activity</span></div>
     </div>
@@ -2300,13 +2103,9 @@ html {
     <!-- ── ALL STORES overlay ── -->
     <div class="overlay" id="overlay-stores">
       
-      <div class="listing-header">
-        <div class="listing-back-btn" onclick="closeAllStores()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
-          Back
-        </div>
-        <span class="listing-title">All Stores</span>
-        <span class="listing-count">9 stores</span>
+      <div class="top-nav" style="padding-top:calc(var(--sat) + 8px);">
+        <span class="top-nav-title">Stores</span>
+        <span style="font-size:13px;color:var(--ink-3);">9 stores</span>
       </div>
       <!-- Search bar inside overlay -->
       <div class="search-bar" style="margin:10px 16px 0;flex-shrink:0;">
@@ -2314,13 +2113,12 @@ html {
         <input placeholder="Search stores…"/>
       </div>
       <div class="u-overflow-auto">
-        <div class="u-letter-up" style="padding:10px 20px 4px;">Tracked &amp; Verified</div>
+        <div class="u-letter-up" style="padding:10px 20px 4px;">Verified Stores</div>
         <div class="store-dir-row" onclick="closeAllStores();openStorePage('amazon')">
           <div class="store-dir-logo" style="background:var(--b-blue);">Am</div>
           <div class="store-dir-info">
             <div class="store-dir-name">Amazon</div>
             <div class="store-dir-sub">amazon.sa &middot; 280+ fragrances</div>
-            <span class="store-dir-badge sdb-active">Tracked &middot; Fast delivery</span>
           </div>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px;color:var(--ink-3);flex-shrink:0;"><path d="M9 18l6-6-6-6"/></svg>
         </div>
@@ -2329,7 +2127,6 @@ html {
           <div class="store-dir-info">
             <div class="store-dir-name">Namshi</div>
             <div class="store-dir-sub">namshi.com &middot; 190+ fragrances</div>
-            <span class="store-dir-badge sdb-active">Tracked &middot; Free returns</span>
           </div>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px;color:var(--ink-3);flex-shrink:0;"><path d="M9 18l6-6-6-6"/></svg>
         </div>
@@ -2338,7 +2135,6 @@ html {
           <div class="store-dir-info">
             <div class="store-dir-name">Sephora Saudi Arabia</div>
             <div class="store-dir-sub">sephora.com.sa &middot; 450+ fragrances</div>
-            <span class="store-dir-badge sdb-active">Tracked &middot; Official brand prices</span>
           </div>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px;color:var(--ink-3);flex-shrink:0;"><path d="M9 18l6-6-6-6"/></svg>
         </div>
@@ -2347,7 +2143,6 @@ html {
           <div class="store-dir-info">
             <div class="store-dir-name">Noon</div>
             <div class="store-dir-sub">noon.com &middot; 210+ fragrances</div>
-            <span class="store-dir-badge sdb-active">Tracked &middot; Express delivery</span>
           </div>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px;color:var(--ink-3);flex-shrink:0;"><path d="M9 18l6-6-6-6"/></svg>
         </div>
@@ -2356,7 +2151,6 @@ html {
           <div class="store-dir-info">
             <div class="store-dir-name">Centrepoint</div>
             <div class="store-dir-sub">centrepoint.com &middot; 85+ fragrances</div>
-            <span class="store-dir-badge sdb-active">Tracked</span>
           </div>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px;color:var(--ink-3);flex-shrink:0;"><path d="M9 18l6-6-6-6"/></svg>
         </div>
@@ -2365,11 +2159,9 @@ html {
           <div class="store-dir-info">
             <div class="store-dir-name">Jarir Bookstore</div>
             <div class="store-dir-sub">jarir.com &middot; 40+ fragrances</div>
-            <span class="store-dir-badge sdb-active">Tracked</span>
           </div>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px;color:var(--ink-3);flex-shrink:0;"><path d="M9 18l6-6-6-6"/></svg>
-        </div>
-        <div class="u-letter-up" style="padding:10px 20px 4px;">Coming Soon</div>
+        </div>        <div class="u-letter-up" style="padding:10px 20px 4px;">Coming Soon</div>
         <div class="store-dir-row" style="opacity:0.55;">
           <div class="store-dir-logo" style="background:var(--b-blue);">Lg</div>
           <div class="store-dir-info">
@@ -2441,7 +2233,7 @@ html {
         </svg>
       </div>
       <div class="ai-chat-title">
-        <div class="ai-chat-name">YOURDIS AI</div>
+        <div class="ai-chat-name">Sina AI</div>
         <div class="ai-chat-status">Online · Ready to help</div>
       </div>
       <div class="ai-chat-close" onclick="closeAIChat()">
@@ -2611,12 +2403,12 @@ html {
   <div class="overlay" id="overlay-store-page">
     <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:14px;">&#9679;&#9679;&#9679;&#9679;</span></div>
     <div class="listing-header">
-      <div class="listing-back-btn" onclick="closeStorePage()">
+      <div class="listing-back-btn" onclick="goBackFromStorePage()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
         Back
       </div>
-      <span class="listing-title" id="store-page-title">Amazon</span>
-      <span class="listing-count" id="store-page-count">280+ items</span>
+      <span id="store-page-title" style="display:none;"></span>
+      <span id="store-page-count" style="display:none;"></span>
     </div>
     <div class="store-page-hero">
       <div class="store-page-logo" id="store-page-logo" style="background:var(--b-blue);">Am</div>
@@ -2677,10 +2469,11 @@ html {
         <div style="font-size:14px;font-weight:500;color:var(--ink-1);margin-bottom:6px;">No results found</div>
         <div style="font-size:14px;color:var(--ink-3);">Try a different name, brand, or scent note</div>
       </div>
+      <div style="height:80px;" aria-hidden="true"></div>
     </div>
     <div class="bottom-nav">
       <div class="bn-item" onclick="switchScreen('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Home</span></div>
-      <div class="bn-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span>Search</span></div>
+      <div class="bn-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7"/><path d="M9 22V12h6v10"/><path d="M3 9v13h18V9"/><path d="M3 9h18"/></svg><span>Stores</span></div>
       <div class="bn-item" onclick="switchScreen('alerts')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>Alerts</span></div>
       <div class="bn-item" onclick="switchScreen('activity')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Activity</span></div>
     </div>
@@ -3036,7 +2829,7 @@ html {
     </div>
     <div class="bottom-nav">
       <div class="bn-item" onclick="switchScreen('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Home</span></div>
-      <div class="bn-item" onclick="switchScreen('search')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span>Search</span></div>
+      <div class="bn-item" onclick="showAllStores()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7"/><path d="M9 22V12h6v10"/><path d="M3 9v13h18V9"/><path d="M3 9h18"/></svg><span>Stores</span></div>
       <div class="bn-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>Alerts</span></div>
       <div class="bn-item" onclick="switchScreen('activity')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Activity</span></div>
     </div>
@@ -3140,7 +2933,7 @@ html {
 
     <div class="bottom-nav">
       <div class="bn-item" onclick="switchScreen('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Home</span></div>
-      <div class="bn-item" onclick="switchScreen('search')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span>Search</span></div>
+      <div class="bn-item" onclick="showAllStores()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7"/><path d="M9 22V12h6v10"/><path d="M3 9v13h18V9"/><path d="M3 9h18"/></svg><span>Stores</span></div>
       <div class="bn-item" onclick="switchScreen('alerts')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>Alerts</span></div>
       <div class="bn-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Activity</span></div>
     </div>
@@ -3965,7 +3758,7 @@ function _setProductPricing(p) {
 
 /* ── Sub-function: render store link section ────────────── */
 function _setProductStore(p) {
-  var storeData    = p.storeKey && STORES[p.storeKey] ? STORES[p.storeKey] : null;
+  var storeData    = p.storeKey && Stores[p.storeKey] ? Stores[p.storeKey] : null;
   var storeIcon    = document.getElementById('product-store-icon');
   var storeNameLink = document.getElementById('product-store-name-link');
   if (storeData) {
@@ -4094,8 +3887,37 @@ function showPriceDrops() { showOverlay('overlay-price-drops'); }
 function closePriceDrops() { hideOverlay('overlay-price-drops'); }
 
 /* All Stores */
-function showAllStores() { showOverlay('overlay-stores'); }
-function closeAllStores() { hideOverlay('overlay-stores'); }
+function showAllStores() {
+  /* The overlay lives inside #screen-home. Ensure that screen is active
+     before showing the overlay — otherwise the overlay is inside a
+     display:none parent and becomes unresponsive on re-entry. */
+  document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+  document.getElementById('screen-home').classList.add('active');
+  /* Force-remove then add 'visible' so classList.add is never a no-op
+     even when the overlay already carried the class from a prior visit. */
+  var el = document.getElementById('overlay-stores');
+  el.classList.remove('visible');
+  el.classList.add('visible');
+  /* Set correct active state on the home screen's bottom nav */
+  var homeNav = document.querySelector('#screen-home .bottom-nav');
+  if (homeNav) {
+    homeNav.querySelectorAll('.bn-item').forEach(function(item) { item.classList.remove('active'); });
+    homeNav.querySelectorAll('.bn-item').forEach(function(item) {
+      var lbl = item.querySelector('span');
+      if (lbl && lbl.textContent === 'Stores') item.classList.add('active');
+    });
+  }
+}
+function closeAllStores() {
+  hideOverlay('overlay-stores');
+  /* Restore Home active state on the home nav */
+  var homeNav = document.querySelector('#screen-home .bottom-nav');
+  if (homeNav) {
+    homeNav.querySelectorAll('.bn-item').forEach(function(item) { item.classList.remove('active'); });
+    var firstItem = homeNav.querySelector('.bn-item');
+    if (firstItem) firstItem.classList.add('active');
+  }
+}
 
 /* Wishlist All */
 function showWishlistAll() { showOverlay('overlay-wishlist-all'); var sa = document.querySelector('#overlay-wishlist-all [style*="overflow-y:auto"]'); if (sa) sa.scrollTop = 0; }
@@ -4219,7 +4041,7 @@ function closeBrandPage() { hideOverlay('overlay-brand-page'); }
    SINGLE STORE PAGE
 ══════════════════════════════════════════════════════════ */
 function openStorePage(key) {
-  var s = STORES[key];
+  var s = Stores[key];
   if (!s) return;
   document.getElementById('store-page-title').textContent = s.name;
   document.getElementById('store-page-count').textContent = s.frags + ' items';
@@ -4267,6 +4089,7 @@ function openStorePage(key) {
 }
 
 function closeStorePage() { hideOverlay('overlay-store-page'); }
+function goBackFromStorePage() { closeStorePage(); showAllStores(); }
 
 /* ── FOLLOW STORE TOGGLE ───────────────────────────────── */
 function toggleStoreFollow() {
@@ -4990,134 +4813,8 @@ function sortReviews(type, chipEl) {
 
 </script>
 
-<!-- ═══════════════════════════════════════════════════════
-     PWA — Install Banner
-════════════════════════════════════════════════════════ -->
 
 
-<!-- ═══════════════════════════════════════════════════════
-     PWA — Update Notification Bar
-════════════════════════════════════════════════════════ -->
-<div class="pwa-update-bar" id="pwa-update-bar" role="alert" aria-live="polite">
-  <span class="pwa-update-msg">✦ New version available</span>
-  <button class="pwa-update-btn" onclick="pwaApplyUpdate()">Update now</button>
-</div>
 
-<script>
-/* ═══════════════════════════════════════════════════════════
-   PWA — SERVICE WORKER REGISTRATION & LIFECYCLE
-═══════════════════════════════════════════════════════════ */
-(function() {
-  'use strict';
-
-  /* ── Standalone detection — runs immediately on parse ───── */
-  function isStandalone() {
-    return window.navigator.standalone === true ||                      /* iOS Safari */
-           window.matchMedia('(display-mode: standalone)').matches ||   /* Android / Chrome */
-           window.matchMedia('(display-mode: fullscreen)').matches ||   /* fullscreen PWA */
-           document.referrer.includes('android-app://');               /* TWA (Android) */
-  }
-
-  /* Apply standalone class immediately — before first paint — to
-     avoid layout flash on the desktop phone-frame wrapper */
-  if (isStandalone()) {
-    document.documentElement.classList.add('pwa-standalone');
-    document.body && document.body.classList.add('pwa-standalone');
-    /* Also apply once body is available if we ran during <head> parse */
-    document.addEventListener('DOMContentLoaded', function() {
-      document.body.classList.add('pwa-standalone');
-    });
-  }
-
-  /* Re-check after display-mode media query settles (some browsers
-     report standalone only after layout) */
-  if (window.matchMedia) {
-    var mq = window.matchMedia('(display-mode: standalone)');
-    var applyStandalone = function(e) {
-      if (e.matches) {
-        document.body.classList.add('pwa-standalone');
-        document.documentElement.classList.add('pwa-standalone');
-      }
-    };
-    /* Modern API */
-    if (typeof mq.addEventListener === 'function') {
-      mq.addEventListener('change', applyStandalone);
-    } else if (typeof mq.addListener === 'function') {
-      mq.addListener(applyStandalone);   /* Safari < 14 fallback */
-    }
-    /* Check immediately in case media query already matches */
-    if (mq.matches) applyStandalone(mq);
-  }
-
-  /* ── Bail out if no SW support ──────────────────────────── */
-  if (!('serviceWorker' in navigator)) return;
-
-  var _swReg      = null;
-  var _newWorker  = null;
-  var _installEvt = null;
-  var DISMISS_KEY = 'yd_pwa_dismissed';
-
-  /* ── Register service worker ────────────────────────────── */
-  window.addEventListener('load', function() {
-    navigator.serviceWorker.register('./sw.js', { scope: './' })
-      .then(function(reg) {
-        _swReg = reg;
-
-        /* Already a waiting worker (e.g. hard-refresh) */
-        if (reg.waiting) {
-          _newWorker = reg.waiting;
-          showUpdateBar();
-        }
-
-        reg.addEventListener('updatefound', function() {
-          var w = reg.installing;
-          if (!w) return;
-          w.addEventListener('statechange', function() {
-            if (w.state === 'installed' && navigator.serviceWorker.controller) {
-              _newWorker = w;
-              showUpdateBar();
-            }
-          });
-        });
-
-        /* Poll for updates every 60 minutes */
-        setInterval(function() { reg.update(); }, 60 * 60 * 1000);
-      })
-      .catch(function(err) {
-        console.warn('[SW] Registration failed:', err);
-      });
-
-    /* SW sends SW_UPDATED after activating */
-    navigator.serviceWorker.addEventListener('message', function(event) {
-      if (event.data && event.data.type === 'SW_UPDATED') showUpdateBar();
-    });
-
-    /* After skipWaiting → controllerchange → reload */
-    var refreshing = false;
-    navigator.serviceWorker.addEventListener('controllerchange', function() {
-      if (refreshing) return;
-      refreshing = true;
-      window.location.reload();
-    });
-  });
-
-  window.pwaApplyUpdate = function() {
-    hideUpdateBar();
-    var w = _newWorker || (_swReg && _swReg.waiting);
-    if (w) w.postMessage({ type: 'SKIP_WAITING' });
-  };
-
-  /* ── UI helpers ─────────────────────────────────────────── */
-  function showUpdateBar() {
-    var el = document.getElementById('pwa-update-bar');
-    if (el) el.classList.add('visible');
-  }
-  function hideUpdateBar() {
-    var el = document.getElementById('pwa-update-bar');
-    if (el) el.classList.remove('visible');
-  }
-
-})();
-</script>
 </body>
 </html>
