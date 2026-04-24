@@ -832,7 +832,7 @@ html {
 .settings-row-right { color:var(--ink-3); display:flex; align-items:center; gap:6px; }
 .settings-row-right svg { width:16px; height:16px; }
 .logout-btn {
-  margin:20px 20px; padding:15px; border-radius:var(--radius-md);
+  margin:20px 20px 40px; padding:15px; border-radius:var(--radius-md);
   background:var(--red-light); color:var(--red);
   font-size:16px; font-weight:600; width:calc(100% - 40px);
   display:flex; align-items:center; justify-content:center; gap:10px;
@@ -3262,7 +3262,7 @@ html {
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
           Sign Out
         </button>
-        <div style="height:16px;" aria-hidden="true"></div>
+        <div style="height:40px;" aria-hidden="true"></div>
       </div>
     </div>
 
@@ -4993,19 +4993,7 @@ function sortReviews(type, chipEl) {
 <!-- ═══════════════════════════════════════════════════════
      PWA — Install Banner
 ════════════════════════════════════════════════════════ -->
-<div class="pwa-install-banner" id="pwa-install-banner" role="banner" aria-label="Install Yourdis app">
-  <div class="pwa-install-icon">
-    <img src="icons/icon-192.png" alt="Yourdis" loading="lazy"/>
-  </div>
-  <div class="pwa-install-text">
-    <div class="pwa-install-title">Install Yourdis</div>
-    <div class="pwa-install-sub">Add to home screen for the best experience</div>
-  </div>
-  <button class="pwa-install-btn" id="pwa-install-btn" onclick="pwaInstall()">Install</button>
-  <button class="pwa-install-dismiss" id="pwa-install-dismiss" onclick="pwaDismissBanner()" aria-label="Dismiss">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-  </button>
-</div>
+
 
 <!-- ═══════════════════════════════════════════════════════
      PWA — Update Notification Bar
@@ -5113,96 +5101,13 @@ function sortReviews(type, chipEl) {
     });
   });
 
-  /* ── Install prompt (Android / Desktop Chrome/Edge) ─────── */
-  window.addEventListener('beforeinstallprompt', function(e) {
-    e.preventDefault();
-    _installEvt = e;
-    /* Don't show banner if already in standalone mode */
-    if (isStandalone()) return;
-    try {
-      if (!sessionStorage.getItem(DISMISS_KEY)) {
-        setTimeout(showInstallBanner, 3500);
-      }
-    } catch(ex) {
-      setTimeout(showInstallBanner, 3500);
-    }
-  });
-
-  /* Show toast + hide banner after successful install */
-  window.addEventListener('appinstalled', function() {
-    hideInstallBanner();
-    _installEvt = null;
-    if (typeof _showToast === 'function') {
-      _showToast('Yourdis installed — find it on your home screen ✓');
-    }
-  });
-
-  /* ── Public API ─────────────────────────────────────────── */
-  window.pwaInstall = function() {
-    if (!_installEvt) return;
-    _installEvt.prompt();
-    _installEvt.userChoice.then(function(choice) {
-      _installEvt = null;
-      if (choice.outcome === 'accepted') hideInstallBanner();
-    });
-  };
-
-  window.pwaDismissBanner = function() {
-    hideInstallBanner();
-    try { sessionStorage.setItem(DISMISS_KEY, '1'); } catch(ex) {}
-  };
-
   window.pwaApplyUpdate = function() {
     hideUpdateBar();
     var w = _newWorker || (_swReg && _swReg.waiting);
     if (w) w.postMessage({ type: 'SKIP_WAITING' });
   };
 
-  /* ── iOS Safari manual install hint ─────────────────────── */
-  function isIOS() {
-    return /iphone|ipad|ipod/i.test(navigator.userAgent) ||
-           /* iPad OS 13+ reports as MacIntel with touch */
-           (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-  }
-
-  window.addEventListener('DOMContentLoaded', function() {
-    /* If already standalone, nothing to do */
-    if (isStandalone()) return;
-
-    if (isIOS()) {
-      try {
-        if (!sessionStorage.getItem(DISMISS_KEY)) {
-          setTimeout(function() {
-            var banner = document.getElementById('pwa-install-banner');
-            var btn    = document.getElementById('pwa-install-btn');
-            var sub    = document.querySelector('.pwa-install-sub');
-            if (banner && btn && sub) {
-              btn.textContent = 'How to install';
-              sub.textContent = 'Tap Share ↑ then "Add to Home Screen"';
-              btn.onclick = function() {
-                if (typeof _showToast === 'function') {
-                  _showToast('Tap the Share button ↑ then "Add to Home Screen"');
-                }
-                pwaDismissBanner();
-              };
-              showInstallBanner();
-            }
-          }, 4000);
-        }
-      } catch(ex) {}
-    }
-  });
-
   /* ── UI helpers ─────────────────────────────────────────── */
-  function showInstallBanner() {
-    if (isStandalone()) return;
-    var el = document.getElementById('pwa-install-banner');
-    if (el) el.classList.add('visible');
-  }
-  function hideInstallBanner() {
-    var el = document.getElementById('pwa-install-banner');
-    if (el) el.classList.remove('visible');
-  }
   function showUpdateBar() {
     var el = document.getElementById('pwa-update-bar');
     if (el) el.classList.add('visible');
