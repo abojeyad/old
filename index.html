@@ -2010,7 +2010,7 @@ img    { display:block; }
         <div class="ai-chat-status">Online · Ready to help</div>
       </div>
       <div class="ai-chat-close" onclick="closeAIChat()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12H19M19 12l-7 7M19 12l-7-7"/></svg>
       </div>
     </div>
 
@@ -2315,11 +2315,10 @@ img    { display:block; }
 		        <span class="note-chip note-top">Top Notes: Citrus · Bergamot</span>
 		        <span class="note-chip note-heart">Heart Notes: Vetiver · Cedarwood</span>
 		        <span class="note-chip note-base">Base Notes: Patchouli · Labdanum</span>
-		        </div>	
-				<span class="note-chip note-country">Brand Country: France</span>
-				<span class="note-chip note-country">Gender: Unisex</span>
-				<span class="note-chip note-family" style="background: #f0f0f0; color: #0288d1; font-size:10px; padding:3px 8px; border-radius:20px;">Fragrance Family: Woody</span>
-			
+		        </div>
+		        <span class="note-chip note-country" id="product-country">Brand Country: France</span>
+		        <span class="note-chip note-country" id="product-gender">Gender: Unisex</span>
+		        <span class="note-chip note-family" id="product-family" style="background: #f0f0f0; color: #0288d1; font-size:10px; padding:3px 8px; border-radius:20px;">Fragrance Family: Woody</span>			
       </div>
 
       <div style="padding:0 20px;">
@@ -2644,7 +2643,7 @@ img    { display:block; }
 
       <!-- MVP Stats Cards -->
       <div style="height:16px;" aria-hidden="true"></div>
-      <div style="font-size:11px;color:var(--ink-3);padding:0 20px;margin-bottom:12px;">Shop via Yourdis to increase your cashback balance with every purchase.</div>
+      <div style="font-size:11px;color:var(--ink-3);padding:0 20px;margin-bottom:12px;">Shop through Yourdis and earn 2% cashback on every purchase, credited directly to your wallet.</div>
       <div class="stats-grid" style="margin-bottom:20px;">
         <!-- Card 1: Total Purchases — primary brand color -->
         <div class="stat-card" style="background: var(--bg-surface); border-color: var(--border);">
@@ -2670,7 +2669,7 @@ img    { display:block; }
 
       <!-- ── SECTION 1: MY INTERESTS ── -->
       <div class="sec-head" style="margin-bottom:4px;"><span class="sec-label">My Interests</span><span class="sec-link" onclick="showInterestsEdit()">Edit</span></div>
-      <div style="font-size:11px;color:var(--ink-3);padding:0 20px;margin-bottom:14px;">Pre-selected interests for you, tap Edit to modify</div>
+      <div style="font-size:11px;color:var(--ink-3);padding:0 20px;margin-bottom:14px;">We’ve selected default interests for you. Tap Edit to customize them.</div>
       <div class="pref-chips" style="margin-bottom:20px;">
         <span class="pref-chip">Woody / Oud</span>
         <span class="pref-chip">Oriental</span>
@@ -2753,12 +2752,17 @@ img    { display:block; }
           </div>
           <div class="settings-row" onclick="openSettingsSub('phone')" style="cursor:pointer;">
             <div class="settings-row-left">
-              <div class="settings-row-icon sri-blue" style="position:relative;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
-                <span id="phone-incomplete-dot" style="position:absolute;top:-3px;right:-3px;width:8px;height:8px;border-radius:50%;background:var(--amber);border:1.5px solid var(--bg-phone);display:block;" title="Phone number not added"></span>
+              <div class="settings-row-icon sri-blue">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
               </div>
               <div class="settings-row-info"><div class="settings-row-name">Phone number</div><div class="settings-row-sub" id="settings-phone-sub">Not added yet</div></div>
             </div>
-            <div class="settings-row-right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
+            <div class="settings-row-right">
+              <div id="phone-incomplete-dot" style="color:var(--amber); display:flex; align-items:center;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px;height:14px;"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0zM12 9v4M12 17h.01" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+            </div>
           </div>
         </div>
         <!-- Notifications -->
@@ -3291,6 +3295,9 @@ function _setProductMeta(p) {
   document.getElementById('product-name').textContent  = p.name;
   document.getElementById('product-brand').textContent = p.brand;
   document.getElementById('product-notes').innerHTML   = p.notes;
+  document.getElementById('product-country').textContent = 'Brand Country: ' + (p.country || '--');
+  document.getElementById('product-gender').textContent  = 'Gender: ' + (p.gender || '--');
+  document.getElementById('product-family').textContent  = 'Fragrance Family: ' + (p.family || '--');
   var desc = document.getElementById('product-desc');
   var readMoreBtn = document.getElementById('read-more-btn');
   desc.textContent = p.desc;
