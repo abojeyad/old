@@ -316,7 +316,7 @@ img    { display:block; }
 .pers-img-zone { width:100%; height:72px; position:relative; }
 .pers-img-zone .prod-img-wrap { height:100%; }
 .pers-body { padding:8px 10px 10px; display:flex; flex-direction:column; gap:3px; flex:1; }
-.pers-name  { font-size:11px; font-weight:500; color:var(--ink-1); line-height:1.35; }
+.pers-name  { font-size:12px; font-weight:500; color:var(--ink-1); line-height:1.35; }
 .pers-note  { font-size:10px; color:var(--ink-3); }
 .pers-price { font-size:13px; font-weight:500; color:var(--ink-1); margin-top:4px; }
 
@@ -331,7 +331,7 @@ img    { display:block; }
 .drop-thumb .prod-img-wrap { height:100%; }
 .drop-info { flex:1; min-width:0; }
 .drop-name  { font-size:13px; font-weight:500; color:var(--ink-1); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.drop-sub   { font-size:10px; color:var(--ink-3); margin-top:1px; }
+.drop-sub   { font-size:11px; color:var(--ink-3); margin-top:1px; }
 .drop-right { text-align:right; flex-shrink:0; }
 .drop-price { font-size:14px; font-weight:500; color:var(--ink-1); }
 .drop-delta { font-size:10px; color:var(--green); margin-top:2px; }
@@ -535,7 +535,7 @@ img    { display:block; }
 }
 .wl-heart svg { width:100%; height:100%; }
 .wl-body { padding:8px 10px 10px; }
-.wl-name  { font-size:11px; font-weight:500; color:var(--ink-1); line-height:1.35; }
+.wl-name  { font-size:12px; font-weight:500; color:var(--ink-1); line-height:1.35; }
 .wl-price { font-size:13px; font-weight:500; color:var(--ink-1); margin-top:3px; }
 .wl-drop  { font-size:10px; color:var(--green); margin-top:2px; }
 
@@ -548,7 +548,7 @@ img    { display:block; }
 }
 .recent-thumb { width:40px; height:40px; border-radius:var(--radius-sm); overflow:hidden; flex-shrink:0; }
 .recent-info { flex:1; }
-.rn { font-size:12px; font-weight:500; color:var(--ink-1); }
+.rn { font-size:13px; font-weight:500; color:var(--ink-1); }
 .rp { font-size:11px; color:var(--ink-3); margin-top:2px; }
 
 /* Preference chips */
@@ -640,7 +640,7 @@ img    { display:block; }
 /* ── SETTINGS overlay ─────────────────────────────────── */
 .settings-section { padding:12px 20px 4px; }
 .settings-label {
-  font-size:10px; font-weight:500; letter-spacing:0.08em;
+  font-size:11px; font-weight:500; letter-spacing:0.07em;
   text-transform:uppercase; color:var(--ink-3); margin-bottom:8px;
 }
 .settings-row {
@@ -1145,7 +1145,7 @@ img    { display:block; }
   padding:7px 12px; border-bottom:1px solid var(--border);
 }
 .alert-v2-price-block { flex:1; }
-.alert-v2-price-label { font-size:9px; color:var(--ink-3); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:1px; }
+.alert-v2-price-label { font-size:10px; color:var(--ink-3); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:1px; }
 .alert-v2-price-val   { font-family:var(--font-display); font-size:18px; color:var(--ink-1); line-height:1; }
 .alert-v2-price-orig  { font-size:10px; color:var(--ink-3); text-decoration:line-through; margin-top:2px; }
 .alert-v2-badge-block { display:flex; flex-direction:column; align-items:flex-end; gap:4px; flex-shrink:0; }
@@ -1205,6 +1205,69 @@ img    { display:block; }
 .u-overflow-auto { overflow-y:auto; flex:1; }
 .u-letter-up     { font-size:10px; font-weight:500; letter-spacing:0.07em; text-transform:uppercase; color:var(--ink-3); }
 .u-flex-shrink-0 { flex-shrink:0; }
+
+/* ── SETTINGS SUBPAGES ──────────────────────────────────── */
+.ssp-overlay {
+  position:absolute; inset:0; z-index:55;
+  background:var(--bg-phone);
+  display:none; flex-direction:column;
+}
+.ssp-overlay.visible { display:flex; }
+.ssp-header {
+  display:flex; align-items:center; gap:10px;
+  padding:4px 20px 12px; flex-shrink:0;
+  border-bottom:1px solid var(--border);
+  background:var(--bg-phone);
+}
+.ssp-back {
+  width:30px; height:30px; border-radius:50%; background:var(--bg-input);
+  display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0;
+}
+.ssp-back svg { width:14px; height:14px; color:var(--ink-2); }
+.ssp-title { font-size:15px; font-weight:500; color:var(--ink-1); }
+.ssp-body { flex:1; overflow-y:auto; padding:20px; }
+.ssp-field-label {
+  font-size:10px; font-weight:500; letter-spacing:0.07em; text-transform:uppercase;
+  color:var(--ink-3); margin-bottom:6px;
+}
+.ssp-input {
+  width:100%; padding:11px 14px; border-radius:var(--radius-md);
+  border:1px solid var(--border-strong); background:var(--bg-input);
+  font-size:14px; font-family:var(--font-body); color:var(--ink-1);
+  outline:none; transition:border-color 0.2s; margin-bottom:16px;
+}
+.ssp-input:focus { border-color:var(--accent); background:var(--bg-phone); }
+.ssp-save-btn {
+  width:100%; padding:13px; border-radius:var(--radius-md);
+  background:var(--accent); color:#fff; font-size:14px; font-weight:500;
+  border:none; cursor:pointer; font-family:var(--font-body); transition:opacity 0.15s;
+}
+.ssp-save-btn:hover { opacity:0.88; }
+.ssp-success {
+  display:none; margin-top:12px; padding:10px 14px;
+  background:var(--green-light); border:1px solid rgba(29,125,80,0.2);
+  border-radius:var(--radius-md); font-size:12px; color:var(--green); text-align:center;
+}
+.ssp-option-row {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:13px 0; border-bottom:1px solid var(--border); cursor:pointer;
+}
+.ssp-option-row:last-child { border-bottom:none; }
+.ssp-option-name { font-size:14px; color:var(--ink-1); }
+.ssp-option-check { color:var(--accent); }
+.ssp-faq-item { margin-bottom:14px; }
+.ssp-faq-q {
+  font-size:13px; font-weight:500; color:var(--ink-1); margin-bottom:5px;
+  cursor:pointer; display:flex; justify-content:space-between; align-items:center;
+}
+.ssp-faq-a { font-size:12px; color:var(--ink-3); line-height:1.65; }
+.ssp-divider { height:1px; background:var(--border); margin:16px 0; }
+.ssp-info-block {
+  background:var(--bg-surface); border:1px solid var(--border);
+  border-radius:var(--radius-md); padding:14px 16px; margin-bottom:14px;
+}
+.ssp-info-block h4 { font-size:13px; font-weight:500; color:var(--ink-1); margin-bottom:6px; }
+.ssp-info-block p  { font-size:12px; color:var(--ink-3); line-height:1.65; }
 </style>
 
 </head>
@@ -2674,24 +2737,26 @@ img    { display:block; }
         <!-- Account -->
         <div class="settings-section">
           <div class="settings-label">Account</div>
-          <div class="settings-row">
+          <div class="settings-row" onclick="openSettingsSub('profile')" style="cursor:pointer;">
             <div class="settings-row-left">
               <div class="settings-row-icon sri-purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
               <div class="settings-row-info"><div class="settings-row-name">Profile</div><div class="settings-row-sub">Abdullah Hassan</div></div>
             </div>
             <div class="settings-row-right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
           </div>
-		  <div class="settings-row">
+		  <div class="settings-row" onclick="openSettingsSub('email')" style="cursor:pointer;">
             <div class="settings-row-left">
               <div class="settings-row-icon sri-purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
               <div class="settings-row-info"><div class="settings-row-name">Email</div><div class="settings-row-sub">you@gmail.com</div></div>
             </div>
             <div class="settings-row-right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
           </div>
-          <div class="settings-row">
+          <div class="settings-row" onclick="openSettingsSub('phone')" style="cursor:pointer;">
             <div class="settings-row-left">
-              <div class="settings-row-icon sri-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
-              <div class="settings-row-info"><div class="settings-row-name">Phone number</div><div class="settings-row-sub">+966 5X XXX XXXX</div></div>
+              <div class="settings-row-icon sri-blue" style="position:relative;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                <span id="phone-incomplete-dot" style="position:absolute;top:-3px;right:-3px;width:8px;height:8px;border-radius:50%;background:var(--amber);border:1.5px solid var(--bg-phone);display:block;" title="Phone number not added"></span>
+              </div>
+              <div class="settings-row-info"><div class="settings-row-name">Phone number</div><div class="settings-row-sub" id="settings-phone-sub">Not added yet</div></div>
             </div>
             <div class="settings-row-right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
           </div>
@@ -2724,17 +2789,17 @@ img    { display:block; }
         <!-- Preferences -->
         <div class="settings-section">
           <div class="settings-label">Preferences</div>
-          <div class="settings-row">
+          <div class="settings-row" onclick="openSettingsSub('currency')" style="cursor:pointer;">
             <div class="settings-row-left">
               <div class="settings-row-icon sri-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></div>
-              <div class="settings-row-info"><div class="settings-row-name">Currency</div><div class="settings-row-sub">Saudi Riyal (SAR)</div></div>
+              <div class="settings-row-info"><div class="settings-row-name">Currency</div><div class="settings-row-sub" id="settings-currency-sub">Saudi Riyal (SAR)</div></div>
             </div>
             <div class="settings-row-right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
           </div>
-          <div class="settings-row">
+          <div class="settings-row" onclick="openSettingsSub('language')" style="cursor:pointer;">
             <div class="settings-row-left">
               <div class="settings-row-icon sri-amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
-              <div class="settings-row-info"><div class="settings-row-name">Language</div><div class="settings-row-sub">English</div></div>
+              <div class="settings-row-info"><div class="settings-row-name">Language</div><div class="settings-row-sub" id="settings-language-sub">English</div></div>
             </div>
             <div class="settings-row-right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
           </div>
@@ -2742,21 +2807,21 @@ img    { display:block; }
         <!-- Support -->
         <div class="settings-section">
           <div class="settings-label">Support</div>
-          <div class="settings-row">
+          <div class="settings-row" onclick="openSettingsSub('help')" style="cursor:pointer;">
             <div class="settings-row-left">
               <div class="settings-row-icon sri-green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
               <div class="settings-row-info"><div class="settings-row-name">Help &amp; FAQ</div><div class="settings-row-sub">Get answers to common questions</div></div>
             </div>
             <div class="settings-row-right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
           </div>
-          <div class="settings-row">
+          <div class="settings-row" onclick="openSettingsSub('contact')" style="cursor:pointer;">
             <div class="settings-row-left">
               <div class="settings-row-icon sri-purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
               <div class="settings-row-info"><div class="settings-row-name">Contact support</div><div class="settings-row-sub">support@yourdis.sa</div></div>
             </div>
             <div class="settings-row-right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
           </div>
-          <div class="settings-row" style="border-bottom:none;">
+          <div class="settings-row" onclick="openSettingsSub('privacy')" style="cursor:pointer;border-bottom:none;">
             <div class="settings-row-left">
               <div class="settings-row-icon" style="background:var(--bg-input);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
               <div class="settings-row-info"><div class="settings-row-name">Privacy Policy</div><div class="settings-row-sub">Version 2.1</div></div>
@@ -2995,6 +3060,205 @@ img    { display:block; }
       </div>
       <button class="ob-next" id="ob-next-btn" onclick="obNext()">Next</button>
       <button class="ob-skip" onclick="obNext();obNext();obNext()">Skip</button>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════════════════
+       SETTINGS SUBPAGES
+  ════════════════════════════════ -->
+
+  <!-- Profile -->
+  <div class="ssp-overlay" id="ssp-profile">
+    <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:10px;">●●●●</span></div>
+    <div class="ssp-header">
+      <div class="ssp-back" onclick="closeSettingsSub('profile')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
+      </div>
+      <span class="ssp-title">Edit Profile</span>
+    </div>
+    <div class="ssp-body">
+      <div class="ssp-field-label">Full name</div>
+      <input class="ssp-input" id="ssp-profile-name" type="text" value="Abdullah Hassan" placeholder="Your full name"/>
+      <button class="ssp-save-btn" onclick="saveProfile()">Save Changes</button>
+      <div class="ssp-success" id="ssp-profile-success">✓ Profile updated successfully</div>
+    </div>
+  </div>
+
+  <!-- Email -->
+  <div class="ssp-overlay" id="ssp-email">
+    <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:10px;">●●●●</span></div>
+    <div class="ssp-header">
+      <div class="ssp-back" onclick="closeSettingsSub('email')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
+      </div>
+      <span class="ssp-title">Change Email</span>
+    </div>
+    <div class="ssp-body">
+      <div class="ssp-field-label">Email address</div>
+      <input class="ssp-input" id="ssp-email-val" type="email" value="you@gmail.com" placeholder="your@email.com"/>
+      <button class="ssp-save-btn" onclick="saveEmail()">Update Email</button>
+      <div class="ssp-success" id="ssp-email-success">✓ Email updated successfully</div>
+    </div>
+  </div>
+
+  <!-- Phone -->
+  <div class="ssp-overlay" id="ssp-phone">
+    <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:10px;">●●●●</span></div>
+    <div class="ssp-header">
+      <div class="ssp-back" onclick="closeSettingsSub('phone')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
+      </div>
+      <span class="ssp-title">Phone Number</span>
+    </div>
+    <div class="ssp-body">
+      <div style="padding:12px 14px;background:var(--amber-light);border:1px solid rgba(140,90,0,0.18);border-radius:var(--radius-md);margin-bottom:18px;font-size:12px;color:var(--amber);line-height:1.6;">
+        ⚠️ Adding your phone number enables SMS price-drop alerts and faster account recovery.
+      </div>
+      <div class="ssp-field-label">Phone number</div>
+      <input class="ssp-input" id="ssp-phone-val" type="tel" placeholder="+966 5X XXX XXXX"/>
+      <button class="ssp-save-btn" onclick="savePhone()">Save Phone Number</button>
+      <div class="ssp-success" id="ssp-phone-success">✓ Phone number saved</div>
+    </div>
+  </div>
+
+  <!-- Currency -->
+  <div class="ssp-overlay" id="ssp-currency">
+    <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:10px;">●●●●</span></div>
+    <div class="ssp-header">
+      <div class="ssp-back" onclick="closeSettingsSub('currency')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
+      </div>
+      <span class="ssp-title">Currency</span>
+    </div>
+    <div class="ssp-body">
+      <div class="ssp-option-row" onclick="selectCurrency('SAR','Saudi Riyal (SAR)')">
+        <span class="ssp-option-name">🇸🇦 Saudi Riyal (SAR)</span>
+        <svg id="cur-check-SAR" class="ssp-option-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:16px;height:16px;"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="ssp-option-row" onclick="selectCurrency('USD','US Dollar (USD)')">
+        <span class="ssp-option-name">🇺🇸 US Dollar (USD)</span>
+        <svg id="cur-check-USD" class="ssp-option-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:16px;height:16px;display:none;"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Language -->
+  <div class="ssp-overlay" id="ssp-language">
+    <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:10px;">●●●●</span></div>
+    <div class="ssp-header">
+      <div class="ssp-back" onclick="closeSettingsSub('language')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
+      </div>
+      <span class="ssp-title">Language</span>
+    </div>
+    <div class="ssp-body">
+      <div class="ssp-option-row" onclick="selectLanguage('en','English')">
+        <span class="ssp-option-name">🇬🇧 English</span>
+        <svg id="lang-check-en" class="ssp-option-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:16px;height:16px;"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="ssp-option-row" onclick="selectLanguage('ar','Arabic · العربية')">
+        <span class="ssp-option-name">🇸🇦 Arabic · العربية</span>
+        <svg id="lang-check-ar" class="ssp-option-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:16px;height:16px;display:none;"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div style="margin-top:18px;padding:12px 14px;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);font-size:11px;color:var(--ink-3);line-height:1.6;">
+        Arabic interface is coming soon. Selecting it will be applied when the Arabic version launches.
+      </div>
+    </div>
+  </div>
+
+  <!-- Help & FAQ -->
+  <div class="ssp-overlay" id="ssp-help">
+    <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:10px;">●●●●</span></div>
+    <div class="ssp-header">
+      <div class="ssp-back" onclick="closeSettingsSub('help')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
+      </div>
+      <span class="ssp-title">Help &amp; FAQ</span>
+    </div>
+    <div class="ssp-body">
+      <div class="ssp-faq-item">
+        <div class="ssp-faq-q">How does Yourdis track prices? <span style="color:var(--ink-3);font-size:16px;">+</span></div>
+        <div class="ssp-faq-a">Yourdis scans major Saudi fragrance stores multiple times daily and logs every price change automatically. You see the most up-to-date price the moment it changes.</div>
+      </div>
+      <div class="ssp-divider"></div>
+      <div class="ssp-faq-item">
+        <div class="ssp-faq-q">When will I be notified of a price drop? <span style="color:var(--ink-3);font-size:16px;">+</span></div>
+        <div class="ssp-faq-a">The moment a tracked fragrance drops to or below your set target price, you receive a push notification and an email alert instantly.</div>
+      </div>
+      <div class="ssp-divider"></div>
+      <div class="ssp-faq-item">
+        <div class="ssp-faq-q">Which stores does Yourdis cover? <span style="color:var(--ink-3);font-size:16px;">+</span></div>
+        <div class="ssp-faq-a">We currently cover Golden Scent, Asheq Al-Otor, Najd Al-Otheyah, V Perfume, Deraah, Al-Sultan Perfumes and more. New stores are added regularly.</div>
+      </div>
+      <div class="ssp-divider"></div>
+      <div class="ssp-faq-item">
+        <div class="ssp-faq-q">Is Yourdis free to use? <span style="color:var(--ink-3);font-size:16px;">+</span></div>
+        <div class="ssp-faq-a">Yes — Yourdis is completely free. You can track unlimited fragrances, set alerts, and compare prices at no cost.</div>
+      </div>
+      <div class="ssp-divider"></div>
+      <div class="ssp-faq-item">
+        <div class="ssp-faq-q">How do I delete my account? <span style="color:var(--ink-3);font-size:16px;">+</span></div>
+        <div class="ssp-faq-a">You can request account deletion by contacting support@yourdis.sa. Your data will be permanently removed within 7 days.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact Support -->
+  <div class="ssp-overlay" id="ssp-contact">
+    <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:10px;">●●●●</span></div>
+    <div class="ssp-header">
+      <div class="ssp-back" onclick="closeSettingsSub('contact')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
+      </div>
+      <span class="ssp-title">Contact Support</span>
+    </div>
+    <div class="ssp-body">
+      <div class="ssp-info-block">
+        <h4>📧 Email support</h4>
+        <p>support@yourdis.sa — typical response within 24 hours.</p>
+      </div>
+      <div class="ssp-info-block">
+        <h4>📱 WhatsApp</h4>
+        <p>+966 55 000 0000 — available Sunday–Thursday, 9 AM–6 PM AST.</p>
+      </div>
+      <div class="ssp-divider"></div>
+      <div class="ssp-field-label">Send a message</div>
+      <input class="ssp-input" id="ssp-contact-email" type="email" placeholder="Your email" style="margin-bottom:10px;"/>
+      <textarea class="ssp-input" id="ssp-contact-msg" placeholder="Describe your issue…" style="height:100px;resize:none;line-height:1.55;"></textarea>
+      <button class="ssp-save-btn" onclick="sendSupportMessage()">Send Message</button>
+      <div class="ssp-success" id="ssp-contact-success">✓ Message sent — we'll reply within 24 hours</div>
+    </div>
+  </div>
+
+  <!-- Privacy Policy -->
+  <div class="ssp-overlay" id="ssp-privacy">
+    <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;font-size:10px;">●●●●</span></div>
+    <div class="ssp-header">
+      <div class="ssp-back" onclick="closeSettingsSub('privacy')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
+      </div>
+      <span class="ssp-title">Privacy Policy</span>
+    </div>
+    <div class="ssp-body">
+      <div style="font-size:10px;color:var(--ink-3);margin-bottom:16px;">Version 2.1 · Last updated March 2025</div>
+      <div class="ssp-info-block">
+        <h4>Data we collect</h4>
+        <p>We collect only what is necessary: your name, email, and fragrance preferences. We do not collect payment information or sell personal data to third parties.</p>
+      </div>
+      <div class="ssp-info-block">
+        <h4>How we use your data</h4>
+        <p>Your preferences are used solely to personalise fragrance recommendations and deliver price-drop alerts you have explicitly requested.</p>
+      </div>
+      <div class="ssp-info-block">
+        <h4>Data retention</h4>
+        <p>Your data is retained for the duration of your account. You may request deletion at any time by contacting support@yourdis.sa.</p>
+      </div>
+      <div class="ssp-info-block">
+        <h4>Third-party services</h4>
+        <p>Yourdis uses secure infrastructure partners for hosting and analytics. No personal data is shared with fragrance retailers or advertisers.</p>
+      </div>
+      <div style="font-size:11px;color:var(--ink-3);line-height:1.65;">For the full legal policy, visit yourdis.sa/privacy</div>
     </div>
   </div>
 
@@ -3815,6 +4079,99 @@ function _maybeShowOnboarding() {
     }
   } catch(e) {}
 }
+
+/* ══════════════════════════════════════════════════════════
+   SETTINGS SUBPAGES
+══════════════════════════════════════════════════════════ */
+var _sspCurrency = 'SAR';
+var _sspLanguage = 'en';
+
+function openSettingsSub(page) {
+  document.getElementById('ssp-' + page).classList.add('visible');
+}
+function closeSettingsSub(page) {
+  document.getElementById('ssp-' + page).classList.remove('visible');
+}
+
+function saveProfile() {
+  var val = document.getElementById('ssp-profile-name').value.trim();
+  if (!val) return;
+  /* Update display in settings row */
+  var sub = document.querySelector('#overlay-settings .settings-row-sub');
+  if (sub) sub.textContent = val;
+  /* Update profile header in activity screen */
+  var nameEl = document.querySelector('.user-name');
+  if (nameEl) nameEl.textContent = val;
+  _showSuccessMsg('ssp-profile-success');
+}
+
+function saveEmail() {
+  var val = document.getElementById('ssp-email-val').value.trim();
+  if (!val || !val.includes('@')) { document.getElementById('ssp-email-val').style.borderColor = 'var(--red)'; setTimeout(function(){ document.getElementById('ssp-email-val').style.borderColor = 'var(--border-strong)'; }, 1500); return; }
+  /* Update settings row subtitle */
+  var rows = document.querySelectorAll('#overlay-settings .settings-row-sub');
+  if (rows[1]) rows[1].textContent = val;
+  _showSuccessMsg('ssp-email-success');
+}
+
+function savePhone() {
+  var val = document.getElementById('ssp-phone-val').value.trim();
+  if (!val) { document.getElementById('ssp-phone-val').style.borderColor = 'var(--red)'; setTimeout(function(){ document.getElementById('ssp-phone-val').style.borderColor = 'var(--border-strong)'; }, 1500); return; }
+  /* Update settings row subtitle */
+  var sub = document.getElementById('settings-phone-sub');
+  if (sub) sub.textContent = val;
+  /* Hide incomplete indicator dot */
+  var dot = document.getElementById('phone-incomplete-dot');
+  if (dot) dot.style.display = 'none';
+  _showSuccessMsg('ssp-phone-success');
+}
+
+function selectCurrency(code, label) {
+  _sspCurrency = code;
+  /* Update checkmarks */
+  ['SAR','USD'].forEach(function(c) {
+    var el = document.getElementById('cur-check-' + c);
+    if (el) el.style.display = c === code ? '' : 'none';
+  });
+  /* Update settings row subtitle */
+  var sub = document.getElementById('settings-currency-sub');
+  if (sub) sub.textContent = label;
+  setTimeout(function() { closeSettingsSub('currency'); }, 250);
+}
+
+function selectLanguage(code, label) {
+  _sspLanguage = code;
+  /* Update checkmarks */
+  ['en','ar'].forEach(function(c) {
+    var el = document.getElementById('lang-check-' + c);
+    if (el) el.style.display = c === code ? '' : 'none';
+  });
+  /* Update settings row subtitle */
+  var sub = document.getElementById('settings-language-sub');
+  if (sub) sub.textContent = code === 'en' ? 'English' : 'Arabic · العربية';
+  setTimeout(function() { closeSettingsSub('language'); }, 250);
+}
+
+function sendSupportMessage() {
+  var email = document.getElementById('ssp-contact-email').value.trim();
+  var msg   = document.getElementById('ssp-contact-msg').value.trim();
+  if (!email || !msg) {
+    if (!email) { document.getElementById('ssp-contact-email').style.borderColor = 'var(--red)'; setTimeout(function(){ document.getElementById('ssp-contact-email').style.borderColor = 'var(--border-strong)'; }, 1500); }
+    if (!msg)   { document.getElementById('ssp-contact-msg').style.borderColor   = 'var(--red)'; setTimeout(function(){ document.getElementById('ssp-contact-msg').style.borderColor   = 'var(--border-strong)'; }, 1500); }
+    return;
+  }
+  document.getElementById('ssp-contact-email').value = '';
+  document.getElementById('ssp-contact-msg').value   = '';
+  _showSuccessMsg('ssp-contact-success');
+}
+
+function _showSuccessMsg(id) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  el.style.display = 'block';
+  setTimeout(function() { el.style.display = 'none'; }, 3000);
+}
+
 
 /* ══════════════════════════════════════════════════════════
    AI AVATAR SVG — single reusable function
