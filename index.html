@@ -438,17 +438,18 @@ html {
   background:var(--bg-phone); border:1px solid var(--border);
   border-radius:var(--radius-lg); overflow:hidden; cursor:pointer;
   transition:box-shadow 0.15s;
+  display:flex; flex-direction:column;
 }
 .deal-card:hover { box-shadow:0 4px 16px rgba(0,0,0,0.08); }
-.deal-img-zone { width:100%; height:104px; position:relative; }
+.deal-img-zone { width:100%; height:104px; position:relative; flex-shrink:0; }
 .deal-img-zone .prod-img-wrap { height:100%; }
 .deal-badge-float { position:absolute; top:8px; left:8px; z-index:2; }
-.deal-body { padding:12px 12px 14px; }
+.deal-body { padding:12px 12px 14px; display:flex; flex-direction:column; flex:1; }
 .deal-brand  { font-size:13px; color:var(--ink-3); margin-bottom:3px; }
-.deal-name   { font-size:15px; font-weight:600; color:var(--ink-1); margin-bottom:6px; line-height:1.35; }
+.deal-name   { font-size:13px; font-weight:500; color:var(--ink-1); margin-bottom:6px; line-height:1.35; }
 .deal-store  { font-size:13px; color:var(--ink-3); margin-bottom:6px; }
-.deal-prices { display:flex; align-items:baseline; gap:6px; flex-wrap:nowrap; min-width:0; }
-.deal-price  { font-size:17px; font-weight:600; color:var(--ink-1); white-space:nowrap; }
+.deal-prices { display:flex; align-items:baseline; gap:6px; flex-wrap:nowrap; min-width:0; margin-top:auto; }
+.deal-price  { font-size:15px; font-weight:500; color:var(--ink-1); white-space:nowrap; }
 .deal-orig   { font-size:13px; color:var(--ink-3); text-decoration:line-through; white-space:nowrap; }
 
 /* Brand circles */
@@ -693,16 +694,17 @@ html {
 .wl-card {
   background:var(--bg-surface); border:1px solid var(--border);
   border-radius:var(--radius-md); overflow:hidden; cursor:pointer;
+  display:flex; flex-direction:column;
 }
-.wl-img-zone { position:relative; }
+.wl-img-zone { position:relative; flex-shrink:0; }
 .wl-heart {
   position:absolute; top:8px; right:8px; z-index:2;
   width:28px; height:28px;
 }
 .wl-heart svg { width:100%; height:100%; }
-.wl-body { padding:10px 12px 12px; }
-.wl-name  { font-size:14px; font-weight:600; color:var(--ink-1); line-height:1.4; }
-.wl-price { font-size:15px; font-weight:600; color:var(--ink-1); margin-top:4px; }
+.wl-body { padding:10px 12px 12px; display:flex; flex-direction:column; flex:1; }
+.wl-name  { font-size:13px; font-weight:500; color:var(--ink-1); line-height:1.4; }
+.wl-price { font-size:15px; font-weight:500; color:var(--ink-1); margin-top:auto; padding-top:4px; }
 .wl-drop  { font-size:14px; color:var(--green); margin-top:3px; }
 
 /* Recently viewed */
@@ -881,12 +883,13 @@ html {
   background:var(--bg-phone); border:1px solid var(--border);
   border-radius:var(--radius-lg); overflow:hidden; cursor:pointer;
   transition:box-shadow 0.15s;
+  display:flex; flex-direction:column;
 }
 .deal-grid-card:hover { box-shadow:0 4px 16px rgba(0,0,0,0.08); }
-.deal-grid-img { width:100%; height:110px; position:relative; }
+.deal-grid-img { width:100%; height:110px; position:relative; flex-shrink:0; }
 .deal-grid-img .prod-img-wrap { height:100%; }
 .deal-grid-badge { position:absolute; top:8px; left:8px; z-index:2; }
-.deal-grid-body { padding:12px 12px 14px; }
+.deal-grid-body { padding:12px 12px 14px; display:flex; flex-direction:column; flex:1; }
 
 /* Price Drops listing */
 .drops-sort-bar {
@@ -978,12 +981,13 @@ html {
   background:var(--bg-phone); border:1px solid var(--border);
   border-radius:var(--radius-lg); overflow:hidden; cursor:pointer;
   transition:box-shadow 0.15s;
+  display:flex; flex-direction:column;
 }
 .brand-prod-card:hover { box-shadow:0 4px 16px rgba(0,0,0,0.08); }
-.brand-prod-img { width:100%; height:110px; position:relative; }
+.brand-prod-img { width:100%; height:110px; position:relative; flex-shrink:0; }
 .brand-prod-img .prod-img-wrap { height:100%; }
 .brand-prod-badge { position:absolute; top:8px; left:8px; z-index:2; }
-.brand-prod-body { padding:12px 12px 14px; }
+.brand-prod-body { padding:12px 12px 14px; display:flex; flex-direction:column; flex:1; }
 
 /* ═══════════════════════════════════════════════════════════
    SINGLE STORE PAGE
@@ -1586,39 +1590,59 @@ html {
 
 
 
-/* ── ADVANCED FILTER OVERLAY ─────────────────────────────── */
+/* ── ADVANCED FILTER OVERLAY (Bottom Sheet) ───────────────────────── */
 .filter-overlay {
-  position:absolute; inset:0; z-index:70;
-  background:var(--bg-phone);
-  display:none; flex-direction:column;
+  position:absolute; left:0; right:0; bottom:0; top:0;
+  z-index:100;
+  background:rgba(0,0,0,0.4);
+  display:none;
+  flex-direction:column;
+  justify-content:flex-end;
+  transition:all 0.3s;
 }
 .filter-overlay.visible { display:flex; }
+.filter-sheet {
+  background:var(--bg-phone);
+  border-radius:24px 24px 0 0;
+  max-height:75%;
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  box-shadow:0 -4px 20px rgba(0,0,0,0.15);
+  animation:sheetSlideUp 0.3s ease-out;
+}
+@keyframes sheetSlideUp {
+  from { transform:translateY(100%); }
+  to { transform:translateY(0); }
+}
 .filter-overlay-header {
   display:flex; align-items:center; justify-content:space-between;
-  padding:8px 20px 12px; flex-shrink:0;
+  padding:16px 20px 12px; flex-shrink:0;
   border-bottom:1px solid var(--border);
 }
-.filter-overlay-title { font-size:16px; font-weight:500; color:var(--ink-1); }
-.filter-reset-btn { font-size:13px; color:var(--accent); cursor:pointer; font-weight:500; }
-.filter-section { padding:14px 20px 10px; border-bottom:1px solid var(--border); flex-shrink:0; }
-.filter-section-label { font-size:13px; font-weight:500; letter-spacing:0.07em; text-transform:uppercase; color:var(--ink-3); margin-bottom:10px; }
-.filter-chips-wrap { display:flex; flex-wrap:wrap; gap:7px; }
+.filter-overlay-title { font-size:17px; font-weight:600; color:var(--ink-1); }
+.filter-reset-btn { font-size:14px; color:var(--ink-3); cursor:pointer; font-weight:500; width:64px; flex-shrink:0; }
+.filter-reset-btn:last-child { text-align:right; }
+.filter-section { padding:16px 20px 14px; border-bottom:1px solid var(--border); flex-shrink:0; }
+.filter-section-label { font-size:12px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:var(--ink-3); margin-bottom:12px; }
+.filter-chips-wrap { display:flex; flex-wrap:wrap; gap:8px; }
 .filter-chip {
-  font-size:13px; padding:6px 14px; border-radius:20px;
+  font-size:13px; padding:7px 15px; border-radius:20px;
   border:1px solid var(--border-strong); background:var(--bg-phone);
   color:var(--ink-2); cursor:pointer; transition:all 0.13s; user-select:none;
 }
 .filter-chip.active { background:var(--accent); color:#fff; border-color:var(--accent); }
 .filter-apply-bar {
-  padding:14px 20px; flex-shrink:0;
-  border-top:1px solid var(--border); background:var(--bg-phone);
+  padding:16px 20px 24px; flex-shrink:0;
+  background:var(--bg-phone);
 }
 .filter-apply-btn {
-  width:100%; padding:13px; border-radius:var(--radius-md);
-  background:var(--accent); color:#fff; font-size:14px; font-weight:500;
+  width:100%; padding:14px; border-radius:var(--radius-md);
+  background:var(--accent); color:#fff; font-size:15px; font-weight:600;
   border:none; cursor:pointer; font-family:var(--font-body); transition:opacity 0.15s;
+  box-shadow:0 4px 12px rgba(181, 71, 106, 0.2);
 }
-.filter-apply-btn:hover { opacity:0.88; }
+.filter-apply-btn:hover { opacity:0.9; }
 .filter-btn {
   display:flex; align-items:center; gap:6px;
   padding:6px 13px; border-radius:20px;
@@ -2631,16 +2655,8 @@ html {
     <div class="search-bar" style="margin:0 20px 14px;">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;color:var(--ink-3);flex-shrink:0;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       <input id="search-main-input" placeholder="Name, brand, or note (oud, fresh…)" oninput="liveSearch(this.value)" autocomplete="off"/>
-    </div>
-    <div class="filter-chips">
-      <span class="fchip active" onclick="setSearchFilter(this,'all')">All</span>
-      <span class="fchip" onclick="setSearchFilter(this,'edp')">EDP</span>
-      <span class="fchip" onclick="setSearchFilter(this,'edt')">EDT</span>
-      <span class="fchip" onclick="setSearchFilter(this,'woody')">Woody</span>
-      <span class="fchip" onclick="setSearchFilter(this,'oud')">Oud</span>
-      <span class="fchip" onclick="setSearchFilter(this,'budget')">≤500 SAR</span>
-      <span class="fchip" onclick="setSearchFilter(this,'rated')">4★+</span>
-      <button class="filter-btn" id="search-filter-btn" onclick="openFilterOverlay('search')" style="margin-left:4px;">
+      <div style="width:1px; height:24px; background:var(--border-strong); margin:0 4px; flex-shrink:0;"></div>
+      <button class="filter-btn" id="search-filter-btn" onclick="openFilterOverlay('search')" style="border:none; background:transparent; padding-right:4px;">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
         Filter
       </button>
@@ -2731,9 +2747,11 @@ html {
 		        <span class="note-chip note-heart">Heart Notes: Vetiver · Cedarwood</span>
 		        <span class="note-chip note-base">Base Notes: Patchouli · Labdanum</span>
 		        </div>
-		        <span class="note-chip note-country" id="product-country">Brand Country: France</span>
-		        <span class="note-chip note-country" id="product-gender">Gender: Unisex</span>
-		        <span class="note-chip note-family" id="product-family" style="background: #f0f0f0; color: #0288d1; font-size:14px; padding:3px 8px; border-radius:20px;">Fragrance Family: Woody</span>			
+		        <div class="notes-row">
+		          <span class="note-chip note-country" id="product-country">Brand Country: France</span>
+		          <span class="note-chip note-country" id="product-gender">Gender: Unisex</span>
+		          <span class="note-chip note-family" id="product-family">Fragrance Family: Woody</span>
+		        </div>			
       </div>
 
       <div style="padding:0 20px;">
@@ -3697,93 +3715,89 @@ html {
 
 
   <!-- ════════════════════════════════
-       ADVANCED FILTER OVERLAY
+       ADVANCED FILTER OVERLAY (Bottom Sheet)
   ════════════════════════════════ -->
-  <div class="filter-overlay" id="overlay-filters">
+  <div class="filter-overlay" id="overlay-filters" onclick="if(event.target===this)closeFilterOverlay()">
     
-    <div class="filter-overlay-header">
-      <div style="display:flex;align-items:center;gap:10px;">
-        <div class="ssp-back" onclick="closeFilterOverlay()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
-        </div>
+    <div class="filter-sheet">
+      <div class="filter-overlay-header">
+        <span class="filter-reset-btn" onclick="resetFilters()">Reset all</span>
         <span class="filter-overlay-title">Filter</span>
+        <span class="filter-reset-btn" onclick="applyFilters()" style="color:var(--accent); font-weight:600;">Apply</span>
       </div>
-      <span class="filter-reset-btn" onclick="resetFilters()">Reset all</span>
-    </div>
-    <div style="flex:1;overflow-y:auto;">
-      <!-- Gender -->
-      <div class="filter-section">
-        <div class="filter-section-label">Gender</div>
-        <div class="filter-chips-wrap" id="fc-gender">
-          <span class="filter-chip" data-group="gender" data-val="Men" onclick="toggleFilterChip(this)">Men</span>
-          <span class="filter-chip" data-group="gender" data-val="Women" onclick="toggleFilterChip(this)">Women</span>
-          <span class="filter-chip" data-group="gender" data-val="Unisex" onclick="toggleFilterChip(this)">Unisex</span>
+
+      <div style="flex:1;overflow-y:auto;">
+        <!-- Gender -->
+        <div class="filter-section">
+          <div class="filter-section-label">Gender</div>
+          <div class="filter-chips-wrap" id="fc-gender">
+            <span class="filter-chip" data-group="gender" data-val="Men" onclick="toggleFilterChip(this)">Men</span>
+            <span class="filter-chip" data-group="gender" data-val="Women" onclick="toggleFilterChip(this)">Women</span>
+            <span class="filter-chip" data-group="gender" data-val="Unisex" onclick="toggleFilterChip(this)">Unisex</span>
+          </div>
         </div>
-      </div>
-      <!-- Concentration -->
-      <div class="filter-section">
-        <div class="filter-section-label">Concentration</div>
-        <div class="filter-chips-wrap" id="fc-concentration">
-          <span class="filter-chip" data-group="concentration" data-val="EDC" onclick="toggleFilterChip(this)">EDC</span>
-          <span class="filter-chip" data-group="concentration" data-val="EDT" onclick="toggleFilterChip(this)">EDT</span>
-          <span class="filter-chip" data-group="concentration" data-val="EDP" onclick="toggleFilterChip(this)">EDP</span>
-          <span class="filter-chip" data-group="concentration" data-val="Parfum" onclick="toggleFilterChip(this)">Parfum</span>
+        <!-- Concentration -->
+        <div class="filter-section">
+          <div class="filter-section-label">Concentration</div>
+          <div class="filter-chips-wrap" id="fc-concentration">
+            <span class="filter-chip" data-group="concentration" data-val="EDC" onclick="toggleFilterChip(this)">EDC</span>
+            <span class="filter-chip" data-group="concentration" data-val="EDT" onclick="toggleFilterChip(this)">EDT</span>
+            <span class="filter-chip" data-group="concentration" data-val="EDP" onclick="toggleFilterChip(this)">EDP</span>
+            <span class="filter-chip" data-group="concentration" data-val="Parfum" onclick="toggleFilterChip(this)">Parfum</span>
+          </div>
         </div>
-      </div>
-      <!-- Brands -->
-      <div class="filter-section">
-        <div class="filter-section-label">Brand</div>
-        <div class="filter-chips-wrap" id="fc-brand">
-          <span class="filter-chip" data-group="brand" data-val="Chanel" onclick="toggleFilterChip(this)">Chanel</span>
-          <span class="filter-chip" data-group="brand" data-val="Dior" onclick="toggleFilterChip(this)">Dior</span>
-          <span class="filter-chip" data-group="brand" data-val="Tom Ford" onclick="toggleFilterChip(this)">Tom Ford</span>
-          <span class="filter-chip" data-group="brand" data-val="YSL" onclick="toggleFilterChip(this)">YSL</span>
-          <span class="filter-chip" data-group="brand" data-val="Armani" onclick="toggleFilterChip(this)">Armani</span>
-          <span class="filter-chip" data-group="brand" data-val="Creed" onclick="toggleFilterChip(this)">Creed</span>
-          <span class="filter-chip" data-group="brand" data-val="Versace" onclick="toggleFilterChip(this)">Versace</span>
-          <span class="filter-chip" data-group="brand" data-val="Burberry" onclick="toggleFilterChip(this)">Burberry</span>
-          <span class="filter-chip" data-group="brand" data-val="Paco Rabanne" onclick="toggleFilterChip(this)">Paco Rabanne</span>
-          <span class="filter-chip" data-group="brand" data-val="Hermès" onclick="toggleFilterChip(this)">Hermès</span>
-          <span class="filter-chip" data-group="brand" data-val="Guerlain" onclick="toggleFilterChip(this)">Guerlain</span>
-          <span class="filter-chip" data-group="brand" data-val="Narciso Rodriguez" onclick="toggleFilterChip(this)">Narciso Rodriguez</span>
-          <span class="filter-chip" data-group="brand" data-val="Montblanc" onclick="toggleFilterChip(this)">Montblanc</span>
-          <span class="filter-chip" data-group="brand" data-val="Valentino" onclick="toggleFilterChip(this)">Valentino</span>
-          <span class="filter-chip" data-group="brand" data-val="Bvlgari" onclick="toggleFilterChip(this)">Bvlgari</span>
-          <span class="filter-chip" data-group="brand" data-val="Issey Miyake" onclick="toggleFilterChip(this)">Issey Miyake</span>
+        <!-- Brands -->
+        <div class="filter-section">
+          <div class="filter-section-label">Brand</div>
+          <div class="filter-chips-wrap" id="fc-brand">
+            <span class="filter-chip" data-group="brand" data-val="Chanel" onclick="toggleFilterChip(this)">Chanel</span>
+            <span class="filter-chip" data-group="brand" data-val="Dior" onclick="toggleFilterChip(this)">Dior</span>
+            <span class="filter-chip" data-group="brand" data-val="Tom Ford" onclick="toggleFilterChip(this)">Tom Ford</span>
+            <span class="filter-chip" data-group="brand" data-val="YSL" onclick="toggleFilterChip(this)">YSL</span>
+            <span class="filter-chip" data-group="brand" data-val="Armani" onclick="toggleFilterChip(this)">Armani</span>
+            <span class="filter-chip" data-group="brand" data-val="Creed" onclick="toggleFilterChip(this)">Creed</span>
+            <span class="filter-chip" data-group="brand" data-val="Versace" onclick="toggleFilterChip(this)">Versace</span>
+            <span class="filter-chip" data-group="brand" data-val="Burberry" onclick="toggleFilterChip(this)">Burberry</span>
+            <span class="filter-chip" data-group="brand" data-val="Paco Rabanne" onclick="toggleFilterChip(this)">Paco Rabanne</span>
+            <span class="filter-chip" data-group="brand" data-val="Hermès" onclick="toggleFilterChip(this)">Hermès</span>
+            <span class="filter-chip" data-group="brand" data-val="Guerlain" onclick="toggleFilterChip(this)">Guerlain</span>
+            <span class="filter-chip" data-group="brand" data-val="Narciso Rodriguez" onclick="toggleFilterChip(this)">Narciso Rodriguez</span>
+            <span class="filter-chip" data-group="brand" data-val="Montblanc" onclick="toggleFilterChip(this)">Montblanc</span>
+            <span class="filter-chip" data-group="brand" data-val="Valentino" onclick="toggleFilterChip(this)">Valentino</span>
+            <span class="filter-chip" data-group="brand" data-val="Bvlgari" onclick="toggleFilterChip(this)">Bvlgari</span>
+            <span class="filter-chip" data-group="brand" data-val="Issey Miyake" onclick="toggleFilterChip(this)">Issey Miyake</span>
+          </div>
         </div>
-      </div>
-      <!-- Fragrance Families -->
-      <div class="filter-section">
-        <div class="filter-section-label">Fragrance Family</div>
-        <div class="filter-chips-wrap" id="fc-family">
-          <span class="filter-chip" data-group="family" data-val="Woody" onclick="toggleFilterChip(this)">Woody</span>
-          <span class="filter-chip" data-group="family" data-val="Floral" onclick="toggleFilterChip(this)">Floral</span>
-          <span class="filter-chip" data-group="family" data-val="Oriental" onclick="toggleFilterChip(this)">Oriental</span>
-          <span class="filter-chip" data-group="family" data-val="Fresh" onclick="toggleFilterChip(this)">Fresh</span>
-          <span class="filter-chip" data-group="family" data-val="Citrus" onclick="toggleFilterChip(this)">Citrus</span>
-          <span class="filter-chip" data-group="family" data-val="Chypre" onclick="toggleFilterChip(this)">Chypre</span>
-          <span class="filter-chip" data-group="family" data-val="Leather" onclick="toggleFilterChip(this)">Leather</span>
-          <span class="filter-chip" data-group="family" data-val="Aromatic" onclick="toggleFilterChip(this)">Aromatic</span>
+        <!-- Fragrance Families -->
+        <div class="filter-section">
+          <div class="filter-section-label">Fragrance Family</div>
+          <div class="filter-chips-wrap" id="fc-family">
+            <span class="filter-chip" data-group="family" data-val="Woody" onclick="toggleFilterChip(this)">Woody</span>
+            <span class="filter-chip" data-group="family" data-val="Floral" onclick="toggleFilterChip(this)">Floral</span>
+            <span class="filter-chip" data-group="family" data-val="Oriental" onclick="toggleFilterChip(this)">Oriental</span>
+            <span class="filter-chip" data-group="family" data-val="Fresh" onclick="toggleFilterChip(this)">Fresh</span>
+            <span class="filter-chip" data-group="family" data-val="Citrus" onclick="toggleFilterChip(this)">Citrus</span>
+            <span class="filter-chip" data-group="family" data-val="Chypre" onclick="toggleFilterChip(this)">Chypre</span>
+            <span class="filter-chip" data-group="family" data-val="Leather" onclick="toggleFilterChip(this)">Leather</span>
+            <span class="filter-chip" data-group="family" data-val="Aromatic" onclick="toggleFilterChip(this)">Aromatic</span>
+          </div>
         </div>
-      </div>
-      <!-- Accords -->
-      <div class="filter-section" style="border-bottom:none;">
-        <div class="filter-section-label">Accords</div>
-        <div class="filter-chips-wrap" id="fc-accord">
-          <span class="filter-chip" data-group="accord" data-val="Sweet" onclick="toggleFilterChip(this)">Sweet</span>
-          <span class="filter-chip" data-group="accord" data-val="Gourmand" onclick="toggleFilterChip(this)">Gourmand</span>
-          <span class="filter-chip" data-group="accord" data-val="Musky" onclick="toggleFilterChip(this)">Musky</span>
-          <span class="filter-chip" data-group="accord" data-val="Amber" onclick="toggleFilterChip(this)">Amber</span>
-          <span class="filter-chip" data-group="accord" data-val="Spicy" onclick="toggleFilterChip(this)">Spicy</span>
-          <span class="filter-chip" data-group="accord" data-val="Powdery" onclick="toggleFilterChip(this)">Powdery</span>
-          <span class="filter-chip" data-group="accord" data-val="Aquatic" onclick="toggleFilterChip(this)">Aquatic</span>
-          <span class="filter-chip" data-group="accord" data-val="Citrus" onclick="toggleFilterChip(this)">Citrus</span>
+        <!-- Accords -->
+        <div class="filter-section" style="border-bottom:none;">
+          <div class="filter-section-label">Accords</div>
+          <div class="filter-chips-wrap" id="fc-accord">
+            <span class="filter-chip" data-group="accord" data-val="Sweet" onclick="toggleFilterChip(this)">Sweet</span>
+            <span class="filter-chip" data-group="accord" data-val="Gourmand" onclick="toggleFilterChip(this)">Gourmand</span>
+            <span class="filter-chip" data-group="accord" data-val="Musky" onclick="toggleFilterChip(this)">Musky</span>
+            <span class="filter-chip" data-group="accord" data-val="Amber" onclick="toggleFilterChip(this)">Amber</span>
+            <span class="filter-chip" data-group="accord" data-val="Spicy" onclick="toggleFilterChip(this)">Spicy</span>
+            <span class="filter-chip" data-group="accord" data-val="Powdery" onclick="toggleFilterChip(this)">Powdery</span>
+            <span class="filter-chip" data-group="accord" data-val="Aquatic" onclick="toggleFilterChip(this)">Aquatic</span>
+            <span class="filter-chip" data-group="accord" data-val="Citrus" onclick="toggleFilterChip(this)">Citrus</span>
+          </div>
         </div>
+        <div style="height:16px;"></div>
       </div>
-      <div style="height:16px;"></div>
-    </div>
-    <div class="filter-apply-bar">
-      <button class="filter-apply-btn" onclick="applyFilters()">Show Results</button>
     </div>
   </div>
 
@@ -4904,7 +4918,6 @@ function toggleFilterChip(chip) {
   var btn = document.getElementById('search-filter-btn');
   if (btn) {
     btn.classList.toggle('has-filters', totalActive > 0);
-    btn.querySelector('svg') && (btn.textContent = '');
     btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;flex-shrink:0;"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>' +
       (totalActive > 0 ? 'Filter (' + totalActive + ')' : 'Filter');
   }
