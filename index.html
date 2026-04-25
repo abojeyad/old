@@ -379,19 +379,39 @@ html {
   color:var(--ink-1); outline:none; line-height:1.2; padding:0;
 }
 .search-bar input::placeholder { color:var(--ink-3); }
-/* Deal cards */
-.deal-card {
+/* ═══════════════════════════════════════════════════════════
+   CARD COMPONENT SYSTEM
+   Two reusable product card components used across the app:
+   
+   1. .card-h  (horizontal/square) — used in horizontal scroll strips
+      e.g. "Top Deals Now", "Personalized for You" on homepage
+      Aliases: .deal-card (kept for backward compat)
+      Inner classes: .card-h-img, .card-h-badge, .card-h-body
+      (aliases: .deal-img-zone, .deal-badge-float, .deal-body)
+   
+   2. .card-v  (vertical/tall) — used in 2-column grids
+      e.g. "Hot Deals" listing, Brand page, Personalized All
+      Aliases: .deal-grid-card, .brand-prod-card (kept for compat)
+      Inner classes: .card-v-img, .card-v-badge, .card-v-body
+      (aliases: .deal-grid-img, .deal-grid-badge, .deal-grid-body,
+                .brand-prod-img, .brand-prod-badge, .brand-prod-body)
+   
+   Shared inner classes (used in both card types):
+   .deal-brand, .deal-name, .deal-store, .deal-prices, .deal-price, .deal-orig
+═══════════════════════════════════════════════════════════ */
+/* Deal cards — horizontal (scroll strip) */
+.card-h, .deal-card {
   flex-shrink:0; width:160px;
   background:var(--bg-phone); border:1px solid var(--border);
   border-radius:var(--radius-lg); overflow:hidden; cursor:pointer;
   transition:box-shadow 0.15s;
   display:flex; flex-direction:column;
 }
-.deal-card:hover { box-shadow:0 4px 16px rgba(0,0,0,0.08); }
-.deal-img-zone { width:100%; height:104px; position:relative; flex-shrink:0; }
-.deal-img-zone .prod-img-wrap { height:100%; }
-.deal-badge-float { position:absolute; top:8px; left:8px; z-index:2; }
-.deal-body { padding:12px 12px 14px; display:flex; flex-direction:column; flex:1; }
+.card-h:hover, .deal-card:hover { box-shadow:0 4px 16px rgba(0,0,0,0.08); }
+.card-h-img, .deal-img-zone { width:100%; height:104px; position:relative; flex-shrink:0; }
+.card-h-img .prod-img-wrap, .deal-img-zone .prod-img-wrap { height:100%; }
+.card-h-badge, .deal-badge-float { position:absolute; top:8px; left:8px; z-index:2; }
+.card-h-body, .deal-body { padding:12px 12px 14px; display:flex; flex-direction:column; flex:1; }
 .deal-brand  { font-size:13px; color:var(--ink-3); margin-bottom:3px; }
 .deal-name   { font-size:13px; font-weight:500; color:var(--ink-1); margin-bottom:6px; line-height:1.35; }
 .deal-store  { font-size:13px; color:var(--ink-3); margin-bottom:6px; }
@@ -818,17 +838,20 @@ html {
   display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
   gap:12px; padding:16px 16px;
 }
-.deal-grid-card {
+.card-v, .deal-grid-card, .brand-prod-card {
   background:var(--bg-phone); border:1px solid var(--border);
   border-radius:var(--radius-lg); overflow:hidden; cursor:pointer;
   transition:box-shadow 0.15s;
   display:flex; flex-direction:column;
 }
-.deal-grid-card:hover { box-shadow:0 4px 16px rgba(0,0,0,0.08); }
-.deal-grid-img { width:100%; height:110px; position:relative; flex-shrink:0; }
-.deal-grid-img .prod-img-wrap { height:100%; }
-.deal-grid-badge { position:absolute; top:8px; left:8px; z-index:2; }
-.deal-grid-body { padding:12px 12px 14px; display:flex; flex-direction:column; flex:1; }
+.card-v:hover, .deal-grid-card:hover, .brand-prod-card:hover { box-shadow:0 4px 16px rgba(0,0,0,0.08); }
+/* Vertical card image zone */
+.card-v-img, .deal-grid-img, .brand-prod-img { width:100%; height:110px; position:relative; flex-shrink:0; }
+.card-v-img .prod-img-wrap, .deal-grid-img .prod-img-wrap, .brand-prod-img .prod-img-wrap { height:100%; }
+/* Floating badge on vertical card image */
+.card-v-badge, .deal-grid-badge, .brand-prod-badge { position:absolute; top:8px; left:8px; z-index:2; }
+/* Vertical card body */
+.card-v-body, .deal-grid-body, .brand-prod-body { padding:12px 12px 14px; display:flex; flex-direction:column; flex:1; }
 
 /* Price Drops listing */
 .drops-sort-bar {
@@ -916,17 +939,7 @@ html {
   display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
   gap:12px; padding:16px 16px;
 }
-.brand-prod-card {
-  background:var(--bg-phone); border:1px solid var(--border);
-  border-radius:var(--radius-lg); overflow:hidden; cursor:pointer;
-  transition:box-shadow 0.15s;
-  display:flex; flex-direction:column;
-}
-.brand-prod-card:hover { box-shadow:0 4px 16px rgba(0,0,0,0.08); }
-.brand-prod-img { width:100%; height:110px; position:relative; flex-shrink:0; }
-.brand-prod-img .prod-img-wrap { height:100%; }
-.brand-prod-badge { position:absolute; top:8px; left:8px; z-index:2; }
-.brand-prod-body { padding:12px 12px 14px; display:flex; flex-direction:column; flex:1; }
+/* brand-prod-card styles merged into .card-v — see above */
 
 /* ═══════════════════════════════════════════════════════════
    SINGLE STORE PAGE
@@ -1493,6 +1506,248 @@ html {
   color:var(--ink-2); cursor:pointer; transition:all 0.13s;
 }
 .rv-helpful-btn:hover { border-color:var(--accent); color:var(--accent); }
+
+/* ═══════════════════════════════════════════════════════════
+   INTERMEDIATE PRODUCT PAGE OVERLAY  (NEW — ISOLATED)
+═══════════════════════════════════════════════════════════ */
+#overlay-deal-intermediate {
+  position: absolute;
+  inset: 0;
+  z-index: 102;
+  background: var(--bg-surface);
+  display: none;
+  flex-direction: column;
+}
+#overlay-deal-intermediate.visible { display: flex; }
+
+/* ── Header ─────────────────────────────────────────────── */
+.dip-header {
+  display: flex;
+  align-items: center;
+  padding: calc(var(--sat) + 10px) 16px 12px;
+  flex-shrink: 0;
+  background: var(--bg-phone);
+  border-bottom: 1px solid var(--border);
+  gap: 0;
+}
+.dip-back-btn {
+  display: flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--bg-surface); border: 1px solid var(--border);
+  color: var(--ink-2); cursor: pointer; flex-shrink: 0;
+  font-family: var(--font-body);
+}
+.dip-back-btn svg { width: 17px; height: 17px; }
+.dip-header-center {
+  flex: 1; text-align: center; padding: 0 10px; min-width: 0;
+}
+.dip-title {
+  font-size: 16px; font-weight: 600; color: var(--ink-1);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.dip-subtitle { font-size: 12px; color: var(--ink-3); margin-top: 1px; }
+.dip-header-spacer { width: 36px; flex-shrink: 0; }
+
+/* ── Scroll body ─────────────────────────────────────────── */
+.dip-scroll {
+  flex: 1; overflow-y: auto; overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch; padding-bottom: 32px;
+}
+.dip-scroll::-webkit-scrollbar { display: none; }
+
+/* ── Filter chips row ────────────────────────────────────── */
+.dip-filters-bar {
+  display: flex; gap: 7px; overflow-x: auto;
+  padding: 14px 16px 4px; flex-shrink: 0;
+  scrollbar-width: none;
+}
+.dip-filters-bar::-webkit-scrollbar { display: none; }
+.dip-filter-group {
+  display: flex; gap: 6px; flex-shrink: 0;
+}
+.dip-filter-sep {
+  width: 1px; background: var(--border); flex-shrink: 0; margin: 2px 4px;
+  align-self: stretch;
+}
+.dip-chip {
+  flex-shrink: 0; font-size: 12px; font-weight: 600;
+  padding: 6px 13px; border-radius: 20px; cursor: pointer;
+  border: 1.5px solid var(--border-strong);
+  background: var(--bg-phone); color: var(--ink-2);
+  transition: all 0.13s; user-select: none; white-space: nowrap;
+  font-family: var(--font-body);
+}
+.dip-chip.dip-active {
+  background: var(--accent); color: #fff; border-color: var(--accent);
+}
+.dip-filter-result-count {
+  font-size: 12px; color: var(--ink-3); padding: 6px 16px 10px;
+  flex-shrink: 0;
+}
+
+/* ── Section headers ─────────────────────────────────────── */
+.dip-section-wrap { margin-top: 16px; }
+.dip-section-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 16px 10px;
+}
+.dip-section-label {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+.dip-section-count {
+  font-size: 12px; color: var(--ink-3); font-weight: 500;
+  background: var(--bg-input); padding: 3px 9px; border-radius: 20px;
+}
+
+/* ── Store comparison cards ──────────────────────────────── */
+.dip-stores-wrap {
+  display: flex; flex-direction: column; gap: 10px; padding: 0 16px;
+}
+
+.dip-store-card {
+  background: var(--bg-phone);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden; cursor: pointer;
+  transition: box-shadow 0.15s, transform 0.1s;
+  position: relative;
+}
+.dip-store-card:active { transform: scale(0.985); }
+.dip-store-card.dip-hidden { display: none; }
+.dip-store-card.dip-best-price {
+  border-color: var(--green);
+  box-shadow: 0 0 0 1px var(--green);
+}
+
+/* Best price banner */
+.dip-best-banner {
+  display: none; background: var(--green); color: #fff;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
+  text-transform: uppercase; text-align: center; padding: 5px 0;
+}
+.dip-store-card.dip-best-price .dip-best-banner { display: block; }
+
+/* Inner layout: image left + details right */
+.dip-store-card-inner {
+  display: flex; align-items: stretch; gap: 0;
+}
+
+/* Product image column */
+.dip-card-img-col {
+  width: 88px; flex-shrink: 0;
+  position: relative; overflow: hidden;
+}
+.dip-card-img-col .prod-img-wrap {
+  height: 100%; min-height: 110px;
+}
+.dip-card-img-col .prod-img {
+  width: 100%; height: 100%; object-fit: cover;
+}
+
+/* Details column */
+.dip-card-details {
+  flex: 1; min-width: 0; padding: 12px 12px 12px 14px;
+  display: flex; flex-direction: column; gap: 6px;
+  border-left: 1px solid var(--border);
+}
+
+/* Row 1: store name + arrow */
+.dip-card-row-store {
+  display: flex; align-items: center; justify-content: space-between;
+}
+.dip-card-store-name {
+  font-size: 13px; font-weight: 700; color: var(--ink-1);
+}
+.dip-card-arrow {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--bg-surface); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--ink-3); flex-shrink: 0;
+}
+.dip-card-arrow svg { width: 14px; height: 14px; }
+
+/* Row 2: size pill + gender pill */
+.dip-card-pills {
+  display: flex; gap: 5px; flex-wrap: wrap;
+}
+.dip-card-pill {
+  font-size: 11px; font-weight: 600; padding: 3px 8px;
+  border-radius: 10px; white-space: nowrap;
+}
+.dip-pill-size { background: var(--b-blue); color: #2563EB; }
+.dip-pill-gender-men    { background: var(--b-teal);   color: var(--green); }
+.dip-pill-gender-women  { background: var(--b-pink);   color: #8C3066; }
+.dip-pill-gender-unisex { background: var(--b-purple); color: var(--accent); }
+
+/* Row 3: price block */
+.dip-card-price-row {
+  display: flex; align-items: baseline; gap: 7px; flex-wrap: wrap;
+}
+.dip-card-price {
+  font-family: var(--font-display); font-size: 19px; color: var(--ink-1); line-height: 1;
+}
+.dip-store-card.dip-best-price .dip-card-price { color: var(--green); }
+.dip-card-orig {
+  font-size: 12px; color: var(--ink-3); text-decoration: line-through;
+}
+.dip-card-discount {
+  font-size: 11px; font-weight: 700; color: var(--green);
+  background: var(--green-light); padding: 2px 6px; border-radius: 8px;
+}
+
+/* Row 4: availability */
+.dip-card-avail {
+  font-size: 12px; color: var(--ink-3);
+  display: flex; align-items: center; gap: 5px;
+}
+.dip-card-avail::before {
+  content: ''; display: inline-block; width: 6px; height: 6px;
+  border-radius: 50%; background: var(--green); flex-shrink: 0;
+}
+.dip-store-card[data-avail="low"] .dip-card-avail::before { background: var(--amber); }
+
+/* ── Section divider ─────────────────────────────────────── */
+.dip-section-divider {
+  height: 6px; background: var(--border); margin-top: 20px;
+}
+
+/* ── Alternative & Similar rows ─────────────────────────── */
+.dip-alt-list {
+  background: var(--bg-phone); border-radius: var(--radius-lg);
+  margin: 0 16px; border: 1px solid var(--border); overflow: hidden;
+}
+.dip-alt-card {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 14px 11px 12px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer; transition: background 0.12s;
+}
+.dip-alt-card:last-child { border-bottom: none; }
+.dip-alt-card:active { background: var(--bg-surface); }
+
+.dip-alt-thumb {
+  width: 54px; height: 54px; border-radius: var(--radius-md);
+  overflow: hidden; flex-shrink: 0; border: 1px solid var(--border);
+}
+.dip-alt-thumb .prod-img-wrap { height: 100%; }
+.dip-alt-info { flex: 1; min-width: 0; }
+.dip-alt-brand {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.07em;
+  text-transform: uppercase; color: var(--ink-3); margin-bottom: 2px;
+}
+.dip-alt-name {
+  font-size: 14px; font-weight: 600; color: var(--ink-1);
+  line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.dip-alt-sub { font-size: 11px; color: var(--ink-3); margin-top: 3px; }
+.dip-alt-right {
+  text-align: right; flex-shrink: 0;
+  display: flex; flex-direction: column; align-items: flex-end; gap: 5px;
+}
+.dip-alt-price { font-size: 15px; font-weight: 700; color: var(--ink-1); }
+.dip-alt-chevron { color: var(--ink-3); display: flex; align-items: center; }
+.dip-alt-chevron svg { width: 15px; height: 15px; }
 </style>
 
 </head>
@@ -1660,85 +1915,85 @@ html {
     </div>
 
     <div class="scroll-area">
-      <!-- HOT DEALS -->
+      <!-- TOP DEALS -->
       <div class="sec-head">
-        <span class="sec-label">Hot Deals Today</span>
+        <span class="sec-label">Top Deals Now</span>
         <span class="sec-link" onclick="showHotDeals()">See all</span>
       </div>
       <div class="h-scroll" style="margin-bottom:4px;">
-        <div class="deal-card" onclick="openProduct('chanel')">
+        <div class="deal-card" onclick="openDealIntermediate('chanel')">
           <div class="deal-img-zone">
             <div class="prod-img-wrap" style="background:var(--b-purple);">
               <img loading="lazy" class="prod-img" src="jpeg1.jpg" alt="Bleu de Chanel" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
               <div class="prod-initials" style="display:none;">Cd</div>
             </div>
-            <div class="deal-badge-float"><span class="badge badge-fire">↓ 22% off</span></div>
+            <div class="deal-badge-float"><span class="badge badge-fire">Best Price</span></div>
           </div>
           <div class="deal-body">
             <div class="deal-brand">Chanel</div>
             <div class="deal-name">Bleu de Chanel EDP</div>
-            <div class="deal-store">via Golden Scent</div>
-            <div class="deal-prices"><span class="deal-price">485 SAR</span><span class="deal-orig">620 SAR</span></div>
+            <div class="deal-store">In 5 stores</div>
+            <div class="deal-prices"><span class="deal-price">485 SAR</span></div>
           </div>
         </div>
-        <div class="deal-card" onclick="openProduct('dior')">
+        <div class="deal-card" onclick="openDealIntermediate('dior')">
           <div class="deal-img-zone">
             <div class="prod-img-wrap" style="background:var(--b-teal);">
               <img loading="lazy" class="prod-img" src="jpeg2.jpg" alt="Dior Sauvage" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
               <div class="prod-initials" style="display:none;">Dk</div>
             </div>
-            <div class="deal-badge-float"><span class="badge badge-good">↓ 16% off</span></div>
+            <div class="deal-badge-float"><span class="badge badge-good">Best Price</span></div>
           </div>
           <div class="deal-body">
             <div class="deal-brand">Dior</div>
             <div class="deal-name">Sauvage EDT</div>
-            <div class="deal-store">via Najd Al-Otheyah</div>
-            <div class="deal-prices"><span class="deal-price">310 SAR</span><span class="deal-orig">370 SAR</span></div>
+            <div class="deal-store">In 5 stores</div>
+            <div class="deal-prices"><span class="deal-price">310 SAR</span></div>
           </div>
         </div>
-        <div class="deal-card" onclick="openProduct('tomford')">
+        <div class="deal-card" onclick="openDealIntermediate('tomford')">
           <div class="deal-img-zone">
             <div class="prod-img-wrap" style="background:var(--b-amber);">
               <img loading="lazy" class="prod-img" src="jpeg3.jpg" alt="Tom Ford Tobacco Oud" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
               <div class="prod-initials" style="display:none;">Tf</div>
             </div>
-            <div class="deal-badge-float"><span class="badge badge-fire">↓ 9% off</span></div>
+            <div class="deal-badge-float"><span class="badge badge-fire">Best Price</span></div>
           </div>
           <div class="deal-body">
             <div class="deal-brand">Tom Ford</div>
             <div class="deal-name">Tobacco Oud EDP</div>
-            <div class="deal-store">via Laudour</div>
-            <div class="deal-prices"><span class="deal-price">590 SAR</span><span class="deal-orig">650 SAR</span></div>
+            <div class="deal-store">In 5 stores</div>
+            <div class="deal-prices"><span class="deal-price">590 SAR</span></div>
           </div>
         </div>
-        <div class="deal-card" onclick="openProduct('ysl')">
+        <div class="deal-card" onclick="openDealIntermediate('ysl')">
           <div class="deal-img-zone">
             <div class="prod-img-wrap" style="background:var(--b-pink);">
               <img loading="lazy" class="prod-img" src="jpeg4.jpg" alt="YSL Y" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
               <div class="prod-initials" style="display:none;">YS</div>
             </div>
-            <div class="deal-badge-float"><span class="badge badge-good">↓ 17% off</span></div>
+            <div class="deal-badge-float"><span class="badge badge-good">Best Price</span></div>
           </div>
           <div class="deal-body">
             <div class="deal-brand">YSL</div>
             <div class="deal-name">Y Le Parfum</div>
-            <div class="deal-store">via V Perfume</div>
-            <div class="deal-prices"><span class="deal-price">290 SAR</span><span class="deal-orig">350 SAR</span></div>
+            <div class="deal-store">In 5 stores</div>
+            <div class="deal-prices"><span class="deal-price">290 SAR</span></div>
           </div>
         </div>
-        <div class="deal-card" onclick="openProduct('armani')">
+        <div class="deal-card" onclick="openDealIntermediate('armani')">
           <div class="deal-img-zone">
             <div class="prod-img-wrap" style="background:var(--b-blue);">
               <img loading="lazy" class="prod-img" src="jpeg5.jpg" alt="Acqua di Gio" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
               <div class="prod-initials" style="display:none;">Aq</div>
             </div>
-            <div class="deal-badge-float"><span class="badge badge-fire">↓ 24% off</span></div>
+            <div class="deal-badge-float"><span class="badge badge-fire">Best Price</span></div>
           </div>
           <div class="deal-body">
             <div class="deal-brand">Armani</div>
             <div class="deal-name">Acqua di Gio EDP</div>
-            <div class="deal-store">via Al-Sultan Perfumes</div>
-            <div class="deal-prices"><span class="deal-price">265 SAR</span><span class="deal-orig">350 SAR</span></div>
+            <div class="deal-store">In 5 stores</div>
+            <div class="deal-prices"><span class="deal-price">265 SAR</span></div>
           </div>
         </div>
       </div>
@@ -1912,7 +2167,7 @@ html {
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
           Back
         </div>
-        <span class="listing-title">Hot Deals Today</span>
+        <span class="listing-title">Top Deals Now</span>
         <span class="listing-count">12 deals</span>
       </div>
 
@@ -1937,37 +2192,37 @@ html {
       <div class="u-overflow-auto">
         <div class="deals-grid">
           <!-- Row of deal cards -->
-          <div class="deal-grid-card" onclick="closeHotDeals();openProduct('chanel')">
-            <div class="deal-grid-img"><div class="prod-img-wrap" style="background:var(--b-purple);height:100%;"><img loading="lazy" class="prod-img" src="jpeg1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Cd</div></div><div class="deal-grid-badge"><span class="badge badge-fire">↓ 22% off</span></div></div>
-            <div class="deal-grid-body"><div class="deal-brand">Chanel</div><div class="deal-name">Bleu de Chanel EDP 100ml</div><div class="deal-store">via Amazon.sa</div><div class="deal-prices"><span class="deal-price">485 SAR</span><span class="deal-orig">620 SAR</span></div></div>
+          <div class="deal-grid-card" onclick="closeHotDeals();openProduct('chanel','hot-deals')">
+            <div class="deal-grid-img"><div class="prod-img-wrap" style="background:var(--b-purple);height:100%;"><img loading="lazy" class="prod-img" src="jpeg1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Cd</div></div><div class="deal-grid-badge"><span class="badge badge-fire">Best Price</span></div></div>
+            <div class="deal-grid-body"><div class="deal-brand">Chanel</div><div class="deal-name">Bleu de Chanel EDP 100ml</div><div class="deal-store">In 5 stores</div><div class="deal-prices"><span class="deal-price">485 SAR</span></div></div>
           </div>
-          <div class="deal-grid-card" onclick="closeHotDeals();openProduct('armani')">
-            <div class="deal-grid-img"><div class="prod-img-wrap" style="background:var(--b-blue);height:100%;"><img loading="lazy" class="prod-img" src="jpeg5.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Aq</div></div><div class="deal-grid-badge"><span class="badge badge-fire">↓ 24% off</span></div></div>
-            <div class="deal-grid-body"><div class="deal-brand">Armani</div><div class="deal-name">Acqua di Gio EDP</div><div class="deal-store">via Amazon.sa</div><div class="deal-prices"><span class="deal-price">265 SAR</span><span class="deal-orig">350 SAR</span></div></div>
+          <div class="deal-grid-card" onclick="closeHotDeals();openProduct('armani','hot-deals')">
+            <div class="deal-grid-img"><div class="prod-img-wrap" style="background:var(--b-blue);height:100%;"><img loading="lazy" class="prod-img" src="jpeg5.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Aq</div></div><div class="deal-grid-badge"><span class="badge badge-fire">Best Price</span></div></div>
+            <div class="deal-grid-body"><div class="deal-brand">Armani</div><div class="deal-name">Acqua di Gio EDP</div><div class="deal-store">In 5 stores</div><div class="deal-prices"><span class="deal-price">265 SAR</span></div></div>
           </div>
-          <div class="deal-grid-card" onclick="closeHotDeals();openProduct('dior')">
-            <div class="deal-grid-img"><div class="prod-img-wrap" style="background:var(--b-teal);height:100%;"><img loading="lazy" class="prod-img" src="jpeg2.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Dk</div></div><div class="deal-grid-badge"><span class="badge badge-good">↓ 16% off</span></div></div>
-            <div class="deal-grid-body"><div class="deal-brand">Dior</div><div class="deal-name">Sauvage EDT 200ml</div><div class="deal-store">via Namshi</div><div class="deal-prices"><span class="deal-price">310 SAR</span><span class="deal-orig">370 SAR</span></div></div>
+          <div class="deal-grid-card" onclick="closeHotDeals();openProduct('dior','hot-deals')">
+            <div class="deal-grid-img"><div class="prod-img-wrap" style="background:var(--b-teal);height:100%;"><img loading="lazy" class="prod-img" src="jpeg2.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Dk</div></div><div class="deal-grid-badge"><span class="badge badge-good">Best Price</span></div></div>
+            <div class="deal-grid-body"><div class="deal-brand">Dior</div><div class="deal-name">Sauvage EDT 200ml</div><div class="deal-store">In 5 stores</div><div class="deal-prices"><span class="deal-price">310 SAR</span></div></div>
           </div>
-          <div class="deal-grid-card" onclick="closeHotDeals();openProduct('ysl')">
-            <div class="deal-grid-img"><div class="prod-img-wrap" style="background:var(--b-pink);height:100%;"><img loading="lazy" class="prod-img" src="jpeg4.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">YS</div></div><div class="deal-grid-badge"><span class="badge badge-good">↓ 17% off</span></div></div>
-            <div class="deal-grid-body"><div class="deal-brand">YSL</div><div class="deal-name">Y Le Parfum 60ml</div><div class="deal-store">via Noon.sa</div><div class="deal-prices"><span class="deal-price">290 SAR</span><span class="deal-orig">350 SAR</span></div></div>
+          <div class="deal-grid-card" onclick="closeHotDeals();openProduct('ysl','hot-deals')">
+            <div class="deal-grid-img"><div class="prod-img-wrap" style="background:var(--b-pink);height:100%;"><img loading="lazy" class="prod-img" src="jpeg4.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">YS</div></div><div class="deal-grid-badge"><span class="badge badge-good">Best Price</span></div></div>
+            <div class="deal-grid-body"><div class="deal-brand">YSL</div><div class="deal-name">Y Le Parfum 60ml</div><div class="deal-store">In 5 stores</div><div class="deal-prices"><span class="deal-price">290 SAR</span></div></div>
           </div>
-          <div class="deal-grid-card" onclick="closeHotDeals();openProduct('tomford')">
-            <div class="deal-grid-img"><div class="prod-img-wrap" style="background:var(--b-amber);height:100%;"><img loading="lazy" class="prod-img" src="jpeg3.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Tf</div></div><div class="deal-grid-badge"><span class="badge badge-fire">↓ 9% off</span></div></div>
-            <div class="deal-grid-body"><div class="deal-brand">Tom Ford</div><div class="deal-name">Tobacco Oud EDP</div><div class="deal-store">via Sephora.sa</div><div class="deal-prices"><span class="deal-price">590 SAR</span><span class="deal-orig">650 SAR</span></div></div>
+          <div class="deal-grid-card" onclick="closeHotDeals();openProduct('tomford','hot-deals')">
+            <div class="deal-grid-img"><div class="prod-img-wrap" style="background:var(--b-amber);height:100%;"><img loading="lazy" class="prod-img" src="jpeg3.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Tf</div></div><div class="deal-grid-badge"><span class="badge badge-fire">Best Price</span></div></div>
+            <div class="deal-grid-body"><div class="deal-brand">Tom Ford</div><div class="deal-name">Tobacco Oud EDP</div><div class="deal-store">In 5 stores</div><div class="deal-prices"><span class="deal-price">590 SAR</span></div></div>
           </div>
-          <div class="deal-grid-card" onclick="closeHotDeals();openProduct('creed')">
-            <div class="deal-grid-img"><div class="prod-img-wrap" style="background:var(--b-sage);height:100%;"><img loading="lazy" class="prod-img" src="jpeg6.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Cr</div></div><div class="deal-grid-badge"><span class="badge badge-fire">↓ 20% off</span></div></div>
-            <div class="deal-grid-body"><div class="deal-brand">Creed</div><div class="deal-name">Aventus 100ml</div><div class="deal-store">via Noon.sa</div><div class="deal-prices"><span class="deal-price">840 SAR</span><span class="deal-orig">1,050 SAR</span></div></div>
+          <div class="deal-grid-card" onclick="closeHotDeals();openProduct('creed','hot-deals')">
+            <div class="deal-grid-img"><div class="prod-img-wrap" style="background:var(--b-sage);height:100%;"><img loading="lazy" class="prod-img" src="jpeg6.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Cr</div></div><div class="deal-grid-badge"><span class="badge badge-fire">Best Price</span></div></div>
+            <div class="deal-grid-body"><div class="deal-brand">Creed</div><div class="deal-name">Aventus 100ml</div><div class="deal-store">In 5 stores</div><div class="deal-prices"><span class="deal-price">840 SAR</span></div></div>
           </div>
-          <div class="deal-grid-card" onclick="closeHotDeals();openProduct('dior')">
-            <div class="deal-grid-img"><div class="prod-img-wrap" style="background:var(--b-teal);height:100%;"><img loading="lazy" class="prod-img" src="jpeg2.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Dk</div></div><div class="deal-grid-badge"><span class="badge badge-good">↓ 12% off</span></div></div>
-            <div class="deal-grid-body"><div class="deal-brand">Dior</div><div class="deal-name">Sauvage Elixir 60ml</div><div class="deal-store">via Amazon.sa</div><div class="deal-prices"><span class="deal-price">420 SAR</span><span class="deal-orig">480 SAR</span></div></div>
+          <div class="deal-grid-card" onclick="closeHotDeals();openProduct('dior','hot-deals')">
+            <div class="deal-grid-img"><div class="prod-img-wrap" style="background:var(--b-teal);height:100%;"><img loading="lazy" class="prod-img" src="jpeg2.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Dk</div></div><div class="deal-grid-badge"><span class="badge badge-good">Best Price</span></div></div>
+            <div class="deal-grid-body"><div class="deal-brand">Dior</div><div class="deal-name">Sauvage Elixir 60ml</div><div class="deal-store">In 5 stores</div><div class="deal-prices"><span class="deal-price">420 SAR</span></div></div>
           </div>
-          <div class="deal-grid-card" onclick="closeHotDeals();openProduct('armani')">
-            <div class="deal-grid-img"><div class="prod-img-wrap" style="background:var(--b-blue);height:100%;"><img loading="lazy" class="prod-img" src="jpeg5.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Aq</div></div><div class="deal-grid-badge"><span class="badge badge-good">↓ 11% off</span></div></div>
-            <div class="deal-grid-body"><div class="deal-brand">Armani</div><div class="deal-name">Acqua di Gio Profumo</div><div class="deal-store">via Namshi</div><div class="deal-prices"><span class="deal-price">395 SAR</span><span class="deal-orig">445 SAR</span></div></div>
+          <div class="deal-grid-card" onclick="closeHotDeals();openProduct('armani','hot-deals')">
+            <div class="deal-grid-img"><div class="prod-img-wrap" style="background:var(--b-blue);height:100%;"><img loading="lazy" class="prod-img" src="jpeg5.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Aq</div></div><div class="deal-grid-badge"><span class="badge badge-good">Best Price</span></div></div>
+            <div class="deal-grid-body"><div class="deal-brand">Armani</div><div class="deal-name">Acqua di Gio Profumo</div><div class="deal-store">In 5 stores</div><div class="deal-prices"><span class="deal-price">395 SAR</span></div></div>
           </div>
         </div>
         <div style="height:16px;" aria-hidden="true"></div>
@@ -3678,6 +3933,86 @@ html {
     </div>
   </div>
 
+  <!-- ════════════════════════════════════════════════════════
+       INTERMEDIATE DEAL PAGE OVERLAY  (NEW — ISOLATED)
+  ════════════════════════════════════════════════════════ -->
+  <div id="overlay-deal-intermediate" class="overlay">
+
+    <!-- Header -->
+    <div class="dip-header">
+      <button class="dip-back-btn" onclick="_dipClose()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
+      </button>
+      <div class="dip-header-center">
+        <div class="dip-subtitle" id="dip-subtitle" style="font-size: 15px; font-weight: 600; color: var(--ink-1);">Compare prices across stores</div>
+      </div>
+      <div class="dip-header-spacer"></div>
+    </div>
+
+    <!-- Scrollable body -->
+    <div class="dip-scroll" id="dip-scroll">
+
+      <!-- Filter chips -->
+      <div class="dip-filters-bar" id="dip-filters-bar">
+        <button class="dip-chip dip-active" data-dip-filter="all" onclick="_dipResetFilters(this)">All</button>
+        <div class="dip-filter-sep"></div>
+        <!-- Gender group -->
+        <div class="dip-filter-group" id="dip-gender-chips">
+          <button class="dip-chip" data-dip-filter="gender" data-dip-val="Men"    onclick="_dipToggleChip(this)">Men</button>
+          <button class="dip-chip" data-dip-filter="gender" data-dip-val="Women"  onclick="_dipToggleChip(this)">Women</button>
+          <button class="dip-chip" data-dip-filter="gender" data-dip-val="Unisex" onclick="_dipToggleChip(this)">Unisex</button>
+        </div>
+        <div class="dip-filter-sep"></div>
+        <!-- Size group -->
+        <div class="dip-filter-group" id="dip-size-chips">
+          <button class="dip-chip" data-dip-filter="size" data-dip-val="50ml"  onclick="_dipToggleChip(this)">50ml</button>
+          <button class="dip-chip" data-dip-filter="size" data-dip-val="60ml"  onclick="_dipToggleChip(this)">60ml</button>
+          <button class="dip-chip" data-dip-filter="size" data-dip-val="75ml"  onclick="_dipToggleChip(this)">75ml</button>
+          <button class="dip-chip" data-dip-filter="size" data-dip-val="80ml"  onclick="_dipToggleChip(this)">80ml</button>
+          <button class="dip-chip" data-dip-filter="size" data-dip-val="100ml" onclick="_dipToggleChip(this)">100ml</button>
+          <button class="dip-chip" data-dip-filter="size" data-dip-val="125ml" onclick="_dipToggleChip(this)">125ml</button>
+          <button class="dip-chip" data-dip-filter="size" data-dip-val="150ml" onclick="_dipToggleChip(this)">150ml</button>
+          <button class="dip-chip" data-dip-filter="size" data-dip-val="200ml" onclick="_dipToggleChip(this)">200ml</button>
+        </div>
+      </div>
+
+      <!-- Section 1: Store comparison -->
+      <div class="dip-section-wrap">
+        <div class="dip-section-head">
+          <span class="dip-section-label" id="dip-store-count-label">Available in 5 Stores</span>
+        </div>
+        <div class="dip-alt-list">
+          <div style="padding: 12px 14px 4px 14px; font-size: 16px; font-weight: 700; color: var(--ink-1); border-bottom: 1px solid var(--border);">
+            <div id="dip-product-header"></div>
+          </div>
+          <div id="dip-stores-list"></div>
+        </div>
+      </div>
+      <!-- Section divider -->
+      <div class="dip-section-divider"></div>
+
+      <!-- Section 2: Alternative Products -->
+      <div class="dip-section-wrap">
+        <div class="dip-section-head">
+          <span class="dip-section-label">Alternative Products</span>
+        </div>
+        <div class="dip-alt-list" id="dip-alts-list"></div>
+      </div>
+
+      <!-- Section divider -->
+      <div class="dip-section-divider"></div>
+
+      <!-- Section 3: You May Also Like -->
+      <div class="dip-section-wrap">
+        <div class="dip-section-head">
+          <span class="dip-section-label">Similar Products You May Like</span>
+        </div>
+        <div class="dip-alt-list" id="dip-similar-list"></div>
+      </div>
+
+    </div>
+  </div><!-- /overlay-deal-intermediate -->
+
 </div><!-- /app-root -->
 
 <script src="yourdis-data.js"></script>
@@ -3764,8 +4099,8 @@ function openProduct(key, origin) {
   if (!p) return;
   productOrigin            = origin || 'home';
   currentProductStoreKey   = p.storeKey || '';
-  document.getElementById('product-back-label').textContent =
-    productOrigin === 'search' ? 'Search' : 'Back';
+  var backLabels = { search: 'Search', dip: 'Compare', 'hot-deals': 'Deals', brand: 'Brand', store: 'Store' };
+  document.getElementById('product-back-label').textContent = backLabels[productOrigin] || 'Back';
 
   _setProductHero(p);
   _setProductMeta(p);
@@ -3795,6 +4130,20 @@ function openStoreFromProduct() {
 function goBackFromProduct() {
   if (productOrigin === 'search') {
     switchScreen('search');
+  } else if (productOrigin === 'dip') {
+    /* Return to deal intermediate page */
+    var overlay = document.getElementById('overlay-deal-intermediate');
+    overlay.style.display = '';
+    overlay.classList.add('visible');
+  } else if (productOrigin === 'hot-deals') {
+    switchScreen('home');
+    showOverlay('overlay-hot-deals');
+  } else if (productOrigin === 'brand') {
+    switchScreen('home');
+    showOverlay('overlay-brand-page');
+  } else if (productOrigin === 'store') {
+    switchScreen('home');
+    showOverlay('overlay-store-page');
   } else {
     switchScreen('home');
   }
@@ -3990,7 +4339,7 @@ function openBrandPage(key) {
   b.products.forEach(function(p) {
     var card = document.createElement('div');
     card.className = 'brand-prod-card';
-    card.setAttribute('onclick', 'closeBrandPage();openProduct("' + p.key + '")');
+    card.setAttribute('onclick', 'closeBrandPage();openProduct("' + p.key + '","brand")');
     card.innerHTML =
       '<div class="brand-prod-img">' +
         '<div class="prod-img-wrap" style="background:' + p.imgBg + ';height:100%;">' +
@@ -4041,7 +4390,7 @@ function openStorePage(key) {
   s.deals.forEach(function(d) {
     var row = document.createElement('div');
     row.className = 'drop-row';
-    row.setAttribute('onclick', 'closeStorePage();openProduct("' + d.key + '")');
+    row.setAttribute('onclick', 'closeStorePage();openProduct("' + d.key + '","store")');
     row.innerHTML =
       '<div class="drop-thumb"><div class="prod-img-wrap" style="background:' + d.imgBg + ';height:52px;">' +
         '<img loading="lazy" class="prod-img" src="' + d.img + '" alt="" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">' +
@@ -4112,7 +4461,7 @@ function filterBrandProducts(query) {
 /* ── HOT DEALS SEARCH FILTER ───────────────────────────── */
 function filterHotDeals(query) {
   var q = query.toLowerCase();
-  var cards = document.querySelectorAll('#overlay-hot-deals .deal-card');
+  var cards = document.querySelectorAll('#overlay-hot-deals .deal-grid-card, #overlay-hot-deals .card-v');
   cards.forEach(function(card) {
     var name = card.querySelector('.deal-name') ? card.querySelector('.deal-name').textContent.toLowerCase() : '';
     var brand = card.querySelector('.deal-brand') ? card.querySelector('.deal-brand').textContent.toLowerCase() : '';
@@ -4788,7 +5137,364 @@ function sortReviews(type, chipEl) {
   }
 }
 
+/* ══════════════════════════════════════════════════════════
+   INTERMEDIATE DEAL PAGE  (NEW — ISOLATED — ZERO SIDE EFFECTS)
+══════════════════════════════════════════════════════════ */
+
+/* ── Store comparison data — aligned with yourdis-data.js ── */
+/* Each entry mirrors the real storeComparison data from PRODUCTS,
+   enriched with shipping text for each store key.              */
+var _DIP_STORE_SHIP = {
+  amazon:      'Free delivery · 1–2 days',
+  namshi:      'Free delivery · 1–2 days',
+  sephora:     'Free delivery · 2–3 days',
+  noon:        'Free delivery · 1–2 days',
+  centrepoint: 'Delivery · 4–6 days',
+  jarir:       'Free delivery · 2–3 days'
+};
+
+/* Store display config — initials + background colour */
+var _DIP_STORE_META = {
+  amazon:      { initials: 'GS', bg: '#FFF3E0' },
+  namshi:      { initials: 'AS', bg: '#E3F2FD' },
+  sephora:     { initials: 'AO', bg: '#FFE4EE' },
+  noon:        { initials: 'NO', bg: '#FFF8E1' },
+  centrepoint: { initials: 'DR', bg: '#E8F5E9' },
+  jarir:       { initials: 'VP', bg: '#EDE7F6' }
+};
+
+/* ── Alternative product definitions ─────────────────────── */
+var _DIP_ALTERNATIVES = {
+  chanel:  [
+    { key: 'dior',    brand: 'Dior',     name: 'Sauvage EDT',        size: '200ml', gender: 'Men',    sub: 'Fresh · Woody', orig: '370 SAR', badge: '↓ 16%' },
+    { key: 'armani',  brand: 'Armani',   name: 'Acqua di Gio EDP',   size: '75ml',  gender: 'Men',    sub: 'Aquatic · Fresh', orig: '350 SAR', badge: '↓ 24%' }
+  ],
+  dior:    [
+    { key: 'chanel',  brand: 'Chanel',   name: 'Bleu de Chanel EDP', size: '100ml', gender: 'Men',    sub: 'Woody · Fresh · Citrus' },
+    { key: 'armani',  brand: 'Armani',   name: 'Acqua di Gio EDP',   size: '75ml',  gender: 'Men',    sub: 'Aquatic · Woody · Fresh' }
+  ],
+  tomford: [
+    { key: 'creed',   brand: 'Creed',    name: 'Creed Aventus',      size: '100ml', gender: 'Men',    sub: 'Woody · Fruity · Smoky' },
+    { key: 'ysl',     brand: 'YSL',      name: 'Y Le Parfum',        size: '60ml',  gender: 'Men',    sub: 'Fresh · Woody · Spicy' }
+  ],
+  ysl:     [
+    { key: 'dior',    brand: 'Dior',     name: 'Sauvage EDT',        size: '200ml', gender: 'Men',    sub: 'Fresh · Woody · Spicy' },
+    { key: 'chanel',  brand: 'Chanel',   name: 'Bleu de Chanel EDP', size: '100ml', gender: 'Men',    sub: 'Woody · Fresh · Citrus' }
+  ],
+  armani:  [
+    { key: 'dior',    brand: 'Dior',     name: 'Sauvage EDT',        size: '200ml', gender: 'Men',    sub: 'Fresh · Woody · Spicy' },
+    { key: 'burberry',brand: 'Burberry', name: 'Burberry Hero EDP',  size: '100ml', gender: 'Men',    sub: 'Woody · Fresh · Pepper' }
+  ]
+};
+
+var _DIP_SIMILAR = {
+  chanel:  [
+    { key: 'versace',  brand: 'Versace',  name: 'Versace Eros EDP',           size: '100ml', gender: 'Men',    sub: 'Oriental · Fougere' },
+    { key: 'burberry', brand: 'Burberry', name: 'Burberry Hero EDP',          size: '100ml', gender: 'Men',    sub: 'Woody · Fresh' },
+    { key: 'montblanc',brand: 'Mont Blanc',name: 'Explorer Platinum EDP',     size: '100ml', gender: 'Men',    sub: 'Woody · Fresh · Smooth' }
+  ],
+  dior:    [
+    { key: 'armani',   brand: 'Armani',   name: 'Acqua di Gio EDP',           size: '75ml',  gender: 'Men',    sub: 'Aquatic · Woody' },
+    { key: 'isseymiyake',brand:'Issey Miyake',name:'Leau dIssey EDT',          size: '100ml', gender: 'Women',  sub: 'Aquatic · Floral' },
+    { key: 'bvlgari',  brand: 'Bvlgari',  name: 'Aqva Amara EDT',             size: '100ml', gender: 'Men',    sub: 'Citrus · Aquatic' }
+  ],
+  tomford: [
+    { key: 'paco',     brand: 'Paco Rabanne',name: 'Paco Rabanne 1 Million EDP',size:'100ml', gender: 'Men',   sub: 'Oriental · Spicy' },
+    { key: 'versace',  brand: 'Versace',  name: 'Versace Eros EDP',           size: '100ml', gender: 'Men',    sub: 'Oriental · Fougere' },
+    { key: 'jpgaultier',brand:'Jean Paul Gaultier',name:'Le Male EDP',         size: '75ml',  gender: 'Men',    sub: 'Oriental · Fougere' }
+  ],
+  ysl:     [
+    { key: 'paco',     brand: 'Paco Rabanne',name:'Paco Rabanne 1 Million EDP',size:'100ml',  gender: 'Men',   sub: 'Oriental · Spicy' },
+    { key: 'armani',   brand: 'Armani',   name: 'Acqua di Gio EDP',           size: '75ml',  gender: 'Men',    sub: 'Aquatic · Woody' },
+    { key: 'dunhill',  brand: 'Dunhill',  name: 'Dunhill Desire Blue EDT',    size: '100ml', gender: 'Men',    sub: 'Fresh · Aquatic' }
+  ],
+  armani:  [
+    { key: 'bvlgari',  brand: 'Bvlgari',  name: 'Aqva Amara EDT',             size: '100ml', gender: 'Men',    sub: 'Citrus · Aquatic' },
+    { key: 'isseymiyake',brand:'Issey Miyake',name:'Leau dIssey EDT',          size: '100ml', gender: 'Women',  sub: 'Aquatic · Floral' },
+    { key: 'dunhill',  brand: 'Dunhill',  name: 'Dunhill Desire Blue EDT',    size: '100ml', gender: 'Men',    sub: 'Fresh · Aquatic' }
+  ]
+};
+
+/* ── Navigation origin for deal intermediate page ────────── */
+var _dipOrigin = 'home';  /* tracks which context opened the intermediate page */
+
+/* ── Filter state ─────────────────────────────────────────── */
+var _dipActiveSize   = null;
+var _dipActiveGender = null;
+
+/* ── Helper: extract size from brand string e.g. 'Chanel · 100ml · EDP' */
+function _dipParseSize(brandStr) {
+  if (!brandStr) return '';
+  var m = brandStr.match(/(\d+ml)/i);
+  return m ? m[1].toLowerCase() : '';
+}
+
+/* ── Helper: gender → pill class ─────────────────────────── */
+function _dipGenderClass(gender) {
+  if (!gender) return 'dip-pill-gender-unisex';
+  var g = gender.toLowerCase();
+  if (g === 'men')    return 'dip-pill-gender-men';
+  if (g === 'women')  return 'dip-pill-gender-women';
+  return 'dip-pill-gender-unisex';
+}
+
+/* ── FIX: navigate to product detail, force-hiding overlay ── */
+function _dipGoToProduct(productKey) {
+  var overlay = document.getElementById('overlay-deal-intermediate');
+  overlay.classList.remove('visible');
+  overlay.style.display = 'none';
+  /* Open unified product detail, passing 'dip' as origin so back button returns here */
+  openProduct(productKey, 'dip');
+  setTimeout(function() { overlay.style.display = ''; }, 50);
+}
+
+/* ── Filter chip toggle ──────────────────────────────────── */
+function _dipToggleChip(chip) {
+  var filterType = chip.getAttribute('data-dip-filter');
+  var val        = chip.getAttribute('data-dip-val');
+
+  if (filterType === 'size') {
+    /* Deactivate all size chips */
+    document.querySelectorAll('#dip-size-chips .dip-chip').forEach(function(c) {
+      c.classList.remove('dip-active');
+    });
+    if (_dipActiveSize === val) {
+      _dipActiveSize = null;          /* toggle off */
+    } else {
+      _dipActiveSize = val;
+      chip.classList.add('dip-active');
+    }
+  } else if (filterType === 'gender') {
+    document.querySelectorAll('#dip-gender-chips .dip-chip').forEach(function(c) {
+      c.classList.remove('dip-active');
+    });
+    if (_dipActiveGender === val) {
+      _dipActiveGender = null;
+    } else {
+      _dipActiveGender = val;
+      chip.classList.add('dip-active');
+    }
+  }
+  _dipApplyFilters();
+}
+
+/* ── Apply current filters to store cards ─────────────────── */
+function _dipApplyFilters() {
+  var cards   = document.querySelectorAll('#dip-stores-list .dip-store-card');
+  var visible = 0;
+  cards.forEach(function(card) {
+    var cardSize   = card.getAttribute('data-size')   || '';
+    var cardGender = card.getAttribute('data-gender')  || '';
+    var sizeOk   = !_dipActiveSize   || cardSize   === _dipActiveSize;
+    var genderOk = !_dipActiveGender || cardGender.toLowerCase() === _dipActiveGender.toLowerCase();
+    if (sizeOk && genderOk) {
+      card.classList.remove('dip-hidden');
+      visible++;
+    } else {
+      card.classList.add('dip-hidden');
+    }
+  });
+  /* Update result count label */
+  var rcEl = document.getElementById('dip-result-count');
+  if (rcEl) {
+    if (_dipActiveSize || _dipActiveGender) {
+      rcEl.textContent = visible + ' result' + (visible !== 1 ? 's' : '') + ' match your filters';
+    } else {
+      rcEl.textContent = '';
+    }
+  }
+  /* Update store count badge */
+  var countEl = document.getElementById('dip-store-count');
+  if (countEl) countEl.textContent = visible + ' store' + (visible !== 1 ? 's' : '');
+}
+
+/* ── Build one store comparison card ─────────────────────── */
+function _dipBuildStoreCard(storeEntry, productKey, productData, isBest) {
+  var p   = productData || {};
+  var img = p.img      || '';
+  var bg  = p.bg       || 'var(--bg-surface)';
+  var ini = p.initials || '??';
+  
+  var card = document.createElement('div');
+  card.className = 'dip-alt-card';
+  card.style.background = 'var(--bg-phone)';
+  card.addEventListener('click', function() { _dipGoToProduct(productKey); });
+
+  card.innerHTML =
+    '<div class="dip-alt-thumb">' +
+      '<div class="prod-img-wrap" style="background:' + bg + ';height:100%;">' +
+        '<img loading="lazy" class="prod-img" src="' + img + '" alt="" ' +
+          'onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">' +
+        '<div class="prod-initials" style="display:none;font-size:14px;">' + ini + '</div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="dip-alt-info">' +
+      '<div class="dip-alt-brand" style="display:flex; justify-content:space-between; align-items:center;">' +
+        '<span>' + storeEntry.name + '</span>' +
+        (isBest ? '<span style="font-size:10px; font-weight:700; background:var(--green-light); color:var(--green); padding:2px 6px; border-radius:10px; text-transform:uppercase;">Best Price</span>' : '') +
+      '</div>' +
+      '<div class="dip-alt-sub">' + (p.brand || '') + '</div>' +
+      '<div class="dip-alt-price" style="margin-top:4px;">' + storeEntry.price + '</div>' +
+    '</div>' +
+    '<div class="dip-alt-right">' +
+      '<div class="dip-alt-chevron">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">' +
+          '<polyline points="9 18 15 12 9 6"/>' +
+        '</svg>' +
+      '</div>' +
+    '</div>';
+
+  return card;
+}
+
+/* ── Build one alternative / similar row ─────────────────── */
+function _dipBuildAltCard(item) {
+  /* Pull live product data */
+  var p   = (typeof PRODUCTS !== 'undefined' && PRODUCTS[item.key]) ? PRODUCTS[item.key] : {};
+  var img = p.img      || '';
+  var bg  = p.bg       || 'var(--bg-surface)';
+  var ini = p.initials || item.ini || '??';
+  var price = p.price  || item.price || '';
+  var orig  = p.orig   || item.orig  || null;
+  var badge = p.badge  || item.badge || null;
+
+  var card = document.createElement('div');
+  card.className = 'dip-alt-card';
+  card.addEventListener('click', function() { _dipGoToProduct(item.key); });
+
+  var priceHtml = '<div class="dip-alt-price" style="margin-top:4px;">' + price + '</div>';
+  if (orig) {
+    priceHtml = '<div style="margin-top:4px; display:flex; align-items:center; gap:6px;">' +
+                  '<span class="dip-alt-price">' + price + '</span>' +
+                  '<span style="font-size:12px; color:var(--ink-3); text-decoration:line-through;">' + orig + '</span>' +
+                  (badge ? '<span style="font-size:11px; font-weight:700; color:var(--green); background:var(--green-light); padding:1px 6px; border-radius:8px;">' + badge.replace('↓ ', '') + '</span>' : '') +
+                '</div>';
+  }
+
+  card.innerHTML =
+    '<div class="dip-alt-thumb">' +
+      '<div class="prod-img-wrap" style="background:' + bg + ';height:100%;">' +
+        '<img loading="lazy" class="prod-img" src="' + img + '" alt="" ' +
+          'onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">' +
+        '<div class="prod-initials" style="display:none;font-size:14px;">' + ini + '</div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="dip-alt-info">' +
+      '<div class="dip-alt-brand">' + item.brand + '</div>' +
+      '<div class="dip-alt-name">' + item.name + '</div>' +
+      '<div class="dip-alt-sub">' +
+        (item.size   ? item.size + ' · ' : '') +
+        (item.gender ? item.gender + ' · ' : '') +
+        (item.sub    ? item.sub : '') +
+      '</div>' +
+      priceHtml +
+    '</div>' +
+    '<div class="dip-alt-right">' +
+      '<div class="dip-alt-chevron">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">' +
+          '<polyline points="9 18 15 12 9 6"/>' +
+        '</svg>' +
+      '</div>' +
+    '</div>';
+
+  return card;
+}
+
+/* ── Main: open the intermediate page ────────────────────── */
+function openDealIntermediate(productKey, origin) {
+  _dipOrigin = origin || 'home';  /* remember where we came from */
+  var p = (typeof PRODUCTS !== 'undefined') ? PRODUCTS[productKey] : null;
+  var titleText = p ? p.name : productKey;
+
+  /* Header */
+  document.getElementById('dip-product-header').textContent = titleText;
+
+  /* Reset filters */
+  _dipActiveSize   = null;
+  _dipActiveGender = null;
+  document.querySelectorAll('#dip-filters-bar .dip-chip').forEach(function(c) {
+    c.classList.remove('dip-active');
+  });
+  var rcEl = document.getElementById('dip-result-count');
+  if (rcEl) rcEl.textContent = '';
+
+  /* Build store cards from real storeComparison data in PRODUCTS */
+  var storesList = document.getElementById('dip-stores-list');
+  storesList.innerHTML = '';
+  var storeComps = (p && p.storeComparison) ? p.storeComparison : [];
+
+  /* Sort stores by price (cheapest first) */
+  storeComps.sort(function(a, b) {
+    var pA = parseInt(a.price.replace(/[^0-9]/g, ''));
+    var pB = parseInt(b.price.replace(/[^0-9]/g, ''));
+    return pA - pB;
+  });
+
+  storeComps.forEach(function(s, index) {
+    var isBest = (index === 0);
+    storesList.appendChild(_dipBuildStoreCard(s, productKey, p, isBest));
+  });
+
+  /* Update store count badge */
+  var countEl = document.getElementById('dip-store-count-label');
+  if (countEl) countEl.textContent = 'Available in ' + storeComps.length + ' Store' + (storeComps.length !== 1 ? 's' : '');
+
+  /* Build alternatives */
+  var altsList = document.getElementById('dip-alts-list');
+  altsList.innerHTML = '';
+  (_DIP_ALTERNATIVES[productKey] || []).forEach(function(item) {
+    altsList.appendChild(_dipBuildAltCard(item));
+  });
+
+  /* Build similar */
+  var simList = document.getElementById('dip-similar-list');
+  simList.innerHTML = '';
+  (_DIP_SIMILAR[productKey] || []).forEach(function(item) {
+    simList.appendChild(_dipBuildAltCard(item));
+  });
+
+  /* Show overlay */
+  var overlay = document.getElementById('overlay-deal-intermediate');
+  overlay.style.display = '';
+  overlay.classList.add('visible');
+
+  /* Scroll to top */
+  var scroll = document.getElementById('dip-scroll');
+  if (scroll) scroll.scrollTop = 0;
+}
+
+/* ── Close (back button) ─────────────────────────────────── */
+function _dipClose() {
+  var overlay = document.getElementById('overlay-deal-intermediate');
+  overlay.classList.remove('visible');
+  overlay.style.display = '';
+  /* Navigate back to proper origin */
+  if (_dipOrigin === 'search') {
+    switchScreen('search');
+  } else if (_dipOrigin === 'hot-deals') {
+    showOverlay('overlay-hot-deals');
+  } else if (_dipOrigin === 'brand') {
+    /* brand page overlay is already visible, nothing to do */
+  } else {
+    /* default: home */
+    switchScreen('home');
+  }
+}
+
+function _dipResetFilters(chip) {
+  _dipActiveSize   = null;
+  _dipActiveGender = null;
+  document.querySelectorAll('#dip-filters-bar .dip-chip').forEach(function(c) {
+    c.classList.remove('dip-active');
+  });
+  chip.classList.add('dip-active');
+  _dipApplyFilters();
+}
+
 </script>
+
+
+
 
 
 
