@@ -536,12 +536,43 @@ html {
 .prod-name { font-family:var(--font-display); font-size:24px; color:var(--ink-1); line-height:1.35; margin-bottom:4px; }
 .prod-name.long-title { font-size:21px; }
 .prod-brand { font-size:14px; color:var(--ink-3); margin-bottom:12px; }
-.notes-row  { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:14px; }
-.note-chip  { font-size:14px; padding:4px 10px; border-radius:20px; font-weight:600; }
+.notes-row  { display:block; margin-bottom:14px; }
+.note-group { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.note-group:last-child { margin-bottom: 0; }
+.note-title { font-size: 12px; font-weight: 700; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.03em; min-width: 48px; flex-shrink: 0; }
+.note-chips-row { display: flex; gap: 6px; flex-wrap: wrap; }
+.note-chip  { font-size:13px; padding:5px 12px; border-radius:12px; font-weight:600; display:inline-block; }
 .note-top   { background:var(--amber-light); color:var(--amber); }
 .note-heart { background:var(--b-pink); color:#8C3066; }
 .note-base  { background:var(--green-light); color:var(--green); }
-.note-country { background: #f0f0f0; color: #0288d1; }
+.note-country, .note-gender, .note-family, .note-perfumer { display:none; } /* Hide old styles if used elsewhere */
+
+.meta-row { display:flex; gap:16px; margin-top:12px; align-items: center; overflow-x: auto; scrollbar-width: none; }
+.meta-row::-webkit-scrollbar { display: none; }
+.meta-item { display:flex; align-items:center; gap:8px; flex-shrink: 0; }
+.meta-label { font-size:11px; font-weight:700; color:var(--ink-3); text-transform:uppercase; letter-spacing:0.05em; flex-shrink: 0; }
+.meta-value { font-size:13px; font-weight:600; color:var(--accent); background:var(--bg-phone); padding:5px 12px; border-radius:12px; border:1px solid var(--border); white-space: nowrap; }
+.meta-value-alt { color: #0288d1; background: #f0f7ff; border-color: #d0e3ff; }
+
+/* Accords Section */
+.accords-wrap { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border); }
+.accord-title { font-size: 14px; font-weight: 700; color: var(--ink-1); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+.accord-item { margin-bottom: 10px; display: flex; align-items: center; gap: 12px; }
+.accord-label { font-size: 13px; font-weight: 500; color: var(--ink-2); width: 75px; flex-shrink: 0; }
+.accord-bar-bg { flex: 1; height: 8px; background: var(--bg-phone); border-radius: 4px; overflow: hidden; }
+.accord-bar-fill { height: 100%; border-radius: 4px; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+
+.bar-sweet { background: #FF80AB; }
+.bar-gourmand { background: #A1887F; }
+.bar-fresh { background: #4DB6AC; }
+.bar-woody { background: #795548; }
+.bar-musky { background: #B0BEC5; }
+.bar-amber { background: #FFB74D; }
+.bar-spicy { background: #EF5350; }
+.bar-powdery { background: #CE93D8; }
+.bar-aquatic { background: #42A5F5; }
+.bar-citrus { background: #FFEE58; }
+
 .prod-desc  { font-size:14px; color:var(--ink-2); line-height:1.65; margin-bottom:18px; }
 
 /* Price Dashboard */
@@ -1921,7 +1952,7 @@ html {
         <span class="sec-link" onclick="showHotDeals()">See all</span>
       </div>
       <div class="h-scroll" style="margin-bottom:4px;">
-        <div class="deal-card" onclick="openDealIntermediate('chanel')">
+        <div class="deal-card" onclick="openProduct('chanel')">
           <div class="deal-img-zone">
             <div class="prod-img-wrap" style="background:var(--b-purple);">
               <img loading="lazy" class="prod-img" src="jpeg1.jpg" alt="Bleu de Chanel" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
@@ -1939,7 +1970,7 @@ html {
             </div>
           </div>
         </div>
-        <div class="deal-card" onclick="openDealIntermediate('dior')">
+        <div class="deal-card" onclick="openProduct('dior')">
           <div class="deal-img-zone">
             <div class="prod-img-wrap" style="background:var(--b-teal);">
               <img loading="lazy" class="prod-img" src="jpeg2.jpg" alt="Dior Sauvage" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
@@ -1957,7 +1988,7 @@ html {
             </div>
           </div>
         </div>
-        <div class="deal-card" onclick="openDealIntermediate('tomford')">
+        <div class="deal-card" onclick="openProduct('tomford')">
           <div class="deal-img-zone">
             <div class="prod-img-wrap" style="background:var(--b-amber);">
               <img loading="lazy" class="prod-img" src="jpeg3.jpg" alt="Tom Ford Tobacco Oud" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
@@ -1975,7 +2006,7 @@ html {
             </div>
           </div>
         </div>
-        <div class="deal-card" onclick="openDealIntermediate('ysl')">
+        <div class="deal-card" onclick="openProduct('ysl')">
           <div class="deal-img-zone">
             <div class="prod-img-wrap" style="background:var(--b-pink);">
               <img loading="lazy" class="prod-img" src="jpeg4.jpg" alt="YSL Y" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
@@ -1993,7 +2024,7 @@ html {
             </div>
           </div>
         </div>
-        <div class="deal-card" onclick="openDealIntermediate('armani')">
+        <div class="deal-card" onclick="openProduct('armani')">
           <div class="deal-img-zone">
             <div class="prod-img-wrap" style="background:var(--b-blue);">
               <img loading="lazy" class="prod-img" src="jpeg5.jpg" alt="Acqua di Gio" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
@@ -2783,17 +2814,55 @@ html {
 		<span id="read-more-btn" onclick="toggleReadMore()" style="font-weight:500; color:var(--accent); cursor:pointer; margin-left:4px;">Read More</span>
         </div>
 		        <div class="notes-row" id="product-notes">
-		        <span class="note-chip note-top">Top Notes: Citrus · Bergamot</span>
-		        <span class="note-chip note-heart">Heart Notes: Vetiver · Cedarwood</span>
-		        <span class="note-chip note-base">Base Notes: Patchouli · Labdanum</span>
+              <div class="note-group">
+                <div class="note-title">Top</div>
+                <div class="note-chips-row">
+                  <span class="note-chip note-top">Citrus</span>
+                  <span class="note-chip note-top">Bergamot</span>
+                </div>
+              </div>
+              <div class="note-group">
+                <div class="note-title">Heart</div>
+                <div class="note-chips-row">
+                  <span class="note-chip note-heart">Vetiver</span>
+                  <span class="note-chip note-heart">Cedarwood</span>
+                </div>
+              </div>
+              <div class="note-group">
+                <div class="note-title">Base</div>
+                <div class="note-chips-row">
+                  <span class="note-chip note-base">Patchouli</span>
+                  <span class="note-chip note-base">Labdanum</span>
+                </div>
+              </div>
 		        </div>
-		        <div class="notes-row">
-		          <span class="note-chip note-country" id="product-country">Brand Country: France</span>
-		          <span class="note-chip note-country" id="product-gender">Gender: Unisex</span>
-		          <span class="note-chip note-family" id="product-family">Fragrance Family: Woody</span>
-		        </div>			
-      </div>
+		        <div class="meta-row">
+              <div class="meta-item">
+                <div class="meta-label">Family</div>
+                <div class="meta-value" id="product-family">Woody</div>
+              </div>
+              <div class="meta-item">
+                <div class="meta-label">Perfumer</div>
+                <div class="meta-value" id="product-perfumer">Olivier Polge</div>
+              </div>
+            </div>
 
+            <div class="meta-row" style="margin-top:8px;">
+              <div class="meta-item">
+                <div class="meta-label">Country</div>
+                <div class="meta-value meta-value-alt" id="product-country">France</div>
+              </div>
+              <div class="meta-item">
+                <div class="meta-label">Gender</div>
+                <div class="meta-value meta-value-alt" id="product-gender">Men</div>
+              </div>
+            </div>
+
+		        <div class="accords-wrap" id="product-accords">
+		        <div class="accord-title">Accords</div>
+		        <!-- Bars injected by JS -->
+		        </div>
+		        </div>
       <div style="padding:0 20px;">
 
         <!-- STORE SECTION — before Price History -->
@@ -2847,53 +2916,6 @@ html {
             <div class="toggle off" id="pdToggle" onclick="toggleEl('pdToggle')"><div class="toggle-thumb"></div></div>
           </div>
         </div>
-				
-
-        <!-- Similar fragrances -->
-        <div style="font-size:13px;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-3);font-weight:500;margin-bottom:10px;">Alternative Products</div>
-        <div style="margin-bottom:16px;">
-          <div class="store-row" onclick="openProduct('dior')">
-            <div class="store-logo-sq" style="background:var(--b-teal);overflow:hidden;padding:0;"><div class="prod-img-wrap" style="height:34px;"><img loading="lazy" class="prod-img" src="jpeg1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:14px;">Dk</div></div></div>
-            <div class="store-meta"><div class="store-name">Dior Sauvage EDP</div><div class="store-ship">via Amazon.sa</div></div>
-            <div class="store-price-col"><div class="store-price">460 SAR</div><div class="store-diff" style="color:var(--accent);">95% match</div></div>
-            <button class="buy-btn">Buy ↗</button>
-          </div>
-          <div class="store-row" onclick="openProduct('armani')">
-            <div class="store-logo-sq" style="background:var(--b-blue);overflow:hidden;padding:0;"><div class="prod-img-wrap" style="height:34px;"><img loading="lazy" class="prod-img" src="jpeg3.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:14px;">Ag</div></div></div>
-            <div class="store-meta"><div class="store-name">Acqua di Gio Profumo</div><div class="store-ship">via Namshi</div></div>
-            <div class="store-price-col"><div class="store-price">395 SAR</div><div class="store-diff" style="color:var(--accent);">70% match</div></div>
-            <button class="buy-btn">Buy ↗</button>
-          </div>
-          <div class="store-row" onclick="openProduct('creed')">
-            <div class="store-logo-sq" style="background:var(--b-sage);overflow:hidden;padding:0;"><div class="prod-img-wrap" style="height:34px;"><img loading="lazy" class="prod-img" src="jpeg4.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:14px;">Cr</div></div></div>
-            <div class="store-meta"><div class="store-name">Creed Aventus</div><div class="store-ship">via Sephora.sa</div></div>
-            <div class="store-price-col"><div class="store-price">840 SAR</div><div class="store-diff" style="color:var(--accent);">60% match</div></div>
-            <button class="buy-btn">Buy ↗</button>
-          </div>
-        </div>
-		
-        <!-- Alternative Products -->
-        <div style="font-size:13px;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-3);font-weight:500;margin-bottom:10px;">Similar Fragrances</div>
-        <div style="margin-bottom:16px;">
-          <div class="store-row" onclick="openProduct('dior')">
-            <div class="store-logo-sq" style="background:var(--b-teal);overflow:hidden;padding:0;"><div class="prod-img-wrap" style="height:34px;"><img loading="lazy" class="prod-img" src="jpeg2.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:14px;">Dk</div></div></div>
-            <div class="store-meta"><div class="store-name">Dior Sauvage EDP</div><div class="store-ship">via Amazon.sa</div></div>
-            <div class="store-price-col"><div class="store-price">460 SAR</div><div class="store-diff" style="color:var(--accent);">94% match</div></div>
-            <button class="buy-btn">Buy ↗</button>
-          </div>
-          <div class="store-row" onclick="openProduct('armani')">
-            <div class="store-logo-sq" style="background:var(--b-blue);overflow:hidden;padding:0;"><div class="prod-img-wrap" style="height:34px;"><img loading="lazy" class="prod-img" src="jpeg5.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:14px;">Ag</div></div></div>
-            <div class="store-meta"><div class="store-name">Acqua di Gio Profumo</div><div class="store-ship">via Namshi</div></div>
-            <div class="store-price-col"><div class="store-price">395 SAR</div><div class="store-diff" style="color:var(--accent);">88% match</div></div>
-            <button class="buy-btn">Buy ↗</button>
-          </div>
-          <div class="store-row" onclick="openProduct('creed')">
-            <div class="store-logo-sq" style="background:var(--b-sage);overflow:hidden;padding:0;"><div class="prod-img-wrap" style="height:34px;"><img loading="lazy" class="prod-img" src="jpeg6.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:14px;">Cr</div></div></div>
-            <div class="store-meta"><div class="store-name">Creed Aventus</div><div class="store-ship">via Sephora.sa</div></div>
-            <div class="store-price-col"><div class="store-price">840 SAR</div><div class="store-diff" style="color:var(--accent);">81% match</div></div>
-            <button class="buy-btn">Buy ↗</button>
-          </div>
-        </div>		
 
         <!-- Ratings & Reviews -->
 		
@@ -4051,9 +4073,21 @@ var PRODUCTS = {
     img:YOURDIS_IMAGES.chanel,initials:'Cd',bg:'var(--b-purple)',
     name_ar:'بلو دو شانيل إي دي بي',brand_ar:'شانيل · 100 مل · عطر مركّز',
     country:'France',country_ar:'فرنسا',gender:'Men',gender_ar:'رجالي',
-    family:'Woody Aromatic',family_ar:'خشبي عطري',
+    family:'Woody Aromatic',family_ar:'خشبي عطري',perfumer:'Jacques Polge',
     notes:'<span class="note-chip note-top">Top: Citrus · Bergamot</span><span class="note-chip note-heart">Heart: Vetiver · Cedarwood</span><span class="note-chip note-base">Base: Patchouli · Labdanum</span>',
     notes_ar:'قمة: حمضيات · برغموت · قلب: فيتيفر · خشب الأرز · قاعدة: باتشولي · لبدانم',
+    accords: [
+      { name: 'Woody', value: 100 },
+      { name: 'Citrus', value: 90 },
+      { name: 'Amber', value: 80 },
+      { name: 'Spicy', value: 70 },
+      { name: 'Musky', value: 60 },
+      { name: 'Fresh', value: 50 },
+      { name: 'Powdery', value: 40 },
+      { name: 'Sweet', value: 30 },
+      { name: 'Aquatic', value: 20 },
+      { name: 'Gourmand', value: 10 }
+    ],
     desc:'A modern masculine icon. Citrus and bergamot open brightly before settling into a deep woody heart of vetiver and cedarwood. Patchouli and labdanum in the base create an elegant, lasting trail. Projection is confident with longevity exceeding 10 hours.',
     desc_ar:'أيقونة عصرية للرجل. تبدأ بالحمضيات والبرغموت قبل أن تستقر في قلب خشبي عميق. القاعدة الدافئة تمنح أثراً طويل الأمد يتجاوز 10 ساعات.',
     price:'485 SAR',orig:'620 SAR',store:'Golden Scent',storeKey:'amazon',
@@ -4071,9 +4105,21 @@ var PRODUCTS = {
     img:YOURDIS_IMAGES.dior,initials:'Dk',bg:'var(--b-teal)',
     name_ar:'ديور سوفاج إي دي تي',brand_ar:'ديور · 200 مل · ماء تواليت',
     country:'France',country_ar:'فرنسا',gender:'Men',gender_ar:'رجالي',
-    family:'Fresh Spicy',family_ar:'منعش حار',
+    family:'Fresh Spicy',family_ar:'منعش حار',perfumer:'François Demachy',
     notes:'<span class="note-chip note-top">Top: Calabrian Bergamot</span><span class="note-chip note-heart">Heart: Sichuan Pepper · Geranium</span><span class="note-chip note-base">Base: Ambroxan · Cedar</span>',
     notes_ar:'قمة: برغموت كالابريا · قلب: فلفل سيتشوان · قاعدة: أمبروكسان · أرز',
+    accords: [
+      { name: 'Fresh', value: 100 },
+      { name: 'Spicy', value: 95 },
+      { name: 'Amber', value: 85 },
+      { name: 'Citrus', value: 75 },
+      { name: 'Woody', value: 65 },
+      { name: 'Musky', value: 55 },
+      { name: 'Powdery', value: 45 },
+      { name: 'Aquatic', value: 35 },
+      { name: 'Sweet', value: 25 },
+      { name: 'Gourmand', value: 15 }
+    ],
     desc:'Radically fresh and ruggedly clean. Calabrian bergamot opens on Sichuan pepper, anchored by mineral Ambroxan and cedar. Effortlessly versatile — boardroom to open skies. Longevity 8–10 hours.',
     desc_ar:'منعش وأنيق. يبدأ بالبرغموت الإيطالي ثم فلفل سيتشوان، مع قاعدة معدنية من الأمبروكسان والأرز. يدوم 8-10 ساعات.',
     price:'310 SAR',orig:'370 SAR',store:'Najd Al-Otheyah',storeKey:'noon',
@@ -4091,9 +4137,21 @@ var PRODUCTS = {
     img:YOURDIS_IMAGES.tomford,initials:'Tf',bg:'var(--b-amber)',
     name_ar:'توم فورد توباكو عود إي دي بي',brand_ar:'توم فورد · 50 مل · عطر مركّز',
     country:'USA',country_ar:'الولايات المتحدة',gender:'Unisex',gender_ar:'للجنسين',
-    family:'Oriental Oud',family_ar:'شرقي عود',
+    family:'Oriental Oud',family_ar:'شرقي عود',perfumer:'Olivier Gillotin',
     notes:'<span class="note-chip note-top">Top: Clove · Coriander</span><span class="note-chip note-heart">Heart: Tobacco · Oud Wood</span><span class="note-chip note-base">Base: Sandalwood · Tonka Bean</span>',
     notes_ar:'قمة: قرنفل · كزبرة · قلب: تبغ · عود · قاعدة: صندل · فاصوليا التونكا',
+    accords: [
+      { name: 'Woody', value: 100 },
+      { name: 'Spicy', value: 90 },
+      { name: 'Amber', value: 85 },
+      { name: 'Gourmand', value: 80 },
+      { name: 'Sweet', value: 70 },
+      { name: 'Musky', value: 60 },
+      { name: 'Powdery', value: 40 },
+      { name: 'Citrus', value: 20 },
+      { name: 'Fresh', value: 15 },
+      { name: 'Aquatic', value: 5 }
+    ],
     desc:'From the Private Blend collection — unapologetically opulent. Spiced clove and coriander give way to a rich heart of tobacco and oud. Sandalwood and tonka bean create creamy, enduring warmth. Longevity exceptional at 12+ hours.',
     desc_ar:'من مجموعة بلند خاص. يبدأ بالقرنفل المتبّل قبل قلب غني من التبغ والعود. قاعدة دافئة من الصندل وفاصوليا التونكا. يدوم 12 ساعة وأكثر.',
     price:'590 SAR',orig:'650 SAR',store:'Laudour',storeKey:'sephora',
@@ -4111,9 +4169,21 @@ var PRODUCTS = {
     img:YOURDIS_IMAGES.ysl,initials:'YS',bg:'var(--b-pink)',
     name_ar:'إيف سان لوران واي لو بارفان',brand_ar:'إيف سان لوران · 60 مل · بارفان',
     country:'France',country_ar:'فرنسا',gender:'Men',gender_ar:'رجالي',
-    family:'Fougere Aromatic',family_ar:'فوجير عطري',
+    family:'Fougere Aromatic',family_ar:'فوجير عطري',perfumer:'Dominique Ropion',
     notes:'<span class="note-chip note-top">Top: Bergamot · Ginger</span><span class="note-chip note-heart">Heart: Sage · Suede</span><span class="note-chip note-base">Base: Fir Balsam · Ambergris</span>',
     notes_ar:'قمة: برغموت · زنجبيل · قلب: مريمية · شمواه · قاعدة: بلسم تنوب · عنبر',
+    accords: [
+      { name: 'Fresh', value: 100 },
+      { name: 'Aromatic', value: 90 },
+      { name: 'Spicy', value: 85 },
+      { name: 'Woody', value: 75 },
+      { name: 'Citrus', value: 70 },
+      { name: 'Amber', value: 60 },
+      { name: 'Musky', value: 50 },
+      { name: 'Sweet', value: 40 },
+      { name: 'Powdery', value: 30 },
+      { name: 'Aquatic', value: 20 }
+    ],
     desc:'Y Le Parfum deepens the iconic Y DNA considerably. Bergamot and ginger open brightly before sage and suede create a dry, sophisticated heart. Fir balsam and ambergris carry the scent from day into night. Longevity 8–10 hours.',
     desc_ar:'يعمّق تركيبة Y الأيقونية. يبدأ بالبرغموت والزنجبيل، ثم قلب من المريمية والشمواه الجاف. يمتد من النهار إلى الليل بأناقة. يدوم 8-10 ساعات.',
     price:'290 SAR',orig:'350 SAR',store:'V Perfume',storeKey:'jarir',
@@ -4131,9 +4201,21 @@ var PRODUCTS = {
     img:YOURDIS_IMAGES.armani,initials:'Aq',bg:'var(--b-blue)',
     name_ar:'أكوا دي جيو إي دي بي',brand_ar:'أرماني · 75 مل · عطر مركّز',
     country:'Italy',country_ar:'إيطاليا',gender:'Men',gender_ar:'رجالي',
-    family:'Fresh Aquatic',family_ar:'مائي منعش',
+    family:'Fresh Aquatic',family_ar:'مائي منعش',perfumer:'Alberto Morillas',
     notes:'<span class="note-chip note-top">Top: Marine Accord · Bergamot</span><span class="note-chip note-heart">Heart: Incense · Rosemary</span><span class="note-chip note-base">Base: Patchouli · Mineral Amber</span>',
     notes_ar:'قمة: ألحان بحرية · برغموت · قلب: بخور · روزماري · قاعدة: باتشولي · عنبر معدني',
+    accords: [
+      { name: 'Aquatic', value: 100 },
+      { name: 'Fresh', value: 95 },
+      { name: 'Citrus', value: 85 },
+      { name: 'Woody', value: 70 },
+      { name: 'Aromatic', value: 60 },
+      { name: 'Amber', value: 50 },
+      { name: 'Spicy', value: 40 },
+      { name: 'Musky', value: 30 },
+      { name: 'Powdery', value: 15 },
+      { name: 'Sweet', value: 5 }
+    ],
     desc:'Elevates the legendary original with deeper character. Marine accord and bergamot open fresh before incense and rosemary add meditative depth. Patchouli and mineral amber anchor the drydown beautifully. Longevity 9–11 hours.',
     desc_ar:'يرفع الأصل الأسطوري بعمق أكبر. الألحان البحرية والبرغموت يفتحان بنعومة، قبل أن يضيف البخور والروزماري عمقاً تأملياً. يدوم 9-11 ساعة.',
     price:'265 SAR',orig:'350 SAR',store:'Al-Sultan Perfumes',storeKey:'namshi',
@@ -4517,10 +4599,62 @@ function _setProductHero(p) {
 function _setProductMeta(p) {
   document.getElementById('product-name').textContent  = p.name;
   document.getElementById('product-brand').textContent = p.brand;
-  document.getElementById('product-notes').innerHTML   = p.notes;
-  document.getElementById('product-country').textContent = 'Brand Country: ' + (p.country || '--');
-  document.getElementById('product-gender').textContent  = 'Gender: ' + (p.gender || '--');
-  document.getElementById('product-family').textContent  = 'Fragrance Family: ' + (p.family || '--');
+
+  // Redesign notes layout
+  var container = document.getElementById('product-notes');
+  container.innerHTML = '';
+  var temp = document.createElement('div');
+  temp.innerHTML = p.notes;
+  var spans = temp.querySelectorAll('span');
+  spans.forEach(function(s) {
+    var txt = s.textContent;
+    var parts = txt.split(':');
+    if (parts.length < 2) return;
+    var title = parts[0].trim();
+    var notes = parts[1].split('·');
+    var group = document.createElement('div');
+    group.className = 'note-group';
+    var tDiv = document.createElement('div');
+    tDiv.className = 'note-title';
+    tDiv.textContent = title;
+    group.appendChild(tDiv);
+    var row = document.createElement('div');
+    row.className = 'note-chips-row';
+    var cType = s.classList.contains('note-top') ? 'note-top' : (s.classList.contains('note-heart') ? 'note-heart' : 'note-base');
+    notes.forEach(function(n) {
+      var chip = document.createElement('span');
+      chip.className = 'note-chip ' + cType;
+      chip.textContent = n.trim();
+      row.appendChild(chip);
+    });
+    group.appendChild(row);
+    container.appendChild(group);
+  });
+
+  document.getElementById('product-family').textContent  = p.family || '--';
+  document.getElementById('product-perfumer').textContent = p.perfumer || '--';
+  document.getElementById('product-country').textContent  = p.country || '--';
+  document.getElementById('product-gender').textContent   = p.gender || '--';
+
+  // Render Accords
+  var accordsContainer = document.getElementById('product-accords');
+  if (p.accords && p.accords.length > 0) {
+    accordsContainer.style.display = 'block';
+    var barsHtml = '<div class="accord-title">Accords</div>';
+    p.accords.forEach(function(acc) {
+      var colorClass = 'bar-' + acc.name.toLowerCase();
+      barsHtml += '<div class="accord-item">' +
+                    '<div class="accord-label">' + acc.name + '</div>' +
+                    '<div class="accord-bar-bg">' +
+                      '<div class="accord-bar-fill ' + colorClass + '" style="width:' + acc.value + '%"></div>' +
+                    '</div>' +
+                  '</div>';
+    });
+    accordsContainer.innerHTML = barsHtml;
+  } else {
+    accordsContainer.style.display = 'none';
+  }
+
   var desc = document.getElementById('product-desc');
   var readMoreBtn = document.getElementById('read-more-btn');
   desc.textContent = p.desc;
