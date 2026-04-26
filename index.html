@@ -559,8 +559,9 @@ html {
 .accord-title { font-size: 14px; font-weight: 700; color: var(--ink-1); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
 .accord-item { margin-bottom: 10px; display: flex; align-items: center; gap: 12px; }
 .accord-label { font-size: 13px; font-weight: 500; color: var(--ink-2); width: 75px; flex-shrink: 0; }
-.accord-bar-bg { flex: 1; height: 8px; background: var(--bg-phone); border-radius: 4px; overflow: hidden; }
+.accord-bar-bg { flex: 1; height: 8px; background: var(--bg-phone); border-radius: 4px; overflow: hidden; position: relative; }
 .accord-bar-fill { height: 100%; border-radius: 4px; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+.accord-percent { font-size: 11px; font-weight: 600; color: var(--ink-3); width: 32px; text-align: right; flex-shrink: 0; }
 
 .bar-sweet { background: #FF80AB; }
 .bar-gourmand { background: #A1887F; }
@@ -1952,7 +1953,7 @@ html {
         <span class="sec-link" onclick="showHotDeals()">See all</span>
       </div>
       <div class="h-scroll" style="margin-bottom:4px;">
-        <div class="deal-card" onclick="openProduct('chanel')">
+        <div class="deal-card" onclick="openDealIntermediate('chanel', 'home')">
           <div class="deal-img-zone">
             <div class="prod-img-wrap" style="background:var(--b-purple);">
               <img loading="lazy" class="prod-img" src="jpeg1.jpg" alt="Bleu de Chanel" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
@@ -1964,13 +1965,13 @@ html {
             <div class="deal-name">Bleu de Chanel EDP</div>
             <div class="deal-store" style="text-transform: none;">Available in 5 stores</div>
             <div class="deal-prices" style="display: block; margin-top: 4px;">
-              <div style="margin-bottom: 5px;"><span class="badge badge-good" style="font-size: 11px; padding: 2px 8px;">Lowest price: 485 SAR</span></div>
+              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest price: 485 SAR</span></div>
               <div style="font-size: 12px; color: var(--ink-2);">Highest price: 600 SAR</div>
-              <div style="font-size: 12px; color: var(--ink-2);">Savings: <span style="font-weight: 600; color: var(--green);">115 SAR</span></div>
+              <div style="font-size: 12px; color: var(--ink-2);">Savings: 115 SAR</div>
             </div>
           </div>
         </div>
-        <div class="deal-card" onclick="openProduct('dior')">
+        <div class="deal-card" onclick="openDealIntermediate('dior', 'home')">
           <div class="deal-img-zone">
             <div class="prod-img-wrap" style="background:var(--b-teal);">
               <img loading="lazy" class="prod-img" src="jpeg2.jpg" alt="Dior Sauvage" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
@@ -1982,13 +1983,13 @@ html {
             <div class="deal-name">Sauvage EDT</div>
             <div class="deal-store" style="text-transform: none;">Available in 5 stores</div>
             <div class="deal-prices" style="display: block; margin-top: 4px;">
-              <div style="margin-bottom: 5px;"><span class="badge badge-good" style="font-size: 11px; padding: 2px 8px;">Lowest price: 310 SAR</span></div>
+              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest price: 310 SAR</span></div>
               <div style="font-size: 12px; color: var(--ink-2);">Highest price: 370 SAR</div>
-              <div style="font-size: 12px; color: var(--ink-2);">Savings: <span style="font-weight: 600; color: var(--green);">60 SAR</span></div>
+              <div style="font-size: 12px; color: var(--ink-2);">Savings: 60 SAR</div>
             </div>
           </div>
         </div>
-        <div class="deal-card" onclick="openProduct('tomford')">
+        <div class="deal-card" onclick="openDealIntermediate('tomford', 'home')">
           <div class="deal-img-zone">
             <div class="prod-img-wrap" style="background:var(--b-amber);">
               <img loading="lazy" class="prod-img" src="jpeg3.jpg" alt="Tom Ford Tobacco Oud" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
@@ -2000,13 +2001,13 @@ html {
             <div class="deal-name">Tobacco Oud EDP</div>
             <div class="deal-store" style="text-transform: none;">Available in 5 stores</div>
             <div class="deal-prices" style="display: block; margin-top: 4px;">
-              <div style="margin-bottom: 5px;"><span class="badge badge-good" style="font-size: 11px; padding: 2px 8px;">Lowest price: 590 SAR</span></div>
+              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest price: 590 SAR</span></div>
               <div style="font-size: 12px; color: var(--ink-2);">Highest price: 650 SAR</div>
-              <div style="font-size: 12px; color: var(--ink-2);">Savings: <span style="font-weight: 600; color: var(--green);">60 SAR</span></div>
+              <div style="font-size: 12px; color: var(--ink-2);">Savings: 60 SAR</div>
             </div>
           </div>
         </div>
-        <div class="deal-card" onclick="openProduct('ysl')">
+        <div class="deal-card" onclick="openDealIntermediate('ysl', 'home')">
           <div class="deal-img-zone">
             <div class="prod-img-wrap" style="background:var(--b-pink);">
               <img loading="lazy" class="prod-img" src="jpeg4.jpg" alt="YSL Y" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
@@ -2018,13 +2019,13 @@ html {
             <div class="deal-name">Y Le Parfum</div>
             <div class="deal-store" style="text-transform: none;">Available in 5 stores</div>
             <div class="deal-prices" style="display: block; margin-top: 4px;">
-              <div style="margin-bottom: 5px;"><span class="badge badge-good" style="font-size: 11px; padding: 2px 8px;">Lowest price: 290 SAR</span></div>
+              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest price: 290 SAR</span></div>
               <div style="font-size: 12px; color: var(--ink-2);">Highest price: 350 SAR</div>
-              <div style="font-size: 12px; color: var(--ink-2);">Savings: <span style="font-weight: 600; color: var(--green);">60 SAR</span></div>
+              <div style="font-size: 12px; color: var(--ink-2);">Savings: 60 SAR</div>
             </div>
           </div>
         </div>
-        <div class="deal-card" onclick="openProduct('armani')">
+        <div class="deal-card" onclick="openDealIntermediate('armani', 'home')">
           <div class="deal-img-zone">
             <div class="prod-img-wrap" style="background:var(--b-blue);">
               <img loading="lazy" class="prod-img" src="jpeg5.jpg" alt="Acqua di Gio" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
@@ -2036,9 +2037,9 @@ html {
             <div class="deal-name">Acqua di Gio EDP</div>
             <div class="deal-store" style="text-transform: none;">Available in 5 stores</div>
             <div class="deal-prices" style="display: block; margin-top: 4px;">
-              <div style="margin-bottom: 5px;"><span class="badge badge-good" style="font-size: 11px; padding: 2px 8px;">Lowest price: 265 SAR</span></div>
+              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest price: 265 SAR</span></div>
               <div style="font-size: 12px; color: var(--ink-2);">Highest price: 350 SAR</div>
-              <div style="font-size: 12px; color: var(--ink-2);">Savings: <span style="font-weight: 600; color: var(--green);">85 SAR</span></div>
+              <div style="font-size: 12px; color: var(--ink-2);">Savings: 85 SAR</div>
             </div>
           </div>
         </div>
@@ -2063,25 +2064,95 @@ html {
       <!-- PERSONALIZED -->
       <div class="sec-head"><span class="sec-label">Personalized for You</span><span class="sec-link" onclick="showPersonalizedAll()">View all</span></div>
       <div class="h-scroll" style="margin-bottom:4px;">
-        <div class="deal-card" onclick="openProduct('creed')">
-          <div class="deal-img-zone"><div class="prod-img-wrap" style="background:var(--b-sage);"><img loading="lazy" class="prod-img" src="jpeg6.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Av</div></div><div class="deal-badge-float"><span class="badge badge-fire">↓ 20%</span></div></div>
-          <div class="deal-body"><div class="deal-brand">Creed</div><div class="deal-name">Aventus for Her</div><div class="deal-store">Woody · matches taste</div><div class="deal-prices"><span class="deal-price">420 SAR</span></div></div>
+        <div class="deal-card" onclick="openDealIntermediate('creed', 'home')">
+          <div class="deal-img-zone">
+            <div class="prod-img-wrap" style="background:var(--b-sage);">
+              <img loading="lazy" class="prod-img" src="jpeg6.jpg" alt="Aventus for Her" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+              <div class="prod-initials" style="display:none;">Cr</div>
+            </div>
+            <div class="deal-badge-float"><span class="badge badge-fire">↓ 20%</span></div>
+          </div>
+          <div class="deal-body">
+            <div class="deal-name">Aventus for Her</div>
+            <div class="deal-store" style="text-transform: none;">Available in 5 stores</div>
+            <div class="deal-prices" style="display: block; margin-top: 4px;">
+              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest price: 420 SAR</span></div>
+              <div style="font-size: 12px; color: var(--ink-2);">Highest price: 500 SAR</div>
+              <div style="font-size: 12px; color: var(--ink-2);">Savings: 80 SAR</div>
+            </div>
+          </div>
         </div>
-        <div class="deal-card" onclick="openProduct('tomford')">
-          <div class="deal-img-zone"><div class="prod-img-wrap" style="background:var(--b-amber);"><img loading="lazy" class="prod-img" src="jpeg3.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Ow</div></div><div class="deal-badge-float"><span class="badge badge-good">↓ 9%</span></div></div>
-          <div class="deal-body"><div class="deal-brand">Tom Ford</div><div class="deal-name">Oud Wood</div><div class="deal-store">Oud · like favorites</div><div class="deal-prices"><span class="deal-price">710 SAR</span></div></div>
+        <div class="deal-card" onclick="openDealIntermediate('tomford', 'home')">
+          <div class="deal-img-zone">
+            <div class="prod-img-wrap" style="background:var(--b-amber);">
+              <img loading="lazy" class="prod-img" src="jpeg3.jpg" alt="Oud Wood" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+              <div class="prod-initials" style="display:none;">Tf</div>
+            </div>
+            <div class="deal-badge-float"><span class="badge badge-good">↓ 9%</span></div>
+          </div>
+          <div class="deal-body">
+            <div class="deal-name">Oud Wood</div>
+            <div class="deal-store" style="text-transform: none;">Available in 5 stores</div>
+            <div class="deal-prices" style="display: block; margin-top: 4px;">
+              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest price: 710 SAR</span></div>
+              <div style="font-size: 12px; color: var(--ink-2);">Highest price: 800 SAR</div>
+              <div style="font-size: 12px; color: var(--ink-2);">Savings: 90 SAR</div>
+            </div>
+          </div>
         </div>
-        <div class="deal-card" onclick="openProduct('dior')">
-          <div class="deal-img-zone"><div class="prod-img-wrap" style="background:var(--b-teal);"><img loading="lazy" class="prod-img" src="jpeg2.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Gi</div></div><div class="deal-badge-float"><span class="badge badge-good">↗ Good</span></div></div>
-          <div class="deal-body"><div class="deal-brand">Dior</div><div class="deal-name">Green Irish Tweed</div><div class="deal-store">Aromatic · trending</div><div class="deal-prices"><span class="deal-price">380 SAR</span></div></div>
+        <div class="deal-card" onclick="openDealIntermediate('dior', 'home')">
+          <div class="deal-img-zone">
+            <div class="prod-img-wrap" style="background:var(--b-teal);">
+              <img loading="lazy" class="prod-img" src="jpeg2.jpg" alt="Green Irish Tweed" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+              <div class="prod-initials" style="display:none;">Gi</div>
+            </div>
+            <div class="deal-badge-float"><span class="badge badge-good">↗ Good</span></div>
+          </div>
+          <div class="deal-body">
+            <div class="deal-name">Green Irish Tweed</div>
+            <div class="deal-store" style="text-transform: none;">Available in 5 stores</div>
+            <div class="deal-prices" style="display: block; margin-top: 4px;">
+              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest price: 380 SAR</span></div>
+              <div style="font-size: 12px; color: var(--ink-2);">Highest price: 450 SAR</div>
+              <div style="font-size: 12px; color: var(--ink-2);">Savings: 70 SAR</div>
+            </div>
+          </div>
         </div>
-        <div class="deal-card" onclick="openProduct('ysl')">
-          <div class="deal-img-zone"><div class="prod-img-wrap" style="background:var(--b-pink);"><img loading="lazy" class="prod-img" src="jpeg4.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Bo</div></div><div class="deal-badge-float"><span class="badge badge-fire">↓ 17%</span></div></div>
-          <div class="deal-body"><div class="deal-brand">YSL</div><div class="deal-name">Black Orchid</div><div class="deal-store">Oriental · price drop</div><div class="deal-prices"><span class="deal-price">530 SAR</span></div></div>
+        <div class="deal-card" onclick="openDealIntermediate('ysl', 'home')">
+          <div class="deal-img-zone">
+            <div class="prod-img-wrap" style="background:var(--b-pink);">
+              <img loading="lazy" class="prod-img" src="jpeg4.jpg" alt="Black Orchid" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+              <div class="prod-initials" style="display:none;">Bo</div>
+            </div>
+            <div class="deal-badge-float"><span class="badge badge-fire">↓ 17%</span></div>
+          </div>
+          <div class="deal-body">
+            <div class="deal-name">Black Orchid</div>
+            <div class="deal-store" style="text-transform: none;">Available in 5 stores</div>
+            <div class="deal-prices" style="display: block; margin-top: 4px;">
+              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest price: 530 SAR</span></div>
+              <div style="font-size: 12px; color: var(--ink-2);">Highest price: 650 SAR</div>
+              <div style="font-size: 12px; color: var(--ink-2);">Savings: 120 SAR</div>
+            </div>
+          </div>
         </div>
-        <div class="deal-card" onclick="openProduct('chanel')">
-          <div class="deal-img-zone"><div class="prod-img-wrap" style="background:var(--b-purple);"><img loading="lazy" class="prod-img" src="jpeg1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Cd</div></div><div class="deal-badge-float"><span class="badge badge-fire">↓ 22%</span></div></div>
-          <div class="deal-body"><div class="deal-brand">Chanel</div><div class="deal-name">Bleu de Chanel EDP</div><div class="deal-store">Aromatic Woody</div><div class="deal-prices"><span class="deal-price">485 SAR</span></div></div>
+        <div class="deal-card" onclick="openDealIntermediate('chanel', 'home')">
+          <div class="deal-img-zone">
+            <div class="prod-img-wrap" style="background:var(--b-purple);">
+              <img loading="lazy" class="prod-img" src="jpeg1.jpg" alt="Bleu de Chanel EDP" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+              <div class="prod-initials" style="display:none;">Cd</div>
+            </div>
+            <div class="deal-badge-float"><span class="badge badge-fire">↓ 22%</span></div>
+          </div>
+          <div class="deal-body">
+            <div class="deal-name">Bleu de Chanel EDP</div>
+            <div class="deal-store" style="text-transform: none;">Available in 5 stores</div>
+            <div class="deal-prices" style="display: block; margin-top: 4px;">
+              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest price: 485 SAR</span></div>
+              <div style="font-size: 12px; color: var(--ink-2);">Highest price: 600 SAR</div>
+              <div style="font-size: 12px; color: var(--ink-2);">Savings: 115 SAR</div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -2591,55 +2662,221 @@ html {
     <div class="u-overflow-auto">
       <div class="pers-all-grid">
         <!-- Row 1 -->
-        <div class="brand-prod-card" onclick="closePersonalizedAll();openProduct('creed')">
-          <div class="brand-prod-img"><div class="prod-img-wrap" style="background:var(--b-sage);height:100%;"><img loading="lazy" class="prod-img" src="jpeg6.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Cr</div></div><div class="brand-prod-badge"><span class="badge badge-fire">↓ 20%</span></div></div>
-          <div class="brand-prod-body"><div class="deal-brand">Creed</div><div class="deal-name">Aventus for Her</div><div class="deal-store">Woody · matches taste</div><div class="deal-prices"><span class="deal-price">420 SAR</span></div></div>
+        <div class="deal-card" style="margin-bottom: 12px;" onclick="closePersonalizedAll();openProduct('creed')">
+          <div class="deal-img-zone">
+            <div class="prod-img-wrap" style="background:var(--b-sage);">
+              <img loading="lazy" class="prod-img" src="jpeg6.jpg" alt="Aventus for Her" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+              <div class="prod-initials" style="display:none;">Cr</div>
+            </div>
+            <div class="deal-badge-float"><span class="badge badge-fire">↓ 20%</span></div>
+          </div>
+          <div class="deal-body">
+            <div class="deal-name">Aventus for Her</div>
+            <div class="deal-store" style="text-transform: none;">Available in 5 stores</div>
+            <div class="deal-prices" style="display: block; margin-top: 4px;">
+              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest price: 420 SAR</span></div>
+              <div style="font-size: 12px; color: var(--ink-2);">Highest price: 500 SAR</div>
+              <div style="font-size: 12px; color: var(--ink-2);">Savings: 80 SAR</div>
+            </div>
+          </div>
         </div>
-        <div class="brand-prod-card" onclick="closePersonalizedAll();openProduct('tomford')">
-          <div class="brand-prod-img"><div class="prod-img-wrap" style="background:var(--b-amber);height:100%;"><img loading="lazy" class="prod-img" src="jpeg3.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Tf</div></div><div class="brand-prod-badge"><span class="badge badge-good">↓ 9%</span></div></div>
-          <div class="brand-prod-body"><div class="deal-brand">Tom Ford</div><div class="deal-name">Oud Wood</div><div class="deal-store">Oud · like favorites</div><div class="deal-prices"><span class="deal-price">710 SAR</span></div></div>
+        <div class="deal-card" style="margin-bottom: 12px;" onclick="closePersonalizedAll();openProduct('tomford')">
+          <div class="deal-img-zone">
+            <div class="prod-img-wrap" style="background:var(--b-amber);">
+              <img loading="lazy" class="prod-img" src="jpeg3.jpg" alt="Oud Wood" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+              <div class="prod-initials" style="display:none;">Tf</div>
+            </div>
+            <div class="deal-badge-float"><span class="badge badge-good">↓ 9%</span></div>
+          </div>
+          <div class="deal-body">
+            <div class="deal-name">Oud Wood</div>
+            <div class="deal-store" style="text-transform: none;">Available in 5 stores</div>
+            <div class="deal-prices" style="display: block; margin-top: 4px;">
+              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest price: 710 SAR</span></div>
+              <div style="font-size: 12px; color: var(--ink-2);">Highest price: 800 SAR</div>
+              <div style="font-size: 12px; color: var(--ink-2);">Savings: 90 SAR</div>
+            </div>
+          </div>
         </div>
-        <div class="brand-prod-card" onclick="closePersonalizedAll();openProduct('dior')">
-          <div class="brand-prod-img"><div class="prod-img-wrap" style="background:var(--b-teal);height:100%;"><img loading="lazy" class="prod-img" src="jpeg2.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Gi</div></div><div class="brand-prod-badge"><span class="badge badge-good">↗ Good</span></div></div>
-          <div class="brand-prod-body"><div class="deal-brand">Dior</div><div class="deal-name">Green Irish Tweed</div><div class="deal-store">Aromatic · trending</div><div class="deal-prices"><span class="deal-price">380 SAR</span></div></div>
+        <div class="deal-card" style="margin-bottom: 12px;" onclick="closePersonalizedAll();openProduct('dior')">
+          <div class="deal-img-zone">
+            <div class="prod-img-wrap" style="background:var(--b-teal);">
+              <img loading="lazy" class="prod-img" src="jpeg2.jpg" alt="Green Irish Tweed" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+              <div class="prod-initials" style="display:none;">Gi</div>
+            </div>
+            <div class="deal-badge-float"><span class="badge badge-good">↗ Good</span></div>
+          </div>
+          <div class="deal-body">
+            <div class="deal-name">Green Irish Tweed</div>
+            <div class="deal-store" style="text-transform: none;">Available in 5 stores</div>
+            <div class="deal-prices" style="display: block; margin-top: 4px;">
+              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest price: 380 SAR</span></div>
+              <div style="font-size: 12px; color: var(--ink-2);">Highest price: 450 SAR</div>
+              <div style="font-size: 12px; color: var(--ink-2);">Savings: 70 SAR</div>
+            </div>
+          </div>
         </div>
-        <div class="brand-prod-card" onclick="closePersonalizedAll();openProduct('ysl')">
-          <div class="brand-prod-img"><div class="prod-img-wrap" style="background:var(--b-pink);height:100%;"><img loading="lazy" class="prod-img" src="jpeg4.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Bo</div></div><div class="brand-prod-badge"><span class="badge badge-fire">↓ 17%</span></div></div>
-          <div class="brand-prod-body"><div class="deal-brand">YSL</div><div class="deal-name">Black Orchid</div><div class="deal-store">Oriental · price drop</div><div class="deal-prices"><span class="deal-price">530 SAR</span></div></div>
+        <div class="deal-card" style="margin-bottom: 12px;" onclick="closePersonalizedAll();openProduct('ysl')">
+          <div class="deal-img-zone">
+            <div class="prod-img-wrap" style="background:var(--b-pink);">
+              <img loading="lazy" class="prod-img" src="jpeg4.jpg" alt="Black Orchid" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+              <div class="prod-initials" style="display:none;">Bo</div>
+            </div>
+            <div class="deal-badge-float"><span class="badge badge-fire">↓ 17%</span></div>
+          </div>
+          <div class="deal-body">
+            <div class="deal-name">Black Orchid</div>
+            <div class="deal-store" style="text-transform: none;">Available in 5 stores</div>
+            <div class="deal-prices" style="display: block; margin-top: 4px;">
+              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest price: 530 SAR</span></div>
+              <div style="font-size: 12px; color: var(--ink-2);">Highest price: 650 SAR</div>
+              <div style="font-size: 12px; color: var(--ink-2);">Savings: 120 SAR</div>
+            </div>
+          </div>
         </div>
-        <!-- Row 2 -->
-        <div class="brand-prod-card" onclick="closePersonalizedAll();openProduct('chanel')">
-          <div class="brand-prod-img"><div class="prod-img-wrap" style="background:var(--b-purple);height:100%;"><img loading="lazy" class="prod-img" src="jpeg1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Cd</div></div><div class="brand-prod-badge"><span class="badge badge-fire">↓ 22%</span></div></div>
-          <div class="brand-prod-body"><div class="deal-brand">Chanel</div><div class="deal-name">Bleu de Chanel EDP</div><div class="deal-store">Aromatic Woody</div><div class="deal-prices"><span class="deal-price">485 SAR</span></div></div>
+        <div class="deal-card" style="margin-bottom: 12px;" onclick="closePersonalizedAll();openProduct('chanel')">
+          <div class="deal-img-zone">
+            <div class="prod-img-wrap" style="background:var(--b-purple);">
+              <img loading="lazy" class="prod-img" src="jpeg1.jpg" alt="Bleu de Chanel EDP" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+              <div class="prod-initials" style="display:none;">Cd</div>
+            </div>
+            <div class="deal-badge-float"><span class="badge badge-fire">↓ 22%</span></div>
+          </div>
+          <div class="deal-body">
+            <div class="deal-name">Bleu de Chanel EDP</div>
+            <div class="deal-store" style="text-transform: none;">Available in 5 stores</div>
+            <div class="deal-prices" style="display: block; margin-top: 4px;">
+              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest price: 485 SAR</span></div>
+              <div style="font-size: 12px; color: var(--ink-2);">Highest price: 600 SAR</div>
+              <div style="font-size: 12px; color: var(--ink-2);">Savings: 115 SAR</div>
+            </div>
+          </div>
         </div>
-        <div class="brand-prod-card" onclick="closePersonalizedAll();openProduct('armani')">
-          <div class="brand-prod-img"><div class="prod-img-wrap" style="background:var(--b-blue);height:100%;"><img loading="lazy" class="prod-img" src="jpeg5.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Aq</div></div><div class="brand-prod-badge"><span class="badge badge-fire">↓ 24%</span></div></div>
-          <div class="brand-prod-body"><div class="deal-brand">Armani</div><div class="deal-name">Acqua di Gio EDP</div><div class="deal-store">Fresh Aquatic</div><div class="deal-prices"><span class="deal-price">265 SAR</span></div></div>
+        <div class="deal-card" style="margin-bottom: 12px;" onclick="closePersonalizedAll();openProduct('armani')">
+          <div class="deal-img-zone">
+            <div class="prod-img-wrap" style="background:var(--b-blue);">
+              <img loading="lazy" class="prod-img" src="jpeg5.jpg" alt="Acqua di Gio EDP" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+              <div class="prod-initials" style="display:none;">Aq</div>
+            </div>
+            <div class="deal-badge-float"><span class="badge badge-fire">↓ 24%</span></div>
+          </div>
+          <div class="deal-body">
+            <div class="deal-name">Acqua di Gio EDP</div>
+            <div class="deal-store" style="text-transform: none;">Fresh Aquatic</div>
+            <div class="deal-prices" style="display: block; margin-top: 4px;">
+              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest price: 265 SAR</span></div>
+              <div style="font-size: 12px; color: var(--ink-2);">Highest price: 350 SAR</div>
+              <div style="font-size: 12px; color: var(--ink-2);">Savings: 85 SAR</div>
+            </div>
+          </div>
         </div>
-        <div class="brand-prod-card" onclick="closePersonalizedAll();openProduct('creed')">
-          <div class="brand-prod-img"><div class="prod-img-wrap" style="background:var(--b-sage);height:100%;"><img loading="lazy" class="prod-img" src="jpeg6.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Cr</div></div><div class="brand-prod-badge"><span class="badge badge-fire">↓ 20%</span></div></div>
-          <div class="brand-prod-body"><div class="deal-brand">Creed</div><div class="deal-name">Creed Aventus 100ml</div><div class="deal-store">Woody · Mossy</div><div class="deal-prices"><span class="deal-price">840 SAR</span></div></div>
+        <div class="deal-card" style="margin-bottom: 12px;" onclick="closePersonalizedAll();openProduct('creed')">
+          <div class="deal-img-zone">
+            <div class="prod-img-wrap" style="background:var(--b-sage);">
+              <img loading="lazy" class="prod-img" src="jpeg6.jpg" alt="Creed Aventus 100ml" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+              <div class="prod-initials" style="display:none;">Cr</div>
+            </div>
+            <div class="deal-badge-float"><span class="badge badge-fire">↓ 20%</span></div>
+          </div>
+          <div class="deal-body">
+            <div class="deal-name">Creed Aventus 100ml</div>
+            <div class="deal-store" style="text-transform: none;">Woody · Mossy</div>
+            <div class="deal-prices" style="display: block; margin-top: 4px;">
+              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest price: 840 SAR</span></div>
+              <div style="font-size: 12px; color: var(--ink-2);">Highest price: 1000 SAR</div>
+              <div style="font-size: 12px; color: var(--ink-2);">Savings: 160 SAR</div>
+            </div>
+          </div>
         </div>
-        <div class="brand-prod-card" onclick="closePersonalizedAll();openProduct('dior')">
-          <div class="brand-prod-img"><div class="prod-img-wrap" style="background:var(--b-teal);height:100%;"><img loading="lazy" class="prod-img" src="jpeg2.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Dk</div></div><div class="brand-prod-badge"><span class="badge badge-good">↓ 16%</span></div></div>
-          <div class="brand-prod-body"><div class="deal-brand">Dior</div><div class="deal-name">Sauvage Elixir 60ml</div><div class="deal-store">Spicy Woody</div><div class="deal-prices"><span class="deal-price">420 SAR</span></div></div>
+        <div class="deal-card" style="margin-bottom: 12px;" onclick="closePersonalizedAll();openProduct('dior')">
+          <div class="deal-img-zone">
+            <div class="prod-img-wrap" style="background:var(--b-teal);">
+              <img loading="lazy" class="prod-img" src="jpeg2.jpg" alt="Sauvage Elixir 60ml" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+              <div class="prod-initials" style="display:none;">Dk</div>
+            </div>
+            <div class="deal-badge-float"><span class="badge badge-good">↓ 16%</span></div>
+          </div>
+          <div class="deal-body">
+            <div class="deal-name">Sauvage Elixir 60ml</div>
+            <div class="deal-store" style="text-transform: none;">Spicy Woody</div>
+            <div class="deal-prices" style="display: block; margin-top: 4px;">
+              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest price: 420 SAR</span></div>
+              <div style="font-size: 12px; color: var(--ink-2);">Highest price: 500 SAR</div>
+              <div style="font-size: 12px; color: var(--ink-2);">Savings: 80 SAR</div>
+            </div>
+          </div>
         </div>
-        <!-- Row 3 -->
-        <div class="brand-prod-card" onclick="closePersonalizedAll();openProduct('tomford')">
-          <div class="brand-prod-img"><div class="prod-img-wrap" style="background:var(--b-amber);height:100%;"><img loading="lazy" class="prod-img" src="jpeg3.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Tf</div></div><div class="brand-prod-badge"><span class="badge badge-neutral">In Stock</span></div></div>
-          <div class="brand-prod-body"><div class="deal-brand">Tom Ford</div><div class="deal-name">Tobacco Oud EDP</div><div class="deal-store">Oriental Oud</div><div class="deal-prices"><span class="deal-price">590 SAR</span></div></div>
+        <div class="deal-card" style="margin-bottom: 12px;" onclick="closePersonalizedAll();openProduct('tomford')">
+          <div class="deal-img-zone">
+            <div class="prod-img-wrap" style="background:var(--b-amber);">
+              <img loading="lazy" class="prod-img" src="jpeg3.jpg" alt="Tobacco Oud EDP" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+              <div class="prod-initials" style="display:none;">Tf</div>
+            </div>
+            <div class="deal-badge-float"><span class="badge badge-neutral">In Stock</span></div>
+          </div>
+          <div class="deal-body">
+            <div class="deal-name">Tobacco Oud EDP</div>
+            <div class="deal-store" style="text-transform: none;">Oriental Oud</div>
+            <div class="deal-prices" style="display: block; margin-top: 4px;">
+              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest price: 590 SAR</span></div>
+              <div style="font-size: 12px; color: var(--ink-2);">Highest price: 650 SAR</div>
+              <div style="font-size: 12px; color: var(--ink-2);">Savings: 60 SAR</div>
+            </div>
+          </div>
         </div>
-        <div class="brand-prod-card" onclick="closePersonalizedAll();openProduct('ysl')">
-          <div class="brand-prod-img"><div class="prod-img-wrap" style="background:var(--b-pink);height:100%;"><img loading="lazy" class="prod-img" src="jpeg4.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">YS</div></div><div class="brand-prod-badge"><span class="badge badge-good">↓ 17%</span></div></div>
-          <div class="brand-prod-body"><div class="deal-brand">YSL</div><div class="deal-name">Y Le Parfum 60ml</div><div class="deal-store">Fougère · Aromatic</div><div class="deal-prices"><span class="deal-price">290 SAR</span></div></div>
+        <div class="deal-card" style="margin-bottom: 12px;" onclick="closePersonalizedAll();openProduct('ysl')">
+          <div class="deal-img-zone">
+            <div class="prod-img-wrap" style="background:var(--b-pink);">
+              <img loading="lazy" class="prod-img" src="jpeg4.jpg" alt="Y Le Parfum 60ml" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+              <div class="prod-initials" style="display:none;">YS</div>
+            </div>
+            <div class="deal-badge-float"><span class="badge badge-good">↓ 17%</span></div>
+          </div>
+          <div class="deal-body">
+            <div class="deal-name">Y Le Parfum 60ml</div>
+            <div class="deal-store" style="text-transform: none;">Fougère · Aromatic</div>
+            <div class="deal-prices" style="display: block; margin-top: 4px;">
+              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest price: 290 SAR</span></div>
+              <div style="font-size: 12px; color: var(--ink-2);">Highest price: 350 SAR</div>
+              <div style="font-size: 12px; color: var(--ink-2);">Savings: 60 SAR</div>
+            </div>
+          </div>
         </div>
-        <div class="brand-prod-card" onclick="closePersonalizedAll();openProduct('chanel')">
-          <div class="brand-prod-img"><div class="prod-img-wrap" style="background:var(--b-purple);height:100%;"><img loading="lazy" class="prod-img" src="jpeg1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Cd</div></div><div class="brand-prod-badge"><span class="badge badge-good">↗ Good</span></div></div>
-          <div class="brand-prod-body"><div class="deal-brand">Chanel</div><div class="deal-name">Bleu de Chanel EDT</div><div class="deal-store">Aromatic Woody</div><div class="deal-prices"><span class="deal-price">410 SAR</span></div></div>
+        <div class="deal-card" style="margin-bottom: 12px;" onclick="closePersonalizedAll();openProduct('chanel')">
+          <div class="deal-img-zone">
+            <div class="prod-img-wrap" style="background:var(--b-purple);">
+              <img loading="lazy" class="prod-img" src="jpeg1.jpg" alt="Bleu de Chanel EDT" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+              <div class="prod-initials" style="display:none;">Cd</div>
+            </div>
+            <div class="deal-badge-float"><span class="badge badge-good">↗ Good</span></div>
+          </div>
+          <div class="deal-body">
+            <div class="deal-name">Bleu de Chanel EDT</div>
+            <div class="deal-store" style="text-transform: none;">Available in 5 stores</div>
+            <div class="deal-prices" style="display: block; margin-top: 4px;">
+              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest price: 410 SAR</span></div>
+              <div style="font-size: 12px; color: var(--ink-2);">Highest price: 500 SAR</div>
+              <div style="font-size: 12px; color: var(--ink-2);">Savings: 90 SAR</div>
+            </div>
+          </div>
         </div>
-        <div class="brand-prod-card" onclick="closePersonalizedAll();openProduct('armani')">
-          <div class="brand-prod-img"><div class="prod-img-wrap" style="background:var(--b-blue);height:100%;"><img loading="lazy" class="prod-img" src="jpeg5.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Aq</div></div><div class="brand-prod-badge"><span class="badge badge-good">↓ 11%</span></div></div>
-          <div class="brand-prod-body"><div class="deal-brand">Armani</div><div class="deal-name">Acqua di Gio Profumo</div><div class="deal-store">Fresh Aromatic</div><div class="deal-prices"><span class="deal-price">395 SAR</span></div></div>
+        <div class="deal-card" style="margin-bottom: 12px;" onclick="closePersonalizedAll();openProduct('armani')">
+          <div class="deal-img-zone">
+            <div class="prod-img-wrap" style="background:var(--b-blue);">
+              <img loading="lazy" class="prod-img" src="jpeg5.jpg" alt="Acqua di Gio Profumo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+              <div class="prod-initials" style="display:none;">Aq</div>
+            </div>
+            <div class="deal-badge-float"><span class="badge badge-good">↓ 11%</span></div>
+          </div>
+          <div class="deal-body">
+            <div class="deal-name">Acqua di Gio Profumo</div>
+            <div class="deal-store" style="text-transform: none;">Available in 5 stores</div>
+            <div class="deal-prices" style="display: block; margin-top: 4px;">
+              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest price: 395 SAR</span></div>
+              <div style="font-size: 12px; color: var(--ink-2);">Highest price: 500 SAR</div>
+              <div style="font-size: 12px; color: var(--ink-2);">Savings: 105 SAR</div>
+            </div>
+          </div>
         </div>
       </div>
       <div style="height:16px;" aria-hidden="true"></div>
@@ -4648,6 +4885,7 @@ function _setProductMeta(p) {
                     '<div class="accord-bar-bg">' +
                       '<div class="accord-bar-fill ' + colorClass + '" style="width:' + acc.value + '%"></div>' +
                     '</div>' +
+                    '<div class="accord-percent">' + acc.value + '%</div>' +
                   '</div>';
     });
     accordsContainer.innerHTML = barsHtml;
@@ -5795,6 +6033,10 @@ var _DIP_ALTERNATIVES = {
   armani:  [
     { key: 'dior',    brand: 'Dior',     name: 'Sauvage EDT',        size: '200ml', gender: 'Men',    sub: 'Fresh · Woody · Spicy' },
     { key: 'burberry',brand: 'Burberry', name: 'Burberry Hero EDP',  size: '100ml', gender: 'Men',    sub: 'Woody · Fresh · Pepper' }
+  ],
+  creed:   [
+    { key: 'chanel',  brand: 'Chanel',   name: 'Bleu de Chanel EDP', size: '100ml', gender: 'Men',    sub: 'Woody · Fresh · Citrus' },
+    { key: 'tomford', brand: 'Tom Ford', name: 'Tobacco Oud EDP',    size: '50ml',  gender: 'Unisex', sub: 'Oriental · Oud · Woody' }
   ]
 };
 
@@ -5823,6 +6065,11 @@ var _DIP_SIMILAR = {
     { key: 'bvlgari',  brand: 'Bvlgari',  name: 'Aqva Amara EDT',             size: '100ml', gender: 'Men',    sub: 'Citrus · Aquatic' },
     { key: 'isseymiyake',brand:'Issey Miyake',name:'Leau dIssey EDT',          size: '100ml', gender: 'Women',  sub: 'Aquatic · Floral' },
     { key: 'dunhill',  brand: 'Dunhill',  name: 'Dunhill Desire Blue EDT',    size: '100ml', gender: 'Men',    sub: 'Fresh · Aquatic' }
+  ],
+  creed:   [
+    { key: 'tomford',  brand: 'Tom Ford', name: 'Tobacco Oud EDP',            size: '50ml',  gender: 'Unisex', sub: 'Oriental · Oud' },
+    { key: 'paco',     brand: 'Paco Rabanne', name: 'Paco Rabanne 1 Million EDP', size: '100ml', gender: 'Men', sub: 'Oriental · Spicy' },
+    { key: 'versace',  brand: 'Versace',  name: 'Versace Eros EDP',           size: '100ml', gender: 'Men',    sub: 'Oriental · Fougere' }
   ]
 };
 
