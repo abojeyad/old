@@ -145,11 +145,17 @@ html {
   #app-root {
     position: relative;
     width: 414px;
-    height: 896px; 
+    height: 896px;
     border-radius: var(--radius-xl);
-    box-shadow: 
-      0 0 0 12px #1a1a1a,
-      0 20px 50px rgba(0,0,0,0.2);
+    border: 1.5px solid rgba(0,0,0,0.10);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.10);
+    /* Top safe area: simulate a real mobile status bar gap */
+    padding-top: 44px;
+  }
+  /* Compensate: screens already handle their own internal padding,
+     so we only need the shell padding on the outermost container */
+  #app-root > .screen {
+    /* screens fill the remaining height inside the padded shell */
   }
 }
 
@@ -181,12 +187,31 @@ html {
 /* ═══════════════════════════════════════════════════════════
    IMMERSIVE COMPONENTS (Safe Area Aware)
 ═══════════════════════════════════════════════════════════ */
-.home-header, .top-nav, .listing-header, 
-.ssp-header, .ai-chat-header, .rv-header,
+.home-header, .top-nav,
 .profile-header {
   padding-top: calc(var(--sat) + 8px);
   flex-shrink: 0;
   background: var(--bg-phone);
+}
+
+/* Overlay headers manage their own padding-top via their base rules
+   (which use calc(var(--sat) + Npx)) so they are NOT in the group above.
+   On desktop, only overlays that are direct children of #app-root need
+   the extra 44px top offset — overlays nested inside a .screen (like
+   overlay-hot-deals, overlay-brands, overlay-price-drops) already sit
+   correctly within the screen's coordinate space and must NOT get extra padding. */
+@media (min-width: 600px) and (min-height: 600px) {
+  #overlay-wishlist-all .listing-header,
+  #overlay-recent-all .listing-header,
+  #overlay-personalized-all .listing-header,
+  #overlay-brand-page .listing-header,
+  #overlay-store-page .listing-header,
+  #overlay-deal-intermediate .dip-header,
+  .ssp-header,
+  .ai-chat-header,
+  .rv-header {
+    padding-top: calc(44px + 8px) !important;
+  }
 }
 .profile-header {
   background: #F9F5F6 !important; /* Keep original activity header color */
@@ -541,11 +566,8 @@ html {
 .note-group:last-child { margin-bottom: 0; }
 .note-title { font-size: 12px; font-weight: 700; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.03em; min-width: 48px; flex-shrink: 0; }
 .note-chips-row { display: flex; gap: 6px; flex-wrap: wrap; }
-.note-chip  { font-size:13px; padding:5px 12px; border-radius:12px; font-weight:600; display:inline-block; }
-.note-top   { background:var(--amber-light); color:var(--amber); }
-.note-heart { background:var(--b-pink); color:#8C3066; }
-.note-base  { background:var(--green-light); color:var(--green); }
-.note-country, .note-gender, .note-family, .note-perfumer { display:none; } /* Hide old styles if used elsewhere */
+/* note-chip colors defined in NOTES REDESIGN block below */
+.note-country, .note-gender, .note-family, .note-perfumer { display:none; }
 
 .meta-row { display:flex; gap:16px; margin-top:12px; align-items: center; overflow-x: auto; scrollbar-width: none; }
 .meta-row::-webkit-scrollbar { display: none; }
@@ -616,6 +638,194 @@ html {
 .star-empty { color:var(--border-strong); }
 .rating-count { font-size:13px; color:var(--ink-3); }
 
+/* ── NOTES — LAYERED PYRAMID CARDS ──────────────────────── */
+.notes-pyramid {
+  margin-bottom: 18px;
+  /* Bleed edge-to-edge within prod-info's 20px padding */
+  margin-left: -20px;
+  margin-right: -20px;
+}
+.notes-layer {
+  display: flex; flex-direction: row; align-items: baseline;
+  gap: 6px; padding: 7px 16px;
+  border: none; border-radius: 0;
+}
+/* Width tiers — centered, base always full container width */
+.notes-layer-top   { width: 80%; align-self: center; }
+.notes-layer-heart { width: 90%; align-self: center; }
+.notes-layer-base  { width: 100%; }
+
+/* Color hierarchy — lightest top → medium heart → deepest base, no strokes */
+.notes-layer-top   { background: #FEF9E7; }
+.notes-layer-heart { background: #FDEBD0; }
+.notes-layer-base  { background: #F0D9B5; }
+
+/* Tier label — inline on same line as notes */
+.notes-layer-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.07em;
+  text-transform: uppercase; white-space: nowrap; flex-shrink: 0;
+  display: flex; align-items: center; gap: 4px;
+}
+.notes-layer-top   .notes-layer-label { color: #9A7200; }
+.notes-layer-heart .notes-layer-label { color: #8B5E00; }
+.notes-layer-base  .notes-layer-label { color: #6B3D00; }
+
+.notes-layer-label-dot {
+  width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0;
+}
+.notes-layer-top   .notes-layer-label-dot { background: #C49A00; }
+.notes-layer-heart .notes-layer-label-dot { background: #B87333; }
+.notes-layer-base  .notes-layer-label-dot { background: #8B4513; }
+
+/* Notes text — inline after the label */
+.notes-layer-text {
+  font-size: 12px; font-weight: 400; line-height: 1.4;
+}
+.notes-layer-top   .notes-layer-text { color: #5A4500; }
+.notes-layer-heart .notes-layer-text { color: #5C3300; }
+.notes-layer-base  .notes-layer-text { color: #3E2000; }
+.note-chip  { font-size:13px; padding:5px 12px; border-radius:12px; font-weight:600; display:inline-block; }
+.note-top   { background:var(--amber-light); color:var(--amber); }
+.note-heart { background:var(--b-pink); color:#8C3066; }
+.note-base  { background:var(--green-light); color:var(--green); }
+
+/* ── STORE PILL ─────────────────────────────────────────── */
+.store-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--bg-surface); border: 1px solid var(--border);
+  border-radius: 24px; padding: 6px 12px 6px 6px;
+  cursor: pointer; transition: background 0.15s; margin-bottom: 14px;
+}
+.store-pill:hover { background: var(--bg-input); }
+.store-pill-avatar {
+  width: 26px; height: 26px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: var(--ink-2); flex-shrink: 0;
+}
+.store-pill-name { font-size: 13px; font-weight: 600; color: var(--accent); }
+.store-pill-sub  { font-size: 11px; color: var(--ink-3); margin-left: 2px; }
+.store-pill-arrow { color: var(--ink-3); margin-left: 2px; }
+.store-pill-arrow svg { width: 12px; height: 12px; }
+
+/* ── FRAGRANCE HOUSE PILL ───────────────────────────────── */
+.frag-house-row {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 14px;
+}
+.frag-house-label {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--ink-3); flex-shrink: 0;
+}
+.frag-house-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--b-purple); border: 1px solid rgba(121,0,47,0.12);
+  border-radius: 20px; padding: 4px 12px;
+}
+.frag-house-pill-icon svg { width: 13px; height: 13px; color: var(--accent); }
+.frag-house-pill-name { font-size: 13px; font-weight: 600; color: var(--accent); }
+
+/* ── FRAGRANCE IDENTITY STRIP ───────────────────────────── */
+.frag-identity-section {
+  margin-bottom: 16px;
+}
+.frag-identity-row {
+  display: flex; gap: 8px;
+  overflow-x: auto; scrollbar-width: none; padding-bottom: 2px;
+}
+.frag-identity-row::-webkit-scrollbar { display: none; }
+.frag-id-card {
+  display: flex; flex-direction: column; align-items: center; gap: 5px;
+  background: var(--bg-surface); border: 1.5px solid var(--border);
+  border-radius: var(--radius-md); padding: 12px 10px;
+  flex-shrink: 0; min-width: 76px; max-width: 90px;
+  cursor: default; user-select: none;
+}
+.frag-id-icon {
+  width: 34px; height: 34px; border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.frag-id-icon svg { width: 16px; height: 16px; }
+.frag-id-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--ink-3); text-align: center;
+}
+.frag-id-value {
+  font-size: 12px; font-weight: 600; color: var(--ink-1);
+  text-align: center; line-height: 1.3;
+  word-break: break-word; white-space: normal;
+}
+
+/* ── WHEN TO WEAR ───────────────────────────────────────── */
+.wear-section { margin-bottom: 20px; }
+.wear-section-title {
+  font-size: 13px; font-weight: 600; letter-spacing: 0.07em;
+  text-transform: uppercase; color: var(--ink-3); margin-bottom: 8px;
+}
+.wear-grid {
+  display: flex; flex-direction: row; gap: 6px;
+  overflow-x: auto; scrollbar-width: none; padding-bottom: 2px;
+}
+.wear-grid::-webkit-scrollbar { display: none; }
+.wear-chip {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  background: var(--bg-surface); border: 1.5px solid var(--border);
+  border-radius: var(--radius-md); padding: 8px 10px;
+  cursor: pointer; transition: all 0.15s; user-select: none;
+  flex-shrink: 0;
+}
+.wear-chip:active { transform: scale(0.95); }
+.wear-chip.voted {
+  background: var(--accent-light); border-color: var(--accent);
+}
+.wear-chip-icon { font-size: 17px; line-height: 1; }
+.wear-chip-label { font-size: 11px; font-weight: 600; color: var(--ink-2); }
+.wear-chip-count { font-size: 11px; color: var(--ink-3); font-weight: 500; }
+.wear-chip.voted .wear-chip-label { color: var(--accent); }
+.wear-chip.voted .wear-chip-count { color: var(--accent); }
+
+/* ── REACTION SYSTEM ────────────────────────────────────── */
+.reactions-section { margin-bottom: 20px; }
+.reactions-title {
+  font-size: 13px; font-weight: 600; letter-spacing: 0.07em;
+  text-transform: uppercase; color: var(--ink-3); margin-bottom: 12px;
+}
+.reactions-row {
+  display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px;
+}
+.reactions-row::-webkit-scrollbar { display: none; }
+.reaction-btn {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  background: var(--bg-surface); border: 1.5px solid var(--border);
+  border-radius: var(--radius-md); padding: 10px 14px; min-width: 58px;
+  cursor: pointer; transition: all 0.15s; flex-shrink: 0; user-select: none;
+}
+.reaction-btn:active { transform: scale(0.92); }
+.reaction-btn.reacted {
+  background: var(--accent-light); border-color: var(--accent);
+}
+.reaction-icon { font-size: 22px; line-height: 1; }
+.reaction-label { font-size: 11px; font-weight: 600; color: var(--ink-3); }
+.reaction-count { font-size: 12px; font-weight: 600; color: var(--ink-2); }
+.reaction-btn.reacted .reaction-label { color: var(--accent); }
+.reaction-btn.reacted .reaction-count { color: var(--accent); }
+
+/* ── PDP RECOMMENDATION SECTIONS (Exact Match / Similar Feel) ── */
+.pdp-rec-section {
+  margin-bottom: 20px;
+}
+.pdp-rec-title {
+  font-size: 13px; font-weight: 600; letter-spacing: 0.07em;
+  text-transform: uppercase; color: var(--ink-3); margin-bottom: 3px;
+}
+.pdp-rec-subtitle {
+  font-size: 12px; color: var(--ink-3); margin-bottom: 10px; font-weight: 400;
+}
+.pdp-rec-scroll {
+  margin-left: -20px; margin-right: -20px;
+  padding-left: 20px !important; padding-right: 20px !important;
+}
+
+/* ── REVIEW CARD — no stars ─────────────────────────────── */
+
 .review-card {
   background:var(--bg-surface); border:1px solid var(--border);
   border-radius:var(--radius-md); padding:14px 16px; margin-bottom:10px;
@@ -676,9 +886,50 @@ html {
 .stat-l { font-size:14px; color:var(--ink-3); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:6px; }
 .stat-v { font-family:var(--font-display); font-size:22px; color:var(--ink-1); }
 /* Wishlist */
-.wishlist-grid {
-  display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:12px; padding:0 20px;
+/* ── Wishlist card — horizontal variant (Activity section) ── */
+.wishlist-list {
+  display: flex; flex-direction: column; gap: 10px; padding: 0 20px;
+}
+.wl-card-h {
+  background: var(--bg-surface); border: 1px solid var(--border);
+  border-radius: var(--radius-md); overflow: hidden; cursor: pointer;
+  display: flex; flex-direction: row; align-items: stretch;
+  transition: box-shadow 0.15s;
+}
+.wl-card-h:hover { box-shadow: 0 3px 10px rgba(0,0,0,0.07); }
+.wl-card-h .wl-img-zone {
+  width: 72px; flex-shrink: 0; position: relative;
+}
+.wl-card-h .wl-img-zone .prod-img-wrap { height: 100%; }
+.wl-card-h .wl-heart {
+  position: absolute; top: 6px; right: 6px; z-index: 2;
+  width: 22px; height: 22px;
+}
+.wl-card-h-body {
+  flex: 1; padding: 10px 12px; display: flex; flex-direction: column;
+  gap: 5px; min-width: 0;
+}
+.wl-card-h-name {
+  font-size: 13px; font-weight: 700; color: var(--ink-1);
+  line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.wl-card-h-avail {
+  font-size: 11px; color: var(--ink-3); font-weight: 500;
+}
+.wl-card-h-prices {
+  display: flex; gap: 6px; align-items: center; flex-wrap: nowrap; margin-top: 2px;
+}
+.wl-card-h-low {
+  display: inline-flex; align-items: center;
+  background: #EAA005; color: #fff;
+  font-size: 11px; font-weight: 700;
+  padding: 3px 8px; border-radius: 20px; white-space: nowrap;
+}
+.wl-card-h-high {
+  font-size: 11px; color: var(--ink-3); font-weight: 500; white-space: nowrap;
+}
+.wl-card-h-save {
+  font-size: 11px; color: var(--green); font-weight: 700; white-space: nowrap;
 }
 .wl-card {
   background:var(--bg-surface); border:1px solid var(--border);
@@ -727,12 +978,21 @@ html {
   display:none; flex-direction:column;
 }
 .overlay.visible { display:flex; }
-/* Store page must cover the bottom-nav (z-index:100) so it is not visible or clickable */
-#overlay-store-page { z-index:101; }
+
+/* ── Hide bottom-nav on all sub/overlay pages ────────────────
+   When any .overlay is visible inside a .screen, push it above
+   the bottom-nav (z-index:100) so the nav is fully covered.
+   For overlays that are direct #app-root children (not inside a
+   .screen), the bottom-nav of whichever screen is currently active
+   must also be hidden — handled by the JS showOverlay/hideOverlay. */
+.overlay.visible { z-index: 110; }
+
+/* Store page already had its own override — keep consistent */
+#overlay-store-page { z-index: 110; }
 
 /* Slide-up overlays */
 .overlay-sheet {
-  position:absolute; bottom:0; left:0; right:0; z-index:50;
+  position:absolute; bottom:0; left:0; right:0; z-index:150;
   background:var(--bg-phone);
   border-top-left-radius:var(--radius-xl);
   border-top-right-radius:var(--radius-xl);
@@ -744,7 +1004,7 @@ html {
 }
 .overlay-sheet.visible { display:flex; transform:translateY(0); }
 .sheet-backdrop {
-  position:absolute; inset:0; z-index:49;
+  position:absolute; inset:0; z-index:149;
   background:rgba(0,0,0,0.35);
   display:none;
 }
@@ -766,34 +1026,95 @@ html {
 .overlay-close svg { width:16px; height:16px; color:var(--ink-2); }
 
 /* ── NOTIFICATIONS overlay ───────────────────────────── */
+/* ── NOTIFICATIONS ──────────────────────────────────────── */
+.notif-list-section { padding:10px 0 2px; }
+.notif-section-label {
+  font-size:11px; font-weight:700; letter-spacing:0.08em;
+  text-transform:uppercase; color:var(--ink-3);
+  padding:0 20px 8px;
+}
+
+/* Base row */
 .notif-item {
-  display:flex; gap:14px; padding:16px 20px;
+  display:flex; align-items:flex-start; gap:12px;
+  padding:14px 20px 14px 16px;
   border-bottom:1px solid var(--border); cursor:pointer;
   transition:background 0.1s;
+  border-left:3px solid transparent;
+  position:relative;
 }
 .notif-item:hover { background:var(--bg-surface); }
-.notif-item.unread { background:var(--accent-light); }
-.notif-item.unread:hover { background:color-mix(in srgb,var(--accent-light) 80%,transparent); }
-.notif-dot-wrap { padding-top:5px; flex-shrink:0; }
-.notif-dot { width:9px; height:9px; border-radius:50%; background:var(--accent); }
+
+/* ── TYPE 1: Price & Status Alert — green left accent ── */
+.notif-item.notif-price {
+  border-left-color: var(--green);
+}
+.notif-item.notif-price.unread {
+  background: #F0FAF4;
+}
+.notif-item.notif-price.unread:hover { background:#E6F5EC; }
+
+/* ── TYPE 2: Admin Announcement — brand accent left accent ── */
+.notif-item.notif-admin {
+  border-left-color: var(--accent);
+}
+.notif-item.notif-admin.unread {
+  background: var(--accent-light);
+}
+.notif-item.notif-admin.unread:hover {
+  background:color-mix(in srgb,var(--accent-light) 80%,transparent);
+}
+
+/* Unread dot */
+.notif-dot {
+  width:7px; height:7px; border-radius:50%; flex-shrink:0; margin-top:6px;
+}
+.notif-price .notif-dot { background:var(--green); }
+.notif-admin .notif-dot { background:var(--accent); }
 .notif-dot.read { background:transparent; }
-.notif-icon {
-  width:40px; height:40px; border-radius:50%; flex-shrink:0;
+
+/* Avatar — product thumb or admin badge */
+.notif-avatar {
+  width:42px; height:42px; border-radius:var(--radius-sm);
+  flex-shrink:0; overflow:hidden;
   display:flex; align-items:center; justify-content:center;
 }
-.notif-icon svg { width:18px; height:18px; }
-.ni-drop  { background:var(--green-light); color:var(--green); }
-.ni-alert { background:var(--amber-light); color:var(--amber); }
-.ni-promo { background:var(--b-purple); color:var(--accent); }
-.notif-body { flex:1; }
-.notif-title { font-size:15px; font-weight:600; color:var(--ink-1); line-height:1.5; }
-.notif-sub   { font-size:14px; color:var(--ink-3); margin-top:3px; }
-.notif-time  { font-size:14px; color:var(--ink-3); margin-top:5px; }
-.notif-badge-pill {
-  background:var(--amber-light); color:var(--amber);
-  font-size:13px; font-weight:600; padding:3px 10px;
-  border-radius:20px; white-space:nowrap; flex-shrink:0; height:fit-content;
-  margin-top:3px;
+.notif-avatar-price {
+  background:var(--green-light);
+  color:var(--green);
+}
+.notif-avatar-admin {
+  background:var(--accent-light);
+  color:var(--accent);
+}
+.notif-avatar svg { width:19px; height:19px; }
+
+/* Body text */
+.notif-body { flex:1; min-width:0; }
+.notif-title {
+  font-size:14px; font-weight:600; color:var(--ink-1);
+  line-height:1.45; margin-bottom:3px;
+}
+.notif-sub   { font-size:13px; color:var(--ink-3); line-height:1.4; }
+.notif-time  { font-size:12px; color:var(--ink-3); margin-top:5px; font-weight:500; }
+
+/* Price pill — only on price/status alerts */
+.notif-price-pill {
+  display:inline-flex; align-items:center; gap:4px;
+  background:var(--green-light); color:var(--green);
+  font-size:12px; font-weight:700; padding:3px 9px;
+  border-radius:20px; white-space:nowrap; flex-shrink:0;
+  margin-top:2px; align-self:flex-start;
+}
+
+/* Admin tag pill */
+.notif-admin-pill {
+  display:inline-flex; align-items:center; gap:4px;
+  background:var(--accent-light); color:var(--accent);
+  font-size:11px; font-weight:700; padding:3px 9px;
+  border-radius:20px; white-space:nowrap; flex-shrink:0;
+  margin-top:2px; align-self:flex-start; letter-spacing:0.03em;
+  text-transform:uppercase;
 }
 
 /* ── SETTINGS overlay ─────────────────────────────────── */
@@ -833,7 +1154,70 @@ html {
 .logout-btn:hover { opacity:0.85; }
 .logout-btn svg { width:18px; height:18px; }
 
-/* ── INTERESTS EDIT overlay ───────────────────────────── */
+/* ── INLINE SETTINGS (Activity page) ─────────────────── */
+.act-settings-group {
+  padding: 20px 20px 0;
+}
+.act-settings-label {
+  font-size: 12px; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--ink-3);
+  margin-bottom: 10px; padding-left: 2px;
+}
+.act-settings-card {
+  background: var(--bg-phone); border: 1px solid var(--border);
+  border-radius: var(--radius-md); overflow: hidden;
+}
+.act-settings-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 16px; border-bottom: 1px solid var(--border);
+  cursor: pointer; transition: background 0.1s; gap: 12px;
+}
+.act-settings-row:hover { background: var(--bg-surface); }
+.act-settings-row-last { border-bottom: none; }
+.act-settings-row-l { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
+.act-sicon {
+  width: 34px; height: 34px; border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.act-sicon svg { width: 16px; height: 16px; }
+.act-sinfo { display: flex; flex-direction: column; min-width: 0; }
+.act-sname { font-size: 14px; font-weight: 600; color: var(--ink-1); }
+.act-ssub  { font-size: 12px; color: var(--ink-3); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.act-schevron { width: 15px; height: 15px; color: var(--ink-3); flex-shrink: 0; }
+
+/* ── WEB STATUS BAR (desktop view only) ──────────────────── */
+.web-status-bar {
+  display: none;
+}
+@media (min-width: 600px) and (min-height: 600px) {
+  .web-status-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 44px;
+    padding: 0 20px;
+    z-index: 200;
+    pointer-events: none;
+  }
+  .web-status-bar-time {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink-1);
+    letter-spacing: 0.01em;
+  }
+  .web-status-bar-icons {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .web-status-bar-icons svg {
+    width: 15px;
+    height: 15px;
+    color: var(--ink-1);
+  }
+}
 .interests-chip {
   padding:10px 18px; border-radius:24px; font-size:14px; font-weight:600;
   border:1.5px solid var(--border-strong); cursor:pointer; transition:all 0.15s;
@@ -855,7 +1239,9 @@ html {
 /* These use the full .overlay */
 .listing-header {
   display:flex; align-items:center; gap:14px;
-  padding:6px 20px 14px; flex-shrink:0; border-bottom:1px solid var(--border);
+  padding-right:20px; padding-bottom:14px; padding-left:20px;
+  padding-top: calc(var(--sat) + 8px);
+  flex-shrink:0; border-bottom:1px solid var(--border);
 }
 .listing-back-btn {
   display:flex; align-items:center; gap:8px;
@@ -870,6 +1256,24 @@ html {
   display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
   gap:12px; padding:16px 16px;
 }
+/* Inside the hot-deals grid, deal-card fills its column naturally */
+#overlay-hot-deals .deal-card { width:100%; }
+
+/* Personalized for You — 2-col grid: cards must fill column width */
+#overlay-personalized-all .deal-card { width:100%; }
+
+/* Store page — 2-col grid: cards must fill column width */
+#overlay-store-page .deal-card { width:100%; flex-shrink:unset; }
+
+/* Brand page — switch from horizontal scroll to 2-column grid matching Top Deals Now */
+.brand-prod-grid {
+  display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px; padding:16px 16px;
+}
+#brand-prod-grid .deal-card { width:100%; flex-shrink:unset; }
+
+/* Stores is a main tab — keep z-index below bottom-nav so the nav stays visible */
+#overlay-stores { z-index:99; }
 .card-v, .deal-grid-card, .brand-prod-card {
   background:var(--bg-phone); border:1px solid var(--border);
   border-radius:var(--radius-lg); overflow:hidden; cursor:pointer;
@@ -967,11 +1371,7 @@ html {
 /* ─── SEARCH: product detail input cursor fix ────────── */
 .search-bar input:not([readonly]) { cursor:text; }
 
-.brand-prod-grid {
-  display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:12px; padding:16px 16px;
-}
-/* brand-prod-card styles merged into .card-v — see above */
+/* brand-prod-grid layout defined above near deals-grid */
 
 /* ═══════════════════════════════════════════════════════════
    SINGLE STORE PAGE
@@ -1005,14 +1405,16 @@ html {
    AI CHAT OVERLAY
 ═══════════════════════════════════════════════════════════ */
 .ai-chat-overlay {
-  position:absolute; inset:0; z-index:60;
+  position:absolute; inset:0; z-index:110;
   display:none; flex-direction:column;
   background:var(--bg-phone);
 }
 .ai-chat-overlay.visible { display:flex; }
 .ai-chat-header {
   display:flex; align-items:center; gap:14px;
-  padding:16px 16px 14px; flex-shrink:0;
+  padding-right:16px; padding-bottom:14px; padding-left:16px;
+  padding-top: calc(var(--sat) + 16px);
+  flex-shrink:0;
   border-bottom:1px solid var(--border);
   background:var(--bg-phone);
 }
@@ -1272,55 +1674,67 @@ html {
   gap:12px; padding:16px 16px;
 }
 
-.alert-card-v2 {
-  margin:0 20px 10px;
-  background:var(--bg-phone); border:1px solid var(--border);
-  border-radius:var(--radius-md); overflow:hidden;
-  box-shadow:0 1px 4px rgba(0,0,0,0.04);
-  transition:box-shadow 0.15s;
+/* ── ALERT CARD (redesigned) ─────────────────────────────── */
+.alert-card-v3 {
+  margin: 0 20px 12px;
+  background: var(--bg-phone);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: box-shadow 0.15s;
+  cursor: pointer;
 }
-.alert-card-v2:hover { box-shadow:0 3px 10px rgba(0,0,0,0.08); }
-/* Top strip: image + name/brand + toggle */
-.alert-v2-top {
-  display:flex; align-items:center; gap:12px; padding:11px 14px 10px;
-  border-bottom:1px solid var(--border);
+.alert-card-v3:hover { box-shadow: 0 3px 12px rgba(0,0,0,0.07); }
+
+/* ── Header row: image + product info + toggle — NO bottom divider ── */
+.alert-v3-header {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 14px 11px;
+  /* border-bottom removed — open layout */
 }
-.alert-v2-thumb {
-  width:44px; height:44px; border-radius:var(--radius-sm);
-  flex-shrink:0; overflow:hidden;
+.alert-v3-thumb {
+  width: 48px; height: 48px;
+  border-radius: var(--radius-sm); overflow: hidden; flex-shrink: 0;
 }
-.alert-v2-thumb .prod-img-wrap { height:100%; }
-.alert-v2-names { flex:1; min-width:0; }
-.alert-v2-prod-name { font-size:14px; font-weight:600; color:var(--ink-1); line-height:1.4; }
-.alert-v2-prod-sub  { font-size:14px; color:var(--ink-3); margin-top:2px; }
-/* Middle: current price + badge + target */
-.alert-v2-mid {
-  display:flex; align-items:center; gap:0;
-  padding:9px 14px 12px; border-bottom:none;
+.alert-v3-thumb .prod-img-wrap { height: 100%; }
+.alert-v3-info { flex: 1; min-width: 0; }
+.alert-v3-name {
+  font-size: 14px; font-weight: 700; color: var(--ink-1);
+  line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.alert-v2-price-block { flex:1; }
-.alert-v2-price-label { font-size:14px; color:var(--ink-3); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:2px; }
-.alert-v2-price-val   { font-family:var(--font-display); font-size:20px; color:var(--ink-1); line-height:1; }
-.alert-v2-price-orig  { font-size:14px; color:var(--ink-3); text-decoration:line-through; margin-top:3px; }
-.alert-v2-badge-block { display:flex; flex-direction:column; align-items:flex-end; gap:5px; flex-shrink:0; }
-.alert-v2-target { font-size:14px; color:var(--ink-3); text-align:right; }
-/* Bottom: actions */
-.alert-v2-actions { display:flex; gap:0; }
-.alert-v2-view-btn {
-  flex:1; padding:9px; border-radius:0;
-  border:none; border-right:1px solid var(--border);
-  background:var(--bg-surface);
-  font-size:13px; font-weight:600; color:var(--ink-2); cursor:pointer;
-  transition:background 0.1s; text-align:center;
+.alert-v3-meta {
+  font-size: 12px; color: var(--ink-3); margin-top: 2px;
 }
-.alert-v2-view-btn:hover { background:var(--bg-input); }
-.alert-v2-buy-btn {
-  flex:1; padding:9px; border-radius:0;
-  background:var(--accent); border:none;
-  font-size:13px; font-weight:600;
-  color:#fff; cursor:pointer; text-align:center;
+
+/* ── Price row: gold badge + stores count ── */
+.alert-v3-prices {
+  padding: 0 14px 12px;
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
 }
-.alert-v2-buy-btn:hover { opacity:0.9; }
+.alert-v3-lowest-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: #EAA005; color: #fff;
+  font-size: 12px; font-weight: 700;
+  padding: 4px 10px; border-radius: 20px;
+  white-space: nowrap;
+}
+.alert-v3-stores {
+  font-size: 12px; color: var(--ink-3); font-weight: 500; white-space: nowrap;
+}
+
+/* ── Price movement indicator ── */
+.alert-v3-movement {
+  display: inline-flex; align-items: center; gap: 3px;
+  font-size: 11px; font-weight: 700; white-space: nowrap;
+  padding: 3px 7px; border-radius: 20px;
+}
+.alert-v3-movement svg { width: 11px; height: 11px; flex-shrink: 0; }
+.movement-down {
+  background: var(--green-light); color: var(--green);
+}
+.movement-up {
+  background: var(--red-light); color: var(--red);
+}
 
 /* ── SKELETON LOADING STATES ─────────────────────────────── */
 @keyframes sk-shimmer {
@@ -1369,7 +1783,9 @@ html {
 .ssp-overlay.visible { display:flex; }
 .ssp-header {
   display:flex; align-items:center; gap:12px;
-  padding:6px 20px 14px; flex-shrink:0;
+  padding-right:20px; padding-bottom:14px; padding-left:20px;
+  padding-top: calc(var(--sat) + 6px);
+  flex-shrink:0;
   border-bottom:1px solid var(--border);
   background:var(--bg-phone);
 }
@@ -1500,7 +1916,9 @@ html {
 .reviews-overlay.visible { display:flex; }
 .rv-header {
   display:flex; align-items:center; gap:10px;
-  padding:4px 20px 12px; flex-shrink:0;
+  padding-right:20px; padding-bottom:12px; padding-left:20px;
+  padding-top: calc(var(--sat) + 4px);
+  flex-shrink:0;
   border-bottom:1px solid var(--border); background:var(--bg-phone);
 }
 .rv-title { font-size:16px; font-weight:500; color:var(--ink-1); flex:1; }
@@ -1556,7 +1974,8 @@ html {
 .dip-header {
   display: flex;
   align-items: center;
-  padding: calc(var(--sat) + 10px) 16px 12px;
+  padding-right: 16px; padding-bottom: 12px; padding-left: 16px;
+  padding-top: calc(var(--sat) + 10px);
   flex-shrink: 0;
   background: var(--bg-phone);
   border-bottom: 1px solid var(--border);
@@ -1785,6 +2204,19 @@ html {
 </head>
 <body>
 <div id="app-root">
+
+  <!-- Web status bar — visible only in desktop frame view -->
+  <div class="web-status-bar" id="web-status-bar">
+    <span class="web-status-bar-time" id="web-status-time">9:41</span>
+    <div class="web-status-bar-icons">
+      <!-- Signal -->
+      <svg viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="15" width="3" height="6" rx="1"/><rect x="7" y="11" width="3" height="10" rx="1"/><rect x="12" y="7" width="3" height="14" rx="1"/><rect x="17" y="3" width="3" height="18" rx="1" opacity="0.3"/></svg>
+      <!-- WiFi -->
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12.55a11 11 0 0114.08 0"/><path d="M1.42 9a16 16 0 0121.16 0"/><path d="M8.53 16.11a6 6 0 016.95 0"/><circle cx="12" cy="20" r="1" fill="currentColor" stroke="none"/></svg>
+      <!-- Battery -->
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="7" width="18" height="10" rx="2"/><path d="M22 11v2" stroke-linecap="round" stroke-width="2.5"/><rect x="3.5" y="8.5" width="13" height="7" rx="1" fill="currentColor" stroke="none"/></svg>
+    </div>
+  </div>
 
   <!-- ════════════════════════════════
        AUTH SCREEN
@@ -2210,69 +2642,124 @@ html {
           </div>
           <span class="overlay-title">Notifications</span>
         </div>
-        <span style="font-size:14px;color:var(--accent);cursor:pointer;font-weight:500;">Mark all read</span>
+        <span style="font-size:13px;color:var(--accent);cursor:pointer;font-weight:600;" onclick="this.style.opacity='0.5'">Mark all read</span>
       </div>
+
       <div class="u-overflow-auto">
-        <div class="u-letter-up" style="padding:10px 20px 4px;">Today</div>
-        <div class="notif-item unread">
-          <div class="notif-dot-wrap"><div class="notif-dot"></div></div>
-          <div class="notif-icon ni-drop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
-          <div class="notif-body">
-            <div class="notif-title">Bleu de Chanel EDP dropped to 485 SAR</div>
-            <div class="notif-sub">Down from 620 SAR on Amazon.sa</div>
-            <div class="notif-time">2 hours ago</div>
+
+        <!-- ── TODAY ── -->
+        <div class="notif-list-section">
+          <div class="notif-section-label">Today</div>
+
+          <!-- Price Alert: Chanel drop — UNREAD -->
+          <div class="notif-item notif-price unread">
+            <div class="notif-dot"></div>
+            <div class="notif-avatar notif-avatar-price">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+            </div>
+            <div class="notif-body">
+              <div class="notif-title">Bleu de Chanel EDP dropped to 485 SAR</div>
+              <div class="notif-sub">Golden Scent · was 620 SAR</div>
+              <div class="notif-time">2 hours ago</div>
+            </div>
+            <div class="notif-price-pill">−135 SAR</div>
           </div>
-          <div class="notif-badge-pill">22% off</div>
-        </div>
-        <div class="notif-item unread">
-          <div class="notif-dot-wrap"><div class="notif-dot"></div></div>
-          <div class="notif-icon ni-alert"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
-          <div class="notif-body">
-            <div class="notif-title">Your alert triggered — Acqua di Gio EDP</div>
-            <div class="notif-sub">Now at 265 SAR. Target was 300 SAR.</div>
-            <div class="notif-time">5 hours ago</div>
+
+          <!-- Price Alert: Target hit — UNREAD -->
+          <div class="notif-item notif-price unread">
+            <div class="notif-dot"></div>
+            <div class="notif-avatar notif-avatar-price">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div class="notif-body">
+              <div class="notif-title">Price alert triggered — Acqua di Gio EDP</div>
+              <div class="notif-sub">Now 265 SAR at Al-Sultan · your target was 300 SAR</div>
+              <div class="notif-time">5 hours ago</div>
+            </div>
+            <div class="notif-price-pill">−85 SAR</div>
           </div>
-          <div class="notif-badge-pill">24% off</div>
-        </div>
-        <div class="notif-item">
-          <div class="notif-dot-wrap"><div class="notif-dot read"></div></div>
-          <div class="notif-icon ni-promo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
-          <div class="notif-body">
-            <div class="notif-title">Weekend flash sale — up to 30% off Dior</div>
-            <div class="notif-sub">Namshi · Ends Sunday midnight</div>
-            <div class="notif-time">8 hours ago</div>
-          </div>
-        </div>
-        <div style="padding:10px 20px 4px;font-size:14px;font-weight:500;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-3);margin-top:4px;">Yesterday</div>
-        <div class="notif-item">
-          <div class="notif-dot-wrap"><div class="notif-dot read"></div></div>
-          <div class="notif-icon ni-drop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
-          <div class="notif-body">
-            <div class="notif-title">Dior Sauvage EDT 200ml price drop</div>
-            <div class="notif-sub">310 SAR on Sephora.sa · was 370 SAR</div>
-            <div class="notif-time">Yesterday, 2:14 PM</div>
-          </div>
-        </div>
-        <div class="notif-item">
-          <div class="notif-dot-wrap"><div class="notif-dot read"></div></div>
-          <div class="notif-icon ni-alert"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
-          <div class="notif-body">
-            <div class="notif-title">Tom Ford Tobacco Oud back in stock</div>
-            <div class="notif-sub">Available at Sephora.sa · 590 SAR</div>
-            <div class="notif-time">Yesterday, 9:07 AM</div>
+
+          <!-- Admin Announcement — UNREAD -->
+          <div class="notif-item notif-admin unread">
+            <div class="notif-dot"></div>
+            <div class="notif-avatar notif-avatar-admin">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div class="notif-body">
+              <div class="notif-title">Weekend flash sale — up to 30% off Dior</div>
+              <div class="notif-sub">Namshi · Ends Sunday midnight</div>
+              <div class="notif-time">8 hours ago</div>
+            </div>
+            <div class="notif-admin-pill">Yourdis</div>
           </div>
         </div>
-        <div style="padding:10px 20px 4px;font-size:14px;font-weight:500;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-3);margin-top:4px;">This Week</div>
-        <div class="notif-item">
-          <div class="notif-dot-wrap"><div class="notif-dot read"></div></div>
-          <div class="notif-icon ni-drop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
-          <div class="notif-body">
-            <div class="notif-title">Creed Aventus 100ml — excellent price</div>
-            <div class="notif-sub">840, SAR down 210 SAR from last month</div>
-            <div class="notif-time">3 days ago</div>
+
+        <!-- ── YESTERDAY ── -->
+        <div class="notif-list-section">
+          <div class="notif-section-label">Yesterday</div>
+
+          <!-- Price Alert: Dior drop — READ -->
+          <div class="notif-item notif-price">
+            <div class="notif-dot read"></div>
+            <div class="notif-avatar notif-avatar-price">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+            </div>
+            <div class="notif-body">
+              <div class="notif-title">Dior Sauvage EDT — new low price</div>
+              <div class="notif-sub">310 SAR at Najd Al-Otheyah · was 370 SAR</div>
+              <div class="notif-time">Yesterday · 2:14 PM</div>
+            </div>
+            <div class="notif-price-pill">−60 SAR</div>
+          </div>
+
+          <!-- Price Alert: Back in stock — READ -->
+          <div class="notif-item notif-price">
+            <div class="notif-dot read"></div>
+            <div class="notif-avatar notif-avatar-price">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+            </div>
+            <div class="notif-body">
+              <div class="notif-title">Tom Ford Tobacco Oud back in stock</div>
+              <div class="notif-sub">Available at Asheq Al-Otor · 590 SAR</div>
+              <div class="notif-time">Yesterday · 9:07 AM</div>
+            </div>
           </div>
         </div>
-        <div style="height:20px;" aria-hidden="true"></div>
+
+        <!-- ── THIS WEEK ── -->
+        <div class="notif-list-section">
+          <div class="notif-section-label">This Week</div>
+
+          <!-- Price Alert: Creed — READ -->
+          <div class="notif-item notif-price">
+            <div class="notif-dot read"></div>
+            <div class="notif-avatar notif-avatar-price">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+            </div>
+            <div class="notif-body">
+              <div class="notif-title">Creed Aventus 100ml — all-time low</div>
+              <div class="notif-sub">840 SAR at Asheq Al-Otor · lowest ever tracked</div>
+              <div class="notif-time">3 days ago</div>
+            </div>
+            <div class="notif-price-pill">−210 SAR</div>
+          </div>
+
+          <!-- Admin Announcement: App update — READ -->
+          <div class="notif-item notif-admin">
+            <div class="notif-dot read"></div>
+            <div class="notif-avatar notif-avatar-admin">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <div class="notif-body">
+              <div class="notif-title">Yourdis 2.1 is here</div>
+              <div class="notif-sub">New: fragrance notes view, reaction system, and smarter price tracking</div>
+              <div class="notif-time">4 days ago</div>
+            </div>
+            <div class="notif-admin-pill">Yourdis</div>
+          </div>
+        </div>
+
+        <div style="height:24px;" aria-hidden="true"></div>
       </div>
     </div>
 
@@ -2308,39 +2795,143 @@ html {
       </div>
       <div class="u-overflow-auto">
         <div class="deals-grid">
-          <!-- Row of deal cards -->
-          <div class="deal-grid-card" onclick="closeHotDeals();openProduct('chanel','hot-deals')">
-            <div class="deal-grid-img"><div class="prod-img-wrap" style="background:var(--b-purple);height:100%;"><img loading="lazy" class="prod-img" src="jpeg1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Cd</div></div><div class="deal-grid-badge"><span class="badge badge-fire">Best Price</span></div></div>
-            <div class="deal-grid-body"><div class="deal-brand">Chanel</div><div class="deal-name">Bleu de Chanel EDP 100ml</div><div class="deal-store">In 5 stores</div><div class="deal-prices"><span class="deal-price">485 SAR</span></div></div>
+
+          <!-- Chanel -->
+          <div class="deal-card" onclick="closeHotDeals();openDealIntermediate('chanel','hot-deals')">
+            <div class="deal-img-zone">
+              <div class="prod-img-wrap" style="background:var(--b-purple);"><img loading="lazy" class="prod-img" src="jpeg1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Cd</div></div>
+              <div class="deal-badge-float"><span class="badge badge-fire">Best Price</span></div>
+            </div>
+            <div class="deal-body">
+              <div class="deal-name">Bleu de Chanel EDP</div>
+              <div class="deal-store" style="text-transform:none;">Available in 3 stores</div>
+              <div class="deal-prices" style="display:block;margin-top:4px;">
+                <div style="margin-bottom:5px;"><span class="badge" style="font-size:11px;padding:2px 8px;background-color:#EAA005;color:#ffffff;">Lowest price: 485 SAR</span></div>
+                <div style="font-size:12px;color:var(--ink-2);">Highest price: 545 SAR</div>
+                <div style="font-size:12px;color:var(--ink-2);">Savings: 60 SAR</div>
+              </div>
+            </div>
           </div>
-          <div class="deal-grid-card" onclick="closeHotDeals();openProduct('armani','hot-deals')">
-            <div class="deal-grid-img"><div class="prod-img-wrap" style="background:var(--b-blue);height:100%;"><img loading="lazy" class="prod-img" src="jpeg5.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Aq</div></div><div class="deal-grid-badge"><span class="badge badge-fire">Best Price</span></div></div>
-            <div class="deal-grid-body"><div class="deal-brand">Armani</div><div class="deal-name">Acqua di Gio EDP</div><div class="deal-store">In 5 stores</div><div class="deal-prices"><span class="deal-price">265 SAR</span></div></div>
+
+          <!-- Armani Acqua di Gio EDP -->
+          <div class="deal-card" onclick="closeHotDeals();openDealIntermediate('armani','hot-deals')">
+            <div class="deal-img-zone">
+              <div class="prod-img-wrap" style="background:var(--b-blue);"><img loading="lazy" class="prod-img" src="jpeg5.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Aq</div></div>
+              <div class="deal-badge-float"><span class="badge badge-fire">Best Price</span></div>
+            </div>
+            <div class="deal-body">
+              <div class="deal-name">Acqua di Gio EDP</div>
+              <div class="deal-store" style="text-transform:none;">Available in 3 stores</div>
+              <div class="deal-prices" style="display:block;margin-top:4px;">
+                <div style="margin-bottom:5px;"><span class="badge" style="font-size:11px;padding:2px 8px;background-color:#EAA005;color:#ffffff;">Lowest price: 265 SAR</span></div>
+                <div style="font-size:12px;color:var(--ink-2);">Highest price: 310 SAR</div>
+                <div style="font-size:12px;color:var(--ink-2);">Savings: 45 SAR</div>
+              </div>
+            </div>
           </div>
-          <div class="deal-grid-card" onclick="closeHotDeals();openProduct('dior','hot-deals')">
-            <div class="deal-grid-img"><div class="prod-img-wrap" style="background:var(--b-teal);height:100%;"><img loading="lazy" class="prod-img" src="jpeg2.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Dk</div></div><div class="deal-grid-badge"><span class="badge badge-good">Best Price</span></div></div>
-            <div class="deal-grid-body"><div class="deal-brand">Dior</div><div class="deal-name">Sauvage EDT 200ml</div><div class="deal-store">In 5 stores</div><div class="deal-prices"><span class="deal-price">310 SAR</span></div></div>
+
+          <!-- Dior Sauvage EDT -->
+          <div class="deal-card" onclick="closeHotDeals();openDealIntermediate('dior','hot-deals')">
+            <div class="deal-img-zone">
+              <div class="prod-img-wrap" style="background:var(--b-teal);"><img loading="lazy" class="prod-img" src="jpeg2.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Dk</div></div>
+              <div class="deal-badge-float"><span class="badge badge-good">Best Price</span></div>
+            </div>
+            <div class="deal-body">
+              <div class="deal-name">Sauvage EDT</div>
+              <div class="deal-store" style="text-transform:none;">Available in 3 stores</div>
+              <div class="deal-prices" style="display:block;margin-top:4px;">
+                <div style="margin-bottom:5px;"><span class="badge" style="font-size:11px;padding:2px 8px;background-color:#EAA005;color:#ffffff;">Lowest price: 310 SAR</span></div>
+                <div style="font-size:12px;color:var(--ink-2);">Highest price: 365 SAR</div>
+                <div style="font-size:12px;color:var(--ink-2);">Savings: 55 SAR</div>
+              </div>
+            </div>
           </div>
-          <div class="deal-grid-card" onclick="closeHotDeals();openProduct('ysl','hot-deals')">
-            <div class="deal-grid-img"><div class="prod-img-wrap" style="background:var(--b-pink);height:100%;"><img loading="lazy" class="prod-img" src="jpeg4.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">YS</div></div><div class="deal-grid-badge"><span class="badge badge-good">Best Price</span></div></div>
-            <div class="deal-grid-body"><div class="deal-brand">YSL</div><div class="deal-name">Y Le Parfum 60ml</div><div class="deal-store">In 5 stores</div><div class="deal-prices"><span class="deal-price">290 SAR</span></div></div>
+
+          <!-- YSL Y Le Parfum -->
+          <div class="deal-card" onclick="closeHotDeals();openDealIntermediate('ysl','hot-deals')">
+            <div class="deal-img-zone">
+              <div class="prod-img-wrap" style="background:var(--b-pink);"><img loading="lazy" class="prod-img" src="jpeg4.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">YS</div></div>
+              <div class="deal-badge-float"><span class="badge badge-good">Best Price</span></div>
+            </div>
+            <div class="deal-body">
+              <div class="deal-name">Y Le Parfum</div>
+              <div class="deal-store" style="text-transform:none;">Available in 3 stores</div>
+              <div class="deal-prices" style="display:block;margin-top:4px;">
+                <div style="margin-bottom:5px;"><span class="badge" style="font-size:11px;padding:2px 8px;background-color:#EAA005;color:#ffffff;">Lowest price: 290 SAR</span></div>
+                <div style="font-size:12px;color:var(--ink-2);">Highest price: 340 SAR</div>
+                <div style="font-size:12px;color:var(--ink-2);">Savings: 50 SAR</div>
+              </div>
+            </div>
           </div>
-          <div class="deal-grid-card" onclick="closeHotDeals();openProduct('tomford','hot-deals')">
-            <div class="deal-grid-img"><div class="prod-img-wrap" style="background:var(--b-amber);height:100%;"><img loading="lazy" class="prod-img" src="jpeg3.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Tf</div></div><div class="deal-grid-badge"><span class="badge badge-fire">Best Price</span></div></div>
-            <div class="deal-grid-body"><div class="deal-brand">Tom Ford</div><div class="deal-name">Tobacco Oud EDP</div><div class="deal-store">In 5 stores</div><div class="deal-prices"><span class="deal-price">590 SAR</span></div></div>
+
+          <!-- Tom Ford Tobacco Oud -->
+          <div class="deal-card" onclick="closeHotDeals();openDealIntermediate('tomford','hot-deals')">
+            <div class="deal-img-zone">
+              <div class="prod-img-wrap" style="background:var(--b-amber);"><img loading="lazy" class="prod-img" src="jpeg3.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Tf</div></div>
+              <div class="deal-badge-float"><span class="badge badge-fire">Best Price</span></div>
+            </div>
+            <div class="deal-body">
+              <div class="deal-name">Tobacco Oud EDP</div>
+              <div class="deal-store" style="text-transform:none;">Available in 3 stores</div>
+              <div class="deal-prices" style="display:block;margin-top:4px;">
+                <div style="margin-bottom:5px;"><span class="badge" style="font-size:11px;padding:2px 8px;background-color:#EAA005;color:#ffffff;">Lowest price: 590 SAR</span></div>
+                <div style="font-size:12px;color:var(--ink-2);">Highest price: 645 SAR</div>
+                <div style="font-size:12px;color:var(--ink-2);">Savings: 55 SAR</div>
+              </div>
+            </div>
           </div>
-          <div class="deal-grid-card" onclick="closeHotDeals();openProduct('creed','hot-deals')">
-            <div class="deal-grid-img"><div class="prod-img-wrap" style="background:var(--b-sage);height:100%;"><img loading="lazy" class="prod-img" src="jpeg6.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Cr</div></div><div class="deal-grid-badge"><span class="badge badge-fire">Best Price</span></div></div>
-            <div class="deal-grid-body"><div class="deal-brand">Creed</div><div class="deal-name">Aventus 100ml</div><div class="deal-store">In 5 stores</div><div class="deal-prices"><span class="deal-price">840 SAR</span></div></div>
+
+          <!-- Creed Aventus -->
+          <div class="deal-card" onclick="closeHotDeals();openDealIntermediate('creed','hot-deals')">
+            <div class="deal-img-zone">
+              <div class="prod-img-wrap" style="background:var(--b-sage);"><img loading="lazy" class="prod-img" src="jpeg6.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Cr</div></div>
+              <div class="deal-badge-float"><span class="badge badge-fire">Best Price</span></div>
+            </div>
+            <div class="deal-body">
+              <div class="deal-name">Creed Aventus</div>
+              <div class="deal-store" style="text-transform:none;">Available in 3 stores</div>
+              <div class="deal-prices" style="display:block;margin-top:4px;">
+                <div style="margin-bottom:5px;"><span class="badge" style="font-size:11px;padding:2px 8px;background-color:#EAA005;color:#ffffff;">Lowest price: 840 SAR</span></div>
+                <div style="font-size:12px;color:var(--ink-2);">Highest price: 1,050 SAR</div>
+                <div style="font-size:12px;color:var(--ink-2);">Savings: 210 SAR</div>
+              </div>
+            </div>
           </div>
-          <div class="deal-grid-card" onclick="closeHotDeals();openProduct('dior','hot-deals')">
-            <div class="deal-grid-img"><div class="prod-img-wrap" style="background:var(--b-teal);height:100%;"><img loading="lazy" class="prod-img" src="jpeg2.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Dk</div></div><div class="deal-grid-badge"><span class="badge badge-good">Best Price</span></div></div>
-            <div class="deal-grid-body"><div class="deal-brand">Dior</div><div class="deal-name">Sauvage Elixir 60ml</div><div class="deal-store">In 5 stores</div><div class="deal-prices"><span class="deal-price">420 SAR</span></div></div>
+
+          <!-- Dior Sauvage Elixir -->
+          <div class="deal-card" onclick="closeHotDeals();openDealIntermediate('dior','hot-deals')">
+            <div class="deal-img-zone">
+              <div class="prod-img-wrap" style="background:var(--b-teal);"><img loading="lazy" class="prod-img" src="jpeg2.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Dk</div></div>
+              <div class="deal-badge-float"><span class="badge badge-good">Best Price</span></div>
+            </div>
+            <div class="deal-body">
+              <div class="deal-name">Sauvage Elixir</div>
+              <div class="deal-store" style="text-transform:none;">Available in 3 stores</div>
+              <div class="deal-prices" style="display:block;margin-top:4px;">
+                <div style="margin-bottom:5px;"><span class="badge" style="font-size:11px;padding:2px 8px;background-color:#EAA005;color:#ffffff;">Lowest price: 310 SAR</span></div>
+                <div style="font-size:12px;color:var(--ink-2);">Highest price: 365 SAR</div>
+                <div style="font-size:12px;color:var(--ink-2);">Savings: 55 SAR</div>
+              </div>
+            </div>
           </div>
-          <div class="deal-grid-card" onclick="closeHotDeals();openProduct('armani','hot-deals')">
-            <div class="deal-grid-img"><div class="prod-img-wrap" style="background:var(--b-blue);height:100%;"><img loading="lazy" class="prod-img" src="jpeg5.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Aq</div></div><div class="deal-grid-badge"><span class="badge badge-good">Best Price</span></div></div>
-            <div class="deal-grid-body"><div class="deal-brand">Armani</div><div class="deal-name">Acqua di Gio Profumo</div><div class="deal-store">In 5 stores</div><div class="deal-prices"><span class="deal-price">395 SAR</span></div></div>
+
+          <!-- Armani Acqua di Gio Profumo -->
+          <div class="deal-card" onclick="closeHotDeals();openDealIntermediate('armani','hot-deals')">
+            <div class="deal-img-zone">
+              <div class="prod-img-wrap" style="background:var(--b-blue);"><img loading="lazy" class="prod-img" src="jpeg5.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;">Aq</div></div>
+              <div class="deal-badge-float"><span class="badge badge-good">Best Price</span></div>
+            </div>
+            <div class="deal-body">
+              <div class="deal-name">Acqua di Gio Profumo</div>
+              <div class="deal-store" style="text-transform:none;">Available in 3 stores</div>
+              <div class="deal-prices" style="display:block;margin-top:4px;">
+                <div style="margin-bottom:5px;"><span class="badge" style="font-size:11px;padding:2px 8px;background-color:#EAA005;color:#ffffff;">Lowest price: 265 SAR</span></div>
+                <div style="font-size:12px;color:var(--ink-2);">Highest price: 310 SAR</div>
+                <div style="font-size:12px;color:var(--ink-2);">Savings: 45 SAR</div>
+              </div>
+            </div>
           </div>
+
         </div>
         <div style="height:16px;" aria-hidden="true"></div>
       </div>
@@ -2415,32 +3006,32 @@ html {
         <span class="sort-chip">Watchlist</span>
       </div>
       <div class="u-overflow-auto">
-        <div class="drop-row" onclick="closePriceDrops();openProduct('chanel')">
+        <div class="drop-row" onclick="closePriceDrops();openProduct('chanel','price-drops')">
           <div class="drop-thumb"><div class="prod-img-wrap" style="background:var(--b-purple);height:52px;"><img loading="lazy" class="prod-img" src="jpeg1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:14px;">Cd</div></div></div>
           <div class="drop-info"><div class="drop-name">Bleu de Chanel EDP 100ml</div><div class="drop-sub">Chanel · Kaneen · 2 hrs ago</div><div style="margin-top:4px;"><span class="badge badge-fire">↓ 22% off</span></div></div>
           <div class="drop-right"><div class="drop-price">485 SAR</div><div class="drop-delta">−135 SAR</div></div>
         </div>
-        <div class="drop-row" onclick="closePriceDrops();openProduct('armani')">
+        <div class="drop-row" onclick="closePriceDrops();openProduct('armani','price-drops')">
           <div class="drop-thumb"><div class="prod-img-wrap" style="background:var(--b-blue);height:52px;"><img loading="lazy" class="prod-img" src="jpeg5.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:14px;">Aq</div></div></div>
           <div class="drop-info"><div class="drop-name">Acqua di Gio EDP</div><div class="drop-sub">Armani · Sephora · 3 hrs ago</div><div style="margin-top:4px;"><span class="badge badge-fire">↓ 24% off</span></div></div>
           <div class="drop-right"><div class="drop-price">265 SAR</div><div class="drop-delta">−85 SAR</div></div>
         </div>
-        <div class="drop-row" onclick="closePriceDrops();openProduct('ysl')">
+        <div class="drop-row" onclick="closePriceDrops();openProduct('ysl','price-drops')">
           <div class="drop-thumb"><div class="prod-img-wrap" style="background:var(--b-pink);height:52px;"><img loading="lazy" class="prod-img" src="jpeg4.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:14px;">YS</div></div></div>
           <div class="drop-info"><div class="drop-name">Y Le Parfum 60ml</div><div class="drop-sub">YSL · Amazon · 5 hrs ago</div><div style="margin-top:4px;"><span class="badge badge-good">↗ 17% off</span></div></div>
           <div class="drop-right"><div class="drop-price">290 SAR</div><div class="drop-delta">−60 SAR</div></div>
         </div>
-        <div class="drop-row" onclick="closePriceDrops();openProduct('dior')">
+        <div class="drop-row" onclick="closePriceDrops();openProduct('dior','price-drops')">
           <div class="drop-thumb"><div class="prod-img-wrap" style="background:var(--b-teal);height:52px;"><img loading="lazy" class="prod-img" src="jpeg2.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:14px;">Dk</div></div></div>
           <div class="drop-info"><div class="drop-name">Dior Sauvage EDT 200ml</div><div class="drop-sub">Dior · Rose · Yesterday</div><div style="margin-top:4px;"><span class="badge badge-good">↗ 16% off</span></div></div>
           <div class="drop-right"><div class="drop-price">310 SAR</div><div class="drop-delta">−60 SAR</div></div>
         </div>
-        <div class="drop-row" onclick="closePriceDrops();openProduct('creed')">
+        <div class="drop-row" onclick="closePriceDrops();openProduct('creed','price-drops')">
           <div class="drop-thumb"><div class="prod-img-wrap" style="background:var(--b-sage);height:52px;"><img loading="lazy" class="prod-img" src="jpeg6.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:14px;">Cr</div></div></div>
           <div class="drop-info"><div class="drop-name">Creed Aventus 100ml</div><div class="drop-sub">Creed · Sephora · 2 days ago</div><div style="margin-top:4px;"><span class="badge badge-fire">↓ 20% off</span></div></div>
           <div class="drop-right"><div class="drop-price">840 SAR</div><div class="drop-delta">−210 SAR</div></div>
         </div>
-        <div class="drop-row" onclick="closePriceDrops();openProduct('tomford')">
+        <div class="drop-row" onclick="closePriceDrops();openProduct('tomford','price-drops')">
           <div class="drop-thumb"><div class="prod-img-wrap" style="background:var(--b-amber);height:52px;"><img loading="lazy" class="prod-img" src="jpeg3.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:14px;">Tf</div></div></div>
           <div class="drop-info"><div class="drop-name">Tobacco Oud EDP 50ml</div><div class="drop-sub">Tom Ford · Kaneen · 3 days ago</div><div style="margin-top:4px;"><span class="badge badge-good">↗ 9% off</span></div></div>
           <div class="drop-right"><div class="drop-price">590 SAR</div><div class="drop-delta">−60 SAR</div></div>
@@ -2605,12 +3196,12 @@ html {
         <div>
           <div class="ai-msg-bubble">Hello Abdullah! 👋 I'm your personal fragrance assistant. Based on your taste for Woody and Oriental scents, I've found some great picks for you today. What are you looking for?</div>
           <!-- Suggested products -->
-          <div class="ai-product-suggestion" onclick="closeAIChat();openProduct('creed')">
+          <div class="ai-product-suggestion" onclick="closeAIChat();openProduct('creed','home')">
             <div class="ai-sug-img"><div class="prod-img-wrap" style="background:var(--b-sage);height:44px;"><img loading="lazy" class="prod-img" src="jpeg6.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:13px;">Cr</div></div></div>
             <div class="ai-sug-info"><div class="ai-sug-name">Creed Aventus 100ml</div><div class="ai-sug-sub">Woody · Matches your taste · ↓ 20% off</div></div>
             <div class="ai-sug-price">840 SAR</div>
           </div>
-          <div class="ai-product-suggestion" onclick="closeAIChat();openProduct('tomford')">
+          <div class="ai-product-suggestion" onclick="closeAIChat();openProduct('tomford','home')">
             <div class="ai-sug-img"><div class="prod-img-wrap" style="background:var(--b-amber);height:44px;"><img loading="lazy" class="prod-img" src="jpeg3.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:13px;">Tf</div></div></div>
             <div class="ai-sug-info"><div class="ai-sug-name">Tom Ford Tobacco Oud 50ml</div><div class="ai-sug-sub">Oriental Oud · Top pick this week</div></div>
             <div class="ai-sug-price">590 SAR</div>
@@ -3050,66 +3641,67 @@ html {
 		</p>          
 		<span id="read-more-btn" onclick="toggleReadMore()" style="font-weight:500; color:var(--accent); cursor:pointer; margin-left:4px;">Read More</span>
         </div>
-		        <div class="notes-row" id="product-notes">
-              <div class="note-group">
-                <div class="note-title">Top</div>
-                <div class="note-chips-row">
-                  <span class="note-chip note-top">Citrus</span>
-                  <span class="note-chip note-top">Bergamot</span>
-                </div>
+        <!-- ── NOTES — LAYERED PYRAMID CARDS ── -->
+        <div class="notes-pyramid" id="product-notes">
+          <!-- Built dynamically by _setProductMeta() -->
+        </div>
+        <!-- ── FRAGRANCE IDENTITY STRIP ── -->
+        <div class="frag-identity-section">
+          <div class="frag-identity-row">
+
+            <!-- House -->
+            <div class="frag-id-card">
+              <div class="frag-id-icon" style="background:var(--b-purple);color:var(--accent);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
               </div>
-              <div class="note-group">
-                <div class="note-title">Heart</div>
-                <div class="note-chips-row">
-                  <span class="note-chip note-heart">Vetiver</span>
-                  <span class="note-chip note-heart">Cedarwood</span>
-                </div>
-              </div>
-              <div class="note-group">
-                <div class="note-title">Base</div>
-                <div class="note-chips-row">
-                  <span class="note-chip note-base">Patchouli</span>
-                  <span class="note-chip note-base">Labdanum</span>
-                </div>
-              </div>
-		        </div>
-		        <div class="meta-row">
-              <div class="meta-item">
-                <div class="meta-label">Family</div>
-                <div class="meta-value" id="product-family">Woody</div>
-              </div>
-              <div class="meta-item">
-                <div class="meta-label">Perfumer</div>
-                <div class="meta-value" id="product-perfumer">Olivier Polge</div>
-              </div>
+              <div class="frag-id-label">House</div>
+              <div class="frag-id-value" id="product-frag-house">Chanel</div>
             </div>
 
-            <div class="meta-row" style="margin-top:8px;">
-              <div class="meta-item">
-                <div class="meta-label">Country</div>
-                <div class="meta-value meta-value-alt" id="product-country">France</div>
+            <!-- Family -->
+            <div class="frag-id-card">
+              <div class="frag-id-icon" style="background:var(--amber-light);color:var(--amber);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M12 6v6l4 2"/></svg>
               </div>
-              <div class="meta-item">
-                <div class="meta-label">Gender</div>
-                <div class="meta-value meta-value-alt" id="product-gender">Men</div>
-              </div>
+              <div class="frag-id-label">Family</div>
+              <div class="frag-id-value" id="product-family">Woody</div>
             </div>
 
+            <!-- Gender -->
+            <div class="frag-id-card">
+              <div class="frag-id-icon" style="background:var(--b-blue);color:#2563EB;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="7" r="4"/><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/></svg>
+              </div>
+              <div class="frag-id-label">Gender</div>
+              <div class="frag-id-value" id="product-gender">Men</div>
+            </div>
+
+            <!-- Country -->
+            <div class="frag-id-card">
+              <div class="frag-id-icon" style="background:var(--b-sage);color:#3A7D44;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+              </div>
+              <div class="frag-id-label">Country</div>
+              <div class="frag-id-value" id="product-country">France</div>
+            </div>
+
+            <!-- Perfumer -->
+            <div class="frag-id-card">
+              <div class="frag-id-icon" style="background:var(--b-pink);color:#8C3066;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+              </div>
+              <div class="frag-id-label">Perfumer</div>
+              <div class="frag-id-value" id="product-perfumer">Jacques Polge</div>
+            </div>
+
+          </div>
+        </div>
 		        <div class="accords-wrap" id="product-accords">
 		        <div class="accord-title">Accords</div>
 		        <!-- Bars injected by JS -->
 		        </div>
 		        </div>
       <div style="padding:0 20px;">
-
-        <!-- STORE SECTION — before Price History -->
-        <div id="product-store-section" style="display:flex;align-items:center;gap:10px;margin-top:16px;margin-bottom:16px;cursor:pointer;" onclick="openStoreFromProduct()">
-          <div id="product-store-icon" style="width:30px;height:30px;border-radius:50%;background:var(--bg-phone);border:1px solid var(--border-strong);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:var(--ink-2);flex-shrink:0;">Am</div>
-          <div style="display:flex; flex-direction:column;">
-            <div id="product-store-name-link" style="font-size:13px;font-weight:400;color:var(--accent);">Golden Scent</div>
-            <div style="font-size:14px; color:var(--ink-3); margin-top:1px;">(280+ items)</div>
-          </div>
-        </div>
 
         <!-- PRICE HISTORY — table format -->
         <div style="font-size:13px;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-3);font-weight:500;margin-bottom:8px;">Price History</div>
@@ -3142,9 +3734,78 @@ html {
             </tr>
           </tbody>
         </table>
-		
-        <!-- Price alert — inline toggle -->
-        <div style="margin-top:16px;margin-bottom:20px;">
+
+        <!-- ── REACTIONS ── -->
+        <div class="reactions-section" style="margin-top:20px;">
+          <div class="reactions-title">Community Reactions</div>
+          <div class="reactions-row">
+            <button class="reaction-btn" onclick="toggleReaction(this)">
+              <span class="reaction-icon">❤️</span>
+              <span class="reaction-label">Love</span>
+              <span class="reaction-count">279</span>
+            </button>
+            <button class="reaction-btn" onclick="toggleReaction(this)">
+              <span class="reaction-icon">👍</span>
+              <span class="reaction-label">Like</span>
+              <span class="reaction-count">281</span>
+            </button>
+            <button class="reaction-btn" onclick="toggleReaction(this)">
+              <span class="reaction-icon">😐</span>
+              <span class="reaction-label">Okay</span>
+              <span class="reaction-count">77</span>
+            </button>
+            <button class="reaction-btn" onclick="toggleReaction(this)">
+              <span class="reaction-icon">👎</span>
+              <span class="reaction-label">Dislike</span>
+              <span class="reaction-count">53</span>
+            </button>
+            <button class="reaction-btn" onclick="toggleReaction(this)">
+              <span class="reaction-icon">🚫</span>
+              <span class="reaction-label">Hate</span>
+              <span class="reaction-count">12</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- ── WHEN TO WEAR ── -->
+        <div class="wear-section">
+          <div class="wear-section-title">When to Wear</div>
+          <div class="wear-grid">
+            <div class="wear-chip" onclick="toggleWear(this)">
+              <span class="wear-chip-icon">❄️</span>
+              <span class="wear-chip-label">Winter</span>
+              <span class="wear-chip-count">212</span>
+            </div>
+            <div class="wear-chip" onclick="toggleWear(this)">
+              <span class="wear-chip-icon">🌸</span>
+              <span class="wear-chip-label">Spring</span>
+              <span class="wear-chip-count">369</span>
+            </div>
+            <div class="wear-chip" onclick="toggleWear(this)">
+              <span class="wear-chip-icon">☀️</span>
+              <span class="wear-chip-label">Summer</span>
+              <span class="wear-chip-count">191</span>
+            </div>
+            <div class="wear-chip" onclick="toggleWear(this)">
+              <span class="wear-chip-icon">🍂</span>
+              <span class="wear-chip-label">Autumn</span>
+              <span class="wear-chip-count">352</span>
+            </div>
+            <div class="wear-chip" onclick="toggleWear(this)">
+              <span class="wear-chip-icon">🌤️</span>
+              <span class="wear-chip-label">Day</span>
+              <span class="wear-chip-count">348</span>
+            </div>
+            <div class="wear-chip" onclick="toggleWear(this)">
+              <span class="wear-chip-icon">🌙</span>
+              <span class="wear-chip-label">Night</span>
+              <span class="wear-chip-count">255</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Price Drop Alert -->
+        <div style="margin-bottom:20px;">
           <div class="alert-box">
             <div class="alert-box-text">
               <div class="alert-title">Price drop alert</div>
@@ -3154,65 +3815,47 @@ html {
           </div>
         </div>
 
-        <!-- Ratings & Reviews -->
-		
-		        <!-- ADD A REVIEW -->
-		<div style="font-size:13px;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-3);font-weight:500;margin-bottom:10px;">Ratings &amp; Reviews</div>
+        <!-- ── EXACT MATCH PRODUCTS ── -->
+        <div class="pdp-rec-section" id="pdp-exact-match-section">
+          <div class="pdp-rec-title">Exact Match Products</div>
+          <div class="pdp-rec-subtitle">Same fragrance, different size or concentration</div>
+          <div class="h-scroll pdp-rec-scroll" id="pdp-exact-match-list" style="padding:0 0 4px;"></div>
+        </div>
+
+        <!-- ── SIMILAR FEEL PRODUCTS ── -->
+        <div class="pdp-rec-section" id="pdp-similar-feel-section">
+          <div class="pdp-rec-title">Similar Feel</div>
+          <div class="pdp-rec-subtitle">Same vibe, different brand or style</div>
+          <div class="h-scroll pdp-rec-scroll" id="pdp-similar-feel-list" style="padding:0 0 4px;"></div>
+        </div>
+
+        <!-- STORE PILL — best price source -->
+        <div id="product-store-section" onclick="openStoreFromProduct()">
+          <div class="store-pill" id="product-store-pill">
+            <div class="store-pill-avatar" id="product-store-icon" style="background:var(--b-blue);">GS</div>
+            <span class="store-pill-name" id="product-store-name-link">Golden Scent</span>
+            <span class="store-pill-sub">· Best price</span>
+            <span class="store-pill-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg></span>
+          </div>
+        </div>
+
+        <!-- ── REVIEWS ── -->
+        <div style="font-size:13px;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-3);font-weight:500;margin-bottom:10px;">Reviews</div>
 
         <div style="margin-top:12px;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:14px;">
           <div style="font-size:14px;font-weight:500;color:var(--ink-1);margin-bottom:10px;">Add a Review</div>
-          <!-- Star rating selector -->
-          <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;">
-            <span style="font-size:13px;color:var(--ink-3);margin-right:2px;">Your rating:</span>
-            <div id="review-star-selector" style="display:flex;gap:3px;">
-              <svg class="review-star-sel" data-val="1" onclick="selectReviewStar(1)" viewBox="0 0 24 24" width="22" height="22" fill="var(--border-strong)" style="cursor:pointer;transition:fill 0.1s;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-              <svg class="review-star-sel" data-val="2" onclick="selectReviewStar(2)" viewBox="0 0 24 24" width="22" height="22" fill="var(--border-strong)" style="cursor:pointer;transition:fill 0.1s;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-              <svg class="review-star-sel" data-val="3" onclick="selectReviewStar(3)" viewBox="0 0 24 24" width="22" height="22" fill="var(--border-strong)" style="cursor:pointer;transition:fill 0.1s;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-              <svg class="review-star-sel" data-val="4" onclick="selectReviewStar(4)" viewBox="0 0 24 24" width="22" height="22" fill="var(--border-strong)" style="cursor:pointer;transition:fill 0.1s;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-              <svg class="review-star-sel" data-val="5" onclick="selectReviewStar(5)" viewBox="0 0 24 24" width="22" height="22" fill="var(--border-strong)" style="cursor:pointer;transition:fill 0.1s;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            </div>
-            <span id="review-star-label" style="font-size:13px;color:var(--ink-3);margin-left:4px;"></span>
-          </div>
-          <!-- Text input -->
           <textarea id="review-text-input" placeholder="Share your thoughts about this fragrance…" style="width:100%;min-height:72px;resize:none;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);padding:9px 11px;font-size:14px;font-family:var(--font-body);color:var(--ink-1);outline:none;line-height:1.6;transition:border-color 0.15s;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"></textarea>
           <button onclick="submitReview()" style="margin-top:8px;width:100%;padding:10px;border-radius:var(--radius-sm);background:var(--accent);color:#fff;font-size:13px;font-weight:500;border:none;cursor:pointer;transition:opacity 0.15s;" onmouseover="this.style.opacity='0.88'" onmouseout="this.style.opacity='1'">Submit Review</button>
           <div id="review-submit-msg" style="display:none;margin-top:8px;font-size:13px;color:var(--green);text-align:center;font-weight:500;">✓ Review submitted. Thank you!</div>
         </div>
-		 <div style="margin-top: 20px;"></div>
-        <div class="rating-summary">
-          <div class="rating-big" id="product-rating">4.6</div>
-          <div class="rating-right">
-            <div class="stars">
-              <svg class="star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-              <svg class="star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-              <svg class="star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-              <svg class="star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-              <svg class="star" viewBox="0 0 24 24" fill="currentColor" style="clip-path:inset(0 40% 0 0)"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            </div>
-            <div class="rating-count" id="product-review-count">4.6 out of 5 · 287 reviews</div>
-          </div>
-        </div>		
+        <div style="margin-top:20px;"></div>
 
         <div class="review-card">
           <div class="review-head"><span class="review-user">Khalid A.</span><span class="review-date">2 weeks ago</span></div>
-          <div class="review-stars">
-            <svg class="star" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <svg class="star" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <svg class="star" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <svg class="star" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <svg class="star" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          </div>
           <div class="review-text" id="product-review1">Incredible longevity — easily 10+ hours. The woody freshness is perfect for the office. Found it for 485 SAR on Amazon thanks to Yourdis.</div>
         </div>
         <div class="review-card">
           <div class="review-head"><span class="review-user">Fahad M.</span><span class="review-date">1 month ago</span></div>
-          <div class="review-stars">
-            <svg class="star" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <svg class="star" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <svg class="star" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <svg class="star" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <svg class="star star-empty" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          </div>
           <div class="review-text" id="product-review2">Classic for a reason. The EDP version has noticeably better projection than the EDT. Great value at this price point.</div>
         </div>
         <div class="reviews-show-more" onclick="openReviewsPage()" style="cursor:pointer;">Show all <span id="product-all-reviews">287</span> reviews →</div>
@@ -3243,93 +3886,86 @@ html {
         </div>
       </div>
 
-      <div style="padding:0 20px 10px;font-size:14px;font-weight:500;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-3);">Active Alerts</div>
+      <div style="padding:0 20px 10px;font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-3);">Active Alerts</div>
 
       <!-- ALERT CARD 1 — Bleu de Chanel -->
-      <div class="alert-card-v2" onclick="openProduct('chanel')" style="cursor:pointer;">
-        <div class="alert-v2-top">
-          <div class="alert-v2-thumb">
-            <div class="prod-img-wrap" style="background:var(--b-purple);height:40px;">
-              <img loading="lazy" class="prod-img" src="jpeg1.jpg" alt="Bleu de Chanel" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="alert-card-v3" id="alert-card-chanel" onclick="openProduct('chanel','alerts')">
+        <div class="alert-v3-header">
+          <div class="alert-v3-thumb">
+            <div class="prod-img-wrap" style="background:var(--b-purple);height:100%;">
+              <img loading="lazy" class="prod-img" src="jpeg1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
               <div class="prod-initials" style="display:none;font-size:13px;">Cd</div>
             </div>
           </div>
-          <div class="alert-v2-names">
-            <div class="alert-v2-prod-name">Bleu de Chanel EDP 100ml</div>
-            <div class="alert-v2-prod-sub">Chanel</div>
+          <div class="alert-v3-info">
+            <div class="alert-v3-name">Bleu de Chanel EDP</div>
+            <div class="alert-v3-meta">Chanel · 100ml · Eau de Parfum</div>
           </div>
-          <div class="toggle" id="alt1" onclick="toggleEl('alt1')"><div class="toggle-thumb"></div></div>
+          <div class="toggle" id="altv3-1" onclick="event.stopPropagation();requestAlertDisable('altv3-1','alert-card-chanel')"><div class="toggle-thumb"></div></div>
         </div>
-        <div class="alert-v2-mid">
-          <div class="alert-v2-price-block">
-            <div class="alert-v2-price-label">Current price</div>
-            <div class="alert-v2-price-val">485 SAR</div>
-            <div class="alert-v2-price-orig">Was 620 SAR</div>
+        <div class="alert-v3-prices">
+            <span class="alert-v3-lowest-badge">Lowest: 485 SAR</span>
+            <span class="alert-v3-movement movement-down"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/><line x1="12" y1="9" x2="12" y2="20"/></svg>Decreased</span>
+            <span class="alert-v3-stores">In 3 stores</span>
           </div>
-          <div class="alert-v2-badge-block">
-            <span class="badge badge-fire">Great! Dropped &#x2193; 22%</span>
-            <div class="alert-v2-target">Store: Asheq Al Etour</div>
-          </div>
-        </div>
-
       </div>
 
       <!-- ALERT CARD 2 — Dior Sauvage -->
-      <div class="alert-card-v2" onclick="openProduct('dior')" style="cursor:pointer;">
-        <div class="alert-v2-top">
-          <div class="alert-v2-thumb">
-            <div class="prod-img-wrap" style="background:var(--b-teal);height:40px;">
-              <img loading="lazy" class="prod-img" src="jpeg2.jpg" alt="Dior Sauvage" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="alert-card-v3" id="alert-card-dior" onclick="openProduct('dior','alerts')">
+        <div class="alert-v3-header">
+          <div class="alert-v3-thumb">
+            <div class="prod-img-wrap" style="background:var(--b-teal);height:100%;">
+              <img loading="lazy" class="prod-img" src="jpeg2.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
               <div class="prod-initials" style="display:none;font-size:13px;">Dk</div>
             </div>
           </div>
-          <div class="alert-v2-names">
-            <div class="alert-v2-prod-name">Dior Sauvage EDT 200ml</div>
-            <div class="alert-v2-prod-sub">Dior</div>
+          <div class="alert-v3-info">
+            <div class="alert-v3-name">Sauvage EDT</div>
+            <div class="alert-v3-meta">Dior · 200ml · Eau de Toilette</div>
           </div>
-          <div class="toggle" id="alt2" onclick="toggleEl('alt2')"><div class="toggle-thumb"></div></div>
+          <div class="toggle" id="altv3-2" onclick="event.stopPropagation();requestAlertDisable('altv3-2','alert-card-dior')"><div class="toggle-thumb"></div></div>
         </div>
-        <div class="alert-v2-mid">
-          <div class="alert-v2-price-block">
-            <div class="alert-v2-price-label">Current price</div>
-            <div class="alert-v2-price-val">310 SAR</div>
-            <div class="alert-v2-price-orig">Was 370 SAR</div>
+        <div class="alert-v3-prices">
+            <span class="alert-v3-lowest-badge">Lowest: 310 SAR</span>
+            <span class="alert-v3-movement movement-up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 9 12 15 6 9"/><line x1="12" y1="15" x2="12" y2="4"/></svg>Increased</span>
+            <span class="alert-v3-stores">In 3 stores</span>
           </div>
-          <div class="alert-v2-badge-block">
-            <span class="badge badge-good">Price Up &#x2197; 16%</span>
-            <div class="alert-v2-target">Store: Laromeos</div>
-          </div>
-        </div>
-
       </div>
 
       <!-- ALERT CARD 3 — Creed Aventus -->
-      <div class="alert-card-v2" onclick="openProduct('creed')" style="cursor:pointer;">
-        <div class="alert-v2-top">
-          <div class="alert-v2-thumb">
-            <div class="prod-img-wrap" style="background:var(--b-sage);height:40px;">
-              <img loading="lazy" class="prod-img" src="jpeg6.jpg" alt="Creed Aventus" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="alert-card-v3" id="alert-card-creed" onclick="openProduct('creed','alerts')">
+        <div class="alert-v3-header">
+          <div class="alert-v3-thumb">
+            <div class="prod-img-wrap" style="background:var(--b-sage);height:100%;">
+              <img loading="lazy" class="prod-img" src="jpeg6.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
               <div class="prod-initials" style="display:none;font-size:13px;">Cr</div>
             </div>
           </div>
-          <div class="alert-v2-names">
-            <div class="alert-v2-prod-name">Creed Aventus 100ml</div>
-            <div class="alert-v2-prod-sub">Creed</div>
+          <div class="alert-v3-info">
+            <div class="alert-v3-name">Creed Aventus</div>
+            <div class="alert-v3-meta">Creed · 100ml · Eau de Parfum</div>
           </div>
-          <div class="toggle" id="alt3" onclick="toggleEl('alt3')"><div class="toggle-thumb"></div></div>
+          <div class="toggle" id="altv3-3" onclick="event.stopPropagation();requestAlertDisable('altv3-3','alert-card-creed')"><div class="toggle-thumb"></div></div>
         </div>
-        <div class="alert-v2-mid">
-          <div class="alert-v2-price-block">
-            <div class="alert-v2-price-label">Current price</div>
-            <div class="alert-v2-price-val">840 SAR</div>
-            <div class="alert-v2-price-orig">Was 1,150 SAR</div>
+        <div class="alert-v3-prices">
+            <span class="alert-v3-lowest-badge">Lowest: 840 SAR</span>
+            <span class="alert-v3-movement movement-down"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/><line x1="12" y1="9" x2="12" y2="20"/></svg>Decreased</span>
+            <span class="alert-v3-stores">In 3 stores</span>
           </div>
-          <div class="alert-v2-badge-block">
-            <span class="badge badge-fire">Great! Dropped &#x2193; 27%</span>
-            <div class="alert-v2-target">Store: Kaneen</div>
-          </div>
-        </div>
+      </div>
 
+      <!-- Disable Alert confirmation sheet backdrop + sheet -->
+      <div class="sheet-backdrop" id="alert-disable-backdrop" onclick="cancelAlertDisable()"></div>
+      <div class="overlay-sheet" id="alert-disable-sheet">
+        <div class="overlay-handle"></div>
+        <div style="padding:12px 24px 8px;text-align:center;">
+          <div style="font-size:20px;margin-bottom:8px;">🔕</div>
+          <div style="font-family:var(--font-display);font-size:20px;color:var(--ink-1);margin-bottom:8px;line-height:1.3;">Turn off this alert?</div>
+          <div style="font-size:13px;color:var(--ink-3);line-height:1.7;margin-bottom:22px;">You won't be notified when this fragrance drops in price. You can re-enable it from the product page.</div>
+          <button onclick="confirmAlertDisable()" style="width:100%;padding:14px;border-radius:var(--radius-md);background:var(--red);color:#fff;font-size:14px;font-weight:600;border:none;cursor:pointer;margin-bottom:10px;">Yes, turn off</button>
+          <button onclick="cancelAlertDisable()" style="width:100%;padding:14px;border-radius:var(--radius-md);background:var(--bg-surface);color:var(--ink-2);font-size:14px;font-weight:600;border:1px solid var(--border-strong);cursor:pointer;">Keep alert on</button>
+        </div>
+        <div style="height:16px;" aria-hidden="true"></div>
       </div>
 
     </div>
@@ -3358,10 +3994,7 @@ html {
           <div class="user-name" style="color: var(--ink-1);">Abdullah Hassan</div>
           <div style="font-size: 10px; color: var(--ink-3); margin-top: 2px;">Joined: Oct 2023, 10:30 AM</div>
         </div>
-        <!-- Settings icon -->
-        <div class="icon-btn" style="margin-left:auto;background:rgba(0,0,0,0.05);border-color:rgba(0,0,0,0.1);" onclick="showSettings()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="var(--ink-2)" stroke-width="1.5"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
-        </div>
+
       </div>
 
       <!-- MVP Stats Cards -->
@@ -3405,23 +4038,88 @@ html {
 
       <!-- ── SECTION 2: WISHLIST ── -->
       <div class="sec-head"><span class="sec-label">Wishlist · 10 items</span><span class="sec-link" onclick="showWishlistAll()">See all</span></div>
-      <div class="wishlist-grid" style="margin-bottom:20px;">
-        <div class="wl-card" onclick="openProduct('chanel')">
-          <div class="wl-img-zone"><div class="prod-img-wrap" style="background:var(--b-purple);height:80px;"><img loading="lazy" class="prod-img" src="jpeg1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:14px;">Cd</div></div><div class="wl-heart"><svg viewBox="0 0 24 24"><path fill="var(--red)" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div></div>
-          <div class="wl-body"><div class="wl-name">Bleu de Chanel EDP</div><div class="wl-price">485 SAR</div><div class="wl-drop">↓ 22% off</div></div>
+      <div class="wishlist-list" style="margin-bottom:20px;">
+
+        <!-- Chanel -->
+        <div class="wl-card-h" onclick="openProduct('chanel','wishlist')">
+          <div class="wl-img-zone">
+            <div class="prod-img-wrap" style="background:var(--b-purple);height:100%;">
+              <img loading="lazy" class="prod-img" src="jpeg1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+              <div class="prod-initials" style="display:none;font-size:13px;">Cd</div>
+            </div>
+            <div class="wl-heart"><svg viewBox="0 0 24 24"><path fill="var(--red)" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div>
+          </div>
+          <div class="wl-card-h-body">
+            <div class="wl-card-h-name">Bleu de Chanel EDP</div>
+            <div class="wl-card-h-avail">Available in 3 stores</div>
+            <div class="wl-card-h-prices">
+              <span class="wl-card-h-low">Lowest: 485 SAR</span>
+              <span class="wl-card-h-high">High: 545 SAR</span>
+              <span class="wl-card-h-save">Save 60 SAR</span>
+            </div>
+          </div>
         </div>
-        <div class="wl-card" onclick="openProduct('dior')">
-          <div class="wl-img-zone"><div class="prod-img-wrap" style="background:var(--b-teal);height:80px;"><img loading="lazy" class="prod-img" src="jpeg2.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:14px;">Dk</div></div><div class="wl-heart"><svg viewBox="0 0 24 24"><path fill="var(--red)" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div></div>
-          <div class="wl-body"><div class="wl-name">Dior Sauvage EDT</div><div class="wl-price">310 SAR</div><div class="wl-drop" style="color:var(--ink-3);">↗ Good Price</div></div>
+
+        <!-- Dior -->
+        <div class="wl-card-h" onclick="openProduct('dior','wishlist')">
+          <div class="wl-img-zone">
+            <div class="prod-img-wrap" style="background:var(--b-teal);height:100%;">
+              <img loading="lazy" class="prod-img" src="jpeg2.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+              <div class="prod-initials" style="display:none;font-size:13px;">Dk</div>
+            </div>
+            <div class="wl-heart"><svg viewBox="0 0 24 24"><path fill="var(--red)" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div>
+          </div>
+          <div class="wl-card-h-body">
+            <div class="wl-card-h-name">Dior Sauvage EDT</div>
+            <div class="wl-card-h-avail">Available in 3 stores</div>
+            <div class="wl-card-h-prices">
+              <span class="wl-card-h-low">Lowest: 310 SAR</span>
+              <span class="wl-card-h-high">High: 365 SAR</span>
+              <span class="wl-card-h-save">Save 55 SAR</span>
+            </div>
+          </div>
         </div>
-        <div class="wl-card" onclick="openProduct('tomford')">
-          <div class="wl-img-zone"><div class="prod-img-wrap" style="background:var(--b-amber);height:80px;"><img loading="lazy" class="prod-img" src="jpeg3.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:14px;">Tf</div></div><div class="wl-heart"><svg viewBox="0 0 24 24"><path fill="var(--red)" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div></div>
-          <div class="wl-body"><div class="wl-name">Tobacco Oud EDP</div><div class="wl-price">590 SAR</div><div class="wl-drop" style="color:var(--ink-3);">No drop yet</div></div>
+
+        <!-- Tom Ford -->
+        <div class="wl-card-h" onclick="openProduct('tomford','wishlist')">
+          <div class="wl-img-zone">
+            <div class="prod-img-wrap" style="background:var(--b-amber);height:100%;">
+              <img loading="lazy" class="prod-img" src="jpeg3.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+              <div class="prod-initials" style="display:none;font-size:13px;">Tf</div>
+            </div>
+            <div class="wl-heart"><svg viewBox="0 0 24 24"><path fill="var(--red)" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div>
+          </div>
+          <div class="wl-card-h-body">
+            <div class="wl-card-h-name">Tobacco Oud EDP</div>
+            <div class="wl-card-h-avail">Available in 3 stores</div>
+            <div class="wl-card-h-prices">
+              <span class="wl-card-h-low">Lowest: 590 SAR</span>
+              <span class="wl-card-h-high">High: 645 SAR</span>
+              <span class="wl-card-h-save">Save 55 SAR</span>
+            </div>
+          </div>
         </div>
-        <div class="wl-card" onclick="openProduct('creed')">
-          <div class="wl-img-zone"><div class="prod-img-wrap" style="background:var(--b-sage);height:80px;"><img loading="lazy" class="prod-img" src="jpeg6.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:14px;">Cr</div></div><div class="wl-heart"><svg viewBox="0 0 24 24"><path fill="var(--red)" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div></div>
-          <div class="wl-body"><div class="wl-name">Creed Aventus</div><div class="wl-price">840 SAR</div><div class="wl-drop">↓ 20% off</div></div>
+
+        <!-- Creed -->
+        <div class="wl-card-h" onclick="openProduct('creed','wishlist')">
+          <div class="wl-img-zone">
+            <div class="prod-img-wrap" style="background:var(--b-sage);height:100%;">
+              <img loading="lazy" class="prod-img" src="jpeg6.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+              <div class="prod-initials" style="display:none;font-size:13px;">Cr</div>
+            </div>
+            <div class="wl-heart"><svg viewBox="0 0 24 24"><path fill="var(--red)" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div>
+          </div>
+          <div class="wl-card-h-body">
+            <div class="wl-card-h-name">Creed Aventus</div>
+            <div class="wl-card-h-avail">Available in 3 stores</div>
+            <div class="wl-card-h-prices">
+              <span class="wl-card-h-low">Lowest: 840 SAR</span>
+              <span class="wl-card-h-high">High: 1,050 SAR</span>
+              <span class="wl-card-h-save">Save 210 SAR</span>
+            </div>
+          </div>
         </div>
+
       </div>
 
       <div class="divider" style="margin:0 0 20px;"></div>
@@ -3435,6 +4133,139 @@ html {
         <div class="recent-chip" onclick="openProduct('creed')"><div class="recent-thumb"><div class="prod-img-wrap" style="background:var(--b-sage);height:40px;"><img loading="lazy" class="prod-img" src="jpeg6.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:14px;">Cr</div></div></div><div class="recent-info"><div class="rn">Creed Aventus</div><div class="rp">840 SAR</div></div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px;color:var(--ink-3);flex-shrink:0;"><path d="M9 18l6-6-6-6"/></svg></div>
       </div>
 
+      <!-- ══ INLINE SETTINGS ══════════════════════════════════ -->
+      <div class="divider" style="margin:0 0 0;"></div>
+
+      <!-- ── ACCOUNT ── -->
+      <div class="act-settings-group">
+        <div class="act-settings-label">Account</div>
+        <div class="act-settings-card">
+          <div class="act-settings-row" onclick="openSettingsSub('profile')">
+            <div class="act-settings-row-l">
+              <div class="act-sicon sri-purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+              <div class="act-sinfo"><span class="act-sname">Profile</span><span class="act-ssub">Abdullah Hassan</span></div>
+            </div>
+            <svg class="act-schevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+          </div>
+          <div class="act-settings-row" onclick="openSettingsSub('email')">
+            <div class="act-settings-row-l">
+              <div class="act-sicon sri-purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+              <div class="act-sinfo"><span class="act-sname">Email</span><span class="act-ssub">you@gmail.com</span></div>
+            </div>
+            <svg class="act-schevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+          </div>
+          <div class="act-settings-row act-settings-row-last" onclick="openSettingsSub('phone')">
+            <div class="act-settings-row-l">
+              <div class="act-sicon sri-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
+              <div class="act-sinfo"><span class="act-sname">Phone number</span><span class="act-ssub" id="settings-phone-sub">Not added yet</span></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <div id="phone-incomplete-dot" style="color:var(--amber);display:flex;align-items:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px;height:14px;"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0zM12 9v4M12 17h.01" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <svg class="act-schevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── NOTIFICATIONS ── -->
+      <div class="act-settings-group">
+        <div class="act-settings-label">Notifications</div>
+        <div class="act-settings-card">
+          <div class="act-settings-row">
+            <div class="act-settings-row-l">
+              <div class="act-sicon sri-green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></div>
+              <div class="act-sinfo"><span class="act-sname">Price drop alerts</span><span class="act-ssub">Notify immediately</span></div>
+            </div>
+            <div class="toggle" style="transform:scale(0.8);transform-origin:right;flex-shrink:0;" onclick="this.classList.toggle('off')"><div class="toggle-thumb"></div></div>
+          </div>
+          <div class="act-settings-row">
+            <div class="act-settings-row-l">
+              <div class="act-sicon sri-amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+              <div class="act-sinfo"><span class="act-sname">Daily deal digest</span><span class="act-ssub">Every morning at 8:00 AM</span></div>
+            </div>
+            <div class="toggle off" style="transform:scale(0.8);transform-origin:right;flex-shrink:0;" onclick="this.classList.toggle('off')"><div class="toggle-thumb"></div></div>
+          </div>
+          <div class="act-settings-row act-settings-row-last">
+            <div class="act-settings-row-l">
+              <div class="act-sicon sri-purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+              <div class="act-sinfo"><span class="act-sname">Back-in-stock alerts</span><span class="act-ssub">For wishlisted items</span></div>
+            </div>
+            <div class="toggle" style="transform:scale(0.8);transform-origin:right;flex-shrink:0;" onclick="this.classList.toggle('off')"><div class="toggle-thumb"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PREFERENCES ── -->
+      <div class="act-settings-group">
+        <div class="act-settings-label">Preferences</div>
+        <div class="act-settings-card">
+          <div class="act-settings-row" onclick="openSettingsSub('currency')">
+            <div class="act-settings-row-l">
+              <div class="act-sicon sri-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></div>
+              <div class="act-sinfo"><span class="act-sname">Currency</span><span class="act-ssub" id="settings-currency-sub">Saudi Riyal (SAR)</span></div>
+            </div>
+            <svg class="act-schevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+          </div>
+          <div class="act-settings-row act-settings-row-last" onclick="openSettingsSub('language')">
+            <div class="act-settings-row-l">
+              <div class="act-sicon sri-amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+              <div class="act-sinfo"><span class="act-sname">Language</span><span class="act-ssub" id="settings-language-sub">English</span></div>
+            </div>
+            <svg class="act-schevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SUPPORT ── -->
+      <div class="act-settings-group">
+        <div class="act-settings-label">Support</div>
+        <div class="act-settings-card">
+          <div class="act-settings-row" onclick="openSettingsSub('help')">
+            <div class="act-settings-row-l">
+              <div class="act-sicon sri-green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+              <div class="act-sinfo"><span class="act-sname">Help &amp; FAQ</span><span class="act-ssub">Get answers to common questions</span></div>
+            </div>
+            <svg class="act-schevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+          </div>
+          <div class="act-settings-row" onclick="openSettingsSub('contact')">
+            <div class="act-settings-row-l">
+              <div class="act-sicon sri-purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+              <div class="act-sinfo"><span class="act-sname">Contact support</span><span class="act-ssub">support@yourdis.sa</span></div>
+            </div>
+            <svg class="act-schevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+          </div>
+          <div class="act-settings-row act-settings-row-last" onclick="openSettingsSub('privacy')">
+            <div class="act-settings-row-l">
+              <div class="act-sicon" style="background:var(--bg-input);color:var(--ink-3);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+              <div class="act-sinfo"><span class="act-sname">Privacy Policy</span><span class="act-ssub">Version 2.1</span></div>
+            </div>
+            <svg class="act-schevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── APP INFO ── -->
+      <div class="act-settings-group">
+        <div class="act-settings-label">App Info</div>
+        <div class="act-settings-card">
+          <div class="act-settings-row act-settings-row-last" style="cursor:default;">
+            <div class="act-settings-row-l">
+              <div class="act-sicon" style="background:var(--b-purple);color:var(--accent);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+              <div class="act-sinfo"><span class="act-sname">Yourdis</span><span class="act-ssub">Version 2.1</span></div>
+            </div>
+            <span style="font-size:12px;font-weight:600;background:var(--green-light);color:var(--green);padding:3px 8px;border-radius:10px;">Up to date</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SIGN OUT ── -->
+      <div style="padding:4px 20px 36px;">
+        <button class="logout-btn" onclick="confirmLogout()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Sign Out
+        </button>
+      </div>
+
     </div><!-- /scroll-area -->
 
     <div class="bottom-nav">
@@ -3442,127 +4273,6 @@ html {
       <div class="bn-item" onclick="showAllStores()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7"/><path d="M9 22V12h6v10"/><path d="M3 9v13h18V9"/><path d="M3 9h18"/></svg><span>Stores</span></div>
       <div class="bn-item" onclick="switchScreen('alerts')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>Alerts</span></div>
       <div class="bn-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Activity</span></div>
-    </div>
-
-    <!-- ── SETTINGS overlay (inside activity screen) ── -->
-    <div class="overlay" id="overlay-settings">
-      
-      <div class="overlay-header" style="border-bottom:1px solid var(--border);">
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div class="overlay-close" onclick="closeSettings()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
-          </div>
-          <span class="overlay-title">Settings</span>
-        </div>
-      </div>
-      <div class="u-overflow-auto">
-        <!-- Account -->
-        <div class="settings-section">
-          <div class="settings-label">Account</div>
-          <div class="settings-row" onclick="openSettingsSub('profile')" style="cursor:pointer;">
-            <div class="settings-row-left">
-              <div class="settings-row-icon sri-purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-              <div class="settings-row-info"><div class="settings-row-name">Profile</div><div class="settings-row-sub">Abdullah Hassan</div></div>
-            </div>
-            <div class="settings-row-right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
-          </div>
-		  <div class="settings-row" onclick="openSettingsSub('email')" style="cursor:pointer;">
-            <div class="settings-row-left">
-              <div class="settings-row-icon sri-purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
-              <div class="settings-row-info"><div class="settings-row-name">Email</div><div class="settings-row-sub">you@gmail.com</div></div>
-            </div>
-            <div class="settings-row-right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
-          </div>
-          <div class="settings-row" onclick="openSettingsSub('phone')" style="cursor:pointer;">
-            <div class="settings-row-left">
-              <div class="settings-row-icon sri-blue">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
-              </div>
-              <div class="settings-row-info"><div class="settings-row-name">Phone number</div><div class="settings-row-sub" id="settings-phone-sub">Not added yet</div></div>
-            </div>
-            <div class="settings-row-right">
-              <div id="phone-incomplete-dot" style="color:var(--amber); display:flex; align-items:center;">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px;height:14px;"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0zM12 9v4M12 17h.01" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </div>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-            </div>
-          </div>
-        </div>
-        <!-- Notifications -->
-        <div class="settings-section">
-          <div class="settings-label">Notifications</div>
-          <div class="settings-row">
-            <div class="settings-row-left">
-              <div class="settings-row-icon sri-green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></div>
-              <div class="settings-row-info"><div class="settings-row-name">Price drop alerts</div><div class="settings-row-sub">Notify immediately</div></div>
-            </div>
-            <div class="toggle" style="transform:scale(0.8);transform-origin:right;" onclick="this.classList.toggle('off')"><div class="toggle-thumb"></div></div>
-          </div>
-          <div class="settings-row">
-            <div class="settings-row-left">
-              <div class="settings-row-icon sri-amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
-              <div class="settings-row-info"><div class="settings-row-name">Daily deal digest</div><div class="settings-row-sub">Every morning at 8:00 AM</div></div>
-            </div>
-            <div class="toggle off" style="transform:scale(0.8);transform-origin:right;" onclick="this.classList.toggle('off')"><div class="toggle-thumb"></div></div>
-          </div>
-          <div class="settings-row">
-            <div class="settings-row-left">
-              <div class="settings-row-icon sri-purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
-              <div class="settings-row-info"><div class="settings-row-name">Back-in-stock alerts</div><div class="settings-row-sub">For wishlisted items</div></div>
-            </div>
-            <div class="toggle" style="transform:scale(0.8);transform-origin:right;" onclick="this.classList.toggle('off')"><div class="toggle-thumb"></div></div>
-          </div>
-        </div>
-        <!-- Preferences -->
-        <div class="settings-section">
-          <div class="settings-label">Preferences</div>
-          <div class="settings-row" onclick="openSettingsSub('currency')" style="cursor:pointer;">
-            <div class="settings-row-left">
-              <div class="settings-row-icon sri-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></div>
-              <div class="settings-row-info"><div class="settings-row-name">Currency</div><div class="settings-row-sub" id="settings-currency-sub">Saudi Riyal (SAR)</div></div>
-            </div>
-            <div class="settings-row-right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
-          </div>
-          <div class="settings-row" onclick="openSettingsSub('language')" style="cursor:pointer;">
-            <div class="settings-row-left">
-              <div class="settings-row-icon sri-amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
-              <div class="settings-row-info"><div class="settings-row-name">Language</div><div class="settings-row-sub" id="settings-language-sub">English</div></div>
-            </div>
-            <div class="settings-row-right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
-          </div>
-        </div>
-        <!-- Support -->
-        <div class="settings-section">
-          <div class="settings-label">Support</div>
-          <div class="settings-row" onclick="openSettingsSub('help')" style="cursor:pointer;">
-            <div class="settings-row-left">
-              <div class="settings-row-icon sri-green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
-              <div class="settings-row-info"><div class="settings-row-name">Help &amp; FAQ</div><div class="settings-row-sub">Get answers to common questions</div></div>
-            </div>
-            <div class="settings-row-right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
-          </div>
-          <div class="settings-row" onclick="openSettingsSub('contact')" style="cursor:pointer;">
-            <div class="settings-row-left">
-              <div class="settings-row-icon sri-purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
-              <div class="settings-row-info"><div class="settings-row-name">Contact support</div><div class="settings-row-sub">support@yourdis.sa</div></div>
-            </div>
-            <div class="settings-row-right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
-          </div>
-          <div class="settings-row" onclick="openSettingsSub('privacy')" style="cursor:pointer;border-bottom:none;">
-            <div class="settings-row-left">
-              <div class="settings-row-icon" style="background:var(--bg-input);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-              <div class="settings-row-info"><div class="settings-row-name">Privacy Policy</div><div class="settings-row-sub">Version 2.1</div></div>
-            </div>
-            <div class="settings-row-right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
-          </div>
-        </div>
-        <!-- Logout button — strategic placement at bottom of settings -->
-        <button class="logout-btn" onclick="confirmLogout()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-          Sign Out
-        </button>
-        <div style="height:40px;" aria-hidden="true"></div>
-      </div>
     </div>
 
     <!-- ── INTERESTS EDIT overlay (inside activity screen) ── -->
@@ -3655,43 +4365,43 @@ html {
     <div style="flex:1;overflow-y:auto;padding:8px 16px 14px;">
       <!-- Row 1 -->
       <div id="wishlist-grid-all" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;">
-        <div class="wl-card" onclick="closeWishlistAll();openProduct('chanel')">
+        <div class="wl-card" onclick="closeWishlistAll();openProduct('chanel','wishlist-all')">
           <div class="wl-img-zone"><div class="prod-img-wrap" style="background:var(--b-purple);height:100px;"><img loading="lazy" class="prod-img" src="jpeg1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:16px;">Cd</div></div><div class="wl-heart"><svg viewBox="0 0 24 24"><path fill="var(--red)" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div></div>
           <div class="wl-body"><div class="wl-name">Bleu de Chanel EDP</div><div class="wl-price">485 SAR</div><div class="wl-drop">↓ 22% off</div></div>
         </div>
-        <div class="wl-card" onclick="closeWishlistAll();openProduct('dior')">
+        <div class="wl-card" onclick="closeWishlistAll();openProduct('dior','wishlist-all')">
           <div class="wl-img-zone"><div class="prod-img-wrap" style="background:var(--b-teal);height:100px;"><img loading="lazy" class="prod-img" src="jpeg2.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:16px;">Dk</div></div><div class="wl-heart"><svg viewBox="0 0 24 24"><path fill="var(--red)" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div></div>
           <div class="wl-body"><div class="wl-name">Dior Sauvage EDT</div><div class="wl-price">310 SAR</div><div class="wl-drop" style="color:var(--ink-3);">↗ Good Price</div></div>
         </div>
-        <div class="wl-card" onclick="closeWishlistAll();openProduct('tomford')">
+        <div class="wl-card" onclick="closeWishlistAll();openProduct('tomford','wishlist-all')">
           <div class="wl-img-zone"><div class="prod-img-wrap" style="background:var(--b-amber);height:100px;"><img loading="lazy" class="prod-img" src="jpeg3.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:16px;">Tf</div></div><div class="wl-heart"><svg viewBox="0 0 24 24"><path fill="var(--red)" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div></div>
           <div class="wl-body"><div class="wl-name">Tobacco Oud EDP</div><div class="wl-price">590 SAR</div><div class="wl-drop" style="color:var(--ink-3);">No drop yet</div></div>
         </div>
-        <div class="wl-card" onclick="closeWishlistAll();openProduct('creed')">
+        <div class="wl-card" onclick="closeWishlistAll();openProduct('creed','wishlist-all')">
           <div class="wl-img-zone"><div class="prod-img-wrap" style="background:var(--b-sage);height:100px;"><img loading="lazy" class="prod-img" src="jpeg6.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:16px;">Cr</div></div><div class="wl-heart"><svg viewBox="0 0 24 24"><path fill="var(--red)" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div></div>
           <div class="wl-body"><div class="wl-name">Creed Aventus</div><div class="wl-price">840 SAR</div><div class="wl-drop">↓ 20% off</div></div>
         </div>
-        <div class="wl-card" onclick="closeWishlistAll();openProduct('ysl')">
+        <div class="wl-card" onclick="closeWishlistAll();openProduct('ysl','wishlist-all')">
           <div class="wl-img-zone"><div class="prod-img-wrap" style="background:var(--b-pink);height:100px;"><img loading="lazy" class="prod-img" src="jpeg4.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:16px;">YS</div></div><div class="wl-heart"><svg viewBox="0 0 24 24"><path fill="var(--red)" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div></div>
           <div class="wl-body"><div class="wl-name">YSL Y Le Parfum</div><div class="wl-price">290 SAR</div><div class="wl-drop">↓ 17% off</div></div>
         </div>
-        <div class="wl-card" onclick="closeWishlistAll();openProduct('armani')">
+        <div class="wl-card" onclick="closeWishlistAll();openProduct('armani','wishlist-all')">
           <div class="wl-img-zone"><div class="prod-img-wrap" style="background:var(--b-blue);height:100px;"><img loading="lazy" class="prod-img" src="jpeg5.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:16px;">Aq</div></div><div class="wl-heart"><svg viewBox="0 0 24 24"><path fill="var(--red)" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div></div>
           <div class="wl-body"><div class="wl-name">Acqua di Gio EDP</div><div class="wl-price">265 SAR</div><div class="wl-drop">↓ 24% off</div></div>
         </div>
-        <div class="wl-card" onclick="closeWishlistAll();openProduct('chanel')">
+        <div class="wl-card" onclick="closeWishlistAll();openProduct('chanel','wishlist-all')">
           <div class="wl-img-zone"><div class="prod-img-wrap" style="background:var(--b-purple);height:100px;"><img loading="lazy" class="prod-img" src="jpeg1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:16px;">Cd</div></div><div class="wl-heart"><svg viewBox="0 0 24 24"><path fill="var(--red)" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div></div>
           <div class="wl-body"><div class="wl-name">Bleu de Chanel EDT</div><div class="wl-price">410 SAR</div><div class="wl-drop" style="color:var(--ink-3);">↗ Good Price</div></div>
         </div>
-        <div class="wl-card" onclick="closeWishlistAll();openProduct('dior')">
+        <div class="wl-card" onclick="closeWishlistAll();openProduct('dior','wishlist-all')">
           <div class="wl-img-zone"><div class="prod-img-wrap" style="background:var(--b-teal);height:100px;"><img loading="lazy" class="prod-img" src="jpeg2.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:16px;">Dk</div></div><div class="wl-heart"><svg viewBox="0 0 24 24"><path fill="var(--red)" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div></div>
           <div class="wl-body"><div class="wl-name">Sauvage Elixir 60ml</div><div class="wl-price">420 SAR</div><div class="wl-drop">↓ 12% off</div></div>
         </div>
-        <div class="wl-card" onclick="closeWishlistAll();openProduct('tomford')">
+        <div class="wl-card" onclick="closeWishlistAll();openProduct('tomford','wishlist-all')">
           <div class="wl-img-zone"><div class="prod-img-wrap" style="background:var(--b-amber);height:100px;"><img loading="lazy" class="prod-img" src="jpeg3.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:16px;">Tf</div></div><div class="wl-heart"><svg viewBox="0 0 24 24"><path fill="var(--red)" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div></div>
           <div class="wl-body"><div class="wl-name">Oud Wood EDP</div><div class="wl-price">710 SAR</div><div class="wl-drop" style="color:var(--ink-3);">No drop yet</div></div>
         </div>
-        <div class="wl-card" onclick="closeWishlistAll();openProduct('armani')">
+        <div class="wl-card" onclick="closeWishlistAll();openProduct('armani','wishlist-all')">
           <div class="wl-img-zone"><div class="prod-img-wrap" style="background:var(--b-blue);height:100px;"><img loading="lazy" class="prod-img" src="jpeg5.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="prod-initials" style="display:none;font-size:16px;">Aq</div></div><div class="wl-heart"><svg viewBox="0 0 24 24"><path fill="var(--red)" d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div></div>
           <div class="wl-body"><div class="wl-name">Acqua di Gio Profumo</div><div class="wl-price">395 SAR</div><div class="wl-drop">↓ 11% off</div></div>
         </div>
@@ -4314,16 +5024,16 @@ var PRODUCTS = {
     notes:'<span class="note-chip note-top">Top: Citrus · Bergamot</span><span class="note-chip note-heart">Heart: Vetiver · Cedarwood</span><span class="note-chip note-base">Base: Patchouli · Labdanum</span>',
     notes_ar:'قمة: حمضيات · برغموت · قلب: فيتيفر · خشب الأرز · قاعدة: باتشولي · لبدانم',
     accords: [
-      { name: 'Woody', value: 100 },
-      { name: 'Citrus', value: 90 },
-      { name: 'Amber', value: 80 },
-      { name: 'Spicy', value: 70 },
-      { name: 'Musky', value: 60 },
-      { name: 'Fresh', value: 50 },
-      { name: 'Powdery', value: 40 },
-      { name: 'Sweet', value: 30 },
-      { name: 'Aquatic', value: 20 },
-      { name: 'Gourmand', value: 10 }
+      { name: 'Woody', value: 96 },
+      { name: 'Citrus', value: 84 },
+      { name: 'Amber', value: 72 },
+      { name: 'Spicy', value: 68 },
+      { name: 'Musky', value: 61 },
+      { name: 'Fresh', value: 44 },
+      { name: 'Powdery', value: 33 },
+      { name: 'Sweet', value: 21 },
+      { name: 'Aquatic', value: 14 },
+      { name: 'Gourmand', value: 7 }
     ],
     desc:'A modern masculine icon. Citrus and bergamot open brightly before settling into a deep woody heart of vetiver and cedarwood. Patchouli and labdanum in the base create an elegant, lasting trail. Projection is confident with longevity exceeding 10 hours.',
     desc_ar:'أيقونة عصرية للرجل. تبدأ بالحمضيات والبرغموت قبل أن تستقر في قلب خشبي عميق. القاعدة الدافئة تمنح أثراً طويل الأمد يتجاوز 10 ساعات.',
@@ -4346,16 +5056,16 @@ var PRODUCTS = {
     notes:'<span class="note-chip note-top">Top: Calabrian Bergamot</span><span class="note-chip note-heart">Heart: Sichuan Pepper · Geranium</span><span class="note-chip note-base">Base: Ambroxan · Cedar</span>',
     notes_ar:'قمة: برغموت كالابريا · قلب: فلفل سيتشوان · قاعدة: أمبروكسان · أرز',
     accords: [
-      { name: 'Fresh', value: 100 },
-      { name: 'Spicy', value: 95 },
-      { name: 'Amber', value: 85 },
-      { name: 'Citrus', value: 75 },
-      { name: 'Woody', value: 65 },
-      { name: 'Musky', value: 55 },
-      { name: 'Powdery', value: 45 },
-      { name: 'Aquatic', value: 35 },
-      { name: 'Sweet', value: 25 },
-      { name: 'Gourmand', value: 15 }
+      { name: 'Fresh', value: 98 },
+      { name: 'Spicy', value: 91 },
+      { name: 'Amber', value: 79 },
+      { name: 'Citrus', value: 73 },
+      { name: 'Woody', value: 58 },
+      { name: 'Musky', value: 47 },
+      { name: 'Powdery', value: 31 },
+      { name: 'Aquatic', value: 24 },
+      { name: 'Sweet', value: 17 },
+      { name: 'Gourmand', value: 9 }
     ],
     desc:'Radically fresh and ruggedly clean. Calabrian bergamot opens on Sichuan pepper, anchored by mineral Ambroxan and cedar. Effortlessly versatile — boardroom to open skies. Longevity 8–10 hours.',
     desc_ar:'منعش وأنيق. يبدأ بالبرغموت الإيطالي ثم فلفل سيتشوان، مع قاعدة معدنية من الأمبروكسان والأرز. يدوم 8-10 ساعات.',
@@ -4378,16 +5088,16 @@ var PRODUCTS = {
     notes:'<span class="note-chip note-top">Top: Clove · Coriander</span><span class="note-chip note-heart">Heart: Tobacco · Oud Wood</span><span class="note-chip note-base">Base: Sandalwood · Tonka Bean</span>',
     notes_ar:'قمة: قرنفل · كزبرة · قلب: تبغ · عود · قاعدة: صندل · فاصوليا التونكا',
     accords: [
-      { name: 'Woody', value: 100 },
-      { name: 'Spicy', value: 90 },
-      { name: 'Amber', value: 85 },
-      { name: 'Gourmand', value: 80 },
-      { name: 'Sweet', value: 70 },
-      { name: 'Musky', value: 60 },
-      { name: 'Powdery', value: 40 },
-      { name: 'Citrus', value: 20 },
-      { name: 'Fresh', value: 15 },
-      { name: 'Aquatic', value: 5 }
+      { name: 'Woody', value: 97 },
+      { name: 'Spicy', value: 88 },
+      { name: 'Amber', value: 81 },
+      { name: 'Gourmand', value: 74 },
+      { name: 'Sweet', value: 63 },
+      { name: 'Musky', value: 52 },
+      { name: 'Powdery', value: 36 },
+      { name: 'Citrus', value: 19 },
+      { name: 'Fresh', value: 11 },
+      { name: 'Aquatic', value: 4 }
     ],
     desc:'From the Private Blend collection — unapologetically opulent. Spiced clove and coriander give way to a rich heart of tobacco and oud. Sandalwood and tonka bean create creamy, enduring warmth. Longevity exceptional at 12+ hours.',
     desc_ar:'من مجموعة بلند خاص. يبدأ بالقرنفل المتبّل قبل قلب غني من التبغ والعود. قاعدة دافئة من الصندل وفاصوليا التونكا. يدوم 12 ساعة وأكثر.',
@@ -4410,16 +5120,16 @@ var PRODUCTS = {
     notes:'<span class="note-chip note-top">Top: Bergamot · Ginger</span><span class="note-chip note-heart">Heart: Sage · Suede</span><span class="note-chip note-base">Base: Fir Balsam · Ambergris</span>',
     notes_ar:'قمة: برغموت · زنجبيل · قلب: مريمية · شمواه · قاعدة: بلسم تنوب · عنبر',
     accords: [
-      { name: 'Fresh', value: 100 },
-      { name: 'Aromatic', value: 90 },
-      { name: 'Spicy', value: 85 },
-      { name: 'Woody', value: 75 },
-      { name: 'Citrus', value: 70 },
-      { name: 'Amber', value: 60 },
-      { name: 'Musky', value: 50 },
-      { name: 'Sweet', value: 40 },
-      { name: 'Powdery', value: 30 },
-      { name: 'Aquatic', value: 20 }
+      { name: 'Fresh', value: 93 },
+      { name: 'Aromatic', value: 86 },
+      { name: 'Spicy', value: 77 },
+      { name: 'Woody', value: 69 },
+      { name: 'Citrus', value: 58 },
+      { name: 'Amber', value: 43 },
+      { name: 'Musky', value: 37 },
+      { name: 'Sweet', value: 26 },
+      { name: 'Powdery', value: 18 },
+      { name: 'Aquatic', value: 11 }
     ],
     desc:'Y Le Parfum deepens the iconic Y DNA considerably. Bergamot and ginger open brightly before sage and suede create a dry, sophisticated heart. Fir balsam and ambergris carry the scent from day into night. Longevity 8–10 hours.',
     desc_ar:'يعمّق تركيبة Y الأيقونية. يبدأ بالبرغموت والزنجبيل، ثم قلب من المريمية والشمواه الجاف. يمتد من النهار إلى الليل بأناقة. يدوم 8-10 ساعات.',
@@ -4442,15 +5152,15 @@ var PRODUCTS = {
     notes:'<span class="note-chip note-top">Top: Marine Accord · Bergamot</span><span class="note-chip note-heart">Heart: Incense · Rosemary</span><span class="note-chip note-base">Base: Patchouli · Mineral Amber</span>',
     notes_ar:'قمة: ألحان بحرية · برغموت · قلب: بخور · روزماري · قاعدة: باتشولي · عنبر معدني',
     accords: [
-      { name: 'Aquatic', value: 100 },
-      { name: 'Fresh', value: 95 },
-      { name: 'Citrus', value: 85 },
-      { name: 'Woody', value: 70 },
-      { name: 'Aromatic', value: 60 },
-      { name: 'Amber', value: 50 },
-      { name: 'Spicy', value: 40 },
-      { name: 'Musky', value: 30 },
-      { name: 'Powdery', value: 15 },
+      { name: 'Aquatic', value: 95 },
+      { name: 'Fresh', value: 89 },
+      { name: 'Citrus', value: 76 },
+      { name: 'Woody', value: 62 },
+      { name: 'Aromatic', value: 53 },
+      { name: 'Amber', value: 41 },
+      { name: 'Spicy', value: 29 },
+      { name: 'Musky', value: 22 },
+      { name: 'Powdery', value: 12 },
       { name: 'Sweet', value: 5 }
     ],
     desc:'Elevates the legendary original with deeper character. Marine accord and bergamot open fresh before incense and rosemary add meditative depth. Patchouli and mineral amber anchor the drydown beautifully. Longevity 9–11 hours.',
@@ -4837,36 +5547,49 @@ function _setProductMeta(p) {
   document.getElementById('product-name').textContent  = p.name;
   document.getElementById('product-brand').textContent = p.brand;
 
-  // Redesign notes layout
+  // Notes — Layered Pyramid Cards (Top 80% · Heart 90% · Base 100%)
   var container = document.getElementById('product-notes');
   container.innerHTML = '';
   var temp = document.createElement('div');
   temp.innerHTML = p.notes;
   var spans = temp.querySelectorAll('span');
-  spans.forEach(function(s) {
-    var txt = s.textContent;
+
+  var layerConfig = [
+    { modifier: 'top',   label: 'Top Notes'   },
+    { modifier: 'heart', label: 'Heart Notes' },
+    { modifier: 'base',  label: 'Base Notes'  }
+  ];
+
+  spans.forEach(function(s, idx) {
+    var txt   = s.textContent;
     var parts = txt.split(':');
     if (parts.length < 2) return;
-    var title = parts[0].trim();
-    var notes = parts[1].split('·');
-    var group = document.createElement('div');
-    group.className = 'note-group';
-    var tDiv = document.createElement('div');
-    tDiv.className = 'note-title';
-    tDiv.textContent = title;
-    group.appendChild(tDiv);
-    var row = document.createElement('div');
-    row.className = 'note-chips-row';
-    var cType = s.classList.contains('note-top') ? 'note-top' : (s.classList.contains('note-heart') ? 'note-heart' : 'note-base');
-    notes.forEach(function(n) {
-      var chip = document.createElement('span');
-      chip.className = 'note-chip ' + cType;
-      chip.textContent = n.trim();
-      row.appendChild(chip);
-    });
-    group.appendChild(row);
-    container.appendChild(group);
+    var notes = parts[1].split('·').map(function(n) { return n.trim(); }).filter(Boolean);
+    var cfg   = layerConfig[idx] || layerConfig[0];
+
+    var layer = document.createElement('div');
+    layer.className = 'notes-layer notes-layer-' + cfg.modifier;
+
+    var labelEl = document.createElement('div');
+    labelEl.className = 'notes-layer-label';
+    labelEl.innerHTML =
+      '<span class="notes-layer-label-dot"></span>' + cfg.label;
+
+    var textEl = document.createElement('div');
+    textEl.className = 'notes-layer-text';
+    textEl.textContent = notes.join(', ');
+
+    layer.appendChild(labelEl);
+    layer.appendChild(textEl);
+    container.appendChild(layer);
   });
+
+  // Fragrance House — extract brand name from brand string (first part before ·)
+  var houseEl = document.getElementById('product-frag-house');
+  if (houseEl) {
+    var brandParts = (p.brand || '').split('·');
+    houseEl.textContent = brandParts[0].trim() || p.name.split(' ')[0];
+  }
 
   document.getElementById('product-family').textContent  = p.family || '--';
   document.getElementById('product-perfumer').textContent = p.perfumer || '--';
@@ -4923,11 +5646,11 @@ function _setProductStore(p) {
   var storeIcon    = document.getElementById('product-store-icon');
   var storeNameLink = document.getElementById('product-store-name-link');
   if (storeData) {
-    storeIcon.textContent  = storeData.initials;
+    storeIcon.textContent      = storeData.initials;
     storeIcon.style.background = storeData.bg;
     storeNameLink.textContent  = p.store || storeData.name;
   } else {
-    storeIcon.textContent      = p.store ? p.store.substring(0, 2) : '--';
+    storeIcon.textContent      = p.store ? p.store.substring(0, 2).toUpperCase() : '--';
     storeIcon.style.background = 'var(--bg-surface)';
     storeNameLink.textContent  = p.store || 'View Store';
   }
@@ -4935,11 +5658,166 @@ function _setProductStore(p) {
 
 /* ── Sub-function: render reviews section ───────────────── */
 function _setProductReviews(p) {
-  document.getElementById('product-rating').textContent        = p.rating;
-  document.getElementById('product-review-count').textContent  = p.rating + ' out of 5 · ' + p.reviews + ' reviews';
+  /* rating elements removed — kept for legacy review page compat */
+  var ratingEl = document.getElementById('product-rating');
+  if (ratingEl) ratingEl.textContent = p.rating;
+  var revCountEl = document.getElementById('product-review-count');
+  if (revCountEl) revCountEl.textContent = p.rating + ' out of 5 · ' + p.reviews + ' reviews';
   document.getElementById('product-all-reviews').textContent   = p.reviews;
   document.getElementById('product-review1').textContent       = p.r1;
   document.getElementById('product-review2').textContent       = p.r2;
+}
+
+/* ── Reaction toggle ─────────────────────────────────────── */
+function toggleReaction(btn) {
+  var countEl = btn.querySelector('.reaction-count');
+  var count   = parseInt(countEl.textContent) || 0;
+  if (btn.classList.contains('reacted')) {
+    btn.classList.remove('reacted');
+    countEl.textContent = count - 1;
+  } else {
+    /* Deactivate sibling reactions in same row */
+    var siblings = btn.closest('.reactions-row').querySelectorAll('.reaction-btn');
+    siblings.forEach(function(s) {
+      if (s !== btn && s.classList.contains('reacted')) {
+        var sc = s.querySelector('.reaction-count');
+        sc.textContent = parseInt(sc.textContent) - 1;
+        s.classList.remove('reacted');
+      }
+    });
+    btn.classList.add('reacted');
+    countEl.textContent = count + 1;
+  }
+}
+
+/* ── When-to-Wear toggle ─────────────────────────────────── */
+function toggleWear(chip) {
+  var countEl = chip.querySelector('.wear-chip-count');
+  var count   = parseInt(countEl.textContent) || 0;
+  if (chip.classList.contains('voted')) {
+    chip.classList.remove('voted');
+    countEl.textContent = count - 1;
+  } else {
+    chip.classList.add('voted');
+    countEl.textContent = count + 1;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════
+   PDP RECOMMENDATIONS — Exact Match & Similar Feel
+   Static lookup tables keyed by productKey.
+══════════════════════════════════════════════════════════ */
+
+/* Exact Match: same fragrance name / house, different concentration or size */
+var _PDP_EXACT_MATCH = {
+  chanel:     ['dior', 'versace', 'burberry'],        /* Bleu family — woody fresh masculine icons */
+  dior:       ['chanel', 'armani', 'ysl'],             /* Sauvage family — fresh spicy crowd */
+  tomford:    ['creed', 'hermes', 'paco'],             /* Tobacco Oud — oriental richness tier */
+  ysl:        ['dior', 'armani', 'burberry'],          /* Y fam — fresh aromatic masculine */
+  armani:     ['dior', 'bvlgari', 'isseymiyake'],     /* Acqua family — aquatic freshness */
+  creed:      ['tomford', 'hermes', 'versace'],        /* Aventus — prestige woody-fruity */
+  versace:    ['chanel', 'paco', 'ysl'],               /* Eros — oriental fougere group */
+  burberry:   ['chanel', 'dior', 'montblanc'],         /* Hero — fresh woody masculine */
+  paco:       ['versace', 'tomford', 'creed'],         /* 1 Million — spicy oriental */
+  lancome:    ['narciso', 'guerlain', 'isseymiyake'],  /* Idole — floral musky feminine */
+  hermes:     ['tomford', 'creed', 'guerlain'],        /* Terre — earthy woody */
+  guerlain:   ['lancome', 'narciso', 'isseymiyake'],   /* Mon Guerlain — floral gourmand */
+  jpgaultier: ['paco', 'versace', 'tomford'],          /* Le Male — oriental fougere */
+  isseymiyake:['armani', 'lancome', 'narciso'],        /* L'Eau — light aquatic */
+  bvlgari:    ['armani', 'isseymiyake', 'dior'],       /* Aqva — citrus aquatic */
+  montblanc:  ['burberry', 'chanel', 'dior'],          /* Explorer — fresh woody smooth */
+  narciso:    ['lancome', 'guerlain', 'isseymiyake'],  /* For Her — floral musky */
+  dunhill:    ['armani', 'bvlgari', 'isseymiyake']     /* Desire Blue — fresh aquatic */
+};
+
+/* Similar Feel: shared scent character, different brand/style */
+var _PDP_SIMILAR_FEEL = {
+  chanel:     ['tomford', 'creed', 'hermes'],
+  dior:       ['ysl', 'montblanc', 'dunhill'],
+  tomford:    ['creed', 'paco', 'jpgaultier'],
+  ysl:        ['chanel', 'dior', 'burberry'],
+  armani:     ['bvlgari', 'isseymiyake', 'dunhill'],
+  creed:      ['tomford', 'hermes', 'versace'],
+  versace:    ['paco', 'jpgaultier', 'tomford'],
+  burberry:   ['montblanc', 'chanel', 'ysl'],
+  paco:       ['versace', 'jpgaultier', 'creed'],
+  lancome:    ['guerlain', 'narciso', 'isseymiyake'],
+  hermes:     ['tomford', 'creed', 'guerlain'],
+  guerlain:   ['lancome', 'narciso', 'hermes'],
+  jpgaultier: ['paco', 'versace', 'creed'],
+  isseymiyake:['armani', 'bvlgari', 'dior'],
+  bvlgari:    ['isseymiyake', 'armani', 'dior'],
+  montblanc:  ['burberry', 'dior', 'ysl'],
+  narciso:    ['guerlain', 'lancome', 'hermes'],
+  dunhill:    ['bvlgari', 'armani', 'isseymiyake']
+};
+
+/* Build one horizontal recommendation card */
+function _pdpBuildRecCard(key) {
+  var p = PRODUCTS[key];
+  if (!p) return null;
+
+  /* Compute lowest / highest from storeComparison */
+  var comps  = p.storeComparison || [];
+  var prices = comps.map(function(s) { return parseInt(s.price.replace(/[^0-9]/g,'')) || 0; });
+  var lowest  = prices.length ? Math.min.apply(null, prices) : parseInt((p.price || '0').replace(/[^0-9]/g,''));
+  var highest = prices.length ? Math.max.apply(null, prices) : lowest;
+  var savings = highest - lowest;
+  var stores  = comps.length || 1;
+
+  var card = document.createElement('div');
+  card.className = 'deal-card';
+  card.style.cursor = 'pointer';
+  card.addEventListener('click', function() { openProduct(key, 'product-detail'); });
+
+  card.innerHTML =
+    '<div class="deal-img-zone">' +
+      '<div class="prod-img-wrap" style="background:' + p.bg + ';">' +
+        '<img loading="lazy" class="prod-img" src="' + p.img + '" alt="" ' +
+          'onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">' +
+        '<div class="prod-initials" style="display:none;">' + (p.initials || '??') + '</div>' +
+      '</div>' +
+      '<div class="deal-badge-float"><span class="badge ' + (p.badgeClass || 'badge-neutral') + '">' + (p.badge || 'In Stock') + '</span></div>' +
+    '</div>' +
+    '<div class="deal-body">' +
+      '<div class="deal-name">' + p.name + '</div>' +
+      '<div class="deal-store" style="text-transform:none;">Available in ' + stores + ' store' + (stores !== 1 ? 's' : '') + '</div>' +
+      '<div class="deal-prices" style="display:block;margin-top:4px;">' +
+        '<div style="margin-bottom:5px;"><span class="badge" style="font-size:11px;padding:2px 8px;background-color:#EAA005;color:#fff;">Lowest: ' + lowest + ' SAR</span></div>' +
+        '<div style="font-size:12px;color:var(--ink-2);">Highest: ' + highest + ' SAR</div>' +
+        (savings > 0 ? '<div style="font-size:12px;color:var(--ink-2);">Savings: ' + savings + ' SAR</div>' : '') +
+      '</div>' +
+    '</div>';
+
+  return card;
+}
+
+/* Populate both recommendation strips for the given productKey */
+function _setProductRecommendations(key) {
+  var exactList  = document.getElementById('pdp-exact-match-list');
+  var similarList = document.getElementById('pdp-similar-feel-list');
+  var exactSec   = document.getElementById('pdp-exact-match-section');
+  var similarSec = document.getElementById('pdp-similar-feel-section');
+  if (!exactList || !similarList) return;
+
+  exactList.innerHTML  = '';
+  similarList.innerHTML = '';
+
+  var exactKeys   = (_PDP_EXACT_MATCH[key]   || []).filter(function(k) { return k !== key && PRODUCTS[k]; });
+  var similarKeys = (_PDP_SIMILAR_FEEL[key]  || []).filter(function(k) { return k !== key && PRODUCTS[k]; });
+
+  exactKeys.forEach(function(k) {
+    var c = _pdpBuildRecCard(k);
+    if (c) exactList.appendChild(c);
+  });
+  similarKeys.forEach(function(k) {
+    var c = _pdpBuildRecCard(k);
+    if (c) similarList.appendChild(c);
+  });
+
+  /* Hide sections if no data */
+  exactSec.style.display  = exactKeys.length  ? '' : 'none';
+  similarSec.style.display = similarKeys.length ? '' : 'none';
 }
 
 /* ── Main entry: open a product screen ──────────────────── */
@@ -4948,7 +5826,17 @@ function openProduct(key, origin) {
   if (!p) return;
   productOrigin            = origin || 'home';
   currentProductStoreKey   = p.storeKey || '';
-  var backLabels = { search: 'Search', dip: 'Compare', 'hot-deals': 'Deals', brand: 'Brand', store: 'Store' };
+  var backLabels = {
+    search: 'Search',
+    dip: 'Compare',
+    'hot-deals': 'Deals',
+    'price-drops': 'Price Drops',
+    brand: 'Brand',
+    store: 'Store',
+    wishlist: 'Wishlist',
+    'wishlist-all': 'Wishlist',
+    alerts: 'Alerts'
+  };
   document.getElementById('product-back-label').textContent = backLabels[productOrigin] || 'Back';
 
   _setProductHero(p);
@@ -4956,6 +5844,7 @@ function openProduct(key, origin) {
   _setProductPricing(p);
   _setProductStore(p);
   _setProductReviews(p);
+  _setProductRecommendations(key);
 
   /* Reset heart state */
   heartSaved = false;
@@ -4980,19 +5869,30 @@ function goBackFromProduct() {
   if (productOrigin === 'search') {
     switchScreen('search');
   } else if (productOrigin === 'dip') {
-    /* Return to deal intermediate page */
-    var overlay = document.getElementById('overlay-deal-intermediate');
-    overlay.style.display = '';
-    overlay.classList.add('visible');
+    /* Return to deal intermediate compare page */
+    var dipOverlay = document.getElementById('overlay-deal-intermediate');
+    dipOverlay.style.display = '';
+    dipOverlay.style.zIndex = '120';
+    dipOverlay.classList.add('visible');
   } else if (productOrigin === 'hot-deals') {
     switchScreen('home');
     showOverlay('overlay-hot-deals');
+  } else if (productOrigin === 'price-drops') {
+    switchScreen('home');
+    showOverlay('overlay-price-drops');
   } else if (productOrigin === 'brand') {
     switchScreen('home');
     showOverlay('overlay-brand-page');
   } else if (productOrigin === 'store') {
     switchScreen('home');
     showOverlay('overlay-store-page');
+  } else if (productOrigin === 'wishlist') {
+    switchScreen('activity');
+  } else if (productOrigin === 'wishlist-all') {
+    switchScreen('activity');
+    showOverlay('overlay-wishlist-all');
+  } else if (productOrigin === 'alerts') {
+    switchScreen('alerts');
   } else {
     switchScreen('home');
   }
@@ -5112,11 +6012,8 @@ function closeInterestsEdit() { hideOverlay('overlay-interests'); }
 
 /* Logout confirm sheet */
 function confirmLogout() {
-  closeSettings();
-  setTimeout(function() {
-    document.getElementById('sheet-backdrop-logout').classList.add('visible');
-    document.getElementById('sheet-logout').classList.add('visible');
-  }, 200);
+  document.getElementById('sheet-backdrop-logout').classList.add('visible');
+  document.getElementById('sheet-logout').classList.add('visible');
 }
 function closeLogout() {
   document.getElementById('sheet-backdrop-logout').classList.remove('visible');
@@ -5186,26 +6083,52 @@ function openBrandPage(key) {
   var grid = document.getElementById('brand-prod-grid');
   grid.innerHTML = '';
   b.products.forEach(function(p) {
+    /* ── Compute lowest / highest price and savings from PRODUCTS storeComparison ── */
+    var prod = (typeof PRODUCTS !== 'undefined') ? PRODUCTS[p.key] : null;
+    var storeComps = (prod && prod.storeComparison) ? prod.storeComparison : [];
+    var prices = storeComps.map(function(s) { return parseInt(s.price.replace(/[^0-9]/g, '')); });
+    var storeCount = storeComps.length || 1;
+    var lowestPrice  = prices.length ? Math.min.apply(null, prices) : parseInt(p.price.replace(/[^0-9]/g, ''));
+    var highestPrice = prices.length ? Math.max.apply(null, prices) : lowestPrice;
+    var savings      = highestPrice - lowestPrice;
+
     var card = document.createElement('div');
-    card.className = 'brand-prod-card';
-    card.setAttribute('onclick', 'closeBrandPage();openProduct("' + p.key + '","brand")');
+    card.className = 'deal-card';
+    card.style.cursor = 'pointer';
+    card.setAttribute('data-pkey', p.key);
+    (function(pkey) {
+      card.addEventListener('click', function(e) {
+        e.stopPropagation();
+        openDealIntermediate(pkey, 'brand');
+      });
+    }(p.key));
     card.innerHTML =
-      '<div class="brand-prod-img">' +
-        '<div class="prod-img-wrap" style="background:' + p.imgBg + ';height:100%;">' +
+      '<div class="deal-img-zone">' +
+        '<div class="prod-img-wrap" style="background:' + p.imgBg + ';">' +
           '<img loading="lazy" class="prod-img" src="' + p.img + '" alt="" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">' +
           '<div class="prod-initials" style="display:none;">' + p.ini + '</div>' +
         '</div>' +
-        '<div class="brand-prod-badge"><span class="badge ' + p.badgeClass + '">' + p.badge + '</span></div>' +
+        '<div class="deal-badge-float"><span class="badge ' + p.badgeClass + '">' + p.badge + '</span></div>' +
       '</div>' +
-      '<div class="brand-prod-body">' +
-        '<div class="deal-brand">' + b.name + '</div>' +
+      '<div class="deal-body">' +
         '<div class="deal-name">' + p.name + '</div>' +
-        '<div class="deal-store">' + p.sub + '</div>' +
-        '<div class="deal-prices"><span class="deal-price">' + p.price + '</span></div>' +
+        '<div class="deal-store" style="text-transform:none;">Available in ' + storeCount + ' store' + (storeCount !== 1 ? 's' : '') + '</div>' +
+        '<div class="deal-prices" style="display:block;margin-top:4px;">' +
+          '<div style="margin-bottom:5px;"><span class="badge" style="font-size:11px;padding:2px 8px;background-color:#EAA005;color:#ffffff;">Lowest price: ' + lowestPrice + ' SAR</span></div>' +
+          '<div style="font-size:12px;color:var(--ink-2);">Highest price: ' + highestPrice + ' SAR</div>' +
+          '<div style="font-size:12px;color:var(--ink-2);">Savings: ' + savings + ' SAR</div>' +
+        '</div>' +
       '</div>';
     grid.appendChild(card);
   });
   showOverlay('overlay-brand-page');
+  /* Delegated listener on grid — fires even if card children stop propagation */
+  grid.onclick = function(e) {
+    var card = e.target.closest('.deal-card');
+    if (card && card.getAttribute('data-pkey')) {
+      openDealIntermediate(card.getAttribute('data-pkey'), 'brand');
+    }
+  };
   var sa = document.querySelector('#overlay-brand-page [style*="overflow-y:auto"]');
   if (sa) sa.scrollTop = 0;
 }
@@ -5225,39 +6148,60 @@ function openStorePage(key) {
   logo.textContent = s.initials;
   document.getElementById('store-page-name').textContent = s.name;
   document.getElementById('store-page-url').textContent = s.url;
-  // Reset follow button state for new store
   var fb = document.getElementById('store-follow-btn');
   fb.textContent = 'Follow';
   fb.style.background = 'var(--accent)';
   fb.style.color = '#fff';
   fb.dataset.following = '0';
   document.getElementById('store-follower-count').textContent = '1.2k Followers';
-  // Reset search
   document.getElementById('store-search-input').value = '';
+
   var list = document.getElementById('store-deals-list');
   list.innerHTML = '';
+  list.style.padding = '';
+
+  /* 2-column grid — same layout as Personalized for You */
+  var grid = document.createElement('div');
+  grid.className = 'pers-all-grid';
+
   s.deals.forEach(function(d) {
-    var row = document.createElement('div');
-    row.className = 'drop-row';
-    row.setAttribute('onclick', 'closeStorePage();openProduct("' + d.key + '","store")');
-    row.innerHTML =
-      '<div class="drop-thumb"><div class="prod-img-wrap" style="background:' + d.imgBg + ';height:52px;">' +
-        '<img loading="lazy" class="prod-img" src="' + d.img + '" alt="" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">' +
-        '<div class="prod-initials" style="display:none;font-size:14px;">' + d.ini + '</div>' +
-      '</div></div>' +
-      '<div class="drop-info">' +
-        '<div class="drop-name">' + d.name + '</div>' +
-        '<div class="drop-sub">' + d.brand + '</div>' +
-        '<div style="margin-top:4px;display:flex;align-items:center;gap:6px;">' +
-          '<span class="badge ' + d.badgeClass + '">' + d.badge + '</span>' +
+    var prod       = (typeof PRODUCTS !== 'undefined') ? PRODUCTS[d.key] : null;
+    var storeComps = (prod && prod.storeComparison) ? prod.storeComparison : [];
+    var prices     = storeComps.map(function(sc) { return parseInt(sc.price.replace(/[^0-9]/g, '')) || 0; });
+    var storeCount = storeComps.length || 1;
+    var lowest     = prices.length ? Math.min.apply(null, prices) : parseInt(d.price.replace(/[^0-9]/g, ''));
+    var highest    = prices.length ? Math.max.apply(null, prices) : parseInt((d.orig || d.price).replace(/[^0-9]/g, ''));
+    var savings    = highest - lowest;
+
+    var card = document.createElement('div');
+    card.className = 'deal-card';
+    card.addEventListener('click', function() {
+      closeStorePage();
+      openProduct(d.key, 'store');
+    });
+
+    card.innerHTML =
+      '<div class="deal-img-zone">' +
+        '<div class="prod-img-wrap" style="background:' + d.imgBg + ';">' +
+          '<img loading="lazy" class="prod-img" src="' + d.img + '" alt="" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">' +
+          '<div class="prod-initials" style="display:none;">' + d.ini + '</div>' +
         '</div>' +
+        '<div class="deal-badge-float"><span class="badge ' + d.badgeClass + '">' + d.badge + '</span></div>' +
       '</div>' +
-      '<div class="drop-right">' +
-        '<div class="drop-price">' + d.price + '</div>' +
-        '<div class="drop-delta" style="color:var(--ink-3);text-decoration:line-through;">' + d.orig + '</div>' +
+      '<div class="deal-body">' +
+        '<div class="deal-name">' + d.name + '</div>' +
+        '<div class="deal-store" style="text-transform:none;">Available in ' + storeCount + ' store' + (storeCount !== 1 ? 's' : '') + '</div>' +
+        '<div class="deal-prices" style="display:block;margin-top:4px;">' +
+          '<div style="margin-bottom:5px;"><span class="badge" style="font-size:11px;padding:2px 8px;background-color:#EAA005;color:#fff;">Lowest: ' + lowest + ' SAR</span></div>' +
+          '<div style="font-size:12px;color:var(--ink-2);">Highest: ' + highest + ' SAR</div>' +
+          (savings > 0 ? '<div style="font-size:12px;color:var(--ink-2);">Savings: ' + savings + ' SAR</div>' : '') +
+        '</div>' +
       '</div>';
-    list.appendChild(row);
+
+    grid.appendChild(card);
   });
+
+  list.appendChild(grid);
   showOverlay('overlay-store-page');
   var sa = document.querySelector('#overlay-store-page [style*="overflow-y:auto"]');
   if (sa) sa.scrollTop = 0;
@@ -5288,12 +6232,11 @@ function toggleStoreFollow() {
 
 /* ── STORE SEARCH FILTER ───────────────────────────────── */
 function filterStoreDeals(query) {
-  var rows = document.querySelectorAll('#store-deals-list .drop-row');
+  var rows = document.querySelectorAll('#store-deals-list .deal-card');
   var q = query.toLowerCase();
   rows.forEach(function(row) {
-    var name = row.querySelector('.drop-name') ? row.querySelector('.drop-name').textContent.toLowerCase() : '';
-    var sub  = row.querySelector('.drop-sub')  ? row.querySelector('.drop-sub').textContent.toLowerCase()  : '';
-    row.style.display = (!q || name.includes(q) || sub.includes(q)) ? '' : 'none';
+    var name = row.querySelector('.deal-name') ? row.querySelector('.deal-name').textContent.toLowerCase() : '';
+    row.style.display = (!q || name.includes(q)) ? '' : 'none';
   });
 }
 
@@ -6101,6 +7044,9 @@ function _dipGoToProduct(productKey) {
   var overlay = document.getElementById('overlay-deal-intermediate');
   overlay.classList.remove('visible');
   overlay.style.display = 'none';
+  /* Also hide brand page overlay so product detail screen shows through */
+  var brandOverlay = document.getElementById('overlay-brand-page');
+  if (brandOverlay) brandOverlay.classList.remove('visible');
   /* Open unified product detail, passing 'dip' as origin so back button returns here */
   openProduct(productKey, 'dip');
   setTimeout(function() { overlay.style.display = ''; }, 50);
@@ -6311,8 +7257,10 @@ function openDealIntermediate(productKey, origin) {
     simList.appendChild(_dipBuildAltCard(item));
   });
 
-  /* Show overlay */
+  /* Show overlay — ensure it sits above brand page overlay */
   var overlay = document.getElementById('overlay-deal-intermediate');
+  /* If coming from brand page, keep brand page underneath but raise intermediate above it */
+  overlay.style.zIndex = '120';
   overlay.style.display = '';
   overlay.classList.add('visible');
 
@@ -6326,15 +7274,17 @@ function _dipClose() {
   var overlay = document.getElementById('overlay-deal-intermediate');
   overlay.classList.remove('visible');
   overlay.style.display = '';
+  overlay.style.zIndex = '';
   /* Navigate back to proper origin */
   if (_dipOrigin === 'search') {
     switchScreen('search');
   } else if (_dipOrigin === 'hot-deals') {
     showOverlay('overlay-hot-deals');
   } else if (_dipOrigin === 'brand') {
-    /* brand page overlay is already visible, nothing to do */
+    /* Brand page was hidden when entering DIP — restore it */
+    switchScreen('home');
+    showOverlay('overlay-brand-page');
   } else {
-    /* default: home */
     switchScreen('home');
   }
 }
@@ -6348,6 +7298,71 @@ function _dipResetFilters(chip) {
   chip.classList.add('dip-active');
   _dipApplyFilters();
 }
+
+/* ── Alert disable confirmation ──────────────────────────── */
+var _alertDisableToggleId  = null;
+var _alertDisableCardId    = null;
+
+function requestAlertDisable(toggleId, cardId) {
+  var toggle = document.getElementById(toggleId);
+  /* Only intercept when turning OFF (toggle is currently ON) */
+  if (toggle && !toggle.classList.contains('off')) {
+    _alertDisableToggleId = toggleId;
+    _alertDisableCardId   = cardId;
+    document.getElementById('alert-disable-backdrop').classList.add('visible');
+    document.getElementById('alert-disable-sheet').classList.add('visible');
+  } else {
+    /* Turning back ON — just toggle directly */
+    toggleEl(toggleId);
+  }
+}
+
+function confirmAlertDisable() {
+  cancelAlertDisable();
+  if (_alertDisableToggleId) {
+    /* Turn toggle off */
+    var t = document.getElementById(_alertDisableToggleId);
+    if (t) t.classList.add('off');
+  }
+  if (_alertDisableCardId) {
+    /* Animate card out then remove */
+    var card = document.getElementById(_alertDisableCardId);
+    if (card) {
+      card.style.transition = 'opacity 0.3s, transform 0.3s, max-height 0.35s, margin 0.35s';
+      card.style.opacity    = '0';
+      card.style.transform  = 'scaleY(0.85)';
+      card.style.maxHeight  = card.offsetHeight + 'px';
+      requestAnimationFrame(function() {
+        card.style.maxHeight = '0';
+        card.style.margin    = '0';
+        card.style.padding   = '0';
+      });
+      setTimeout(function() { if (card.parentNode) card.parentNode.removeChild(card); }, 380);
+    }
+  }
+  _alertDisableToggleId = null;
+  _alertDisableCardId   = null;
+}
+
+function cancelAlertDisable() {
+  document.getElementById('alert-disable-backdrop').classList.remove('visible');
+  document.getElementById('alert-disable-sheet').classList.remove('visible');
+}
+
+/* ── Web status bar live clock ───────────────────────────── */
+(function() {
+  var el = document.getElementById('web-status-time');
+  if (!el) return;
+  function tick() {
+    var now = new Date();
+    var h = now.getHours(), m = now.getMinutes();
+    var ap = h >= 12 ? 'PM' : 'AM';
+    h = h % 12 || 12;
+    el.textContent = h + ':' + (m < 10 ? '0' : '') + m + ' ' + ap;
+  }
+  tick();
+  setInterval(tick, 30000);
+})();
 
 </script>
 
