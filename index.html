@@ -5,6 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"/>
 <title>Yourdis · يوردس</title>
 
+<!-- PWA Manifest -->
+<link rel="manifest" href="manifest.json"/>
+<meta name="theme-color" content="#6B2737"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="Yourdis"/>
+
 
 
 <!-- Standard favicon chain -->
@@ -134,7 +142,8 @@ html {
 }
 
 /* Desktop mimicry - only applies when screen is large enough */
-@media (min-width: 600px) and (min-height: 600px) {
+/* ── Desktop: phone frame simulation ── */
+@media (min-width: 500px) {
   body {
     background: var(--bg-page);
     display: flex;
@@ -149,14 +158,27 @@ html {
     border-radius: var(--radius-xl);
     border: 1.5px solid rgba(0,0,0,0.10);
     box-shadow: 0 8px 40px rgba(0,0,0,0.10);
-    /* Top safe area: simulate a real mobile status bar gap */
     padding-top: 44px;
   }
-  /* Compensate: screens already handle their own internal padding,
-     so we only need the shell padding on the outermost container */
-  #app-root > .screen {
-    /* screens fill the remaining height inside the padded shell */
+}
+
+/* ── Mobile: full viewport, no frame ── */
+@media (max-width: 499px) {
+  body {
+    background: var(--bg-phone);
+    padding: 0;
   }
+  #app-root {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    padding-top: 0;
+  }
+  .web-status-bar { display: none; }
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -200,7 +222,7 @@ html {
    the extra 44px top offset — overlays nested inside a .screen (like
    overlay-hot-deals, overlay-brands, overlay-price-drops) already sit
    correctly within the screen's coordinate space and must NOT get extra padding. */
-@media (min-width: 600px) and (min-height: 600px) {
+@media (min-width: 500px) {
   #overlay-wishlist-all .listing-header,
   #overlay-recent-all .listing-header,
   #overlay-personalized-all .listing-header,
@@ -987,6 +1009,9 @@ html {
    must also be hidden — handled by the JS showOverlay/hideOverlay. */
 .overlay.visible { z-index: 110; }
 
+/* Hide activity bottom nav when a sub-page is open */
+#screen-activity.sub-open .bottom-nav { display: none; }
+
 /* Store page already had its own override — keep consistent */
 #overlay-store-page { z-index: 110; }
 
@@ -1189,7 +1214,7 @@ html {
 .web-status-bar {
   display: none;
 }
-@media (min-width: 600px) and (min-height: 600px) {
+@media (min-width: 500px) {
   .web-status-bar {
     display: flex;
     align-items: center;
@@ -1570,7 +1595,7 @@ html {
 }
 /* ── ONBOARDING OVERLAY ──────────────────────────────────── */
 .overlay-onboarding {
-  position:absolute; inset:0; z-index:90;
+  position:absolute; inset:0; z-index:160;
   background:rgba(14,14,14,0.55);
   display:none; align-items:flex-end;
   backdrop-filter:blur(3px);
@@ -1597,7 +1622,7 @@ html {
 
 
 .guest-modal-backdrop {
-  position:absolute; inset:0; z-index:80;
+  position:absolute; inset:0; z-index:160;
   background:rgba(14,14,14,0.45);
   display:none; align-items:flex-end;
   backdrop-filter:blur(2px);
@@ -2397,8 +2422,8 @@ html {
             <div class="deal-name">Bleu de Chanel EDP</div>
             <div class="deal-store" style="text-transform: none;">Available in 5 stores</div>
             <div class="deal-prices" style="display: block; margin-top: 4px;">
-              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest price: 485 SAR</span></div>
-              <div style="font-size: 12px; color: var(--ink-2);">Highest price: 600 SAR</div>
+              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest: 485 SAR</span></div>
+              <div style="font-size: 12px; color: var(--ink-2);">Highest: 600 SAR</div>
               <div style="font-size: 12px; color: var(--ink-2);">Savings: 115 SAR</div>
             </div>
           </div>
@@ -2415,8 +2440,8 @@ html {
             <div class="deal-name">Sauvage EDT</div>
             <div class="deal-store" style="text-transform: none;">Available in 5 stores</div>
             <div class="deal-prices" style="display: block; margin-top: 4px;">
-              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest price: 310 SAR</span></div>
-              <div style="font-size: 12px; color: var(--ink-2);">Highest price: 370 SAR</div>
+              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest: 310 SAR</span></div>
+              <div style="font-size: 12px; color: var(--ink-2);">Highest: 370 SAR</div>
               <div style="font-size: 12px; color: var(--ink-2);">Savings: 60 SAR</div>
             </div>
           </div>
@@ -2433,8 +2458,8 @@ html {
             <div class="deal-name">Tobacco Oud EDP</div>
             <div class="deal-store" style="text-transform: none;">Available in 5 stores</div>
             <div class="deal-prices" style="display: block; margin-top: 4px;">
-              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest price: 590 SAR</span></div>
-              <div style="font-size: 12px; color: var(--ink-2);">Highest price: 650 SAR</div>
+              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest: 590 SAR</span></div>
+              <div style="font-size: 12px; color: var(--ink-2);">Highest: 650 SAR</div>
               <div style="font-size: 12px; color: var(--ink-2);">Savings: 60 SAR</div>
             </div>
           </div>
@@ -2451,8 +2476,8 @@ html {
             <div class="deal-name">Y Le Parfum</div>
             <div class="deal-store" style="text-transform: none;">Available in 5 stores</div>
             <div class="deal-prices" style="display: block; margin-top: 4px;">
-              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest price: 290 SAR</span></div>
-              <div style="font-size: 12px; color: var(--ink-2);">Highest price: 350 SAR</div>
+              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest: 290 SAR</span></div>
+              <div style="font-size: 12px; color: var(--ink-2);">Highest: 350 SAR</div>
               <div style="font-size: 12px; color: var(--ink-2);">Savings: 60 SAR</div>
             </div>
           </div>
@@ -2469,8 +2494,8 @@ html {
             <div class="deal-name">Acqua di Gio EDP</div>
             <div class="deal-store" style="text-transform: none;">Available in 5 stores</div>
             <div class="deal-prices" style="display: block; margin-top: 4px;">
-              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest price: 265 SAR</span></div>
-              <div style="font-size: 12px; color: var(--ink-2);">Highest price: 350 SAR</div>
+              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest: 265 SAR</span></div>
+              <div style="font-size: 12px; color: var(--ink-2);">Highest: 350 SAR</div>
               <div style="font-size: 12px; color: var(--ink-2);">Savings: 85 SAR</div>
             </div>
           </div>
@@ -2508,8 +2533,8 @@ html {
             <div class="deal-name">Aventus for Her</div>
             <div class="deal-store" style="text-transform: none;">Available in 5 stores</div>
             <div class="deal-prices" style="display: block; margin-top: 4px;">
-              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest price: 420 SAR</span></div>
-              <div style="font-size: 12px; color: var(--ink-2);">Highest price: 500 SAR</div>
+              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest: 420 SAR</span></div>
+              <div style="font-size: 12px; color: var(--ink-2);">Highest: 500 SAR</div>
               <div style="font-size: 12px; color: var(--ink-2);">Savings: 80 SAR</div>
             </div>
           </div>
@@ -2526,8 +2551,8 @@ html {
             <div class="deal-name">Oud Wood</div>
             <div class="deal-store" style="text-transform: none;">Available in 5 stores</div>
             <div class="deal-prices" style="display: block; margin-top: 4px;">
-              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest price: 710 SAR</span></div>
-              <div style="font-size: 12px; color: var(--ink-2);">Highest price: 800 SAR</div>
+              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest: 710 SAR</span></div>
+              <div style="font-size: 12px; color: var(--ink-2);">Highest: 800 SAR</div>
               <div style="font-size: 12px; color: var(--ink-2);">Savings: 90 SAR</div>
             </div>
           </div>
@@ -2544,8 +2569,8 @@ html {
             <div class="deal-name">Green Irish Tweed</div>
             <div class="deal-store" style="text-transform: none;">Available in 5 stores</div>
             <div class="deal-prices" style="display: block; margin-top: 4px;">
-              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest price: 380 SAR</span></div>
-              <div style="font-size: 12px; color: var(--ink-2);">Highest price: 450 SAR</div>
+              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest: 380 SAR</span></div>
+              <div style="font-size: 12px; color: var(--ink-2);">Highest: 450 SAR</div>
               <div style="font-size: 12px; color: var(--ink-2);">Savings: 70 SAR</div>
             </div>
           </div>
@@ -2562,8 +2587,8 @@ html {
             <div class="deal-name">Black Orchid</div>
             <div class="deal-store" style="text-transform: none;">Available in 5 stores</div>
             <div class="deal-prices" style="display: block; margin-top: 4px;">
-              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest price: 530 SAR</span></div>
-              <div style="font-size: 12px; color: var(--ink-2);">Highest price: 650 SAR</div>
+              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest: 530 SAR</span></div>
+              <div style="font-size: 12px; color: var(--ink-2);">Highest: 650 SAR</div>
               <div style="font-size: 12px; color: var(--ink-2);">Savings: 120 SAR</div>
             </div>
           </div>
@@ -2580,8 +2605,8 @@ html {
             <div class="deal-name">Bleu de Chanel EDP</div>
             <div class="deal-store" style="text-transform: none;">Available in 5 stores</div>
             <div class="deal-prices" style="display: block; margin-top: 4px;">
-              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest price: 485 SAR</span></div>
-              <div style="font-size: 12px; color: var(--ink-2);">Highest price: 600 SAR</div>
+              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest: 485 SAR</span></div>
+              <div style="font-size: 12px; color: var(--ink-2);">Highest: 600 SAR</div>
               <div style="font-size: 12px; color: var(--ink-2);">Savings: 115 SAR</div>
             </div>
           </div>
@@ -2651,43 +2676,42 @@ html {
         <div class="notif-list-section">
           <div class="notif-section-label">Today</div>
 
-          <!-- Price Alert: Chanel drop — UNREAD -->
+          <!-- Template 1: Wishlist price drop — UNREAD -->
           <div class="notif-item notif-price unread">
             <div class="notif-dot"></div>
             <div class="notif-avatar notif-avatar-price">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
             </div>
             <div class="notif-body">
-              <div class="notif-title">Bleu de Chanel EDP dropped to 485 SAR</div>
-              <div class="notif-sub">Golden Scent · was 620 SAR</div>
+              <div class="notif-title">The product in your wishlist has decreased in price.</div>
+              <div class="notif-sub">Bleu de Chanel EDP · now 485 SAR</div>
               <div class="notif-time">2 hours ago</div>
             </div>
             <div class="notif-price-pill">−135 SAR</div>
           </div>
 
-          <!-- Price Alert: Target hit — UNREAD -->
+          <!-- Template 2: Followed product price drop — UNREAD -->
           <div class="notif-item notif-price unread">
             <div class="notif-dot"></div>
             <div class="notif-avatar notif-avatar-price">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
             </div>
             <div class="notif-body">
-              <div class="notif-title">Price alert triggered — Acqua di Gio EDP</div>
-              <div class="notif-sub">Now 265 SAR at Al-Sultan · your target was 300 SAR</div>
+              <div class="notif-title">The price of a product you follow has decreased by 22%.</div>
+              <div class="notif-sub">Acqua di Gio EDP · now 265 SAR at Al-Sultan</div>
               <div class="notif-time">5 hours ago</div>
             </div>
-            <div class="notif-price-pill">−85 SAR</div>
+            <div class="notif-price-pill">−22%</div>
           </div>
 
-          <!-- Admin Announcement — UNREAD -->
+          <!-- Template 4: Admin message — UNREAD -->
           <div class="notif-item notif-admin unread">
             <div class="notif-dot"></div>
             <div class="notif-avatar notif-avatar-admin">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
             </div>
             <div class="notif-body">
-              <div class="notif-title">Weekend flash sale — up to 30% off Dior</div>
-              <div class="notif-sub">Namshi · Ends Sunday midnight</div>
+              <div class="notif-title">Yourdis: Weekend flash sale — up to 30% off Dior at Namshi. Ends Sunday midnight.</div>
               <div class="notif-time">8 hours ago</div>
             </div>
             <div class="notif-admin-pill">Yourdis</div>
@@ -2698,31 +2722,32 @@ html {
         <div class="notif-list-section">
           <div class="notif-section-label">Yesterday</div>
 
-          <!-- Price Alert: Dior drop — READ -->
+          <!-- Template 3: Reminder style — READ -->
+          <div class="notif-item notif-price">
+            <div class="notif-dot read"></div>
+            <div class="notif-avatar notif-avatar-price">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div class="notif-body">
+              <div class="notif-title">Reminder: A product you follow has dropped in price by 16%.</div>
+              <div class="notif-sub">Dior Sauvage EDT · now 310 SAR at Najd Al-Otheyah</div>
+              <div class="notif-time">Yesterday · 2:14 PM</div>
+            </div>
+            <div class="notif-price-pill">−16%</div>
+          </div>
+
+          <!-- Template 1: Wishlist price drop — READ -->
           <div class="notif-item notif-price">
             <div class="notif-dot read"></div>
             <div class="notif-avatar notif-avatar-price">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
             </div>
             <div class="notif-body">
-              <div class="notif-title">Dior Sauvage EDT — new low price</div>
-              <div class="notif-sub">310 SAR at Najd Al-Otheyah · was 370 SAR</div>
-              <div class="notif-time">Yesterday · 2:14 PM</div>
-            </div>
-            <div class="notif-price-pill">−60 SAR</div>
-          </div>
-
-          <!-- Price Alert: Back in stock — READ -->
-          <div class="notif-item notif-price">
-            <div class="notif-dot read"></div>
-            <div class="notif-avatar notif-avatar-price">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
-            </div>
-            <div class="notif-body">
-              <div class="notif-title">Tom Ford Tobacco Oud back in stock</div>
-              <div class="notif-sub">Available at Asheq Al-Otor · 590 SAR</div>
+              <div class="notif-title">The product in your wishlist has decreased in price.</div>
+              <div class="notif-sub">Tom Ford Tobacco Oud · now 590 SAR at Asheq Al-Otor</div>
               <div class="notif-time">Yesterday · 9:07 AM</div>
             </div>
+            <div class="notif-price-pill">−55 SAR</div>
           </div>
         </div>
 
@@ -2730,29 +2755,28 @@ html {
         <div class="notif-list-section">
           <div class="notif-section-label">This Week</div>
 
-          <!-- Price Alert: Creed — READ -->
+          <!-- Template 2: Followed product price drop — READ -->
           <div class="notif-item notif-price">
             <div class="notif-dot read"></div>
             <div class="notif-avatar notif-avatar-price">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
             </div>
             <div class="notif-body">
-              <div class="notif-title">Creed Aventus 100ml — all-time low</div>
-              <div class="notif-sub">840 SAR at Asheq Al-Otor · lowest ever tracked</div>
+              <div class="notif-title">The price of a product you follow has decreased by 20%.</div>
+              <div class="notif-sub">Creed Aventus 100ml · now 840 SAR at Asheq Al-Otor</div>
               <div class="notif-time">3 days ago</div>
             </div>
-            <div class="notif-price-pill">−210 SAR</div>
+            <div class="notif-price-pill">−20%</div>
           </div>
 
-          <!-- Admin Announcement: App update — READ -->
+          <!-- Template 4: Admin message — READ -->
           <div class="notif-item notif-admin">
             <div class="notif-dot read"></div>
             <div class="notif-avatar notif-avatar-admin">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
             </div>
             <div class="notif-body">
-              <div class="notif-title">Yourdis 2.1 is here</div>
-              <div class="notif-sub">New: fragrance notes view, reaction system, and smarter price tracking</div>
+              <div class="notif-title">Yourdis: Version 2.1 is now live — fragrance notes view, reaction system, and smarter price tracking.</div>
               <div class="notif-time">4 days ago</div>
             </div>
             <div class="notif-admin-pill">Yourdis</div>
@@ -2806,8 +2830,8 @@ html {
               <div class="deal-name">Bleu de Chanel EDP</div>
               <div class="deal-store" style="text-transform:none;">Available in 3 stores</div>
               <div class="deal-prices" style="display:block;margin-top:4px;">
-                <div style="margin-bottom:5px;"><span class="badge" style="font-size:11px;padding:2px 8px;background-color:#EAA005;color:#ffffff;">Lowest price: 485 SAR</span></div>
-                <div style="font-size:12px;color:var(--ink-2);">Highest price: 545 SAR</div>
+                <div style="margin-bottom:5px;"><span class="badge" style="font-size:11px;padding:2px 8px;background-color:#EAA005;color:#ffffff;">Lowest: 485 SAR</span></div>
+                <div style="font-size:12px;color:var(--ink-2);">Highest: 545 SAR</div>
                 <div style="font-size:12px;color:var(--ink-2);">Savings: 60 SAR</div>
               </div>
             </div>
@@ -2823,8 +2847,8 @@ html {
               <div class="deal-name">Acqua di Gio EDP</div>
               <div class="deal-store" style="text-transform:none;">Available in 3 stores</div>
               <div class="deal-prices" style="display:block;margin-top:4px;">
-                <div style="margin-bottom:5px;"><span class="badge" style="font-size:11px;padding:2px 8px;background-color:#EAA005;color:#ffffff;">Lowest price: 265 SAR</span></div>
-                <div style="font-size:12px;color:var(--ink-2);">Highest price: 310 SAR</div>
+                <div style="margin-bottom:5px;"><span class="badge" style="font-size:11px;padding:2px 8px;background-color:#EAA005;color:#ffffff;">Lowest: 265 SAR</span></div>
+                <div style="font-size:12px;color:var(--ink-2);">Highest: 310 SAR</div>
                 <div style="font-size:12px;color:var(--ink-2);">Savings: 45 SAR</div>
               </div>
             </div>
@@ -2840,8 +2864,8 @@ html {
               <div class="deal-name">Sauvage EDT</div>
               <div class="deal-store" style="text-transform:none;">Available in 3 stores</div>
               <div class="deal-prices" style="display:block;margin-top:4px;">
-                <div style="margin-bottom:5px;"><span class="badge" style="font-size:11px;padding:2px 8px;background-color:#EAA005;color:#ffffff;">Lowest price: 310 SAR</span></div>
-                <div style="font-size:12px;color:var(--ink-2);">Highest price: 365 SAR</div>
+                <div style="margin-bottom:5px;"><span class="badge" style="font-size:11px;padding:2px 8px;background-color:#EAA005;color:#ffffff;">Lowest: 310 SAR</span></div>
+                <div style="font-size:12px;color:var(--ink-2);">Highest: 365 SAR</div>
                 <div style="font-size:12px;color:var(--ink-2);">Savings: 55 SAR</div>
               </div>
             </div>
@@ -2857,8 +2881,8 @@ html {
               <div class="deal-name">Y Le Parfum</div>
               <div class="deal-store" style="text-transform:none;">Available in 3 stores</div>
               <div class="deal-prices" style="display:block;margin-top:4px;">
-                <div style="margin-bottom:5px;"><span class="badge" style="font-size:11px;padding:2px 8px;background-color:#EAA005;color:#ffffff;">Lowest price: 290 SAR</span></div>
-                <div style="font-size:12px;color:var(--ink-2);">Highest price: 340 SAR</div>
+                <div style="margin-bottom:5px;"><span class="badge" style="font-size:11px;padding:2px 8px;background-color:#EAA005;color:#ffffff;">Lowest: 290 SAR</span></div>
+                <div style="font-size:12px;color:var(--ink-2);">Highest: 340 SAR</div>
                 <div style="font-size:12px;color:var(--ink-2);">Savings: 50 SAR</div>
               </div>
             </div>
@@ -2874,8 +2898,8 @@ html {
               <div class="deal-name">Tobacco Oud EDP</div>
               <div class="deal-store" style="text-transform:none;">Available in 3 stores</div>
               <div class="deal-prices" style="display:block;margin-top:4px;">
-                <div style="margin-bottom:5px;"><span class="badge" style="font-size:11px;padding:2px 8px;background-color:#EAA005;color:#ffffff;">Lowest price: 590 SAR</span></div>
-                <div style="font-size:12px;color:var(--ink-2);">Highest price: 645 SAR</div>
+                <div style="margin-bottom:5px;"><span class="badge" style="font-size:11px;padding:2px 8px;background-color:#EAA005;color:#ffffff;">Lowest: 590 SAR</span></div>
+                <div style="font-size:12px;color:var(--ink-2);">Highest: 645 SAR</div>
                 <div style="font-size:12px;color:var(--ink-2);">Savings: 55 SAR</div>
               </div>
             </div>
@@ -2891,8 +2915,8 @@ html {
               <div class="deal-name">Creed Aventus</div>
               <div class="deal-store" style="text-transform:none;">Available in 3 stores</div>
               <div class="deal-prices" style="display:block;margin-top:4px;">
-                <div style="margin-bottom:5px;"><span class="badge" style="font-size:11px;padding:2px 8px;background-color:#EAA005;color:#ffffff;">Lowest price: 840 SAR</span></div>
-                <div style="font-size:12px;color:var(--ink-2);">Highest price: 1,050 SAR</div>
+                <div style="margin-bottom:5px;"><span class="badge" style="font-size:11px;padding:2px 8px;background-color:#EAA005;color:#ffffff;">Lowest: 840 SAR</span></div>
+                <div style="font-size:12px;color:var(--ink-2);">Highest: 1,050 SAR</div>
                 <div style="font-size:12px;color:var(--ink-2);">Savings: 210 SAR</div>
               </div>
             </div>
@@ -2908,8 +2932,8 @@ html {
               <div class="deal-name">Sauvage Elixir</div>
               <div class="deal-store" style="text-transform:none;">Available in 3 stores</div>
               <div class="deal-prices" style="display:block;margin-top:4px;">
-                <div style="margin-bottom:5px;"><span class="badge" style="font-size:11px;padding:2px 8px;background-color:#EAA005;color:#ffffff;">Lowest price: 310 SAR</span></div>
-                <div style="font-size:12px;color:var(--ink-2);">Highest price: 365 SAR</div>
+                <div style="margin-bottom:5px;"><span class="badge" style="font-size:11px;padding:2px 8px;background-color:#EAA005;color:#ffffff;">Lowest: 310 SAR</span></div>
+                <div style="font-size:12px;color:var(--ink-2);">Highest: 365 SAR</div>
                 <div style="font-size:12px;color:var(--ink-2);">Savings: 55 SAR</div>
               </div>
             </div>
@@ -2925,8 +2949,8 @@ html {
               <div class="deal-name">Acqua di Gio Profumo</div>
               <div class="deal-store" style="text-transform:none;">Available in 3 stores</div>
               <div class="deal-prices" style="display:block;margin-top:4px;">
-                <div style="margin-bottom:5px;"><span class="badge" style="font-size:11px;padding:2px 8px;background-color:#EAA005;color:#ffffff;">Lowest price: 265 SAR</span></div>
-                <div style="font-size:12px;color:var(--ink-2);">Highest price: 310 SAR</div>
+                <div style="margin-bottom:5px;"><span class="badge" style="font-size:11px;padding:2px 8px;background-color:#EAA005;color:#ffffff;">Lowest: 265 SAR</span></div>
+                <div style="font-size:12px;color:var(--ink-2);">Highest: 310 SAR</div>
                 <div style="font-size:12px;color:var(--ink-2);">Savings: 45 SAR</div>
               </div>
             </div>
@@ -3265,8 +3289,8 @@ html {
             <div class="deal-name">Aventus for Her</div>
             <div class="deal-store" style="text-transform: none;">Available in 5 stores</div>
             <div class="deal-prices" style="display: block; margin-top: 4px;">
-              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest price: 420 SAR</span></div>
-              <div style="font-size: 12px; color: var(--ink-2);">Highest price: 500 SAR</div>
+              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest: 420 SAR</span></div>
+              <div style="font-size: 12px; color: var(--ink-2);">Highest: 500 SAR</div>
               <div style="font-size: 12px; color: var(--ink-2);">Savings: 80 SAR</div>
             </div>
           </div>
@@ -3283,8 +3307,8 @@ html {
             <div class="deal-name">Oud Wood</div>
             <div class="deal-store" style="text-transform: none;">Available in 5 stores</div>
             <div class="deal-prices" style="display: block; margin-top: 4px;">
-              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest price: 710 SAR</span></div>
-              <div style="font-size: 12px; color: var(--ink-2);">Highest price: 800 SAR</div>
+              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest: 710 SAR</span></div>
+              <div style="font-size: 12px; color: var(--ink-2);">Highest: 800 SAR</div>
               <div style="font-size: 12px; color: var(--ink-2);">Savings: 90 SAR</div>
             </div>
           </div>
@@ -3301,8 +3325,8 @@ html {
             <div class="deal-name">Green Irish Tweed</div>
             <div class="deal-store" style="text-transform: none;">Available in 5 stores</div>
             <div class="deal-prices" style="display: block; margin-top: 4px;">
-              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest price: 380 SAR</span></div>
-              <div style="font-size: 12px; color: var(--ink-2);">Highest price: 450 SAR</div>
+              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest: 380 SAR</span></div>
+              <div style="font-size: 12px; color: var(--ink-2);">Highest: 450 SAR</div>
               <div style="font-size: 12px; color: var(--ink-2);">Savings: 70 SAR</div>
             </div>
           </div>
@@ -3319,8 +3343,8 @@ html {
             <div class="deal-name">Black Orchid</div>
             <div class="deal-store" style="text-transform: none;">Available in 5 stores</div>
             <div class="deal-prices" style="display: block; margin-top: 4px;">
-              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest price: 530 SAR</span></div>
-              <div style="font-size: 12px; color: var(--ink-2);">Highest price: 650 SAR</div>
+              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest: 530 SAR</span></div>
+              <div style="font-size: 12px; color: var(--ink-2);">Highest: 650 SAR</div>
               <div style="font-size: 12px; color: var(--ink-2);">Savings: 120 SAR</div>
             </div>
           </div>
@@ -3337,8 +3361,8 @@ html {
             <div class="deal-name">Bleu de Chanel EDP</div>
             <div class="deal-store" style="text-transform: none;">Available in 5 stores</div>
             <div class="deal-prices" style="display: block; margin-top: 4px;">
-              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest price: 485 SAR</span></div>
-              <div style="font-size: 12px; color: var(--ink-2);">Highest price: 600 SAR</div>
+              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest: 485 SAR</span></div>
+              <div style="font-size: 12px; color: var(--ink-2);">Highest: 600 SAR</div>
               <div style="font-size: 12px; color: var(--ink-2);">Savings: 115 SAR</div>
             </div>
           </div>
@@ -3355,8 +3379,8 @@ html {
             <div class="deal-name">Acqua di Gio EDP</div>
             <div class="deal-store" style="text-transform: none;">Fresh Aquatic</div>
             <div class="deal-prices" style="display: block; margin-top: 4px;">
-              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest price: 265 SAR</span></div>
-              <div style="font-size: 12px; color: var(--ink-2);">Highest price: 350 SAR</div>
+              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest: 265 SAR</span></div>
+              <div style="font-size: 12px; color: var(--ink-2);">Highest: 350 SAR</div>
               <div style="font-size: 12px; color: var(--ink-2);">Savings: 85 SAR</div>
             </div>
           </div>
@@ -3373,8 +3397,8 @@ html {
             <div class="deal-name">Creed Aventus 100ml</div>
             <div class="deal-store" style="text-transform: none;">Woody · Mossy</div>
             <div class="deal-prices" style="display: block; margin-top: 4px;">
-              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest price: 840 SAR</span></div>
-              <div style="font-size: 12px; color: var(--ink-2);">Highest price: 1000 SAR</div>
+              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest: 840 SAR</span></div>
+              <div style="font-size: 12px; color: var(--ink-2);">Highest: 1000 SAR</div>
               <div style="font-size: 12px; color: var(--ink-2);">Savings: 160 SAR</div>
             </div>
           </div>
@@ -3391,8 +3415,8 @@ html {
             <div class="deal-name">Sauvage Elixir 60ml</div>
             <div class="deal-store" style="text-transform: none;">Spicy Woody</div>
             <div class="deal-prices" style="display: block; margin-top: 4px;">
-              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest price: 420 SAR</span></div>
-              <div style="font-size: 12px; color: var(--ink-2);">Highest price: 500 SAR</div>
+              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest: 420 SAR</span></div>
+              <div style="font-size: 12px; color: var(--ink-2);">Highest: 500 SAR</div>
               <div style="font-size: 12px; color: var(--ink-2);">Savings: 80 SAR</div>
             </div>
           </div>
@@ -3409,8 +3433,8 @@ html {
             <div class="deal-name">Tobacco Oud EDP</div>
             <div class="deal-store" style="text-transform: none;">Oriental Oud</div>
             <div class="deal-prices" style="display: block; margin-top: 4px;">
-              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest price: 590 SAR</span></div>
-              <div style="font-size: 12px; color: var(--ink-2);">Highest price: 650 SAR</div>
+              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest: 590 SAR</span></div>
+              <div style="font-size: 12px; color: var(--ink-2);">Highest: 650 SAR</div>
               <div style="font-size: 12px; color: var(--ink-2);">Savings: 60 SAR</div>
             </div>
           </div>
@@ -3427,8 +3451,8 @@ html {
             <div class="deal-name">Y Le Parfum 60ml</div>
             <div class="deal-store" style="text-transform: none;">Fougère · Aromatic</div>
             <div class="deal-prices" style="display: block; margin-top: 4px;">
-              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest price: 290 SAR</span></div>
-              <div style="font-size: 12px; color: var(--ink-2);">Highest price: 350 SAR</div>
+              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest: 290 SAR</span></div>
+              <div style="font-size: 12px; color: var(--ink-2);">Highest: 350 SAR</div>
               <div style="font-size: 12px; color: var(--ink-2);">Savings: 60 SAR</div>
             </div>
           </div>
@@ -3445,8 +3469,8 @@ html {
             <div class="deal-name">Bleu de Chanel EDT</div>
             <div class="deal-store" style="text-transform: none;">Available in 5 stores</div>
             <div class="deal-prices" style="display: block; margin-top: 4px;">
-              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest price: 410 SAR</span></div>
-              <div style="font-size: 12px; color: var(--ink-2);">Highest price: 500 SAR</div>
+              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest: 410 SAR</span></div>
+              <div style="font-size: 12px; color: var(--ink-2);">Highest: 500 SAR</div>
               <div style="font-size: 12px; color: var(--ink-2);">Savings: 90 SAR</div>
             </div>
           </div>
@@ -3463,8 +3487,8 @@ html {
             <div class="deal-name">Acqua di Gio Profumo</div>
             <div class="deal-store" style="text-transform: none;">Available in 5 stores</div>
             <div class="deal-prices" style="display: block; margin-top: 4px;">
-              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest price: 395 SAR</span></div>
-              <div style="font-size: 12px; color: var(--ink-2);">Highest price: 500 SAR</div>
+              <div style="margin-bottom: 5px;"><span class="badge" style="font-size: 11px; padding: 2px 8px; background-color: #EAA005; color: #ffffff;">Lowest: 395 SAR</span></div>
+              <div style="font-size: 12px; color: var(--ink-2);">Highest: 500 SAR</div>
               <div style="font-size: 12px; color: var(--ink-2);">Savings: 105 SAR</div>
             </div>
           </div>
@@ -3694,6 +3718,24 @@ html {
               <div class="frag-id-value" id="product-perfumer">Jacques Polge</div>
             </div>
 
+            <!-- Year -->
+            <div class="frag-id-card">
+              <div class="frag-id-icon" style="background:var(--b-teal);color:#0E7490;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              </div>
+              <div class="frag-id-label">Year</div>
+              <div class="frag-id-value" id="product-year">2010</div>
+            </div>
+
+            <!-- Rating -->
+            <div class="frag-id-card">
+              <div class="frag-id-icon" style="background:#FEF9C3;color:#CA8A04;">
+                <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              </div>
+              <div class="frag-id-label">Rating</div>
+              <div class="frag-id-value" id="product-rating">4.6</div>
+            </div>
+
           </div>
         </div>
 		        <div class="accords-wrap" id="product-accords">
@@ -3818,7 +3860,7 @@ html {
         <!-- ── EXACT MATCH PRODUCTS ── -->
         <div class="pdp-rec-section" id="pdp-exact-match-section">
           <div class="pdp-rec-title">Exact Match Products</div>
-          <div class="pdp-rec-subtitle">Same fragrance, different size or concentration</div>
+          <div class="pdp-rec-subtitle">Same fragrance, possibly only different size</div>
           <div class="h-scroll pdp-rec-scroll" id="pdp-exact-match-list" style="padding:0 0 4px;"></div>
         </div>
 
@@ -3858,7 +3900,7 @@ html {
           <div class="review-head"><span class="review-user">Fahad M.</span><span class="review-date">1 month ago</span></div>
           <div class="review-text" id="product-review2">Classic for a reason. The EDP version has noticeably better projection than the EDT. Great value at this price point.</div>
         </div>
-        <div class="reviews-show-more" onclick="openReviewsPage()" style="cursor:pointer;">Show all <span id="product-all-reviews">287</span> reviews →</div>
+        <div class="reviews-show-more" id="reviews-show-more-btn" onclick="openReviewsPage()" style="cursor:pointer;" data-count="287">Show all 287 reviews →</div>
 <div style="margin-top: 20px;"></div>
 
       </div><!-- /padding -->
@@ -4041,7 +4083,7 @@ html {
       <div class="wishlist-list" style="margin-bottom:20px;">
 
         <!-- Chanel -->
-        <div class="wl-card-h" onclick="openProduct('chanel','wishlist')">
+        <div class="wl-card-h" onclick="openDealIntermediate('chanel','wishlist')">
           <div class="wl-img-zone">
             <div class="prod-img-wrap" style="background:var(--b-purple);height:100%;">
               <img loading="lazy" class="prod-img" src="jpeg1.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
@@ -4061,7 +4103,7 @@ html {
         </div>
 
         <!-- Dior -->
-        <div class="wl-card-h" onclick="openProduct('dior','wishlist')">
+        <div class="wl-card-h" onclick="openDealIntermediate('dior','wishlist')">
           <div class="wl-img-zone">
             <div class="prod-img-wrap" style="background:var(--b-teal);height:100%;">
               <img loading="lazy" class="prod-img" src="jpeg2.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
@@ -4081,7 +4123,7 @@ html {
         </div>
 
         <!-- Tom Ford -->
-        <div class="wl-card-h" onclick="openProduct('tomford','wishlist')">
+        <div class="wl-card-h" onclick="openDealIntermediate('tomford','wishlist')">
           <div class="wl-img-zone">
             <div class="prod-img-wrap" style="background:var(--b-amber);height:100%;">
               <img loading="lazy" class="prod-img" src="jpeg3.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
@@ -4101,7 +4143,7 @@ html {
         </div>
 
         <!-- Creed -->
-        <div class="wl-card-h" onclick="openProduct('creed','wishlist')">
+        <div class="wl-card-h" onclick="openDealIntermediate('creed','wishlist')">
           <div class="wl-img-zone">
             <div class="prod-img-wrap" style="background:var(--b-sage);height:100%;">
               <img loading="lazy" class="prod-img" src="jpeg6.jpg" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
@@ -4163,34 +4205,6 @@ html {
               <div id="phone-incomplete-dot" style="color:var(--amber);display:flex;align-items:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px;height:14px;"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0zM12 9v4M12 17h.01" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
               <svg class="act-schevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
             </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ── NOTIFICATIONS ── -->
-      <div class="act-settings-group">
-        <div class="act-settings-label">Notifications</div>
-        <div class="act-settings-card">
-          <div class="act-settings-row">
-            <div class="act-settings-row-l">
-              <div class="act-sicon sri-green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></div>
-              <div class="act-sinfo"><span class="act-sname">Price drop alerts</span><span class="act-ssub">Notify immediately</span></div>
-            </div>
-            <div class="toggle" style="transform:scale(0.8);transform-origin:right;flex-shrink:0;" onclick="this.classList.toggle('off')"><div class="toggle-thumb"></div></div>
-          </div>
-          <div class="act-settings-row">
-            <div class="act-settings-row-l">
-              <div class="act-sicon sri-amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
-              <div class="act-sinfo"><span class="act-sname">Daily deal digest</span><span class="act-ssub">Every morning at 8:00 AM</span></div>
-            </div>
-            <div class="toggle off" style="transform:scale(0.8);transform-origin:right;flex-shrink:0;" onclick="this.classList.toggle('off')"><div class="toggle-thumb"></div></div>
-          </div>
-          <div class="act-settings-row act-settings-row-last">
-            <div class="act-settings-row-l">
-              <div class="act-sicon sri-purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
-              <div class="act-sinfo"><span class="act-sname">Back-in-stock alerts</span><span class="act-ssub">For wishlisted items</span></div>
-            </div>
-            <div class="toggle" style="transform:scale(0.8);transform-origin:right;flex-shrink:0;" onclick="this.classList.toggle('off')"><div class="toggle-thumb"></div></div>
           </div>
         </div>
       </div>
@@ -4755,8 +4769,36 @@ html {
             <span class="filter-chip" data-group="concentration" data-val="Parfum" onclick="toggleFilterChip(this)">Parfum</span>
           </div>
         </div>
-        <!-- Brands -->
+        <!-- Size -->
         <div class="filter-section">
+          <div class="filter-section-label">Size</div>
+          <div class="filter-chips-wrap" id="fc-size">
+            <span class="filter-chip" data-group="size" data-val="50ml" onclick="toggleFilterChip(this)">50ml</span>
+            <span class="filter-chip" data-group="size" data-val="75ml" onclick="toggleFilterChip(this)">75ml</span>
+            <span class="filter-chip" data-group="size" data-val="100ml" onclick="toggleFilterChip(this)">100ml</span>
+            <span class="filter-chip" data-group="size" data-val="125ml" onclick="toggleFilterChip(this)">125ml</span>
+            <span class="filter-chip" data-group="size" data-val="150ml" onclick="toggleFilterChip(this)">150ml</span>
+            <span class="filter-chip" data-group="size" data-val="200ml" onclick="toggleFilterChip(this)">200ml</span>
+          </div>
+        </div>
+        <!-- Accords -->
+        <div class="filter-section">
+          <div class="filter-section-label">Accords</div>
+          <div class="filter-chips-wrap" id="fc-accord">
+            <span class="filter-chip" data-group="accord" data-val="Sweet" onclick="toggleFilterChip(this)">Sweet</span>
+            <span class="filter-chip" data-group="accord" data-val="Gourmand" onclick="toggleFilterChip(this)">Gourmand</span>
+            <span class="filter-chip" data-group="accord" data-val="Fresh" onclick="toggleFilterChip(this)">Fresh</span>
+            <span class="filter-chip" data-group="accord" data-val="Woody" onclick="toggleFilterChip(this)">Woody</span>
+            <span class="filter-chip" data-group="accord" data-val="Musky" onclick="toggleFilterChip(this)">Musky</span>
+            <span class="filter-chip" data-group="accord" data-val="Amber" onclick="toggleFilterChip(this)">Amber</span>
+            <span class="filter-chip" data-group="accord" data-val="Spicy" onclick="toggleFilterChip(this)">Spicy</span>
+            <span class="filter-chip" data-group="accord" data-val="Powdery" onclick="toggleFilterChip(this)">Powdery</span>
+            <span class="filter-chip" data-group="accord" data-val="Aquatic" onclick="toggleFilterChip(this)">Aquatic</span>
+            <span class="filter-chip" data-group="accord" data-val="Citrus" onclick="toggleFilterChip(this)">Citrus</span>
+          </div>
+        </div>
+        <!-- Brand — last -->
+        <div class="filter-section" style="border-bottom:none;">
           <div class="filter-section-label">Brand</div>
           <div class="filter-chips-wrap" id="fc-brand">
             <span class="filter-chip" data-group="brand" data-val="Chanel" onclick="toggleFilterChip(this)">Chanel</span>
@@ -4775,34 +4817,6 @@ html {
             <span class="filter-chip" data-group="brand" data-val="Valentino" onclick="toggleFilterChip(this)">Valentino</span>
             <span class="filter-chip" data-group="brand" data-val="Bvlgari" onclick="toggleFilterChip(this)">Bvlgari</span>
             <span class="filter-chip" data-group="brand" data-val="Issey Miyake" onclick="toggleFilterChip(this)">Issey Miyake</span>
-          </div>
-        </div>
-        <!-- Fragrance Families -->
-        <div class="filter-section">
-          <div class="filter-section-label">Fragrance Family</div>
-          <div class="filter-chips-wrap" id="fc-family">
-            <span class="filter-chip" data-group="family" data-val="Woody" onclick="toggleFilterChip(this)">Woody</span>
-            <span class="filter-chip" data-group="family" data-val="Floral" onclick="toggleFilterChip(this)">Floral</span>
-            <span class="filter-chip" data-group="family" data-val="Oriental" onclick="toggleFilterChip(this)">Oriental</span>
-            <span class="filter-chip" data-group="family" data-val="Fresh" onclick="toggleFilterChip(this)">Fresh</span>
-            <span class="filter-chip" data-group="family" data-val="Citrus" onclick="toggleFilterChip(this)">Citrus</span>
-            <span class="filter-chip" data-group="family" data-val="Chypre" onclick="toggleFilterChip(this)">Chypre</span>
-            <span class="filter-chip" data-group="family" data-val="Leather" onclick="toggleFilterChip(this)">Leather</span>
-            <span class="filter-chip" data-group="family" data-val="Aromatic" onclick="toggleFilterChip(this)">Aromatic</span>
-          </div>
-        </div>
-        <!-- Accords -->
-        <div class="filter-section" style="border-bottom:none;">
-          <div class="filter-section-label">Accords</div>
-          <div class="filter-chips-wrap" id="fc-accord">
-            <span class="filter-chip" data-group="accord" data-val="Sweet" onclick="toggleFilterChip(this)">Sweet</span>
-            <span class="filter-chip" data-group="accord" data-val="Gourmand" onclick="toggleFilterChip(this)">Gourmand</span>
-            <span class="filter-chip" data-group="accord" data-val="Musky" onclick="toggleFilterChip(this)">Musky</span>
-            <span class="filter-chip" data-group="accord" data-val="Amber" onclick="toggleFilterChip(this)">Amber</span>
-            <span class="filter-chip" data-group="accord" data-val="Spicy" onclick="toggleFilterChip(this)">Spicy</span>
-            <span class="filter-chip" data-group="accord" data-val="Powdery" onclick="toggleFilterChip(this)">Powdery</span>
-            <span class="filter-chip" data-group="accord" data-val="Aquatic" onclick="toggleFilterChip(this)">Aquatic</span>
-            <span class="filter-chip" data-group="accord" data-val="Citrus" onclick="toggleFilterChip(this)">Citrus</span>
           </div>
         </div>
         <div style="height:16px;"></div>
@@ -4824,94 +4838,43 @@ html {
     </div>
 
     <!-- Summary bar -->
-    <div class="rv-summary-bar">
-      <div style="display:flex;align-items:center;gap:16px;">
-        <div class="rv-big-score" id="rv-big-score">4.6</div>
-        <div style="flex:1;">
-          <div style="display:flex;gap:4px;margin-bottom:5px;">
-            <svg class="rv-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <svg class="rv-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <svg class="rv-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <svg class="rv-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <svg class="rv-star" viewBox="0 0 24 24" fill="currentColor" style="clip-path:inset(0 40% 0 0)"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          </div>
-          <!-- Rating bars -->
-          <div style="display:flex;flex-direction:column;gap:3px;">
-            <div style="display:flex;align-items:center;gap:8px;">
-              <span style="font-size:12px;color:var(--ink-3);width:14px;text-align:right;">5</span>
-              <div style="flex:1;height:5px;border-radius:3px;background:var(--bg-input);overflow:hidden;"><div style="width:68%;height:100%;background:var(--amber);border-radius:3px;"></div></div>
-              <span style="font-size:12px;color:var(--ink-3);width:28px;">68%</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:8px;">
-              <span style="font-size:12px;color:var(--ink-3);width:14px;text-align:right;">4</span>
-              <div style="flex:1;height:5px;border-radius:3px;background:var(--bg-input);overflow:hidden;"><div style="width:20%;height:100%;background:var(--amber);border-radius:3px;"></div></div>
-              <span style="font-size:12px;color:var(--ink-3);width:28px;">20%</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:8px;">
-              <span style="font-size:12px;color:var(--ink-3);width:14px;text-align:right;">3</span>
-              <div style="flex:1;height:5px;border-radius:3px;background:var(--bg-input);overflow:hidden;"><div style="width:8%;height:100%;background:var(--amber);border-radius:3px;"></div></div>
-              <span style="font-size:12px;color:var(--ink-3);width:28px;">8%</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:8px;">
-              <span style="font-size:12px;color:var(--ink-3);width:14px;text-align:right;">2</span>
-              <div style="flex:1;height:5px;border-radius:3px;background:var(--bg-input);overflow:hidden;"><div style="width:3%;height:100%;background:var(--amber);border-radius:3px;"></div></div>
-              <span style="font-size:12px;color:var(--ink-3);width:28px;">3%</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:8px;">
-              <span style="font-size:12px;color:var(--ink-3);width:14px;text-align:right;">1</span>
-              <div style="flex:1;height:5px;border-radius:3px;background:var(--bg-input);overflow:hidden;"><div style="width:1%;height:100%;background:var(--amber);border-radius:3px;"></div></div>
-              <span style="font-size:12px;color:var(--ink-3);width:28px;">1%</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Sort chips -->
-    <div class="rv-sort-row">
-      <span class="rv-sort-chip active" onclick="sortReviews('recent',this)">Most Recent</span>
-      <span class="rv-sort-chip" onclick="sortReviews('top',this)">Top Rated</span>
-      <span class="rv-sort-chip" onclick="sortReviews('critical',this)">Critical</span>
-      <span class="rv-sort-chip" onclick="sortReviews('verified',this)">Verified Purchase</span>
-    </div>
-
     <!-- Review list -->
     <div style="flex:1;overflow-y:auto;" id="rv-list">
       <div class="rv-card">
         <div class="rv-card-head"><span class="rv-user">Khalid A.</span><span class="rv-date">2 weeks ago</span></div>
         <div class="rv-stars"><svg class="rv-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="rv-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="rv-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="rv-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="rv-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
         <div class="rv-text">Incredible longevity — easily 10+ hours. The woody freshness is perfect for the office. Found it for 485 SAR on Golden Scent thanks to Yourdis. Best price tracker for fragrances in the Kingdom.</div>
-        <div class="rv-helpful"><span class="rv-helpful-label">Helpful?</span><button class="rv-helpful-btn" onclick="this.textContent='👍 Yes (43)'">👍 Yes (42)</button><button class="rv-helpful-btn" onclick="this.textContent='👎 No (3)'">👎 No (2)</button></div>
+        
       </div>
       <div class="rv-card">
         <div class="rv-card-head"><span class="rv-user">Fahad M.</span><span class="rv-date">1 month ago</span></div>
         <div class="rv-stars"><svg class="rv-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="rv-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="rv-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="rv-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="rv-star" viewBox="0 0 24 24" fill="currentColor" style="color:var(--border-strong)"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
         <div class="rv-text">Classic for a reason. The EDP version has noticeably better projection than the EDT. Great value at this price point. Yourdis alerted me the moment it dropped — couldn't ask for more.</div>
-        <div class="rv-helpful"><span class="rv-helpful-label">Helpful?</span><button class="rv-helpful-btn" onclick="this.textContent='👍 Yes (29)'">👍 Yes (28)</button><button class="rv-helpful-btn">👎 No (1)</button></div>
+        
       </div>
       <div class="rv-card">
         <div class="rv-card-head"><span class="rv-user">Mohammed Al-R.</span><span class="rv-date">6 weeks ago</span></div>
         <div class="rv-stars"><svg class="rv-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="rv-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="rv-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="rv-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="rv-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
         <div class="rv-text">Absolutely perfect for winter evenings. The smoky Vetiver base is sophisticated without being overpowering. My go-to fragrance for formal occasions. Purchased three times already.</div>
-        <div class="rv-helpful"><span class="rv-helpful-label">Helpful?</span><button class="rv-helpful-btn" onclick="this.textContent='👍 Yes (19)'">👍 Yes (18)</button><button class="rv-helpful-btn">👎 No (0)</button></div>
+        
       </div>
       <div class="rv-card">
         <div class="rv-card-head"><span class="rv-user">Tariq S.</span><span class="rv-date">2 months ago</span></div>
         <div class="rv-stars"><svg class="rv-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="rv-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="rv-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="rv-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="rv-star" viewBox="0 0 24 24" fill="currentColor" style="color:var(--border-strong)"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
         <div class="rv-text">Very good fragrance. I prefer the EDT slightly more — it's a bit lighter for everyday wear. But the EDP has much better staying power. Tracked through Yourdis for 3 months before it dropped to 485.</div>
-        <div class="rv-helpful"><span class="rv-helpful-label">Helpful?</span><button class="rv-helpful-btn" onclick="this.textContent='👍 Yes (15)'">👍 Yes (14)</button><button class="rv-helpful-btn">👎 No (2)</button></div>
+        
       </div>
       <div class="rv-card">
         <div class="rv-card-head"><span class="rv-user">Omar F.</span><span class="rv-date">2 months ago</span></div>
         <div class="rv-stars"><svg class="rv-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="rv-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="rv-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="rv-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="rv-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
         <div class="rv-text">This is my fourth bottle. Never gets old. Bleu de Chanel EDP is truly a timeless masterpiece. The citrus opening, the woody heart, the lasting base — everything is perfectly balanced. Recommended for everyone.</div>
-        <div class="rv-helpful"><span class="rv-helpful-label">Helpful?</span><button class="rv-helpful-btn" onclick="this.textContent='👍 Yes (34)'">👍 Yes (33)</button><button class="rv-helpful-btn">👎 No (1)</button></div>
+        
       </div>
       <div class="rv-card" style="border-bottom:none;">
         <div class="rv-card-head"><span class="rv-user">Abdulaziz K.</span><span class="rv-date">3 months ago</span></div>
         <div class="rv-stars"><svg class="rv-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="rv-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="rv-star" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="rv-star" viewBox="0 0 24 24" fill="currentColor" style="color:var(--border-strong)"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg class="rv-star" viewBox="0 0 24 24" fill="currentColor" style="color:var(--border-strong)"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
         <div class="rv-text">Good but slightly overhyped in my opinion. I prefer more oriental scents. That said, the quality is undeniable and longevity is excellent. 3 stars for personal preference, not quality.</div>
-        <div class="rv-helpful"><span class="rv-helpful-label">Helpful?</span><button class="rv-helpful-btn" onclick="this.textContent='👍 Yes (8)'">👍 Yes (7)</button><button class="rv-helpful-btn">👎 No (4)</button></div>
+        
       </div>
       <div style="height:20px;"></div>
     </div>
@@ -4973,18 +4936,7 @@ html {
       <!-- Section divider -->
       <div class="dip-section-divider"></div>
 
-      <!-- Section 2: Alternative Products -->
-      <div class="dip-section-wrap">
-        <div class="dip-section-head">
-          <span class="dip-section-label">Alternative Products</span>
-        </div>
-        <div class="dip-alt-list" id="dip-alts-list"></div>
-      </div>
-
-      <!-- Section divider -->
-      <div class="dip-section-divider"></div>
-
-      <!-- Section 3: You May Also Like -->
+      <!-- Section 2: You May Also Like -->
       <div class="dip-section-wrap">
         <div class="dip-section-head">
           <span class="dip-section-label">Similar Products You May Like</span>
@@ -5020,7 +4972,7 @@ var PRODUCTS = {
     img:YOURDIS_IMAGES.chanel,initials:'Cd',bg:'var(--b-purple)',
     name_ar:'بلو دو شانيل إي دي بي',brand_ar:'شانيل · 100 مل · عطر مركّز',
     country:'France',country_ar:'فرنسا',gender:'Men',gender_ar:'رجالي',
-    family:'Woody Aromatic',family_ar:'خشبي عطري',perfumer:'Jacques Polge',
+    family:'Aromatic',family_ar:'عطري',perfumer:'Jacques Polge',year:'2010',
     notes:'<span class="note-chip note-top">Top: Citrus · Bergamot</span><span class="note-chip note-heart">Heart: Vetiver · Cedarwood</span><span class="note-chip note-base">Base: Patchouli · Labdanum</span>',
     notes_ar:'قمة: حمضيات · برغموت · قلب: فيتيفر · خشب الأرز · قاعدة: باتشولي · لبدانم',
     accords: [
@@ -5044,7 +4996,7 @@ var PRODUCTS = {
     r1:'Incredible longevity — 10+ hours. Found it for 485 SAR on Golden Scent thanks to Yourdis.',
     r2:'Classic for a reason. The EDP has better projection than the EDT. Great value.',
     priceHistory:[{date:'Today · 2 hrs ago',price:'485 SAR',dir:'down'},{date:'14 Feb 2025',price:'620 SAR',dir:'up'},{date:'02 Nov 2024',price:'460 SAR',dir:'down'},{date:'15 Aug 2024',price:'660 SAR',dir:'up'},{date:'01 Jun 2024',price:'510 SAR',dir:'down'}],
-    storeComparison:[{key:'amazon',name:'Golden Scent',ship:'Free delivery · 1–2 days',price:'485 SAR',diff:'Best price'},{key:'namshi',name:'Nice One',ship:'Free delivery · 2–3 days',price:'510 SAR',diff:'+25 SAR'},{key:'sephora',name:'Asheq Al-Otor',ship:'Delivery · 3–5 days',price:'545 SAR',diff:'+60 SAR'}]
+    storeComparison:[{key:'amazon',name:'Golden Scent',ship:'Free delivery · 1–2 days',price:'485 SAR',diff:'Best price'},{key:'namshi',name:'Nice One',ship:'Free delivery · 2–3 days',price:'510 SAR',diff:'+25 SAR'},{key:'sephora',name:'Asheq Al-Otor',ship:'Delivery · 3–5 days',price:'545 SAR',diff:'+60 SAR'},{key:'noon',name:'Najd Al-Otheyah',ship:'Free delivery · 2–4 days',price:'555 SAR',diff:'+70 SAR'},{key:'jarir',name:'Deraah',ship:'Delivery · 4–6 days',price:'570 SAR',diff:'+85 SAR'}]
   },
 
   dior:{
@@ -5052,7 +5004,7 @@ var PRODUCTS = {
     img:YOURDIS_IMAGES.dior,initials:'Dk',bg:'var(--b-teal)',
     name_ar:'ديور سوفاج إي دي تي',brand_ar:'ديور · 200 مل · ماء تواليت',
     country:'France',country_ar:'فرنسا',gender:'Men',gender_ar:'رجالي',
-    family:'Fresh Spicy',family_ar:'منعش حار',perfumer:'François Demachy',
+    family:'Fresh Spicy',family_ar:'منعش حار',perfumer:'François Demachy',year:'2015',
     notes:'<span class="note-chip note-top">Top: Calabrian Bergamot</span><span class="note-chip note-heart">Heart: Sichuan Pepper · Geranium</span><span class="note-chip note-base">Base: Ambroxan · Cedar</span>',
     notes_ar:'قمة: برغموت كالابريا · قلب: فلفل سيتشوان · قاعدة: أمبروكسان · أرز',
     accords: [
@@ -5076,7 +5028,7 @@ var PRODUCTS = {
     r1:'Best-selling scent for a reason. Fresh, clean and beast-mode projection.',
     r2:'Versatile for office and evenings alike. This Yourdis alert saved me 60 SAR.',
     priceHistory:[{date:'Today · 5 hrs ago',price:'310 SAR',dir:'down'},{date:'20 Feb 2025',price:'370 SAR',dir:'up'},{date:'10 Nov 2024',price:'295 SAR',dir:'down'},{date:'01 Sep 2024',price:'400 SAR',dir:'up'},{date:'15 Jun 2024',price:'320 SAR',dir:'down'}],
-    storeComparison:[{key:'noon',name:'Najd Al-Otheyah',ship:'Free delivery · 1–2 days',price:'310 SAR',diff:'Best price'},{key:'amazon',name:'Golden Scent',ship:'Free delivery · 2–3 days',price:'340 SAR',diff:'+30 SAR'},{key:'namshi',name:'Nice One',ship:'Delivery · 3–5 days',price:'365 SAR',diff:'+55 SAR'}]
+    storeComparison:[{key:'noon',name:'Najd Al-Otheyah',ship:'Free delivery · 1–2 days',price:'310 SAR',diff:'Best price'},{key:'amazon',name:'Golden Scent',ship:'Free delivery · 2–3 days',price:'340 SAR',diff:'+30 SAR'},{key:'namshi',name:'Nice One',ship:'Delivery · 3–5 days',price:'365 SAR',diff:'+55 SAR'},{key:'sephora',name:'Asheq Al-Otor',ship:'Free delivery · 2–4 days',price:'375 SAR',diff:'+65 SAR'},{key:'jarir',name:'V Perfume',ship:'Delivery · 4–6 days',price:'390 SAR',diff:'+80 SAR'}]
   },
 
   tomford:{
@@ -5084,7 +5036,7 @@ var PRODUCTS = {
     img:YOURDIS_IMAGES.tomford,initials:'Tf',bg:'var(--b-amber)',
     name_ar:'توم فورد توباكو عود إي دي بي',brand_ar:'توم فورد · 50 مل · عطر مركّز',
     country:'USA',country_ar:'الولايات المتحدة',gender:'Unisex',gender_ar:'للجنسين',
-    family:'Oriental Oud',family_ar:'شرقي عود',perfumer:'Olivier Gillotin',
+    family:'Oriental Oud',family_ar:'شرقي عود',perfumer:'Olivier Gillotin',year:'2007',
     notes:'<span class="note-chip note-top">Top: Clove · Coriander</span><span class="note-chip note-heart">Heart: Tobacco · Oud Wood</span><span class="note-chip note-base">Base: Sandalwood · Tonka Bean</span>',
     notes_ar:'قمة: قرنفل · كزبرة · قلب: تبغ · عود · قاعدة: صندل · فاصوليا التونكا',
     accords: [
@@ -5108,7 +5060,7 @@ var PRODUCTS = {
     r1:'The definition of luxury. Oud lovers will not be disappointed. Worth every riyal.',
     r2:'Massive projection, lasts all day. A true statement fragrance.',
     priceHistory:[{date:'Today · 3 hrs ago',price:'590 SAR',dir:'down'},{date:'10 Mar 2025',price:'650 SAR',dir:'up'},{date:'05 Dec 2024',price:'580 SAR',dir:'down'},{date:'20 Sep 2024',price:'720 SAR',dir:'up'},{date:'01 Jul 2024',price:'600 SAR',dir:'down'}],
-    storeComparison:[{key:'sephora',name:'Laudour',ship:'Free delivery · 2–3 days',price:'590 SAR',diff:'Best price'},{key:'amazon',name:'Golden Scent',ship:'Free delivery · 1–2 days',price:'620 SAR',diff:'+30 SAR'},{key:'centrepoint',name:'Deraah',ship:'Delivery · 4–6 days',price:'645 SAR',diff:'+55 SAR'}]
+    storeComparison:[{key:'sephora',name:'Laudour',ship:'Free delivery · 2–3 days',price:'590 SAR',diff:'Best price'},{key:'amazon',name:'Golden Scent',ship:'Free delivery · 1–2 days',price:'620 SAR',diff:'+30 SAR'},{key:'centrepoint',name:'Deraah',ship:'Delivery · 4–6 days',price:'645 SAR',diff:'+55 SAR'},{key:'noon',name:'Najd Al-Otheyah',ship:'Free delivery · 2–4 days',price:'660 SAR',diff:'+70 SAR'},{key:'namshi',name:'Al-Sultan Perfumes',ship:'Delivery · 3–5 days',price:'675 SAR',diff:'+85 SAR'}]
   },
 
   ysl:{
@@ -5116,7 +5068,7 @@ var PRODUCTS = {
     img:YOURDIS_IMAGES.ysl,initials:'YS',bg:'var(--b-pink)',
     name_ar:'إيف سان لوران واي لو بارفان',brand_ar:'إيف سان لوران · 60 مل · بارفان',
     country:'France',country_ar:'فرنسا',gender:'Men',gender_ar:'رجالي',
-    family:'Fougere Aromatic',family_ar:'فوجير عطري',perfumer:'Dominique Ropion',
+    family:'Fougere Aromatic',family_ar:'فوجير عطري',perfumer:'Dominique Ropion',year:'2017',
     notes:'<span class="note-chip note-top">Top: Bergamot · Ginger</span><span class="note-chip note-heart">Heart: Sage · Suede</span><span class="note-chip note-base">Base: Fir Balsam · Ambergris</span>',
     notes_ar:'قمة: برغموت · زنجبيل · قلب: مريمية · شمواه · قاعدة: بلسم تنوب · عنبر',
     accords: [
@@ -5140,7 +5092,7 @@ var PRODUCTS = {
     r1:'Fresh and modern. The suede note really comes out on skin.',
     r2:'Great office scent. Picked it up at V Perfume for 290 SAR.',
     priceHistory:[{date:'Today · 5 hrs ago',price:'290 SAR',dir:'down'},{date:'01 Mar 2025',price:'350 SAR',dir:'up'},{date:'15 Nov 2024',price:'275 SAR',dir:'down'},{date:'10 Aug 2024',price:'380 SAR',dir:'up'},{date:'20 May 2024',price:'295 SAR',dir:'down'}],
-    storeComparison:[{key:'jarir',name:'V Perfume',ship:'Free delivery · 2–3 days',price:'290 SAR',diff:'Best price'},{key:'noon',name:'Najd Al-Otheyah',ship:'Free delivery · 1–2 days',price:'315 SAR',diff:'+25 SAR'},{key:'amazon',name:'Golden Scent',ship:'Delivery · 3–5 days',price:'340 SAR',diff:'+50 SAR'}]
+    storeComparison:[{key:'jarir',name:'V Perfume',ship:'Free delivery · 2–3 days',price:'290 SAR',diff:'Best price'},{key:'noon',name:'Najd Al-Otheyah',ship:'Free delivery · 1–2 days',price:'315 SAR',diff:'+25 SAR'},{key:'amazon',name:'Golden Scent',ship:'Delivery · 3–5 days',price:'340 SAR',diff:'+50 SAR'},{key:'namshi',name:'Nice One',ship:'Free delivery · 2–4 days',price:'352 SAR',diff:'+62 SAR'},{key:'sephora',name:'Asheq Al-Otor',ship:'Delivery · 4–6 days',price:'368 SAR',diff:'+78 SAR'}]
   },
 
   armani:{
@@ -5148,7 +5100,7 @@ var PRODUCTS = {
     img:YOURDIS_IMAGES.armani,initials:'Aq',bg:'var(--b-blue)',
     name_ar:'أكوا دي جيو إي دي بي',brand_ar:'أرماني · 75 مل · عطر مركّز',
     country:'Italy',country_ar:'إيطاليا',gender:'Men',gender_ar:'رجالي',
-    family:'Fresh Aquatic',family_ar:'مائي منعش',perfumer:'Alberto Morillas',
+    family:'Fresh Aquatic',family_ar:'مائي منعش',perfumer:'Alberto Morillas',year:'1996',
     notes:'<span class="note-chip note-top">Top: Marine Accord · Bergamot</span><span class="note-chip note-heart">Heart: Incense · Rosemary</span><span class="note-chip note-base">Base: Patchouli · Mineral Amber</span>',
     notes_ar:'قمة: ألحان بحرية · برغموت · قلب: بخور · روزماري · قاعدة: باتشولي · عنبر معدني',
     accords: [
@@ -5172,7 +5124,7 @@ var PRODUCTS = {
     r1:'Better than the EDT in every way. The incense adds depth without losing freshness.',
     r2:'Yourdis caught this at the lowest price I\'ve seen. Grabbed two bottles!',
     priceHistory:[{date:'Today · 1 hr ago',price:'265 SAR',dir:'down'},{date:'25 Feb 2025',price:'350 SAR',dir:'up'},{date:'20 Oct 2024',price:'255 SAR',dir:'down'},{date:'05 Aug 2024',price:'370 SAR',dir:'up'},{date:'10 Apr 2024',price:'280 SAR',dir:'down'}],
-    storeComparison:[{key:'namshi',name:'Al-Sultan Perfumes',ship:'Free delivery · 1–2 days',price:'265 SAR',diff:'Best price'},{key:'amazon',name:'Golden Scent',ship:'Free delivery · 2–3 days',price:'290 SAR',diff:'+25 SAR'},{key:'noon',name:'Najd Al-Otheyah',ship:'Delivery · 3–5 days',price:'310 SAR',diff:'+45 SAR'}]
+    storeComparison:[{key:'namshi',name:'Al-Sultan Perfumes',ship:'Free delivery · 1–2 days',price:'265 SAR',diff:'Best price'},{key:'amazon',name:'Golden Scent',ship:'Free delivery · 2–3 days',price:'290 SAR',diff:'+25 SAR'},{key:'noon',name:'Najd Al-Otheyah',ship:'Delivery · 3–5 days',price:'310 SAR',diff:'+45 SAR'},{key:'sephora',name:'Asheq Al-Otor',ship:'Free delivery · 2–4 days',price:'320 SAR',diff:'+55 SAR'},{key:'jarir',name:'Deraah',ship:'Delivery · 4–6 days',price:'335 SAR',diff:'+70 SAR'}]
   },
 
   creed:{
@@ -5188,11 +5140,11 @@ var PRODUCTS = {
     price:'840 SAR',orig:'1,050 SAR',store:'Asheq Al-Otor',storeKey:'sephora',
     badge:'↓ 20% off',badgeClass:'badge-fire',
     atl:'810 SAR',avg:'990 SAR',ath:'1,150 SAR',
-    rating:'4.9',reviews:'2,104',
+    rating:'4.9',reviews:'2,104',year:'2010',
     r1:'The king of fragrances. Every batch has slight variation which makes each bottle unique.',
     r2:'840 SAR is an absolute steal for 100ml Aventus. Yourdis alert worked perfectly.',
     priceHistory:[{date:'Today · 2 days ago',price:'840 SAR',dir:'down'},{date:'01 Mar 2025',price:'1,050 SAR',dir:'up'},{date:'10 Nov 2024',price:'820 SAR',dir:'down'},{date:'15 Jul 2024',price:'1,100 SAR',dir:'up'},{date:'01 Apr 2024',price:'860 SAR',dir:'down'}],
-    storeComparison:[{key:'sephora',name:'Asheq Al-Otor',ship:'Free delivery · 2–3 days',price:'840 SAR',diff:'Best price'},{key:'amazon',name:'Golden Scent',ship:'Free delivery · 1–2 days',price:'895 SAR',diff:'+55 SAR'},{key:'noon',name:'Najd Al-Otheyah',ship:'Delivery · 3–5 days',price:'1,050 SAR',diff:'+210 SAR'}]
+    storeComparison:[{key:'sephora',name:'Asheq Al-Otor',ship:'Free delivery · 2–3 days',price:'840 SAR',diff:'Best price'},{key:'amazon',name:'Golden Scent',ship:'Free delivery · 1–2 days',price:'895 SAR',diff:'+55 SAR'},{key:'noon',name:'Najd Al-Otheyah',ship:'Delivery · 3–5 days',price:'1,050 SAR',diff:'+210 SAR'},{key:'namshi',name:'Al-Sultan Perfumes',ship:'Free delivery · 2–4 days',price:'960 SAR',diff:'+120 SAR'},{key:'jarir',name:'Laudour',ship:'Delivery · 4–6 days',price:'995 SAR',diff:'+155 SAR'}]
   },
 
   versace:{
@@ -5208,11 +5160,11 @@ var PRODUCTS = {
     price:'345 SAR',orig:'420 SAR',store:'Golden Scent',storeKey:'amazon',
     badge:'↓ 18% off',badgeClass:'badge-good',
     atl:'310 SAR',avg:'390 SAR',ath:'450 SAR',
-    rating:'4.3',reviews:'674',
+    rating:'4.3',reviews:'674',year:'2003',
     r1:'Better projection than the EDT. The mint opening is addictive.',
     r2:'Excellent evening scent at this price.',
     priceHistory:[{date:'Today · 4 hrs ago',price:'345 SAR',dir:'down'},{date:'15 Feb 2025',price:'420 SAR',dir:'up'},{date:'01 Nov 2024',price:'330 SAR',dir:'down'},{date:'10 Aug 2024',price:'440 SAR',dir:'up'},{date:'20 May 2024',price:'360 SAR',dir:'down'}],
-    storeComparison:[{key:'amazon',name:'Golden Scent',ship:'Free delivery · 1–2 days',price:'345 SAR',diff:'Best price'},{key:'sephora',name:'Asheq Al-Otor',ship:'Free delivery · 2–3 days',price:'370 SAR',diff:'+25 SAR'},{key:'noon',name:'Najd Al-Otheyah',ship:'Delivery · 3–5 days',price:'395 SAR',diff:'+50 SAR'}]
+    storeComparison:[{key:'amazon',name:'Golden Scent',ship:'Free delivery · 1–2 days',price:'345 SAR',diff:'Best price'},{key:'sephora',name:'Asheq Al-Otor',ship:'Free delivery · 2–3 days',price:'370 SAR',diff:'+25 SAR'},{key:'noon',name:'Najd Al-Otheyah',ship:'Delivery · 3–5 days',price:'395 SAR',diff:'+50 SAR'},{key:'namshi',name:'Nice One',ship:'Free delivery · 2–4 days',price:'408 SAR',diff:'+63 SAR'},{key:'jarir',name:'V Perfume',ship:'Delivery · 4–6 days',price:'420 SAR',diff:'+75 SAR'}]
   },
 
   burberry:{
@@ -5228,11 +5180,11 @@ var PRODUCTS = {
     price:'280 SAR',orig:'340 SAR',store:'Al-Sultan Perfumes',storeKey:'namshi',
     badge:'↓ 18% off',badgeClass:'badge-good',
     atl:'255 SAR',avg:'310 SAR',ath:'365 SAR',
-    rating:'4.2',reviews:'389',
+    rating:'4.2',reviews:'389',year:'2022',
     r1:'Underrated gem. The pepper note keeps it interesting all day.',
     r2:'Solid daily driver. Great performance for the price.',
     priceHistory:[{date:'Today · 6 hrs ago',price:'280 SAR',dir:'down'},{date:'20 Feb 2025',price:'340 SAR',dir:'up'},{date:'05 Dec 2024',price:'265 SAR',dir:'down'},{date:'01 Sep 2024',price:'355 SAR',dir:'up'},{date:'15 Jun 2024',price:'290 SAR',dir:'down'}],
-    storeComparison:[{key:'namshi',name:'Al-Sultan Perfumes',ship:'Free delivery · 1–2 days',price:'280 SAR',diff:'Best price'},{key:'amazon',name:'Golden Scent',ship:'Free delivery · 2–3 days',price:'300 SAR',diff:'+20 SAR'},{key:'jarir',name:'V Perfume',ship:'Delivery · 3–5 days',price:'325 SAR',diff:'+45 SAR'}]
+    storeComparison:[{key:'namshi',name:'Al-Sultan Perfumes',ship:'Free delivery · 1–2 days',price:'280 SAR',diff:'Best price'},{key:'amazon',name:'Golden Scent',ship:'Free delivery · 2–3 days',price:'300 SAR',diff:'+20 SAR'},{key:'jarir',name:'V Perfume',ship:'Delivery · 3–5 days',price:'325 SAR',diff:'+45 SAR'},{key:'noon',name:'Najd Al-Otheyah',ship:'Free delivery · 2–4 days',price:'338 SAR',diff:'+58 SAR'},{key:'sephora',name:'Deraah',ship:'Delivery · 4–6 days',price:'350 SAR',diff:'+70 SAR'}]
   },
 
   paco:{
@@ -5248,11 +5200,11 @@ var PRODUCTS = {
     price:'320 SAR',orig:'395 SAR',store:'Asheq Al-Otor',storeKey:'sephora',
     badge:'↓ 19% off',badgeClass:'badge-good',
     atl:'295 SAR',avg:'365 SAR',ath:'420 SAR',
-    rating:'4.4',reviews:'761',
+    rating:'4.4',reviews:'761',year:'1999',
     r1:'Way better than the original EDT. Richer, longer lasting and more refined.',
     r2:'Compliment machine. People ask what I\'m wearing every single time.',
     priceHistory:[{date:'Today · 3 hrs ago',price:'320 SAR',dir:'down'},{date:'10 Mar 2025',price:'395 SAR',dir:'up'},{date:'20 Nov 2024',price:'305 SAR',dir:'down'},{date:'15 Aug 2024',price:'415 SAR',dir:'up'},{date:'01 May 2024',price:'330 SAR',dir:'down'}],
-    storeComparison:[{key:'sephora',name:'Asheq Al-Otor',ship:'Free delivery · 2–3 days',price:'320 SAR',diff:'Best price'},{key:'amazon',name:'Golden Scent',ship:'Free delivery · 1–2 days',price:'345 SAR',diff:'+25 SAR'},{key:'noon',name:'Najd Al-Otheyah',ship:'Delivery · 3–5 days',price:'370 SAR',diff:'+50 SAR'}]
+    storeComparison:[{key:'sephora',name:'Asheq Al-Otor',ship:'Free delivery · 2–3 days',price:'320 SAR',diff:'Best price'},{key:'amazon',name:'Golden Scent',ship:'Free delivery · 1–2 days',price:'345 SAR',diff:'+25 SAR'},{key:'noon',name:'Najd Al-Otheyah',ship:'Delivery · 3–5 days',price:'370 SAR',diff:'+50 SAR'},{key:'namshi',name:'Nice One',ship:'Free delivery · 2–4 days',price:'382 SAR',diff:'+62 SAR'},{key:'jarir',name:'Al-Sultan Perfumes',ship:'Delivery · 4–6 days',price:'395 SAR',diff:'+75 SAR'}]
   },
 
   lancome:{
@@ -5268,11 +5220,11 @@ var PRODUCTS = {
     price:'295 SAR',orig:'370 SAR',store:'Golden Scent',storeKey:'amazon',
     badge:'↓ 20% off',badgeClass:'badge-good',
     atl:'270 SAR',avg:'340 SAR',ath:'395 SAR',
-    rating:'4.5',reviews:'512',
+    rating:'4.5',reviews:'512',year:'2011',
     r1:'The most wearable floral I own. Fresh but with real depth.',
     r2:'Perfect office fragrance. Light enough not to overwhelm.',
     priceHistory:[{date:'Today · 2 hrs ago',price:'295 SAR',dir:'down'},{date:'05 Mar 2025',price:'370 SAR',dir:'up'},{date:'10 Dec 2024',price:'280 SAR',dir:'down'},{date:'20 Sep 2024',price:'385 SAR',dir:'up'},{date:'01 Jun 2024',price:'305 SAR',dir:'down'}],
-    storeComparison:[{key:'amazon',name:'Golden Scent',ship:'Free delivery · 1–2 days',price:'295 SAR',diff:'Best price'},{key:'sephora',name:'Asheq Al-Otor',ship:'Free delivery · 2–3 days',price:'315 SAR',diff:'+20 SAR'},{key:'namshi',name:'Al-Sultan Perfumes',ship:'Delivery · 3–5 days',price:'340 SAR',diff:'+45 SAR'}]
+    storeComparison:[{key:'amazon',name:'Golden Scent',ship:'Free delivery · 1–2 days',price:'295 SAR',diff:'Best price'},{key:'sephora',name:'Asheq Al-Otor',ship:'Free delivery · 2–3 days',price:'315 SAR',diff:'+20 SAR'},{key:'namshi',name:'Al-Sultan Perfumes',ship:'Delivery · 3–5 days',price:'340 SAR',diff:'+45 SAR'},{key:'noon',name:'Najd Al-Otheyah',ship:'Free delivery · 2–4 days',price:'352 SAR',diff:'+57 SAR'},{key:'jarir',name:'Nice One',ship:'Delivery · 4–6 days',price:'365 SAR',diff:'+70 SAR'}]
   },
 
   hermes:{
@@ -5288,11 +5240,11 @@ var PRODUCTS = {
     price:'380 SAR',orig:'455 SAR',store:'Asheq Al-Otor',storeKey:'sephora',
     badge:'↓ 17% off',badgeClass:'badge-good',
     atl:'350 SAR',avg:'425 SAR',ath:'490 SAR',
-    rating:'4.6',reviews:'441',
+    rating:'4.6',reviews:'441',year:'2006',
     r1:'One of the most intellectual fragrances ever made. A wearable work of art.',
     r2:'Gets better every hour. The drydown is extraordinary.',
     priceHistory:[{date:'Today · 1 hr ago',price:'380 SAR',dir:'down'},{date:'28 Feb 2025',price:'455 SAR',dir:'up'},{date:'15 Nov 2024',price:'365 SAR',dir:'down'},{date:'01 Aug 2024',price:'470 SAR',dir:'up'},{date:'10 Apr 2024',price:'390 SAR',dir:'down'}],
-    storeComparison:[{key:'sephora',name:'Asheq Al-Otor',ship:'Free delivery · 2–3 days',price:'380 SAR',diff:'Best price'},{key:'amazon',name:'Golden Scent',ship:'Free delivery · 1–2 days',price:'405 SAR',diff:'+25 SAR'},{key:'noon',name:'Najd Al-Otheyah',ship:'Delivery · 3–5 days',price:'430 SAR',diff:'+50 SAR'}]
+    storeComparison:[{key:'sephora',name:'Asheq Al-Otor',ship:'Free delivery · 2–3 days',price:'380 SAR',diff:'Best price'},{key:'amazon',name:'Golden Scent',ship:'Free delivery · 1–2 days',price:'405 SAR',diff:'+25 SAR'},{key:'noon',name:'Najd Al-Otheyah',ship:'Delivery · 3–5 days',price:'430 SAR',diff:'+50 SAR'},{key:'namshi',name:'Laudour',ship:'Free delivery · 2–4 days',price:'442 SAR',diff:'+62 SAR'},{key:'jarir',name:'Nice One',ship:'Delivery · 4–6 days',price:'455 SAR',diff:'+75 SAR'}]
   },
 
   guerlain:{
@@ -5308,11 +5260,11 @@ var PRODUCTS = {
     price:'270 SAR',orig:'330 SAR',store:'Najd Al-Otheyah',storeKey:'noon',
     badge:'↓ 18% off',badgeClass:'badge-good',
     atl:'245 SAR',avg:'305 SAR',ath:'360 SAR',
-    rating:'4.4',reviews:'387',
+    rating:'4.4',reviews:'387',year:'2017',
     r1:'The vanilla is not heavy at all — very elegant and refined.',
     r2:'A classic Guerlain that punches above its weight in longevity.',
     priceHistory:[{date:'Today · 3 hrs ago',price:'270 SAR',dir:'down'},{date:'01 Mar 2025',price:'330 SAR',dir:'up'},{date:'10 Dec 2024',price:'255 SAR',dir:'down'},{date:'15 Sep 2024',price:'345 SAR',dir:'up'},{date:'20 May 2024',price:'280 SAR',dir:'down'}],
-    storeComparison:[{key:'noon',name:'Najd Al-Otheyah',ship:'Free delivery · 1–2 days',price:'270 SAR',diff:'Best price'},{key:'amazon',name:'Golden Scent',ship:'Free delivery · 2–3 days',price:'290 SAR',diff:'+20 SAR'},{key:'sephora',name:'Asheq Al-Otor',ship:'Delivery · 3–5 days',price:'315 SAR',diff:'+45 SAR'}]
+    storeComparison:[{key:'noon',name:'Najd Al-Otheyah',ship:'Free delivery · 1–2 days',price:'270 SAR',diff:'Best price'},{key:'amazon',name:'Golden Scent',ship:'Free delivery · 2–3 days',price:'290 SAR',diff:'+20 SAR'},{key:'sephora',name:'Asheq Al-Otor',ship:'Delivery · 3–5 days',price:'315 SAR',diff:'+45 SAR'},{key:'namshi',name:'Al-Sultan Perfumes',ship:'Free delivery · 2–4 days',price:'325 SAR',diff:'+55 SAR'},{key:'jarir',name:'V Perfume',ship:'Delivery · 4–6 days',price:'338 SAR',diff:'+68 SAR'}]
   },
 
   jpgaultier:{
@@ -5328,11 +5280,11 @@ var PRODUCTS = {
     price:'260 SAR',orig:'320 SAR',store:'Asheq Al-Otor',storeKey:'sephora',
     badge:'↓ 19% off',badgeClass:'badge-good',
     atl:'235 SAR',avg:'295 SAR',ath:'345 SAR',
-    rating:'4.3',reviews:'298',
+    rating:'4.3',reviews:'298',year:'1995',
     r1:'The EDP version is in a different league from the EDT. Much richer.',
     r2:'Timeless. I keep coming back to this every winter.',
     priceHistory:[{date:'Today · 5 hrs ago',price:'260 SAR',dir:'down'},{date:'15 Feb 2025',price:'320 SAR',dir:'up'},{date:'20 Nov 2024',price:'245 SAR',dir:'down'},{date:'01 Aug 2024',price:'335 SAR',dir:'up'},{date:'10 Apr 2024',price:'265 SAR',dir:'down'}],
-    storeComparison:[{key:'sephora',name:'Asheq Al-Otor',ship:'Free delivery · 2–3 days',price:'260 SAR',diff:'Best price'},{key:'noon',name:'Najd Al-Otheyah',ship:'Free delivery · 1–2 days',price:'280 SAR',diff:'+20 SAR'},{key:'amazon',name:'Golden Scent',ship:'Delivery · 3–5 days',price:'300 SAR',diff:'+40 SAR'}]
+    storeComparison:[{key:'sephora',name:'Asheq Al-Otor',ship:'Free delivery · 2–3 days',price:'260 SAR',diff:'Best price'},{key:'noon',name:'Najd Al-Otheyah',ship:'Free delivery · 1–2 days',price:'280 SAR',diff:'+20 SAR'},{key:'amazon',name:'Golden Scent',ship:'Delivery · 3–5 days',price:'300 SAR',diff:'+40 SAR'},{key:'namshi',name:'Nice One',ship:'Free delivery · 2–4 days',price:'312 SAR',diff:'+52 SAR'},{key:'jarir',name:'Deraah',ship:'Delivery · 4–6 days',price:'325 SAR',diff:'+65 SAR'}]
   },
 
   isseymiyake:{
@@ -5348,11 +5300,11 @@ var PRODUCTS = {
     price:'195 SAR',orig:'245 SAR',store:'V Perfume',storeKey:'jarir',
     badge:'↓ 20% off',badgeClass:'badge-good',
     atl:'175 SAR',avg:'220 SAR',ath:'265 SAR',
-    rating:'4.2',reviews:'623',
+    rating:'4.2',reviews:'623',year:'1992',
     r1:'A classic that never gets old. Clean, fresh and universally loved.',
     r2:'Excellent value. Light and perfect for summer.',
     priceHistory:[{date:'Today · 2 hrs ago',price:'195 SAR',dir:'down'},{date:'20 Feb 2025',price:'245 SAR',dir:'up'},{date:'01 Nov 2024',price:'185 SAR',dir:'down'},{date:'15 Jul 2024',price:'260 SAR',dir:'up'},{date:'01 Apr 2024',price:'200 SAR',dir:'down'}],
-    storeComparison:[{key:'jarir',name:'V Perfume',ship:'Free delivery · 2–3 days',price:'195 SAR',diff:'Best price'},{key:'amazon',name:'Golden Scent',ship:'Free delivery · 1–2 days',price:'215 SAR',diff:'+20 SAR'},{key:'namshi',name:'Al-Sultan Perfumes',ship:'Delivery · 3–5 days',price:'235 SAR',diff:'+40 SAR'}]
+    storeComparison:[{key:'jarir',name:'V Perfume',ship:'Free delivery · 2–3 days',price:'195 SAR',diff:'Best price'},{key:'amazon',name:'Golden Scent',ship:'Free delivery · 1–2 days',price:'215 SAR',diff:'+20 SAR'},{key:'namshi',name:'Al-Sultan Perfumes',ship:'Delivery · 3–5 days',price:'235 SAR',diff:'+40 SAR'},{key:'noon',name:'Najd Al-Otheyah',ship:'Free delivery · 2–4 days',price:'245 SAR',diff:'+50 SAR'},{key:'sephora',name:'Nice One',ship:'Delivery · 4–6 days',price:'258 SAR',diff:'+63 SAR'}]
   },
 
   bvlgari:{
@@ -5368,11 +5320,11 @@ var PRODUCTS = {
     price:'215 SAR',orig:'265 SAR',store:'Najd Al-Otheyah',storeKey:'noon',
     badge:'↓ 19% off',badgeClass:'badge-good',
     atl:'190 SAR',avg:'240 SAR',ath:'285 SAR',
-    rating:'4.3',reviews:'276',
+    rating:'4.3',reviews:'276',year:'2005',
     r1:'The bitter mandarin makes this completely different from other aquatics.',
     r2:'Great summer fragrance. Very unique opening.',
     priceHistory:[{date:'Today · 4 hrs ago',price:'215 SAR',dir:'down'},{date:'10 Mar 2025',price:'265 SAR',dir:'up'},{date:'25 Nov 2024',price:'200 SAR',dir:'down'},{date:'10 Aug 2024',price:'280 SAR',dir:'up'},{date:'01 May 2024',price:'225 SAR',dir:'down'}],
-    storeComparison:[{key:'noon',name:'Najd Al-Otheyah',ship:'Free delivery · 1–2 days',price:'215 SAR',diff:'Best price'},{key:'amazon',name:'Golden Scent',ship:'Free delivery · 2–3 days',price:'235 SAR',diff:'+20 SAR'},{key:'sephora',name:'Asheq Al-Otor',ship:'Delivery · 3–5 days',price:'250 SAR',diff:'+35 SAR'}]
+    storeComparison:[{key:'noon',name:'Najd Al-Otheyah',ship:'Free delivery · 1–2 days',price:'215 SAR',diff:'Best price'},{key:'amazon',name:'Golden Scent',ship:'Free delivery · 2–3 days',price:'235 SAR',diff:'+20 SAR'},{key:'sephora',name:'Asheq Al-Otor',ship:'Delivery · 3–5 days',price:'250 SAR',diff:'+35 SAR'},{key:'namshi',name:'Al-Sultan Perfumes',ship:'Free delivery · 2–4 days',price:'262 SAR',diff:'+47 SAR'},{key:'jarir',name:'Nice One',ship:'Delivery · 4–6 days',price:'275 SAR',diff:'+60 SAR'}]
   },
 
   montblanc:{
@@ -5388,11 +5340,11 @@ var PRODUCTS = {
     price:'240 SAR',orig:'295 SAR',store:'Golden Scent',storeKey:'amazon',
     badge:'↓ 19% off',badgeClass:'badge-good',
     atl:'215 SAR',avg:'265 SAR',ath:'315 SAR',
-    rating:'4.4',reviews:'334',
+    rating:'4.4',reviews:'334',year:'2010',
     r1:'The platinum version adds a smoothness and depth the original lacks.',
     r2:'Best value designer fragrance right now. Underrated.',
     priceHistory:[{date:'Today · 6 hrs ago',price:'240 SAR',dir:'down'},{date:'05 Mar 2025',price:'295 SAR',dir:'up'},{date:'10 Dec 2024',price:'225 SAR',dir:'down'},{date:'20 Aug 2024',price:'310 SAR',dir:'up'},{date:'01 May 2024',price:'250 SAR',dir:'down'}],
-    storeComparison:[{key:'amazon',name:'Golden Scent',ship:'Free delivery · 1–2 days',price:'240 SAR',diff:'Best price'},{key:'namshi',name:'Al-Sultan Perfumes',ship:'Free delivery · 2–3 days',price:'260 SAR',diff:'+20 SAR'},{key:'noon',name:'Najd Al-Otheyah',ship:'Delivery · 3–5 days',price:'280 SAR',diff:'+40 SAR'}]
+    storeComparison:[{key:'amazon',name:'Golden Scent',ship:'Free delivery · 1–2 days',price:'240 SAR',diff:'Best price'},{key:'namshi',name:'Al-Sultan Perfumes',ship:'Free delivery · 2–3 days',price:'260 SAR',diff:'+20 SAR'},{key:'noon',name:'Najd Al-Otheyah',ship:'Delivery · 3–5 days',price:'280 SAR',diff:'+40 SAR'},{key:'sephora',name:'Asheq Al-Otor',ship:'Free delivery · 2–4 days',price:'292 SAR',diff:'+52 SAR'},{key:'jarir',name:'V Perfume',ship:'Delivery · 4–6 days',price:'305 SAR',diff:'+65 SAR'}]
   },
 
   valentino:{
@@ -5408,11 +5360,11 @@ var PRODUCTS = {
     price:'315 SAR',orig:'390 SAR',store:'Asheq Al-Otor',storeKey:'sephora',
     badge:'↓ 19% off',badgeClass:'badge-good',
     atl:'285 SAR',avg:'360 SAR',ath:'415 SAR',
-    rating:'4.5',reviews:'418',
+    rating:'4.5',reviews:'418',year:'2011',
     r1:'The jasmine is incredibly realistic and the vanilla is not too sweet.',
     r2:'Feminine but sophisticated. Perfect for evening events.',
     priceHistory:[{date:'Today · 2 hrs ago',price:'315 SAR',dir:'down'},{date:'20 Feb 2025',price:'390 SAR',dir:'up'},{date:'05 Nov 2024',price:'300 SAR',dir:'down'},{date:'01 Aug 2024',price:'405 SAR',dir:'up'},{date:'15 Apr 2024',price:'325 SAR',dir:'down'}],
-    storeComparison:[{key:'sephora',name:'Asheq Al-Otor',ship:'Free delivery · 2–3 days',price:'315 SAR',diff:'Best price'},{key:'amazon',name:'Golden Scent',ship:'Free delivery · 1–2 days',price:'338 SAR',diff:'+23 SAR'},{key:'noon',name:'Najd Al-Otheyah',ship:'Delivery · 3–5 days',price:'360 SAR',diff:'+45 SAR'}]
+    storeComparison:[{key:'sephora',name:'Asheq Al-Otor',ship:'Free delivery · 2–3 days',price:'315 SAR',diff:'Best price'},{key:'amazon',name:'Golden Scent',ship:'Free delivery · 1–2 days',price:'338 SAR',diff:'+23 SAR'},{key:'noon',name:'Najd Al-Otheyah',ship:'Delivery · 3–5 days',price:'360 SAR',diff:'+45 SAR'},{key:'namshi',name:'Nice One',ship:'Free delivery · 2–4 days',price:'372 SAR',diff:'+57 SAR'},{key:'jarir',name:'Laudour',ship:'Delivery · 4–6 days',price:'385 SAR',diff:'+70 SAR'}]
   },
 
   carolinaherrera:{
@@ -5428,11 +5380,11 @@ var PRODUCTS = {
     price:'350 SAR',orig:'430 SAR',store:'Al-Sultan Perfumes',storeKey:'namshi',
     badge:'↓ 19% off',badgeClass:'badge-good',
     atl:'320 SAR',avg:'395 SAR',ath:'455 SAR',
-    rating:'4.6',reviews:'895',
+    rating:'4.6',reviews:'895',year:'2010',
     r1:'The coffee note makes this completely unique. Gets compliments constantly.',
     r2:'Dark and sensual without being heavy. Perfect for evenings.',
     priceHistory:[{date:'Today · 3 hrs ago',price:'350 SAR',dir:'down'},{date:'10 Mar 2025',price:'430 SAR',dir:'up'},{date:'15 Nov 2024',price:'335 SAR',dir:'down'},{date:'01 Sep 2024',price:'445 SAR',dir:'up'},{date:'20 May 2024',price:'360 SAR',dir:'down'}],
-    storeComparison:[{key:'namshi',name:'Al-Sultan Perfumes',ship:'Free delivery · 1–2 days',price:'350 SAR',diff:'Best price'},{key:'sephora',name:'Asheq Al-Otor',ship:'Free delivery · 2–3 days',price:'375 SAR',diff:'+25 SAR'},{key:'amazon',name:'Golden Scent',ship:'Delivery · 3–5 days',price:'400 SAR',diff:'+50 SAR'}]
+    storeComparison:[{key:'namshi',name:'Al-Sultan Perfumes',ship:'Free delivery · 1–2 days',price:'350 SAR',diff:'Best price'},{key:'sephora',name:'Asheq Al-Otor',ship:'Free delivery · 2–3 days',price:'375 SAR',diff:'+25 SAR'},{key:'amazon',name:'Golden Scent',ship:'Delivery · 3–5 days',price:'400 SAR',diff:'+50 SAR'},{key:'noon',name:'Najd Al-Otheyah',ship:'Free delivery · 2–4 days',price:'415 SAR',diff:'+65 SAR'},{key:'jarir',name:'V Perfume',ship:'Delivery · 4–6 days',price:'428 SAR',diff:'+78 SAR'}]
   },
 
   narciso:{
@@ -5448,11 +5400,11 @@ var PRODUCTS = {
     price:'280 SAR',orig:'345 SAR',store:'Golden Scent',storeKey:'amazon',
     badge:'↓ 19% off',badgeClass:'badge-good',
     atl:'255 SAR',avg:'315 SAR',ath:'370 SAR',
-    rating:'4.5',reviews:'521',
+    rating:'4.5',reviews:'521',year:'2003',
     r1:'The musk is skin-close and incredibly intimate. One of the best skin-scents.',
     r2:'Understated elegance. Perfect for when you want to smell like yourself — but better.',
     priceHistory:[{date:'Today · 1 hr ago',price:'280 SAR',dir:'down'},{date:'15 Feb 2025',price:'345 SAR',dir:'up'},{date:'01 Nov 2024',price:'265 SAR',dir:'down'},{date:'10 Jul 2024',price:'360 SAR',dir:'up'},{date:'20 Mar 2024',price:'290 SAR',dir:'down'}],
-    storeComparison:[{key:'amazon',name:'Golden Scent',ship:'Free delivery · 1–2 days',price:'280 SAR',diff:'Best price'},{key:'sephora',name:'Asheq Al-Otor',ship:'Free delivery · 2–3 days',price:'300 SAR',diff:'+20 SAR'},{key:'namshi',name:'Al-Sultan Perfumes',ship:'Delivery · 3–5 days',price:'325 SAR',diff:'+45 SAR'}]
+    storeComparison:[{key:'amazon',name:'Golden Scent',ship:'Free delivery · 1–2 days',price:'280 SAR',diff:'Best price'},{key:'sephora',name:'Asheq Al-Otor',ship:'Free delivery · 2–3 days',price:'300 SAR',diff:'+20 SAR'},{key:'namshi',name:'Al-Sultan Perfumes',ship:'Delivery · 3–5 days',price:'325 SAR',diff:'+45 SAR'},{key:'noon',name:'Najd Al-Otheyah',ship:'Free delivery · 2–4 days',price:'338 SAR',diff:'+58 SAR'},{key:'jarir',name:'Laudour',ship:'Delivery · 4–6 days',price:'350 SAR',diff:'+70 SAR'}]
   },
 
   dunhill:{
@@ -5468,11 +5420,11 @@ var PRODUCTS = {
     price:'145 SAR',orig:'185 SAR',store:'Najd Al-Otheyah',storeKey:'noon',
     badge:'↓ 22% off',badgeClass:'badge-fire',
     atl:'130 SAR',avg:'165 SAR',ath:'200 SAR',
-    rating:'4.2',reviews:'248',
+    rating:'4.2',reviews:'248',year:'2015',
     r1:'Incredible value. Punches well above its price point.',
     r2:'Fresh, clean and very wearable daily. The best budget aquatic in Saudi stores.',
     priceHistory:[{date:'Today · 5 hrs ago',price:'145 SAR',dir:'down'},{date:'28 Feb 2025',price:'185 SAR',dir:'up'},{date:'15 Nov 2024',price:'135 SAR',dir:'down'},{date:'01 Aug 2024',price:'195 SAR',dir:'up'},{date:'10 Apr 2024',price:'150 SAR',dir:'down'}],
-    storeComparison:[{key:'noon',name:'Najd Al-Otheyah',ship:'Free delivery · 1–2 days',price:'145 SAR',diff:'Best price'},{key:'amazon',name:'Golden Scent',ship:'Free delivery · 2–3 days',price:'160 SAR',diff:'+15 SAR'},{key:'jarir',name:'V Perfume',ship:'Delivery · 3–5 days',price:'175 SAR',diff:'+30 SAR'}]
+    storeComparison:[{key:'noon',name:'Najd Al-Otheyah',ship:'Free delivery · 1–2 days',price:'145 SAR',diff:'Best price'},{key:'amazon',name:'Golden Scent',ship:'Free delivery · 2–3 days',price:'160 SAR',diff:'+15 SAR'},{key:'jarir',name:'V Perfume',ship:'Delivery · 3–5 days',price:'175 SAR',diff:'+30 SAR'},{key:'namshi',name:'Al-Sultan Perfumes',ship:'Free delivery · 2–4 days',price:'185 SAR',diff:'+40 SAR'},{key:'sephora',name:'Nice One',ship:'Delivery · 4–6 days',price:'195 SAR',diff:'+50 SAR'}]
   }
 
 };
@@ -5529,6 +5481,7 @@ var SEARCH_ITEMS = [
 /* ── PRODUCT CATALOGUE (Embedded) ── */
 /* Track where user came from to enable correct Back navigation */
 var productOrigin = 'home';
+var currentProductKey = '';
 var currentProductStoreKey = '';
 
 /* ── Sub-function: render product hero image ────────────── */
@@ -5591,10 +5544,12 @@ function _setProductMeta(p) {
     houseEl.textContent = brandParts[0].trim() || p.name.split(' ')[0];
   }
 
-  document.getElementById('product-family').textContent  = p.family || '--';
-  document.getElementById('product-perfumer').textContent = p.perfumer || '--';
-  document.getElementById('product-country').textContent  = p.country || '--';
-  document.getElementById('product-gender').textContent   = p.gender || '--';
+  document.getElementById('product-family').textContent   = p.family   || '--';
+  document.getElementById('product-perfumer').textContent = p.perfumer  || '--';
+  document.getElementById('product-country').textContent  = p.country   || '--';
+  document.getElementById('product-gender').textContent   = p.gender    || '--';
+  document.getElementById('product-year').textContent     = p.year      || '--';
+  document.getElementById('product-rating').textContent   = p.rating    ? p.rating + ' ★' : '--';
 
   // Render Accords
   var accordsContainer = document.getElementById('product-accords');
@@ -5663,13 +5618,15 @@ function _setProductReviews(p) {
   if (ratingEl) ratingEl.textContent = p.rating;
   var revCountEl = document.getElementById('product-review-count');
   if (revCountEl) revCountEl.textContent = p.rating + ' out of 5 · ' + p.reviews + ' reviews';
-  document.getElementById('product-all-reviews').textContent   = p.reviews;
+  var btn = document.getElementById('reviews-show-more-btn');
+  if (btn) btn.textContent = 'Show all ' + p.reviews + ' reviews →';
   document.getElementById('product-review1').textContent       = p.r1;
   document.getElementById('product-review2').textContent       = p.r2;
 }
 
 /* ── Reaction toggle ─────────────────────────────────────── */
 function toggleReaction(btn) {
+  if (!requireAuth()) return;
   var countEl = btn.querySelector('.reaction-count');
   var count   = parseInt(countEl.textContent) || 0;
   if (btn.classList.contains('reacted')) {
@@ -5692,6 +5649,7 @@ function toggleReaction(btn) {
 
 /* ── When-to-Wear toggle ─────────────────────────────────── */
 function toggleWear(chip) {
+  if (!requireAuth()) return;
   var countEl = chip.querySelector('.wear-chip-count');
   var count   = parseInt(countEl.textContent) || 0;
   if (chip.classList.contains('voted')) {
@@ -5768,7 +5726,7 @@ function _pdpBuildRecCard(key) {
   var card = document.createElement('div');
   card.className = 'deal-card';
   card.style.cursor = 'pointer';
-  card.addEventListener('click', function() { openProduct(key, 'product-detail'); });
+  card.addEventListener('click', function() { openDealIntermediate(key, 'product-detail'); });
 
   card.innerHTML =
     '<div class="deal-img-zone">' +
@@ -5825,6 +5783,7 @@ function openProduct(key, origin) {
   var p = PRODUCTS[key];
   if (!p) return;
   productOrigin            = origin || 'home';
+  currentProductKey        = key;
   currentProductStoreKey   = p.storeKey || '';
   var backLabels = {
     search: 'Search',
@@ -5995,20 +5954,23 @@ function closeAllStores() {
 }
 
 /* Wishlist All */
-function showWishlistAll() { showOverlay('overlay-wishlist-all'); var sa = document.querySelector('#overlay-wishlist-all [style*="overflow-y:auto"]'); if (sa) sa.scrollTop = 0; }
-function closeWishlistAll() { hideOverlay('overlay-wishlist-all'); }
+function _actSubOpen()  { document.getElementById('screen-activity').classList.add('sub-open'); }
+function _actSubClose() { document.getElementById('screen-activity').classList.remove('sub-open'); }
+
+function showWishlistAll() { _actSubOpen(); showOverlay('overlay-wishlist-all'); var sa = document.querySelector('#overlay-wishlist-all [style*="overflow-y:auto"]'); if (sa) sa.scrollTop = 0; }
+function closeWishlistAll() { hideOverlay('overlay-wishlist-all'); _actSubClose(); }
 
 /* Recently Viewed All */
-function showRecentAll() { showOverlay('overlay-recent-all'); var sa = document.querySelector('#overlay-recent-all [style*="overflow-y:auto"]'); if (sa) sa.scrollTop = 0; }
-function closeRecentAll() { hideOverlay('overlay-recent-all'); }
+function showRecentAll() { _actSubOpen(); showOverlay('overlay-recent-all'); var sa = document.querySelector('#overlay-recent-all [style*="overflow-y:auto"]'); if (sa) sa.scrollTop = 0; }
+function closeRecentAll() { hideOverlay('overlay-recent-all'); _actSubClose(); }
 
 /* Settings */
 function showSettings() { showOverlay('overlay-settings'); }
 function closeSettings() { hideOverlay('overlay-settings'); }
 
 /* Interests Edit */
-function showInterestsEdit() { showOverlay('overlay-interests'); }
-function closeInterestsEdit() { hideOverlay('overlay-interests'); }
+function showInterestsEdit() { _actSubOpen(); showOverlay('overlay-interests'); }
+function closeInterestsEdit() { hideOverlay('overlay-interests'); _actSubClose(); }
 
 /* Logout confirm sheet */
 function confirmLogout() {
@@ -6114,8 +6076,8 @@ function openBrandPage(key) {
         '<div class="deal-name">' + p.name + '</div>' +
         '<div class="deal-store" style="text-transform:none;">Available in ' + storeCount + ' store' + (storeCount !== 1 ? 's' : '') + '</div>' +
         '<div class="deal-prices" style="display:block;margin-top:4px;">' +
-          '<div style="margin-bottom:5px;"><span class="badge" style="font-size:11px;padding:2px 8px;background-color:#EAA005;color:#ffffff;">Lowest price: ' + lowestPrice + ' SAR</span></div>' +
-          '<div style="font-size:12px;color:var(--ink-2);">Highest price: ' + highestPrice + ' SAR</div>' +
+          '<div style="margin-bottom:5px;"><span class="badge" style="font-size:11px;padding:2px 8px;background-color:#EAA005;color:#ffffff;">Lowest: ' + lowestPrice + ' SAR</span></div>' +
+          '<div style="font-size:12px;color:var(--ink-2);">Highest: ' + highestPrice + ' SAR</div>' +
           '<div style="font-size:12px;color:var(--ink-2);">Savings: ' + savings + ' SAR</div>' +
         '</div>' +
       '</div>';
@@ -6675,10 +6637,12 @@ var _sspCurrency = 'SAR';
 var _sspLanguage = 'en';
 
 function openSettingsSub(page) {
+  _actSubOpen();
   document.getElementById('ssp-' + page).classList.add('visible');
 }
 function closeSettingsSub(page) {
   document.getElementById('ssp-' + page).classList.remove('visible');
+  _actSubClose();
 }
 
 function saveProfile() {
@@ -6906,11 +6870,12 @@ function filterWishlist(query) {
 function openReviewsPage() {
   /* Sync product name and count from current product detail */
   var nameEl  = document.getElementById('product-name');
-  var countEl = document.getElementById('product-all-reviews');
+  var countEl = document.getElementById('reviews-show-more-btn');
   if (nameEl)  document.getElementById('rv-product-name').textContent = nameEl.textContent;
   if (countEl) document.getElementById('rv-total-count').textContent  = countEl.textContent + ' reviews';
   var scoreEl = document.getElementById('product-rating');
-  if (scoreEl) document.getElementById('rv-big-score').textContent = scoreEl.textContent;
+  var bigScore = document.getElementById('rv-big-score');
+  if (scoreEl && bigScore) bigScore.textContent = scoreEl.textContent;
   document.getElementById('overlay-reviews').classList.add('visible');
   /* Scroll review list to top */
   var list = document.getElementById('rv-list');
@@ -7018,6 +6983,7 @@ var _DIP_SIMILAR = {
 
 /* ── Navigation origin for deal intermediate page ────────── */
 var _dipOrigin = 'home';  /* tracks which context opened the intermediate page */
+var _dipFromProductKey = null; /* product key that was open when a rec card was tapped */
 
 /* ── Filter state ─────────────────────────────────────────── */
 var _dipActiveSize   = null;
@@ -7207,6 +7173,7 @@ function _dipBuildAltCard(item) {
 /* ── Main: open the intermediate page ────────────────────── */
 function openDealIntermediate(productKey, origin) {
   _dipOrigin = origin || 'home';  /* remember where we came from */
+  _dipFromProductKey = (_dipOrigin === 'product-detail') ? (currentProductKey || null) : null;
   var p = (typeof PRODUCTS !== 'undefined') ? PRODUCTS[productKey] : null;
   var titleText = p ? p.name : productKey;
 
@@ -7243,13 +7210,6 @@ function openDealIntermediate(productKey, origin) {
   var countEl = document.getElementById('dip-store-count-label');
   if (countEl) countEl.textContent = 'Available in ' + storeComps.length + ' Store' + (storeComps.length !== 1 ? 's' : '');
 
-  /* Build alternatives */
-  var altsList = document.getElementById('dip-alts-list');
-  altsList.innerHTML = '';
-  (_DIP_ALTERNATIVES[productKey] || []).forEach(function(item) {
-    altsList.appendChild(_dipBuildAltCard(item));
-  });
-
   /* Build similar */
   var simList = document.getElementById('dip-similar-list');
   simList.innerHTML = '';
@@ -7281,9 +7241,18 @@ function _dipClose() {
   } else if (_dipOrigin === 'hot-deals') {
     showOverlay('overlay-hot-deals');
   } else if (_dipOrigin === 'brand') {
-    /* Brand page was hidden when entering DIP — restore it */
     switchScreen('home');
     showOverlay('overlay-brand-page');
+  } else if (_dipOrigin === 'wishlist') {
+    switchScreen('activity');
+  } else if (_dipOrigin === 'product-detail') {
+    /* Restore the original product that was open before the rec card was tapped.
+       Use origin 'home' so its back button goes home — not back into this DIP. */
+    if (_dipFromProductKey && PRODUCTS[_dipFromProductKey]) {
+      openProduct(_dipFromProductKey, 'home');
+    } else {
+      switchScreen('home');
+    }
   } else {
     switchScreen('home');
   }
@@ -7371,6 +7340,17 @@ function cancelAlertDisable() {
 
 
 
+
+<!-- PWA Service Worker Registration -->
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('sw.js').catch(function(err) {
+        console.log('SW registration failed:', err);
+      });
+    });
+  }
+</script>
 
 </body>
 </html>
