@@ -142,8 +142,8 @@ html {
 }
 
 /* Desktop mimicry - only applies when screen is large enough */
-/* ── Desktop: phone frame simulation ── */
-@media (min-width: 500px) {
+/* ── Desktop: phone frame simulation (devices with mouse/pointer) ── */
+@media (hover: hover) and (pointer: fine) {
   body {
     background: var(--bg-page);
     display: flex;
@@ -162,8 +162,8 @@ html {
   }
 }
 
-/* ── Mobile: full viewport, no frame ── */
-@media (max-width: 499px) {
+/* ── Mobile/touch: full viewport, no frame ── */
+@media (hover: none), (pointer: coarse) {
   body {
     background: var(--bg-phone);
     padding: 0;
@@ -222,7 +222,7 @@ html {
    the extra 44px top offset — overlays nested inside a .screen (like
    overlay-hot-deals, overlay-brands, overlay-price-drops) already sit
    correctly within the screen's coordinate space and must NOT get extra padding. */
-@media (min-width: 500px) {
+@media (hover: hover) and (pointer: fine) {
   #overlay-wishlist-all .listing-header,
   #overlay-recent-all .listing-header,
   #overlay-personalized-all .listing-header,
@@ -1214,7 +1214,7 @@ html {
 .web-status-bar {
   display: none;
 }
-@media (min-width: 500px) {
+@media (hover: hover) and (pointer: fine) {
   .web-status-bar {
     display: flex;
     align-items: center;
